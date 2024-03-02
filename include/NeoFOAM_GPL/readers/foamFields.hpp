@@ -1,76 +1,80 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: GPLv-3.0
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "NeoFOAM/blas/field.hpp"
-#include "scalarField.H"
-#include "vectorField.H"
+#include "NeoFOAM/core/executor/executor.hpp"
+#include "NeoFOAM_GPL/conversion/convert.hpp"
+#include "NeoFOAM/fields/field.hpp"
 
 // namespace NeoFOAM
 // {
 
-    NeoFOAM::labelField read_labelField(std::string field_name,const Foam::labelList &field)
+
+template <typename NFoamType,typename FoamType>
+NeoFOAM::Field<NFoamType> fromFoamField(const NeoFOAM::executor exec, const Foam::Field<FoamType> &field)
+{
+    // Create device-side views
+    NeoFOAM::Field<NFoamType> nfField(exec, field.size());
+
+    Kokkos::View<NFoamType *, Kokkos::HostSpace> CPU_view("copy_Host", field.size());
+    for (Foam::label i = 0; i < field.size(); i++)
     {
-        const int32_t size = field.size();
-
-        // Create host-side views
-        Kokkos::View<NeoFOAM::label *, Kokkos::HostSpace> field_host("field_host",size);
-        for (Foam::label i = 0; i < size; i++)
+        if constexpr (!std::is_same<FoamType, NFoamType>::value)
         {
-            field_host(i) = field[i];
+            CPU_view(i) = convert(field[i]);
         }
-
-        // Create device-side views
-        NeoFOAM::labelField nffield(field_name, size);
-
-        // Copy the data from the host to the device
-        Kokkos::deep_copy(nffield.field() , field_host);
-
-        return nffield;
-    };
-
-
-    NeoFOAM::scalarField read_scalarField(std::string field_name,const Foam::scalarField &field)
+        else
+        {
+            CPU_view(i) = field[i];
+        }
+    }
+    if (std::holds_alternative<NeoFOAM::GPUExecutor>(exec))
     {
-        const int32_t size = field.size();
-
-        // Create host-side views
-        Kokkos::View<NeoFOAM::scalar *, Kokkos::HostSpace> field_host("field_host",size);
-        for (Foam::label i = 0; i < size; i++)
-        {
-            field_host(i) = field[i];
-        }
-
-        // Create device-side views
-        NeoFOAM::scalarField nffield(field_name, size);
-
-        // Copy the data from the host to the device
-        Kokkos::deep_copy(nffield.field() , field_host);
-
-        return nffield;
-    };
-
-
-    NeoFOAM::vectorField read_vectorField(std::string field_name,const Foam::vectorField &field)
+        Kokkos::View<NFoamType *, NeoFOAM::GPUExecutor::exec, Kokkos::MemoryUnmanaged>
+            GPU_view(nfField.data(), field.size());
+        Kokkos::deep_copy(GPU_view,CPU_view);
+    }
+    else
     {
-        const int32_t size = field.size();
+        Kokkos::View<NFoamType *, Kokkos::HostSpace, Kokkos::MemoryUnmanaged>
+            N_CPU_view(nfField.data(), field.size());
+        Kokkos::deep_copy(N_CPU_view,CPU_view);
+    }
 
-        // Create host-side views
-        Kokkos::View<NeoFOAM::vector *, Kokkos::HostSpace> field_host("field_host",size);
-        for (Foam::label i = 0; i < size; i++)
+    return nfField;
+};
+
+template <typename NFoamType,typename FoamType>
+NeoFOAM::Field<NFoamType> fromFoamField(const NeoFOAM::executor &exec, const Foam::List<FoamType> &field)
+{
+    // Create device-side views
+    NeoFOAM::Field<NFoamType> nfField(exec, field.size());
+
+    NeoFOAM::Field<NFoamType> CPUField(NeoFOAM::CPUExecutor {}, field.size());
+    Kokkos::View<NFoamType *, Kokkos::HostSpace, Kokkos::MemoryUnmanaged> CPU_view(CPUField.data(), field.size());
+    for (Foam::label i = 0; i < field.size(); i++)
+    {
+        if constexpr (!std::is_same<FoamType, NFoamType>::value)
         {
-            field_host(i) = NeoFOAM::vector(field[i][0], field[i][1], field[i][2]);;
+            CPU_view(i) = convert(field[i]);
         }
+        else
+        {
+            CPU_view(i) = field[i];
+        }
+    }
+    if (std::holds_alternative<NeoFOAM::GPUExecutor>(exec))
+    {
+        Kokkos::View<NFoamType *, NeoFOAM::GPUExecutor::exec, Kokkos::MemoryUnmanaged>
+            GPU_view(nfField.data(), field.size());
+        Kokkos::deep_copy(GPU_view,CPU_view);
+    }
+    else
+    {
+        Kokkos::View<NFoamType *, Kokkos::HostSpace, Kokkos::MemoryUnmanaged>
+            N_CPU_view(nfField.data(), field.size());
+        Kokkos::deep_copy(N_CPU_view,CPU_view);
+    }
 
-        // Create device-side views
-        NeoFOAM::vectorField nffield(field_name, size);
-
-        // Copy the data from the host to the device
-        Kokkos::deep_copy(nffield.field() , field_host);
-
-        return nffield;
-    };
-
-    
-
-// } // namespace NeoFOAM
+    return nfField;
+};
