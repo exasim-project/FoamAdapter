@@ -2,7 +2,6 @@
 # SPDX-FileCopyrightText: 2023 NeoFOAM authors
 add_executable(test_treeAMR "test_treeAMR.cpp")
 
-find_package(Kokkos REQUIRED)
 find_package(MPI REQUIRED)
 find_package(ZLIB REQUIRED)
 
