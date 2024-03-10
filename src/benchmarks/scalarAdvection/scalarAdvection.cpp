@@ -42,6 +42,7 @@ Description
 #include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 
+#define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
 
 #include "NeoFOAM_GPL/readers/foamMesh.hpp"
