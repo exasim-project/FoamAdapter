@@ -3,6 +3,7 @@
 # Run CMake to generate the build files
 # -DCMAKE_INSTALL_PREFIX=$PWD/NeoFOAM_GPL \
 cmake  -S . -B build  -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=$PWD/NeoFOAM_GPL \
         -DNEOFOAM_BUILD_TESTS=ON \
         -DKokkos_ENABLE_SERIAL=ON \
         -DKokkos_ENABLE_OPENMP=ON \
@@ -12,5 +13,4 @@ cmake  -S . -B build  -DCMAKE_BUILD_TYPE=Release \
 
 # Build the project using make
 cmake --build build -j
-
-# PATH=$PWD/NeoFOAM_GPL/bin:$PATH
+# cmake --install build

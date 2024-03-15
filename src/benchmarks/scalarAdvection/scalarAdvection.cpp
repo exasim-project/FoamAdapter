@@ -47,8 +47,7 @@ Description
 
 #include "NeoFOAM_GPL/readers/foamMesh.hpp"
 #include "NeoFOAM_GPL/writers/writers.hpp"
-
-
+#include "NeoFOAM_GPL/setup/setup.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -62,59 +61,83 @@ int main(int argc, char *argv[])
         #include "createTime.H"
         #include "createMesh.H"
         #include "createControl.H"
-        #include "createTimeControls.H"
+        // #include "createTimeControls.H"
+        auto [adjustTimeStep, maxCo, maxDeltaT] = createTimeControls(runTime);
+
 
         #include "createFields.H"
-        #include "readTimeControls.H"
-        #include "createUfIfPresent.H"
-        #include "CourantNo.H"
-        #include "setDeltaT.H"
-
-
-        scalar pi = constant::mathematical::pi;
+        // set temperature
+        Foam::scalar spread = 0.05;
+        forAll(T,celli)
         {
-            scalarField X = mesh.C().component(0);
-            scalarField Z = mesh.C().component(2);
-            scalarField u = -Foam::sin(2.0*pi*Z)*Foam::pow(Foam::sin(pi*X),2.0);
-            scalarField w = Foam::sin(2.0*pi*X)*Foam::pow(Foam::sin(pi*Z),2.0);
+            // T[celli] = Foam::exp(10*(1 - (Foam::mag(mesh.C()[celli] - Foam::vector(0.5,0.75,0.0)))))/Foam::constant::mathematical::e;
+            T[celli] = std::exp(-0.5 * (std::pow((mesh.C()[celli].x() - 0.5) / spread, 2.0) + std::pow((mesh.C()[celli].y() - 0.75) / spread, 2.0)));
+        }
+        T.correctBoundaryConditions();
+        T.write();
+        // #include "readTimeControls.H"
+        // [adjustTimeStep, maxCo, maxDeltaT] = createTimeControls(runTime);
+        updateTimeControls(runTime, adjustTimeStep, maxCo, maxDeltaT);
+        // #include "createUfIfPresent.H"
+        // #include "CourantNo.H"
+        Foam::scalar CoNum = calculateCoNum(phi);
+        if (adjustTimeStep)
+        {
+            setDeltaT(runTime, maxCo,CoNum, maxDeltaT);
+        }
+
+        Foam::scalar pi = Foam::constant::mathematical::pi;
+        {
+            Foam::scalarField X = mesh.C().component(0);
+            Foam::scalarField Y = mesh.C().component(1);
+            Foam::scalarField u = -Foam::sin(2.0*pi*Y)*Foam::pow(Foam::sin(pi*X),2.0);
+            Foam::scalarField w = Foam::sin(2.0*pi*X)*Foam::pow(Foam::sin(pi*Y),2.0);
             forAll(U0,celli)
             {
                 U0[celli].x() = u[celli];
-                U0[celli].y() = 0.0;
-                U0[celli].z() = w[celli];
+                U0[celli].y() = w[celli];
+                U0[celli].z() = 0.0;
             }
         }
-
-        phi = linearInterpolate(U) & mesh.Sf();
+        phi0 = linearInterpolate(U0) & mesh.Sf();
 
         while (runTime.run())
         {
-            #include "readTimeControls.H"
-            #include "CourantNo.H"
-            #include "setDeltaT.H"
+            // #include "readTimeControls.H"
+            updateTimeControls(runTime, adjustTimeStep, maxCo, maxDeltaT);
+            CoNum = calculateCoNum(phi);
+            Foam::Info << "max(phi) : " << max(phi) << Foam::endl;
+            Foam::Info << "max(U) : " << max(U) << Foam::endl;
+            if (adjustTimeStep)
+            {
+                setDeltaT(runTime, maxCo,CoNum, maxDeltaT);
+            }
 
             runTime++;
 
             if(spirallingFlow > 0)
             {
-                scalar t = runTime.time().value();
-                scalar dt = runTime.deltaT().value();
+                Foam::Info << "Spiralling flow: " << spirallingFlow << Foam::endl;
+                Foam::scalar t = runTime.time().value();
+                Foam::scalar dt = runTime.deltaT().value();
                 U = U0*Foam::cos(pi*(t+ 0.5*dt)/spirallingFlow);
                 phi = phi0*Foam::cos(pi*(t+ 0.5*dt)/spirallingFlow);
+                // Foam::volScalarField Test("Test", Foam::fvc::div(phi, T));
+                // Test.write();
             }
 
-            fvScalarMatrix UEqn
+            Foam::fvScalarMatrix TEqn
             (
-                fvm::ddt(T)
-                + fvc::div(phi, T)
+                Foam::fvm::ddt(T)
+                + Foam::fvc::div(phi, T)
             );
 
+            TEqn.solve();
 
-            
             runTime.write();
         }
 
-        Info << "End\n" << Foam::endl;
+        Foam::Info << "End\n" << Foam::endl;
     }
     Kokkos::finalize();
 

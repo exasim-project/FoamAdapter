@@ -11,10 +11,10 @@ NeoFOAM has the following requirements
 
 ## Compilation
 
-[![Build NeoFOAM](https://github.com/exasim-project/NeoFOAM/actions/workflows/build.yaml/badge.svg)](https://github.com/exasim-project/NeoFOAM/actions/workflows/build.yaml)
+    ./build.sh
 
-NeoFOAM uses cmake to build, thus the standard cmake procedure should work 
 
-    mkdir build && cd build && cmake ..
-    cmake --build .
-    cmake --install .
+## run
+
+export PATH=$PWD/NeoFOAM_GPL/bin:$PATH
+and go into benchmarks/
