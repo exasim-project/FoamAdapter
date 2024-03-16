@@ -1,7 +1,7 @@
 #include "NeoFOAM_GPL/setup/setup.hpp"
 
 
-std::tuple<bool, Foam::scalar, Foam::scalar> createTimeControls(const Foam::Time& runTime) {
+std::tuple<bool, Foam::scalar, Foam::scalar> timeControls(const Foam::Time& runTime) {
     bool adjustTimeStep =
     runTime.controlDict().getOrDefault("adjustTimeStep", false);
 
@@ -15,16 +15,6 @@ std::tuple<bool, Foam::scalar, Foam::scalar> createTimeControls(const Foam::Time
 }
 
 
-void updateTimeControls(const Foam::Time& runTime, bool& adjustTimeStep, Foam::scalar& maxCo, Foam::scalar& maxDeltaT) {
-    adjustTimeStep =
-    runTime.controlDict().getOrDefault("adjustTimeStep", false);
-
-    maxCo =
-        runTime.controlDict().getOrDefault<Foam::scalar>("maxCo", 1);
-
-    maxDeltaT =
-        runTime.controlDict().getOrDefault<Foam::scalar>("maxDeltaT",Foam::GREAT);
-}
 
 Foam::scalar calculateCoNum(const Foam::surfaceScalarField& phi) {
     const Foam::fvMesh& mesh = phi.mesh();

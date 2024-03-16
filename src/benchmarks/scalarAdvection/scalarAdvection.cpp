@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
         #include "createMesh.H"
         #include "createControl.H"
         // #include "createTimeControls.H"
-        auto [adjustTimeStep, maxCo, maxDeltaT] = createTimeControls(runTime);
+        auto [adjustTimeStep, maxCo, maxDeltaT] = timeControls(runTime);
 
 
         #include "createFields.H"
@@ -77,7 +77,8 @@ int main(int argc, char *argv[])
         T.write();
         // #include "readTimeControls.H"
         // [adjustTimeStep, maxCo, maxDeltaT] = createTimeControls(runTime);
-        updateTimeControls(runTime, adjustTimeStep, maxCo, maxDeltaT);
+        // updateTimeControls(runTime, adjustTimeStep, maxCo, maxDeltaT);
+        std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
         // #include "createUfIfPresent.H"
         // #include "CourantNo.H"
         Foam::scalar CoNum = calculateCoNum(phi);
@@ -104,7 +105,7 @@ int main(int argc, char *argv[])
         while (runTime.run())
         {
             // #include "readTimeControls.H"
-            updateTimeControls(runTime, adjustTimeStep, maxCo, maxDeltaT);
+            std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
             CoNum = calculateCoNum(phi);
             Foam::Info << "max(phi) : " << max(phi) << Foam::endl;
             Foam::Info << "max(U) : " << max(U) << Foam::endl;
