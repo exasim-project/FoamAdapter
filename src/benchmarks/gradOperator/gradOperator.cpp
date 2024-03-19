@@ -64,7 +64,7 @@ Description
 #include "Kokkos_Core.hpp"
 
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/fields/FieldTypeDefs.hpp"
 #include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 
@@ -84,7 +84,7 @@ void print_field(NeoFOAM::Field<T> a)
     }
 }
 template <>
-void print_field(NeoFOAM::Field<NeoFOAM::vector> a)
+void print_field(NeoFOAM::Field<NeoFOAM::Vector> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
     auto tmp_view = a.copyToHost().field();

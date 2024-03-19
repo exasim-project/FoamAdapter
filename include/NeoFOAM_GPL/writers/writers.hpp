@@ -3,7 +3,8 @@
 #pragma once
 
 #include "fvMesh.H"
-#include "NeoFOAM/fields/field.hpp"
+#include "volFields.H"
+#include "NeoFOAM/fields/FieldTypeDefs.hpp"
 #include "NeoFOAM_GPL/conversion/convert.hpp"
 
 void write(NeoFOAM::scalarField& sf, const Foam::fvMesh &mesh, const std::string fieldName)
@@ -51,7 +52,7 @@ void write(NeoFOAM::vectorField& sf, const Foam::fvMesh &mesh, const std::string
     if (field)
     {
         // field is already present and needs to be updated
-        NeoFOAM::span<NeoFOAM::vector> sf_host = sf.copyToHost().field();
+        auto sf_host = sf.copyToHost().field();
         Foam::vectorField& field_ref = field->ref();
         for (int i = 0; i < field_ref.size(); i++)
         {

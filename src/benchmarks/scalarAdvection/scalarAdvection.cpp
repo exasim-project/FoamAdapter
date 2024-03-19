@@ -38,7 +38,7 @@ Description
 // #include "Kokkos_Core.hpp"
 
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/fields/FieldTypeDefs.hpp"
 #include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 

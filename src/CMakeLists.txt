@@ -37,6 +37,7 @@ target_link_libraries(
 target_sources(NeoFOAM_GPL PRIVATE "setup/setup.cpp")
 
 add_subdirectory(benchmarks)
+add_subdirectory(test)
 
 
 
