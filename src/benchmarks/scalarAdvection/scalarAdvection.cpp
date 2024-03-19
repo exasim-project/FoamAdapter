@@ -45,9 +45,9 @@ Description
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
 
-#include "NeoFOAM_GPL/readers/foamMesh.hpp"
-#include "NeoFOAM_GPL/writers/writers.hpp"
-#include "NeoFOAM_GPL/setup/setup.hpp"
+#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/writers/writers.hpp"
+#include "FoamAdapter/setup/setup.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run CMake to generate the build files
-# -DCMAKE_INSTALL_PREFIX=$PWD/NeoFOAM_GPL \
+# -DCMAKE_INSTALL_PREFIX=$PWD/FoamAdapter \
 cmake  -S . -B build  -DCMAKE_BUILD_TYPE=Release \
         -DNEOFOAM_BUILD_TESTS=ON \
         -DKokkos_ENABLE_SERIAL=ON \

@@ -26,7 +26,7 @@ target_link_libraries(
          $ENV{FOAM_LIBBIN}/libmeshTools.so
          $ENV{FOAM_LIBBIN}/$ENV{FOAM_MPI}/libPstream.so
          NeoFOAM
-         NeoFOAM_GPL
+         FoamAdapter
          Catch2::Catch2
          Kokkos::kokkos)
 

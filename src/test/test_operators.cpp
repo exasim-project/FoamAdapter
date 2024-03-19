@@ -17,8 +17,8 @@
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarFixedValueBoundaryField.hpp"
 
-#include "NeoFOAM_GPL/readers/foamMesh.hpp"
-#include "NeoFOAM_GPL/writers/writers.hpp"
+#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/writers/writers.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"

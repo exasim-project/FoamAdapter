@@ -68,8 +68,8 @@ Description
 #include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 
-#include "NeoFOAM_GPL/readers/foamMesh.hpp"
-#include "NeoFOAM_GPL/writers/writers.hpp"
+#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/writers/writers.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

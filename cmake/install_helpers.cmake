@@ -4,12 +4,12 @@
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
-set(NEOFOAM_GPL_INSTALL_PKGCONFIG_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig")
-set(NEOFOAM_GPL_INSTALL_CONFIG_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/cmake/NeoFOAM")
-set(NEOFOAM_GPL_INSTALL_MODULE_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/cmake/NeoFOAM/Modules")
+set(FoamAdapter_INSTALL_PKGCONFIG_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig")
+set(FoamAdapter_INSTALL_CONFIG_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/cmake/NeoFOAM")
+set(FoamAdapter_INSTALL_MODULE_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/cmake/NeoFOAM/Modules")
 
-function(neofoam_GPL_install)
-	install(TARGETS NeoFOAM_GPL EXPORT NeoFOAMTargets
+function(FoamAdapter_install)
+	install(TARGETS FoamAdapter EXPORT NeoFOAMTargets
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
@@ -18,7 +18,7 @@ function(neofoam_GPL_install)
 
 # install the public header files
 install(
-DIRECTORY "${NeoFOAM_GPL_SOURCE_DIR}/include/"
+DIRECTORY "${FoamAdapter_SOURCE_DIR}/include/"
 DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}"
 FILES_MATCHING
 PATTERN "*.hpp")
@@ -26,7 +26,7 @@ PATTERN "*.hpp")
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-	"${CMAKE_CURRENT_BINARY_DIR}/NeoFOAM_GPL/NeoFOAMConfigVersion.cmake"
+	"${CMAKE_CURRENT_BINARY_DIR}/FoamAdapter/NeoFOAMConfigVersion.cmake"
   VERSION ${NeoFOAM_VERSION}
   COMPATIBILITY AnyNewerVersion
 )

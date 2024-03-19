@@ -5,7 +5,7 @@
 #include "fvMesh.H"
 #include "volFields.H"
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM_GPL/conversion/convert.hpp"
+#include "FoamAdapter/conversion/convert.hpp"
 
 void write(NeoFOAM::scalarField& sf, const Foam::fvMesh &mesh, const std::string fieldName)
 {

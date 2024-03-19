@@ -3,7 +3,7 @@
 #pragma once
 
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM_GPL/conversion/convert.hpp"
+#include "FoamAdapter/conversion/convert.hpp"
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
 
 // namespace NeoFOAM

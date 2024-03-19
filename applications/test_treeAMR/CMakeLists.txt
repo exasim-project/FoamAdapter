@@ -12,7 +12,7 @@ set_target_properties(test_treeAMR PROPERTIES CXX_STANDARD 17)
 target_include_directories(
 test_treeAMR
  SYSTEM
-  PUBLIC ${CMAKE_SOURCE_DIR}/NeoFOAM_GPL/include
+  PUBLIC ${CMAKE_SOURCE_DIR}/FoamAdapter/include
          ${CMAKE_SOURCE_DIR}/NeoFOAM/include
          ${MPI_INCLUDE_PATH}
          ${ZLIB_INCLUDE_DIRS}
@@ -21,9 +21,9 @@ test_treeAMR
 
 target_link_libraries(
   test_treeAMR
-  PUBLIC ${CMAKE_SOURCE_DIR}/NeoFOAM_GPL/lib/libt8.a
-         ${CMAKE_SOURCE_DIR}/NeoFOAM_GPL/lib/libsc.a
-         ${CMAKE_SOURCE_DIR}/NeoFOAM_GPL/lib/libp4est.a
+  PUBLIC ${CMAKE_SOURCE_DIR}/FoamAdapter/lib/libt8.a
+         ${CMAKE_SOURCE_DIR}/FoamAdapter/lib/libsc.a
+         ${CMAKE_SOURCE_DIR}/FoamAdapter/lib/libp4est.a
          MPI::MPI_CXX
          NeoFOAM
          Kokkos::kokkos

@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.22.0)
 
 project(
-  NeoFOAM_GPL
+  FoamAdapter
   LANGUAGES C CXX
   VERSION 0.1.0
   DESCRIPTION "An implementation of FOAM")
@@ -68,4 +68,4 @@ add_subdirectory(applications)
 #   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 # include(cmake/install_helpers.cmake)
-# neofoam_GPL_install()
+# FoamAdapter_install()

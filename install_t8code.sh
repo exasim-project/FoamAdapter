@@ -8,7 +8,7 @@ git submodule update
 ./bootstrap
 mkdir t8code_build
 cd t8code_build
-../configure CFLAGS="-O3" CXXFLAGS="-O3" --enable-mpi CC=mpicc CXX=mpicxx --prefix=$PROJ_DIR/NeoFOAM_GPL
+../configure CFLAGS="-O3" CXXFLAGS="-O3" --enable-mpi CC=mpicc CXX=mpicxx --prefix=$PROJ_DIR/FoamAdapter
 make -j
 make install
 cd ..

@@ -2,7 +2,7 @@
 #include "NeoFOAM/mesh/treeAMR/treeAMRMesh.hpp"
 #include "NeoFOAM/mesh/treeAMR/treeAMRMeshModifier.hpp"
 
-#include "NeoFOAM_GPL/treeAMR/t8_MeshModifier.hpp"
+#include "FoamAdapter/treeAMR/t8_MeshModifier.hpp"
 #include <memory>
 
 template <typename T>

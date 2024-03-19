@@ -16,5 +16,5 @@ NeoFOAM has the following requirements
 
 ## run
 
-export PATH=$PWD/NeoFOAM_GPL/bin:$PATH
+export PATH=$PWD/FoamAdapter/bin:$PATH
 and go into benchmarks/

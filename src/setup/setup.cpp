@@ -1,4 +1,4 @@
-#include "NeoFOAM_GPL/setup/setup.hpp"
+#include "FoamAdapter/setup/setup.hpp"
 
 
 std::tuple<bool, Foam::scalar, Foam::scalar> timeControls(const Foam::Time& runTime) {

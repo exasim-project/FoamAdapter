@@ -85,10 +85,10 @@ doc/Doxygen/DTAGS
 
 Kokkos*
 kokkos-4.2.00
-NeoFOAM_GPL/bin
-NeoFOAM_GPL/lib
-NeoFOAM_GPL/share
-NeoFOAM_GPL/include
+FoamAdapter/bin
+FoamAdapter/lib
+FoamAdapter/share
+FoamAdapter/include
 # subprojects
 /OpenFOAM-v2306
 ThirdParty-v2306
