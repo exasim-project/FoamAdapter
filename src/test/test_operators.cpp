@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: GPL-3.0
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
@@ -14,8 +14,12 @@
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccSurfaceField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarFixedValueBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarZeroGradientBoundaryField.hpp"
+
+#include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -23,11 +27,11 @@
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
 
-Foam::Time* timePtr;      // A single time object
-Foam::argList* argsPtr;   // Some forks want argList access at createMesh.H
-Foam::fvMesh* meshPtr;    // A single mesh object
+Foam::Time *timePtr;    // A single time object
+Foam::argList *argsPtr; // Some forks want argList access at createMesh.H
+Foam::fvMesh *meshPtr;  // A single mesh object
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 
     // Initialize Catch2
@@ -39,9 +43,9 @@ int main(int argc, char* argv[])
     if (returnCode != 0) // Indicates a command line error
         return returnCode;
 
-    #include "setRootCase.H"
-    #include "createTime.H"
-    #include "createMesh.H"
+#include "setRootCase.H"
+#include "createTime.H"
+#include "createMesh.H"
     argsPtr = &args;
     timePtr = &runTime;
 
@@ -55,35 +59,57 @@ int main(int argc, char* argv[])
 
 TEST_CASE("GradOperator")
 {
-    Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
-    #include "createMesh.H"
+    Foam::Time &runTime = *timePtr;
+    Foam::argList &args = *argsPtr;
+#include "createMesh.H"
     NeoFOAM::executor exec = NeoFOAM::CPUExecutor();
     Foam::Info << "reading mesh" << Foam::endl;
     NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-    Foam::Info<< "Reading field T\n" << Foam::endl;
+    Foam::Info << "Reading field T\n"
+               << Foam::endl;
 
-    Foam::volScalarField T
-    (
-        Foam::IOobject
-        (
+    Foam::volScalarField T(
+        Foam::IOobject(
             "T",
             runTime.timeName(),
             mesh,
             Foam::IOobject::MUST_READ,
-            Foam::IOobject::AUTO_WRITE
-        ),
-        mesh
-    );
+            Foam::IOobject::AUTO_WRITE),
+        mesh);
 
     Foam::volVectorField ofGradT = Foam::fvc::grad(T);
-    
-    
 
+    NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+    NeoFOAM::fill(neoT.internalField(), 5.0);
+    Foam::Info << "Internal Field Values:" << Foam::endl;
+    for (const auto &val : neoT.internalField().field())
+    {
+        Foam::Info << val << Foam::endl;
+    }
 
-    // NeoFOAM::fvccVolField<NeoFOAM::scalarField> gradT(exec, uMesh, T.internalField().size());
+    auto bValues = neoT.boundaryField().value().field();
+    for (const auto &val : bValues)
+    {
+        Foam::Info << "Boundary Field Value: " << val << Foam::endl;
+    }
 
-    // NeoFOAM::vectorField nofGradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
-    
+    neoT.correctBoundaryConditions();
+    for (const auto &val : bValues)
+    {
+        Foam::Info << "Boundary Field Value after update: " << val << Foam::endl;
+    }
+
+    // readBoundaryCondition<NeoFOAM::scalar,Foam::scalar>(uMesh,T);
+
+    NeoFOAM::vectorField nofGradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoT.internalField());
+
+    NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> nfSurfField(
+        exec,
+        uMesh,
+        std::move(readBoundaryCondition(uMesh,T))
+    );
+
+    REQUIRE(nfSurfField.internalField().size() == 60);
+
 }
