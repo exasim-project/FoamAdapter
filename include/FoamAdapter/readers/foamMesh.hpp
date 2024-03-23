@@ -17,8 +17,9 @@ std::vector<NeoFOAM::localIdx> computeOffset(const Foam::fvMesh &mesh)
     result.push_back(0);
     forAll(bMesh, patchI)
     {
+        NeoFOAM::localIdx curOffset = result.back();
         const Foam::fvPatch& patch = bMesh[patchI];
-        result.push_back(patch.start());
+        result.push_back(curOffset + patch.size());
     }
     return result;
 }
@@ -42,10 +43,25 @@ FieldT flatBCField(const Foam::fvMesh &mesh, std::function<FieldT(const Foam::fv
     return result;
 }
 
+int32_t computeNBoundaryFaces(const Foam::fvMesh &mesh)
+{
+    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
+    int32_t nBoundaryFaces = 0;
+    forAll(bMesh, patchI)
+    {
+        const Foam::fvPatch& patch = bMesh[patchI];
+        nBoundaryFaces += patch.size();
+    }
+    return nBoundaryFaces;
+}
+
 NeoFOAM::unstructuredMesh readOpenFOAMMesh(const NeoFOAM::executor exec, Foam::fvMesh &mesh)
 {
     const int32_t nCells = mesh.nCells();
     const int32_t nInternalFaces = mesh.nInternalFaces();
+    const int32_t nBoundaryFaces = computeNBoundaryFaces(mesh); 
+    const int32_t nBoundaries = mesh.boundary().size();
+    const int32_t nFaces = mesh.nFaces();
 
     Foam::scalarField magFaceAreas = mag(mesh.faceAreas());
 
@@ -62,29 +78,32 @@ NeoFOAM::unstructuredMesh readOpenFOAMMesh(const NeoFOAM::executor exec, Foam::f
 
     NeoFOAM::BoundaryMesh bMesh(
         exec,
-        fromFoamField<NeoFOAM::label , Foam::label> (exec, faceCells),
-        fromFoamField<NeoFOAM::Vector, Foam::vector>(exec, Cf),
-        fromFoamField<NeoFOAM::Vector, Foam::vector>(exec, Cn),
-        fromFoamField<NeoFOAM::Vector, Foam::vector>(exec, Sf),
-        fromFoamField<NeoFOAM::scalar, Foam::scalar>(exec, magSf),
-        fromFoamField<NeoFOAM::Vector, Foam::vector>(exec, nf),
-        fromFoamField<NeoFOAM::Vector, Foam::vector>(exec, delta),
-        fromFoamField<NeoFOAM::scalar, Foam::scalar>(exec, weights),
-        fromFoamField<NeoFOAM::scalar, Foam::scalar>(exec, deltaCoeffs),
+        fromFoamField(exec, faceCells),
+        fromFoamField(exec, Cf),
+        fromFoamField(exec, Cn),
+        fromFoamField(exec, Sf),
+        fromFoamField(exec, magSf),
+        fromFoamField(exec, nf),
+        fromFoamField(exec, delta),
+        fromFoamField(exec, weights),
+        fromFoamField(exec, deltaCoeffs),
         offset
     );
        
     NeoFOAM::unstructuredMesh uMesh(
-        fromFoamField<NeoFOAM::Vector,Foam::vector>(exec, mesh.points()),
-        fromFoamField<NeoFOAM::scalar,Foam::scalar>(exec, mesh.cellVolumes()),
-        fromFoamField<NeoFOAM::Vector,Foam::vector>(exec, mesh.cellCentres()),
-        fromFoamField<NeoFOAM::Vector,Foam::vector>(exec, mesh.faceAreas() ),
-        fromFoamField<NeoFOAM::Vector,Foam::vector>(exec, mesh.faceCentres()),
-        fromFoamField<NeoFOAM::scalar,Foam::scalar>(exec, magFaceAreas),
-        fromFoamField<NeoFOAM::label,Foam::label>(exec, mesh.faceOwner()),
-        fromFoamField<NeoFOAM::label,Foam::label>(exec, mesh.faceNeighbour()),
+        fromFoamField(exec, mesh.points()),
+        fromFoamField(exec, mesh.cellVolumes()),
+        fromFoamField(exec, mesh.cellCentres()),
+        fromFoamField(exec, mesh.faceAreas() ),
+        fromFoamField(exec, mesh.faceCentres()),
+        fromFoamField(exec, magFaceAreas),
+        fromFoamField(exec, mesh.faceOwner()),
+        fromFoamField(exec, mesh.faceNeighbour()),
         nCells,
         nInternalFaces,
+        nBoundaryFaces,
+        nBoundaries,
+        nFaces,
         bMesh
     );
 
