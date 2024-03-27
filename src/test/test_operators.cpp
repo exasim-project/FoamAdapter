@@ -20,6 +20,9 @@
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarZeroGradientBoundaryField.hpp"
 
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/linear.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/upwind.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolation.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -81,7 +84,7 @@ TEST_CASE("GradOperator")
     Foam::volVectorField ofGradT = Foam::fvc::grad(T);
 
     NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
-    NeoFOAM::fill(neoT.internalField(), 5.0);
+    NeoFOAM::fill(neoT.internalField(), 1.0);
     Foam::Info << "Internal Field Values:" << Foam::endl;
     for (const auto &val : neoT.internalField().field())
     {
@@ -100,16 +103,28 @@ TEST_CASE("GradOperator")
         Foam::Info << "Boundary Field Value after update: " << val << Foam::endl;
     }
 
-    // readBoundaryCondition<NeoFOAM::scalar,Foam::scalar>(uMesh,T);
-
     NeoFOAM::vectorField nofGradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoT.internalField());
 
     NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> nfSurfField(
         exec,
         uMesh,
-        std::move(readBoundaryCondition(uMesh,T))
-    );
+        std::move(readBoundaryCondition(uMesh, T)));
 
     REQUIRE(nfSurfField.internalField().size() == 60);
+    std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel(new NeoFOAM::linear(exec, uMesh));
 
+    NeoFOAM::surfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
+    interp.interpolate(nfSurfField, neoT);
+    int count = 0;
+    for (const auto &val : nfSurfField.internalField().field())
+    {
+        Foam::Info << "val: " << val << " count " << count++ << Foam::endl;
+    }
+    // {
+    //     Foam::Info << "Boundary Field Value after update: " << val << Foam::endl;
+    // }
+
+    std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> upwindKernel(new NeoFOAM::upwind(exec, uMesh));
+    NeoFOAM::surfaceInterpolation interp2(exec, uMesh, std::move(upwindKernel));
+    interp2.interpolate(nfSurfField, neoT);
 }
