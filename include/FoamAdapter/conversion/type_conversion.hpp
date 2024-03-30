@@ -20,6 +20,12 @@ struct type_map<Foam::GeometricField<Foam::scalar, Foam::fvPatchField, Foam::vol
     using mapped_type = NeoFOAM::scalar;
 };
 
+template<>
+struct type_map<Foam::GeometricField<Foam::vector, Foam::fvPatchField, Foam::volMesh>> {
+    using container_type = NeoFOAM::fvccVolField<NeoFOAM::Vector>;
+    using mapped_type = NeoFOAM::Vector;
+};
+
 // Specializations of type_map for specific type mappings.
 template<>
 struct type_map<Foam::Field<Foam::scalar>> {

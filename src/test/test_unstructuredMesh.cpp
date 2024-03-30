@@ -17,7 +17,7 @@
 #include "NeoFOAM/fields/operations/sum.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarFixedValueBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"

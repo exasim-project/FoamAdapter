@@ -3,15 +3,18 @@
 #pragma once
 
 #include "NeoFOAM/core/executor/executor.hpp"
+#include "NeoFOAM/core/Dictionary.hpp"
 #include "FoamAdapter/conversion/convert.hpp"
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarFixedValueBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarZeroGradientBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarEmptyBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarZeroGradientBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarEmptyBoundaryField.hpp"
 
 #include "FoamAdapter/conversion/type_conversion.hpp"
+#include "FoamAdapter/readers/foamBCFields.hpp"
+
 // namespace NeoFOAM
 // {
 
@@ -45,8 +48,10 @@ auto fromFoamField(const NeoFOAM::executor &exec, const FoamType& field)
     return nfField;
 };
 
+
+
 template <typename FoamType>
-auto readBoundaryCondition(
+auto readBoundaryConditions(
     const NeoFOAM::unstructuredMesh& uMesh,
     const FoamType& volField)
 {
@@ -69,22 +74,9 @@ auto readBoundaryCondition(
         Foam::dictionary patchDict = bDict.subDict(bName);
         Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
         Foam::word type = patchDict.get<Foam::word>("type");
-        if (type == "zeroGradient")
-        {
-            bcs.push_back(std::make_unique<NeoFOAM::fvccScalarZeroGradientBoundaryField>(uMesh, patchi));
-        }
-        else if (type == "fixedValue")
-        {
-            bcs.push_back(std::make_unique<NeoFOAM::fvccScalarFixedValueBoundaryField>(uMesh, patchi, patchDict.get<Foam::scalar>("value")));
-        }
-        else if (type == "empty")
-        {
-            bcs.push_back(std::make_unique<NeoFOAM::fvccScalarEmptyBoundaryField>(uMesh, patchi));
-        }
-        else
-        {
-            Foam::FatalError << "Boundary type not supported" << Foam::endl;
-        }
+        NeoFOAM::Dictionary npatchDict;
+        npatchDict.insert("type", std::string(type) );
+        bcs.push_back(readBoundaryCondition<type_primitve_t>(uMesh, patchi, npatchDict));
         patchi++;
     }
     return bcs;
@@ -102,7 +94,7 @@ auto constructFrom(const NeoFOAM::executor exec, const NeoFOAM::unstructuredMesh
     type_container_t nfVolField(
         exec,
         uMesh,
-        std::move(readBoundaryCondition(uMesh,volField))
+        std::move(readBoundaryConditions(uMesh,volField))
     );
 
     nfVolField.internalField() = fromFoamField(exec, volField.primitiveField());

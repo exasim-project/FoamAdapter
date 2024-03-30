@@ -10,14 +10,15 @@
 #include "NeoFOAM/fields/Field.hpp"
 #include "NeoFOAM/fields/FieldOperations.hpp"
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
+#include "NeoFOAM/fields/comparisions/fieldComparision.hpp"
 
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/fields/fvccSurfaceField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarFixedValueBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/scalar/fvccScalarZeroGradientBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarZeroGradientBoundaryField.hpp"
 
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/linear.hpp"
@@ -85,11 +86,22 @@ TEST_CASE("GradOperator")
 
     NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
     NeoFOAM::fill(neoT.internalField(), 1.0);
+    Foam::scalar pi = Foam::constant::mathematical::pi;
+    const NeoFOAM::Field<NeoFOAM::Vector>& cc = uMesh.cellCentres();
+    auto s_cc = cc.field();
+    Foam::scalar spread = 0.05;
+
+    neoT.internalField().apply(KOKKOS_LAMBDA(int i) 
+    { 
+        return std::exp(-0.5 * (std::pow((s_cc[i][0] - 0.05) / spread, 2.0) + std::pow((s_cc[i][1] - 0.075) / spread, 2.0)));
+    });
+
     Foam::Info << "Internal Field Values:" << Foam::endl;
     for (const auto &val : neoT.internalField().field())
     {
         Foam::Info << val << Foam::endl;
     }
+
 
     auto bValues = neoT.boundaryField().value().field();
     for (const auto &val : bValues)
@@ -108,7 +120,7 @@ TEST_CASE("GradOperator")
     NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> nfSurfField(
         exec,
         uMesh,
-        std::move(readBoundaryCondition(uMesh, T)));
+        std::move(readBoundaryConditions(uMesh, T)));
 
     REQUIRE(nfSurfField.internalField().size() == 60);
     std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel(new NeoFOAM::linear(exec, uMesh));
@@ -127,4 +139,13 @@ TEST_CASE("GradOperator")
     std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> upwindKernel(new NeoFOAM::upwind(exec, uMesh));
     NeoFOAM::surfaceInterpolation interp2(exec, uMesh, std::move(upwindKernel));
     interp2.interpolate(nfSurfField, neoT);
+
+
+    nfSurfField.internalField().apply(KOKKOS_LAMBDA(int i) { return 0; });
+
+    count = 0;
+    for (const auto &val : nfSurfField.internalField().field())
+    {
+        Foam::Info << "val: " << val << " count " << count++ << Foam::endl;
+    }
 }
