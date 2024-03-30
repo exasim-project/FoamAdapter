@@ -6,6 +6,7 @@
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
+#include <catch2/catch_approx.hpp>
 
 #include "NeoFOAM/fields/Field.hpp"
 #include "NeoFOAM/fields/FieldOperations.hpp"
@@ -19,6 +20,8 @@
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarZeroGradientBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/surface/scalar/fvccSurfaceScalarCalculatedBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/surface/scalar/fvccSurfaceScalarEmptyBoundaryField.hpp"
 
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/linear.hpp"
@@ -27,6 +30,8 @@
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
+
+#include <random>
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
@@ -61,6 +66,78 @@ int main(int argc, char *argv[])
     return result;
 }
 
+TEST_CASE("Interpolation")
+{
+    Foam::Time &runTime = *timePtr;
+    Foam::argList &args = *argsPtr;
+#include "createMesh.H"
+
+    NeoFOAM::executor exec = GENERATE(
+        NeoFOAM::executor(NeoFOAM::CPUExecutor{}),
+        NeoFOAM::executor(NeoFOAM::OMPExecutor{}),
+        NeoFOAM::executor(NeoFOAM::GPUExecutor{}));
+    std::string exec_name = std::visit([](auto e)
+                                       { return e.print(); },
+                                       exec);
+
+    Foam::Info << "reading mesh" << Foam::endl;
+    NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
+
+    std::random_device rd;  // Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis(1.0, 2.0);
+
+    SECTION("scalar_" + exec_name)
+    {
+        Foam::IStringStream is("linear");
+        Foam::tmp<Foam::surfaceInterpolationScheme<Foam::scalar>> foamInterPol = Foam::surfaceInterpolationScheme<Foam::scalar>::New(mesh, is);
+
+        Foam::Info
+            << "Reading field T\n"
+            << Foam::endl;
+
+        Foam::volScalarField T(
+            Foam::IOobject(
+                "T",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::MUST_READ,
+                Foam::IOobject::AUTO_WRITE),
+            mesh);
+
+        forAll(T, celli)
+        {
+            T[celli] = dis(gen);
+        }
+
+        Foam::surfaceScalarField surfT = foamInterPol->interpolate(T);
+
+        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        auto s_neoT = neoT.internalField().copyToHost().field();
+        for (int celli = 0; celli < s_neoT.size(); celli++)
+        {
+            REQUIRE(s_neoT[celli] == T[celli]);
+        }
+        std::vector<std::unique_ptr<NeoFOAM::fvccSurfaceBoundaryField<NeoFOAM::scalar>>> bcs;
+        bcs.push_back(std::make_unique<NeoFOAM::fvccSurfaceScalarCalculatedBoundaryField>(uMesh, 0));
+        bcs.push_back(std::make_unique<NeoFOAM::fvccSurfaceScalarEmptyBoundaryField>(uMesh, 1));
+        NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoSurfT(
+            exec,
+            uMesh,
+            std::move(bcs));
+
+        std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel(new NeoFOAM::linear(exec, uMesh));
+
+        NeoFOAM::surfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
+        interp.interpolate(neoSurfT, neoT);
+        auto s_neoSurfT = neoSurfT.internalField().copyToHost().field();
+        for (int facei = 0; facei < surfT.size(); facei++)
+        {
+            REQUIRE(s_neoSurfT[facei] == Catch::Approx(surfT[facei]).margin(1e-12));
+        }
+    }
+}
+
 TEST_CASE("GradOperator")
 {
     Foam::Time &runTime = *timePtr;
@@ -82,70 +159,21 @@ TEST_CASE("GradOperator")
             Foam::IOobject::AUTO_WRITE),
         mesh);
 
-    Foam::volVectorField ofGradT = Foam::fvc::grad(T);
+    Foam::IStringStream is("linear");
+    Foam::fv::gaussGrad<Foam::scalar> foamGradScalar(mesh, is);
+    Foam::volVectorField ofGradT = foamGradScalar.calcGrad(T, "test");
 
     NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
     NeoFOAM::fill(neoT.internalField(), 1.0);
     Foam::scalar pi = Foam::constant::mathematical::pi;
-    const NeoFOAM::Field<NeoFOAM::Vector>& cc = uMesh.cellCentres();
+    const NeoFOAM::Field<NeoFOAM::Vector> &cc = uMesh.cellCentres();
     auto s_cc = cc.field();
     Foam::scalar spread = 0.05;
 
-    neoT.internalField().apply(KOKKOS_LAMBDA(int i) 
-    { 
+    neoT.internalField().apply(KOKKOS_LAMBDA(int i) {
         return std::exp(-0.5 * (std::pow((s_cc[i][0] - 0.05) / spread, 2.0) + std::pow((s_cc[i][1] - 0.075) / spread, 2.0)));
     });
-
-    Foam::Info << "Internal Field Values:" << Foam::endl;
-    for (const auto &val : neoT.internalField().field())
-    {
-        Foam::Info << val << Foam::endl;
-    }
-
-
-    auto bValues = neoT.boundaryField().value().field();
-    for (const auto &val : bValues)
-    {
-        Foam::Info << "Boundary Field Value: " << val << Foam::endl;
-    }
-
     neoT.correctBoundaryConditions();
-    for (const auto &val : bValues)
-    {
-        Foam::Info << "Boundary Field Value after update: " << val << Foam::endl;
-    }
 
     NeoFOAM::vectorField nofGradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoT.internalField());
-
-    NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> nfSurfField(
-        exec,
-        uMesh,
-        std::move(readBoundaryConditions(uMesh, T)));
-
-    REQUIRE(nfSurfField.internalField().size() == 60);
-    std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel(new NeoFOAM::linear(exec, uMesh));
-
-    NeoFOAM::surfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
-    interp.interpolate(nfSurfField, neoT);
-    int count = 0;
-    for (const auto &val : nfSurfField.internalField().field())
-    {
-        Foam::Info << "val: " << val << " count " << count++ << Foam::endl;
-    }
-    // {
-    //     Foam::Info << "Boundary Field Value after update: " << val << Foam::endl;
-    // }
-
-    std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> upwindKernel(new NeoFOAM::upwind(exec, uMesh));
-    NeoFOAM::surfaceInterpolation interp2(exec, uMesh, std::move(upwindKernel));
-    interp2.interpolate(nfSurfField, neoT);
-
-
-    nfSurfField.internalField().apply(KOKKOS_LAMBDA(int i) { return 0; });
-
-    count = 0;
-    for (const auto &val : nfSurfField.internalField().field())
-    {
-        Foam::Info << "val: " << val << " count " << count++ << Foam::endl;
-    }
 }
