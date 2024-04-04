@@ -8,6 +8,8 @@
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
 
+namespace Foam
+{
 template<typename From>
 struct type_map {
 
@@ -53,3 +55,5 @@ struct type_map<Foam::List<Foam::label>> {
     using container_type = NeoFOAM::Field<NeoFOAM::label>;
     using mapped_type = NeoFOAM::label;
 };
+
+}; // namespace Foam

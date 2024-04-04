@@ -27,14 +27,17 @@ target_link_libraries(
     PUBLIC $ENV{FOAM_LIBBIN}/libOpenFOAM.so
            $ENV{FOAM_LIBBIN}/libfiniteVolume.so
            $ENV{FOAM_LIBBIN}/libmeshTools.so
-           $ENV{FOAM_LIBBIN}/$ENV{FOAM_MPI}/libPstream.so)
-            # ${CMAKE_SOURCE_DIR}/FoamAdapter/lib/libt8.a
-            # ${CMAKE_SOURCE_DIR}/FoamAdapter/lib/libsc.a
-            # ${CMAKE_SOURCE_DIR}/FoamAdapter/lib/libp4est.a
-            # MPI::MPI_CXX
-            # ${ZLIB_LIBRARIES})
+           $ENV{FOAM_LIBBIN}/$ENV{FOAM_MPI}/libPstream.so
+           NeoFOAM
+           Kokkos::kokkos)
 
-target_sources(FoamAdapter PRIVATE "setup/setup.cpp")
+target_sources(FoamAdapter PRIVATE
+           "conversion/convert.cpp"
+           "setup/setup.cpp"
+           "readers/foamMesh.cpp"
+           "fvcc/mesh/fvccNeoMesh.cpp"
+           "fvcc/surfaceInterpolation/surfaceInterpolationFactory.cpp"
+           "fvcc/surfaceInterpolation/surfaceInterpolations.cpp")
 
 add_subdirectory(benchmarks)
 add_subdirectory(test)

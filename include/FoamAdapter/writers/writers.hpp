@@ -7,6 +7,9 @@
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
 #include "FoamAdapter/conversion/convert.hpp"
 
+namespace Foam
+{
+
 void write(NeoFOAM::scalarField& sf, const Foam::fvMesh &mesh, const std::string fieldName)
 {
     Foam::volScalarField* field = mesh.getObjectPtr<Foam::volScalarField>(fieldName);
@@ -84,3 +87,5 @@ void write(NeoFOAM::vectorField& sf, const Foam::fvMesh &mesh, const std::string
         foamField.write();
     }
 }
+
+} // namespace Foam

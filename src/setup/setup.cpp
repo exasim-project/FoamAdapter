@@ -1,7 +1,7 @@
 #include "FoamAdapter/setup/setup.hpp"
 
 
-std::tuple<bool, Foam::scalar, Foam::scalar> timeControls(const Foam::Time& runTime) {
+std::tuple<bool, Foam::scalar, Foam::scalar> Foam::timeControls(const Foam::Time& runTime) {
     bool adjustTimeStep =
     runTime.controlDict().getOrDefault("adjustTimeStep", false);
 
@@ -16,7 +16,7 @@ std::tuple<bool, Foam::scalar, Foam::scalar> timeControls(const Foam::Time& runT
 
 
 
-Foam::scalar calculateCoNum(const Foam::surfaceScalarField& phi) {
+Foam::scalar Foam::calculateCoNum(const Foam::surfaceScalarField& phi) {
     const Foam::fvMesh& mesh = phi.mesh();
     const Foam::Time& runTime = mesh.time();
     Foam::scalarField sumPhi(Foam::fvc::surfaceSum(mag(phi))().primitiveField());
@@ -28,7 +28,7 @@ Foam::scalar calculateCoNum(const Foam::surfaceScalarField& phi) {
     return CoNum;
 }
 
-void setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT)
+void Foam::setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT)
 {
     Foam::scalar maxDeltaTFact = maxCo/(CoNum + Foam::SMALL);
     Foam::scalar deltaTFact = Foam::min(Foam::min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
@@ -43,4 +43,10 @@ void setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam
     );
 
     Foam::Info<< "deltaT = " <<  runTime.deltaTValue() << Foam::endl;   
+}
+
+
+std::unique_ptr<Foam::fvccNeoMesh> Foam::createMesh(const NeoFOAM::executor& exec, const Foam::IOobject& io)
+{
+    return std::make_unique<Foam::fvccNeoMesh>(exec, io);
 }

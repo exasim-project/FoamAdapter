@@ -54,6 +54,7 @@ Description
 int main(int argc, char *argv[])
 {   
     Kokkos::initialize(argc, argv);
+    NeoFOAM::executor exec = NeoFOAM::CPUExecutor();
     {
         #include "addProfilingOption.H"
         #include "addCheckCaseOptions.H"
@@ -62,7 +63,7 @@ int main(int argc, char *argv[])
         #include "createMesh.H"
         #include "createControl.H"
         // #include "createTimeControls.H"
-        auto [adjustTimeStep, maxCo, maxDeltaT] = timeControls(runTime);
+        auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
 
 
         #include "createFields.H"
@@ -70,21 +71,35 @@ int main(int argc, char *argv[])
         Foam::scalar spread = 0.05;
         forAll(T,celli)
         {
-            // T[celli] = Foam::exp(10*(1 - (Foam::mag(mesh.C()[celli] - Foam::vector(0.5,0.75,0.0)))))/Foam::constant::mathematical::e;
             T[celli] = std::exp(-0.5 * (std::pow((mesh.C()[celli].x() - 0.5) / spread, 2.0) + std::pow((mesh.C()[celli].y() - 0.75) / spread, 2.0)));
         }
         T.correctBoundaryConditions();
         T.write();
+        // creating neofoam fields
+        Foam::Info << "creating neofoam mesh" << Foam::endl;
+        NeoFOAM::unstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
+        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
+        // NeoFOAM::fvccVolField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
+
+        auto s_cc = uMesh.cellCentres().field();
+        neoT.internalField().apply(KOKKOS_LAMBDA(int celli) 
+        {
+            return std::exp(-0.5 * (std::pow((s_cc[celli][0] - 0.5) / spread, 2.0) + std::pow((s_cc[celli][1] - 0.75) / spread, 2.0)));
+        });
+        neoT.correctBoundaryConditions();
+        Foam::Info << "writing neoT field" << Foam::endl;
+        write(neoT.internalField(), mesh, "neoT");
+
         // #include "readTimeControls.H"
         // [adjustTimeStep, maxCo, maxDeltaT] = createTimeControls(runTime);
         // updateTimeControls(runTime, adjustTimeStep, maxCo, maxDeltaT);
         std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
         // #include "createUfIfPresent.H"
         // #include "CourantNo.H"
-        Foam::scalar CoNum = calculateCoNum(phi);
+        Foam::scalar CoNum = Foam::calculateCoNum(phi);
         if (adjustTimeStep)
         {
-            setDeltaT(runTime, maxCo,CoNum, maxDeltaT);
+            Foam::setDeltaT(runTime, maxCo,CoNum, maxDeltaT);
         }
 
         Foam::scalar pi = Foam::constant::mathematical::pi;
@@ -100,7 +115,7 @@ int main(int argc, char *argv[])
                 U0[celli].z() = 0.0;
             }
         }
-        phi0 = linearInterpolate(U0) & mesh.Sf();
+        phi0 = Foam::linearInterpolate(U0) & mesh.Sf();
 
         while (runTime.run())
         {
@@ -111,7 +126,7 @@ int main(int argc, char *argv[])
             Foam::Info << "max(U) : " << max(U) << Foam::endl;
             if (adjustTimeStep)
             {
-                setDeltaT(runTime, maxCo,CoNum, maxDeltaT);
+                Foam::setDeltaT(runTime, maxCo,CoNum, maxDeltaT);
             }
 
             runTime++;

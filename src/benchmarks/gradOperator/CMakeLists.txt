@@ -24,6 +24,7 @@ target_link_libraries(
          $ENV{FOAM_LIBBIN}/libmeshTools.so
          $ENV{FOAM_LIBBIN}/$ENV{FOAM_MPI}/libPstream.so
          NeoFOAM
+         FoamAdapter
          Kokkos::kokkos)
 
 install(TARGETS gradOperator DESTINATION bin)

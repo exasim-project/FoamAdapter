@@ -15,8 +15,8 @@
 #include "FoamAdapter/conversion/type_conversion.hpp"
 #include "FoamAdapter/readers/foamBCFields.hpp"
 
-// namespace NeoFOAM
-// {
+namespace Foam
+{
 
 template <typename FoamType>
 auto fromFoamField(const NeoFOAM::executor &exec, const FoamType& field)
@@ -101,3 +101,5 @@ auto constructFrom(const NeoFOAM::executor exec, const NeoFOAM::unstructuredMesh
 
     return nfVolField;
 };
+
+}; // namespace NeoFOAM

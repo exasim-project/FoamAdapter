@@ -15,6 +15,9 @@
 #include "FoamAdapter/conversion/type_conversion.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryFieldSelector.hpp"
 
+namespace Foam
+{
+
 template <typename Type>
 auto readBoundaryCondition(
     const NeoFOAM::unstructuredMesh& uMesh,
@@ -24,3 +27,4 @@ auto readBoundaryCondition(
     return NeoFOAM::getBC<Type>(uMesh, patchi, patchDict);
 }
 
+}; // namespace Foam

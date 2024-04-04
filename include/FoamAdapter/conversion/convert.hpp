@@ -1,24 +1,20 @@
 // SPDX-License-Identifier: GPLv-3.0
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
-// To NeoFOAM
-NeoFOAM::Vector convert(const Foam::vector& Type)
-{
-    return NeoFOAM::Vector(Type[0], Type[1], Type[2]);
-};
+#include "NeoFOAM/primitives/vector.hpp"
+#include "NeoFOAM/primitives/scalar.hpp"
+#include "NeoFOAM/primitives/label.hpp"
+#include "volFields.H"
 
-NeoFOAM::scalar convert(const Foam::scalar& Type)
+namespace Foam
 {
-    return Type;
-};
 
-NeoFOAM::label convert(const Foam::label& Type)
-{
-    return Type;
-};
+NeoFOAM::Vector convert(const Foam::vector& Type);
+NeoFOAM::scalar convert(const Foam::scalar& Type);
+
+NeoFOAM::label convert(const Foam::label& Type);
 
 // To Foam
-Foam::vector convert(const NeoFOAM::Vector& Type)
-{
-    return Foam::vector(Type(0), Type(1),Type(2));
-};
+Foam::vector convert(const NeoFOAM::Vector& Type);
+
+}; // namespace Foam

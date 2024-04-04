@@ -6,6 +6,7 @@
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 #include <catch2/catch_approx.hpp>
 
 #include "NeoFOAM/fields/Field.hpp"
@@ -27,11 +28,15 @@
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/linear.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/upwind.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolation.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolationFactory.hpp"
 
+#include "FoamAdapter/fvcc/surfaceInterpolation/surfaceInterpolationFactory.hpp"
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
+#include "FoamAdapter/comparision/fieldComparision.hpp"
 
 #include <random>
+#include <span>
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
@@ -40,9 +45,11 @@ Foam::Time *timePtr;    // A single time object
 Foam::argList *argsPtr; // Some forks want argList access at createMesh.H
 Foam::fvMesh *meshPtr;  // A single mesh object
 
+
+
+
 int main(int argc, char *argv[])
 {
-
     // Initialize Catch2
     Kokkos::initialize(argc, argv);
     Catch::Session session;
@@ -66,6 +73,15 @@ int main(int argc, char *argv[])
     return result;
 }
 
+struct ApproxScalar
+{
+    Foam::scalar margin;
+    bool operator()(double rhs,double lhs) const
+    {
+        return Catch::Approx(rhs).margin(margin) == lhs;
+    }
+};
+
 TEST_CASE("Interpolation")
 {
     Foam::Time &runTime = *timePtr;
@@ -75,7 +91,8 @@ TEST_CASE("Interpolation")
     NeoFOAM::executor exec = GENERATE(
         NeoFOAM::executor(NeoFOAM::CPUExecutor{}),
         NeoFOAM::executor(NeoFOAM::OMPExecutor{}),
-        NeoFOAM::executor(NeoFOAM::GPUExecutor{}));
+        NeoFOAM::executor(NeoFOAM::GPUExecutor{})
+        );
     std::string exec_name = std::visit([](auto e)
                                        { return e.print(); },
                                        exec);
@@ -109,15 +126,13 @@ TEST_CASE("Interpolation")
         {
             T[celli] = dis(gen);
         }
-
+        T.correctBoundaryConditions();
         Foam::surfaceScalarField surfT = foamInterPol->interpolate(T);
 
         NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
-        auto s_neoT = neoT.internalField().copyToHost().field();
-        for (int celli = 0; celli < s_neoT.size(); celli++)
-        {
-            REQUIRE(s_neoT[celli] == T[celli]);
-        }
+        neoT.correctBoundaryConditions();
+
+        REQUIRE(neoT == T);
         std::vector<std::unique_ptr<NeoFOAM::fvccSurfaceBoundaryField<NeoFOAM::scalar>>> bcs;
         bcs.push_back(std::make_unique<NeoFOAM::fvccSurfaceScalarCalculatedBoundaryField>(uMesh, 0));
         bcs.push_back(std::make_unique<NeoFOAM::fvccSurfaceScalarEmptyBoundaryField>(uMesh, 1));
@@ -126,15 +141,35 @@ TEST_CASE("Interpolation")
             uMesh,
             std::move(bcs));
 
+        Foam::Info << "Creating linear kernel" << Foam::endl;
+        if (Foam::surfaceInterpolationFactory::dictionaryConstructorTablePtr_ != nullptr) {
+            Foam::Info << Foam::surfaceInterpolationFactory::dictionaryConstructorTablePtr_->sortedToc() << Foam::endl;
+        }
+        else {
+            Foam::Info << "dictionaryConstructorTablePtr_ is nullptr" << Foam::endl;
+        }
+        // Foam::surfaceInterpolationFactory::New(exec, uMesh);
+        // NeoFOAM::surfaceInterpolationFactory surfInterFactory{};
+        // surfInterFactory.registerClass("linear", [](const NeoFOAM::executor& exec, const NeoFOAM::unstructuredMesh& mesh) {
+        //     return std::make_unique<NeoFOAM::linear>(exec, mesh);
+        // });
+        // std::cout << "Creating linear kernel" << std::endl;
+        
+        // std::cout << "linear::registered: " << NeoFOAM::linear::registered << std::endl;
+        std::cout << "map size: " << NeoFOAM::surfaceInterpolationFactory::number_of_instances() << std::endl;
+        // surfInterFactory.registerClass("upwind", [](const NeoFOAM::executor& exec, const NeoFOAM::unstructuredMesh& mesh) {
+        //     return std::make_unique<NeoFOAM::upwind>(exec, mesh);
+        // });
+
+        // std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel = NeoFOAM::surfaceInterpolationFactory::New("linear", exec, uMesh);
+
         std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel(new NeoFOAM::linear(exec, uMesh));
 
         NeoFOAM::surfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
         interp.interpolate(neoSurfT, neoT);
         auto s_neoSurfT = neoSurfT.internalField().copyToHost().field();
-        for (int facei = 0; facei < surfT.size(); facei++)
-        {
-            REQUIRE(s_neoSurfT[facei] == Catch::Approx(surfT[facei]).margin(1e-12));
-        }
+        std::span<Foam::scalar> surfT_span(surfT.primitiveFieldRef().data(), surfT.size());
+        REQUIRE_THAT(s_neoSurfT.subspan(0,surfT.size()), Catch::Matchers::RangeEquals(surfT_span, ApproxScalar(1e-12)));
     }
 }
 
@@ -167,8 +202,8 @@ TEST_CASE("GradOperator")
     NeoFOAM::fill(neoT.internalField(), 1.0);
     Foam::scalar pi = Foam::constant::mathematical::pi;
     const NeoFOAM::Field<NeoFOAM::Vector> &cc = uMesh.cellCentres();
-    auto s_cc = cc.field();
     Foam::scalar spread = 0.05;
+    auto s_cc = cc.field();
 
     neoT.internalField().apply(KOKKOS_LAMBDA(int i) {
         return std::exp(-0.5 * (std::pow((s_cc[i][0] - 0.05) / spread, 2.0) + std::pow((s_cc[i][1] - 0.075) / spread, 2.0)));
