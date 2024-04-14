@@ -2,104 +2,93 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/core/Dictionary.hpp"
 #include "FoamAdapter/conversion/convert.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarEmptyBoundaryField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarZeroGradientBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarEmptyBoundaryField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
+#include "NeoFOAM/core/Dictionary.hpp"
+#include "NeoFOAM/core/executor/executor.hpp"
+#include "NeoFOAM/fields/FieldTypeDefs.hpp"
 
 #include "FoamAdapter/conversion/type_conversion.hpp"
 #include "FoamAdapter/readers/foamBCFields.hpp"
 
-namespace Foam
-{
+namespace Foam {
 
 template <typename FoamType>
-auto fromFoamField(const NeoFOAM::executor &exec, const FoamType& field)
-{
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitve_t = typename type_map<FoamType>::mapped_type;
-    // Create device-side views
-    type_container_t nfField(exec, field.size());
+auto fromFoamField(const NeoFOAM::executor &exec, const FoamType &field) {
+  using type_container_t = typename type_map<FoamType>::container_type;
+  using type_primitve_t = typename type_map<FoamType>::mapped_type;
+  // Create device-side views
+  type_container_t nfField(exec, field.size());
 
-    type_container_t CPUField(NeoFOAM::CPUExecutor{}, field.size());
-    Kokkos::View<type_primitve_t *, Kokkos::HostSpace, Kokkos::MemoryUnmanaged> CPU_view(CPUField.data(), field.size());
-    for (Foam::label i = 0; i < field.size(); i++)
-    {
-        CPU_view(i) = convert(field[i]);
-    }
-    if (std::holds_alternative<NeoFOAM::GPUExecutor>(exec))
-    {
-        Kokkos::View<type_primitve_t *, NeoFOAM::GPUExecutor::exec, Kokkos::MemoryUnmanaged>
-            GPU_view(nfField.data(), field.size());
-        Kokkos::deep_copy(GPU_view, CPU_view);
-    }
-    else
-    {
-        Kokkos::View<type_primitve_t *, Kokkos::HostSpace, Kokkos::MemoryUnmanaged>
-            N_CPU_view(nfField.data(), field.size());
-        Kokkos::deep_copy(N_CPU_view, CPU_view);
-    }
+  type_container_t CPUField(NeoFOAM::CPUExecutor{}, field.size());
+  Kokkos::View<type_primitve_t *, Kokkos::HostSpace, Kokkos::MemoryUnmanaged>
+      CPU_view(CPUField.data(), field.size());
+  for (Foam::label i = 0; i < field.size(); i++) {
+    CPU_view(i) = convert(field[i]);
+  }
+  if (std::holds_alternative<NeoFOAM::GPUExecutor>(exec)) {
+    Kokkos::View<type_primitve_t *, NeoFOAM::GPUExecutor::exec,
+                 Kokkos::MemoryUnmanaged>
+        GPU_view(nfField.data(), field.size());
+    Kokkos::deep_copy(GPU_view, CPU_view);
+  } else {
+    Kokkos::View<type_primitve_t *, Kokkos::HostSpace, Kokkos::MemoryUnmanaged>
+        N_CPU_view(nfField.data(), field.size());
+    Kokkos::deep_copy(N_CPU_view, CPU_view);
+  }
 
-    return nfField;
+  return nfField;
 };
 
-
-
 template <typename FoamType>
-auto readBoundaryConditions(
-    const NeoFOAM::unstructuredMesh& uMesh,
-    const FoamType& volField)
-{
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitve_t = typename type_map<FoamType>::mapped_type;
+auto readBoundaryConditions(const NeoFOAM::unstructuredMesh &uMesh,
+                            const FoamType &volField) {
+  using type_container_t = typename type_map<FoamType>::container_type;
+  using type_primitve_t = typename type_map<FoamType>::mapped_type;
 
-    std::vector<std::unique_ptr<NeoFOAM::fvccBoundaryField<type_primitve_t>>> bcs;
+  std::vector<std::unique_ptr<NeoFOAM::fvccBoundaryField<type_primitve_t>>> bcs;
 
-    // get boundary as dictionary
-    Foam::OStringStream os;
-    volField.boundaryField().writeEntries(os);
-    Foam::IStringStream is(os.str());
-    Foam::dictionary bDict(is);
-    Foam::wordList bNames = bDict.toc();
-    int patchi = 0;
+  // get boundary as dictionary
+  Foam::OStringStream os;
+  volField.boundaryField().writeEntries(os);
+  Foam::IStringStream is(os.str());
+  Foam::dictionary bDict(is);
+  Foam::wordList bNames = bDict.toc();
+  int patchi = 0;
 
-    for (const auto &bName : bNames)
-    {
-        Foam::Info << "Boundary name: " << bName << Foam::endl;
-        Foam::dictionary patchDict = bDict.subDict(bName);
-        Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
-        Foam::word type = patchDict.get<Foam::word>("type");
-        NeoFOAM::Dictionary npatchDict;
-        npatchDict.insert("type", std::string(type) );
-        bcs.push_back(readBoundaryCondition<type_primitve_t>(uMesh, patchi, npatchDict));
-        patchi++;
-    }
-    return bcs;
+  for (const auto &bName : bNames) {
+    Foam::Info << "Boundary name: " << bName << Foam::endl;
+    Foam::dictionary patchDict = bDict.subDict(bName);
+    Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type")
+               << Foam::endl;
+    Foam::word type = patchDict.get<Foam::word>("type");
+    NeoFOAM::Dictionary npatchDict;
+    npatchDict.insert("type", std::string(type));
+    bcs.push_back(
+        readBoundaryCondition<type_primitve_t>(uMesh, patchi, npatchDict));
+    patchi++;
+  }
+  return bcs;
 }
 
-
 template <typename FoamType>
-auto constructFrom(const NeoFOAM::executor exec, const NeoFOAM::unstructuredMesh &uMesh, const FoamType &volField)
-{
+auto constructFrom(const NeoFOAM::executor exec,
+                   const NeoFOAM::unstructuredMesh &uMesh,
+                   const FoamType &volField) {
 
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitve_t = typename type_map<FoamType>::mapped_type;
+  using type_container_t = typename type_map<FoamType>::container_type;
+  using type_primitve_t = typename type_map<FoamType>::mapped_type;
 
+  type_container_t nfVolField(
+      exec, uMesh, std::move(readBoundaryConditions(uMesh, volField)));
 
-    type_container_t nfVolField(
-        exec,
-        uMesh,
-        std::move(readBoundaryConditions(uMesh,volField))
-    );
+  nfVolField.internalField() = fromFoamField(exec, volField.primitiveField());
 
-    nfVolField.internalField() = fromFoamField(exec, volField.primitiveField());
-
-    return nfVolField;
+  return nfVolField;
 };
 
-}; // namespace NeoFOAM
+}; // namespace Foam
