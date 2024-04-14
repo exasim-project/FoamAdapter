@@ -2,85 +2,64 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "fvMesh.H"
 #include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
+#include "fvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-namespace Foam
-{
+namespace Foam {
 
 /*---------------------------------------------------------------------------*\
                         Class fvccNeoMesh Declaration
 \*---------------------------------------------------------------------------*/
 
-class fvccNeoMesh
-:
-    public Foam::fvMesh
-{
-    // Private Data
-        const NeoFOAM::executor exec;
+class fvccNeoMesh : public Foam::fvMesh {
+  // Private Data
+  const NeoFOAM::executor exec;
 
-        NeoFOAM::unstructuredMesh uMesh_;
+  NeoFOAM::unstructuredMesh uMesh_;
 
+  // Private Member Functions
 
-    // Private Member Functions
+  //- No copy construct
+  fvccNeoMesh(const fvccNeoMesh &) = delete;
 
-        //- No copy construct
-        fvccNeoMesh(const fvccNeoMesh&) = delete;
-
-        //- No copy assignment
-        void operator=(const fvccNeoMesh&) = delete;
-
+  //- No copy assignment
+  void operator=(const fvccNeoMesh &) = delete;
 
 public:
+  //- Runtime type information
+  TypeName("fvccNeoMesh");
 
-    //- Runtime type information
-    TypeName("fvccNeoMesh");
+  // Constructors
 
+  //- Construct from IOobject
+  explicit fvccNeoMesh(const NeoFOAM::executor exec, const IOobject &io,
+                       const bool doInit = true);
 
-    // Constructors
+  //- Construct from IOobject or as zero-sized mesh
+  //  Boundary is added using addFvPatches() member function
+  fvccNeoMesh(const NeoFOAM::executor exec, const IOobject &io,
+              const Foam::zero, bool syncPar = true);
 
-        //- Construct from IOobject
-        explicit fvccNeoMesh(const NeoFOAM::executor exec,const IOobject& io, const bool doInit=true);
+  //- Construct from components without boundary.
+  //  Boundary is added using addFvPatches() member function
+  fvccNeoMesh(const NeoFOAM::executor exec, const IOobject &io,
 
-        //- Construct from IOobject or as zero-sized mesh
-        //  Boundary is added using addFvPatches() member function
-        fvccNeoMesh(const NeoFOAM::executor exec,const IOobject& io, const Foam::zero, bool syncPar=true);
+              pointField &&points, faceList &&faces, labelList &&allOwner,
+              labelList &&allNeighbour, const bool syncPar = true);
 
-        //- Construct from components without boundary.
-        //  Boundary is added using addFvPatches() member function
-        fvccNeoMesh
-        (
-            const NeoFOAM::executor exec,
-            const IOobject& io,
-            pointField&& points,
-            faceList&& faces,
-            labelList&& allOwner,
-            labelList&& allNeighbour,
-            const bool syncPar = true
-        );
+  //- Construct without boundary from cells rather than owner/neighbour.
+  //  Boundary is added using addPatches() member function
+  fvccNeoMesh(const NeoFOAM::executor exec, const IOobject &io,
+              pointField &&points, faceList &&faces, cellList &&cells,
+              const bool syncPar = true);
 
-        //- Construct without boundary from cells rather than owner/neighbour.
-        //  Boundary is added using addPatches() member function
-        fvccNeoMesh
-        (
-            const NeoFOAM::executor exec,
-            const IOobject& io,
-            pointField&& points,
-            faceList&& faces,
-            cellList&& cells,
-            const bool syncPar = true
-        );
+  //- Destructor
+  virtual ~fvccNeoMesh() = default;
 
-
-    //- Destructor
-    virtual ~fvccNeoMesh() = default;
-
-    NeoFOAM::unstructuredMesh& uMesh()
-    {
-        return uMesh_;
-    }
+  NeoFOAM::unstructuredMesh &uMesh() { return uMesh_; }
+  // const NeoFOAM::unstructuredMesh &uMesh() { return uMesh_; } const
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
