@@ -25,10 +25,13 @@
 #include "NeoFOAM/cellCentredFiniteVolume/bcFields/surface/scalar/fvccSurfaceScalarEmptyBoundaryField.hpp"
 
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
+
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/linear.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/upwind.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolation.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolationFactory.hpp"
+
+#include "NeoFOAM/cellCentredFiniteVolume/div/gaussGreenDiv.hpp"
 
 #include "FoamAdapter/fvcc/surfaceInterpolation/surfaceInterpolationFactory.hpp"
 #include "FoamAdapter/readers/foamMesh.hpp"
@@ -42,6 +45,7 @@
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
+#include "gaussConvectionScheme.H"
 
 Foam::Time *timePtr;    // A single time object
 Foam::argList *argsPtr; // Some forks want argList access at createMesh.H
@@ -225,11 +229,105 @@ TEST_CASE("GradOperator")
         NeoFOAM::fill(neoGradT.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
         NeoFOAM::fill(neoGradT.boundaryField().value(), NeoFOAM::Vector(0.0, 0.0, 0.0));
         NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoGradT,neoT);
-        Foam::Info << "writing temperature field for exector: " << exec_name << Foam::endl;
-            write(neoGradT.internalField(), mesh, "Temperature_" + exec_name);
+        Foam::Info << "writing gradT field for exector: " << exec_name << Foam::endl;
+            write(neoGradT.internalField(), mesh, "gradT_" + exec_name);
 
         std::span<Foam::vector> s_ofGradT(ofGradT.primitiveFieldRef().data(), ofGradT.size());
         REQUIRE_THAT(neoGradT.internalField().copyToHost().field(), Catch::Matchers::RangeEquals(s_ofGradT, ApproxVector(1e-12)));
+
+    }
+}
+
+TEST_CASE("DivOperator")
+{
+    Foam::Time &runTime = *timePtr;
+    Foam::argList &args = *argsPtr;
+
+    NeoFOAM::executor exec = GENERATE(
+        NeoFOAM::executor(NeoFOAM::CPUExecutor{}),
+        NeoFOAM::executor(NeoFOAM::OMPExecutor{}),
+        NeoFOAM::executor(NeoFOAM::GPUExecutor{}));
+
+    // NeoFOAM::executor exec = NeoFOAM::CPUExecutor{};
+
+    std::string exec_name = std::visit([](auto e)
+                                       { return e.print(); },
+                                       exec);
+
+    Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
+    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
+    Foam::fvccNeoMesh &mesh = *meshPtr;
+    NeoFOAM::unstructuredMesh &uMesh = mesh.uMesh();
+
+    std::random_device rd;  // Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis(1.0, 2.0);
+
+    SECTION("gaussDiv_scalar_" + exec_name)
+    {
+        // linear interpolation hardcoded for now
+        Foam::IStringStream is("linear"); 
+
+        Foam::Info << "Reading field T\n"
+                << Foam::endl;
+
+        Foam::volScalarField T(
+            Foam::IOobject(
+                "T",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::MUST_READ,
+                Foam::IOobject::AUTO_WRITE),
+            mesh);
+        
+        Foam::surfaceScalarField phi(
+            Foam::IOobject(
+                "phi",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::NO_READ,
+                Foam::IOobject::AUTO_WRITE),
+            mesh,
+            Foam::dimensionedScalar("phi", Foam::dimless, 0.0)
+        );
+
+        forAll(phi, facei)
+        {
+            // T[celli] = dis(gen);
+            phi[facei] = facei;
+        }
+
+        forAll(T, celli)
+        {
+            // T[celli] = dis(gen);
+            T[celli] = celli;
+        }
+        T.correctBoundaryConditions();
+        T.write();
+        std::span<Foam::scalar> s_T(T.primitiveFieldRef().data(), T.size());
+
+        Foam::fv::gaussConvectionScheme<Foam::scalar> foamDivScalar(mesh, phi ,is);
+        Foam::volScalarField ofDivT("ofDivT",foamDivScalar.fvcDiv(phi,T));
+        ofDivT.write();
+
+        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        // the creation of phi currently only works as the calculated boundary condition are zero
+        // TODO better conversion between foam and neofoam surface*Fields
+        NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoPhi(exec, uMesh, NeoFOAM::createCalculatedBCs<NeoFOAM::scalar>(uMesh));
+        NeoFOAM::fill(neoPhi.internalField(), 0.0);
+        neoPhi.internalField() = fromFoamField(exec, phi.primitiveField());
+        neoT.correctBoundaryConditions();
+        REQUIRE_THAT(neoT.internalField().copyToHost().field(), Catch::Matchers::RangeEquals(s_T, ApproxScalar(1e-12)));
+
+        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
+        NeoFOAM::fill(neoDivT.internalField(), 0.0);
+        NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
+        NeoFOAM::gaussGreenDiv(exec, uMesh).div(neoDivT, neoPhi ,neoT);
+        Foam::Info << "writing divT field for exector: " << exec_name << Foam::endl;
+            write(neoDivT.internalField(), mesh, "divT_" + exec_name);
+
+        std::span<Foam::scalar> s_ofDivT(ofDivT.primitiveFieldRef().data(), ofDivT.size());
+        REQUIRE_THAT(neoDivT.internalField().copyToHost().field(), Catch::Matchers::RangeEquals(s_ofDivT, ApproxScalar(1e-12)));
 
     }
 }
