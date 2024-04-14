@@ -46,7 +46,15 @@ void Foam::setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum
 }
 
 
-std::unique_ptr<Foam::fvccNeoMesh> Foam::createMesh(const NeoFOAM::executor& exec, const Foam::IOobject& io)
+std::unique_ptr<Foam::fvccNeoMesh> Foam::createMesh(const NeoFOAM::executor& exec, const Foam::Time& runTime)
 {
+    Foam::word regionName(Foam::polyMesh::defaultRegion);
+    Foam::IOobject io
+    (
+        regionName,
+        runTime.timeName(),
+        runTime,
+        Foam::IOobject::MUST_READ
+    );
     return std::make_unique<Foam::fvccNeoMesh>(exec, io);
 }
