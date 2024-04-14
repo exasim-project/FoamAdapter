@@ -60,7 +60,9 @@ int main(int argc, char *argv[])
         #include "addCheckCaseOptions.H"
         #include "setRootCase.H"
         #include "createTime.H"
-        #include "createMesh.H"
+        
+        std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec,runTime);
+        Foam::fvccNeoMesh& mesh = *meshPtr;
         #include "createControl.H"
         // #include "createTimeControls.H"
         auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
