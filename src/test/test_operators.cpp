@@ -168,12 +168,12 @@ TEST_CASE("GradOperator")
     Foam::Time &runTime = *timePtr;
     Foam::argList &args = *argsPtr;
 
-    // NeoFOAM::executor exec = GENERATE(
-    //     NeoFOAM::executor(NeoFOAM::CPUExecutor{}),
-    //     NeoFOAM::executor(NeoFOAM::OMPExecutor{}),
-    //     NeoFOAM::executor(NeoFOAM::GPUExecutor{}));
+    NeoFOAM::executor exec = GENERATE(
+        NeoFOAM::executor(NeoFOAM::CPUExecutor{}),
+        NeoFOAM::executor(NeoFOAM::OMPExecutor{}),
+        NeoFOAM::executor(NeoFOAM::GPUExecutor{}));
 
-    NeoFOAM::executor exec = NeoFOAM::CPUExecutor{};
+    // NeoFOAM::executor exec = NeoFOAM::CPUExecutor{};
 
     std::string exec_name = std::visit([](auto e)
                                        { return e.print(); },
@@ -206,21 +206,30 @@ TEST_CASE("GradOperator")
             mesh);
         forAll(T, celli)
         {
-            T[celli] = dis(gen);
+            // T[celli] = dis(gen);
+            T[celli] = celli;
         }
         T.correctBoundaryConditions();
+        T.write();
+        std::span<Foam::scalar> s_T(T.primitiveFieldRef().data(), T.size());
 
         Foam::fv::gaussGrad<Foam::scalar> foamGradScalar(mesh, is);
-        Foam::volVectorField ofGradT = foamGradScalar.calcGrad(T, "test");
+        Foam::volVectorField ofGradT("ofGradT",foamGradScalar.calcGrad(T, "test"));
+        ofGradT.write();
 
         NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
-        REQUIRE(neoT.internalField() == T.internalField());
+        REQUIRE_THAT(neoT.internalField().copyToHost().field(), Catch::Matchers::RangeEquals(s_T, ApproxScalar(1e-12)));
 
-        NeoFOAM::vectorField neoGradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoT.internalField()).copyToHost();
+        NeoFOAM::fvccVolField<NeoFOAM::Vector> neoGradT = constructFrom(exec, uMesh, ofGradT);
+        NeoFOAM::fill(neoGradT.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
+        NeoFOAM::fill(neoGradT.boundaryField().value(), NeoFOAM::Vector(0.0, 0.0, 0.0));
+        NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoGradT,neoT);
+        Foam::Info << "writing temperature field for exector: " << exec_name << Foam::endl;
+            write(neoGradT.internalField(), mesh, "Temperature_" + exec_name);
 
         std::span<Foam::vector> s_ofGradT(ofGradT.primitiveFieldRef().data(), ofGradT.size());
-        REQUIRE_THAT(neoGradT.field(), Catch::Matchers::RangeEquals(s_ofGradT, ApproxVector(1e-12)));
+        REQUIRE_THAT(neoGradT.internalField().copyToHost().field(), Catch::Matchers::RangeEquals(s_ofGradT, ApproxVector(1e-12)));
 
     }
 }
