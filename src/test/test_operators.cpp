@@ -34,6 +34,8 @@
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
 #include "FoamAdapter/comparision/fieldComparision.hpp"
+#include "FoamAdapter/setup/setup.hpp"
+#include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
 
 #include <random>
 #include <span>
@@ -43,10 +45,6 @@
 
 Foam::Time *timePtr;    // A single time object
 Foam::argList *argsPtr; // Some forks want argList access at createMesh.H
-Foam::fvMesh *meshPtr;  // A single mesh object
-
-
-
 
 int main(int argc, char *argv[])
 {
@@ -61,7 +59,6 @@ int main(int argc, char *argv[])
 
 #include "setRootCase.H"
 #include "createTime.H"
-#include "createMesh.H"
     argsPtr = &args;
     timePtr = &runTime;
 
@@ -76,7 +73,7 @@ int main(int argc, char *argv[])
 struct ApproxScalar
 {
     Foam::scalar margin;
-    bool operator()(double rhs,double lhs) const
+    bool operator()(double rhs, double lhs) const
     {
         return Catch::Approx(rhs).margin(margin) == lhs;
     }
@@ -86,19 +83,20 @@ TEST_CASE("Interpolation")
 {
     Foam::Time &runTime = *timePtr;
     Foam::argList &args = *argsPtr;
-#include "createMesh.H"
 
     NeoFOAM::executor exec = GENERATE(
         NeoFOAM::executor(NeoFOAM::CPUExecutor{}),
         NeoFOAM::executor(NeoFOAM::OMPExecutor{}),
-        NeoFOAM::executor(NeoFOAM::GPUExecutor{})
-        );
+        NeoFOAM::executor(NeoFOAM::GPUExecutor{}));
+
+    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
+    Foam::fvccNeoMesh &mesh = *meshPtr;
     std::string exec_name = std::visit([](auto e)
                                        { return e.print(); },
                                        exec);
 
-    Foam::Info << "reading mesh" << Foam::endl;
-    NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
+    Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
+    NeoFOAM::unstructuredMesh &uMesh = mesh.uMesh();
 
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
@@ -141,35 +139,16 @@ TEST_CASE("Interpolation")
             uMesh,
             std::move(bcs));
 
-        Foam::Info << "Creating linear kernel" << Foam::endl;
-        if (Foam::surfaceInterpolationFactory::dictionaryConstructorTablePtr_ != nullptr) {
-            Foam::Info << Foam::surfaceInterpolationFactory::dictionaryConstructorTablePtr_->sortedToc() << Foam::endl;
+        SECTION("linear")
+        {
+            // std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel(new NeoFOAM::linear(exec, uMesh));
+
+            NeoFOAM::surfaceInterpolation interp(exec, uMesh, std::make_unique<NeoFOAM::linear>(exec, uMesh));
+            interp.interpolate(neoSurfT, neoT);
+            auto s_neoSurfT = neoSurfT.internalField().copyToHost().field();
+            std::span<Foam::scalar> surfT_span(surfT.primitiveFieldRef().data(), surfT.size());
+            REQUIRE_THAT(s_neoSurfT.subspan(0, surfT.size()), Catch::Matchers::RangeEquals(surfT_span, ApproxScalar(1e-12)));
         }
-        else {
-            Foam::Info << "dictionaryConstructorTablePtr_ is nullptr" << Foam::endl;
-        }
-        // Foam::surfaceInterpolationFactory::New(exec, uMesh);
-        // NeoFOAM::surfaceInterpolationFactory surfInterFactory{};
-        // surfInterFactory.registerClass("linear", [](const NeoFOAM::executor& exec, const NeoFOAM::unstructuredMesh& mesh) {
-        //     return std::make_unique<NeoFOAM::linear>(exec, mesh);
-        // });
-        // std::cout << "Creating linear kernel" << std::endl;
-        
-        // std::cout << "linear::registered: " << NeoFOAM::linear::registered << std::endl;
-        std::cout << "map size: " << NeoFOAM::surfaceInterpolationFactory::number_of_instances() << std::endl;
-        // surfInterFactory.registerClass("upwind", [](const NeoFOAM::executor& exec, const NeoFOAM::unstructuredMesh& mesh) {
-        //     return std::make_unique<NeoFOAM::upwind>(exec, mesh);
-        // });
-
-        // std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel = NeoFOAM::surfaceInterpolationFactory::New("linear", exec, uMesh);
-
-        std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel(new NeoFOAM::linear(exec, uMesh));
-
-        NeoFOAM::surfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
-        interp.interpolate(neoSurfT, neoT);
-        auto s_neoSurfT = neoSurfT.internalField().copyToHost().field();
-        std::span<Foam::scalar> surfT_span(surfT.primitiveFieldRef().data(), surfT.size());
-        REQUIRE_THAT(s_neoSurfT.subspan(0,surfT.size()), Catch::Matchers::RangeEquals(surfT_span, ApproxScalar(1e-12)));
     }
 }
 
@@ -177,10 +156,12 @@ TEST_CASE("GradOperator")
 {
     Foam::Time &runTime = *timePtr;
     Foam::argList &args = *argsPtr;
-#include "createMesh.H"
     NeoFOAM::executor exec = NeoFOAM::CPUExecutor();
+
+    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
+    Foam::fvccNeoMesh &mesh = *meshPtr;
     Foam::Info << "reading mesh" << Foam::endl;
-    NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
+    NeoFOAM::unstructuredMesh &uMesh = mesh.uMesh();
 
     Foam::Info << "Reading field T\n"
                << Foam::endl;
