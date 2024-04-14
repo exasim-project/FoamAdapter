@@ -134,9 +134,9 @@ int main(int argc, char *argv[])
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
-                NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
-                Kokkos::fence();
-                write(gradT, mesh, "gradTGPU");
+                // NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
+                // Kokkos::fence();
+                // write(gradT, mesh, "gradTGPU");
             }
         }
 
@@ -153,9 +153,9 @@ int main(int argc, char *argv[])
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
-                NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
-                Kokkos::fence();
-                write(gradT, mesh, "gradTCPU");
+                // NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
+                // Kokkos::fence();
+                // write(gradT, mesh, "gradTCPU");
             }
         }
 
@@ -172,9 +172,9 @@ int main(int argc, char *argv[])
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
-                NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
-                Kokkos::fence();
-                write(gradT, mesh, "gradTOMP");
+            //     NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
+            //     Kokkos::fence();
+            //     write(gradT, mesh, "gradTOMP");
             }
         }
 
