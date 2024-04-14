@@ -10,7 +10,7 @@ mesh=$2
 
 runApplication blockMesh
 
-runApplication scalarAdvection
+runApplication ../../../build/src/benchmarks/scalarAdvection/scalarAdvection
 
 
 #------------------------------------------------------------------------------
