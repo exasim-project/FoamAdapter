@@ -79,6 +79,17 @@ struct ApproxScalar
     }
 };
 
+struct ApproxVector
+{
+    Foam::scalar margin;
+    bool operator()(NeoFOAM::Vector rhs, Foam::vector lhs) const
+    {
+        NeoFOAM::Vector diff(rhs[0]-lhs[0], rhs[1]-lhs[1], rhs[2]-lhs[2]);
+
+        return Catch::Approx(0).margin(margin) == mag(diff);
+    }
+};
+
 TEST_CASE("Interpolation")
 {
     Foam::Time &runTime = *timePtr;
@@ -156,40 +167,60 @@ TEST_CASE("GradOperator")
 {
     Foam::Time &runTime = *timePtr;
     Foam::argList &args = *argsPtr;
-    NeoFOAM::executor exec = NeoFOAM::CPUExecutor();
 
+    // NeoFOAM::executor exec = GENERATE(
+    //     NeoFOAM::executor(NeoFOAM::CPUExecutor{}),
+    //     NeoFOAM::executor(NeoFOAM::OMPExecutor{}),
+    //     NeoFOAM::executor(NeoFOAM::GPUExecutor{}));
+
+    NeoFOAM::executor exec = NeoFOAM::CPUExecutor{};
+
+    std::string exec_name = std::visit([](auto e)
+                                       { return e.print(); },
+                                       exec);
+
+    Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
     Foam::fvccNeoMesh &mesh = *meshPtr;
-    Foam::Info << "reading mesh" << Foam::endl;
     NeoFOAM::unstructuredMesh &uMesh = mesh.uMesh();
 
-    Foam::Info << "Reading field T\n"
-               << Foam::endl;
+    std::random_device rd;  // Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis(1.0, 2.0);
 
-    Foam::volScalarField T(
-        Foam::IOobject(
-            "T",
-            runTime.timeName(),
-            mesh,
-            Foam::IOobject::MUST_READ,
-            Foam::IOobject::AUTO_WRITE),
-        mesh);
+    SECTION("gauss_scalar_" + exec_name)
+    {
+        // linear interpolation hardcoded for now
+        Foam::IStringStream is("linear"); 
 
-    Foam::IStringStream is("linear");
-    Foam::fv::gaussGrad<Foam::scalar> foamGradScalar(mesh, is);
-    Foam::volVectorField ofGradT = foamGradScalar.calcGrad(T, "test");
+        Foam::Info << "Reading field T\n"
+                << Foam::endl;
 
-    NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
-    NeoFOAM::fill(neoT.internalField(), 1.0);
-    Foam::scalar pi = Foam::constant::mathematical::pi;
-    const NeoFOAM::Field<NeoFOAM::Vector> &cc = uMesh.cellCentres();
-    Foam::scalar spread = 0.05;
-    auto s_cc = cc.field();
+        Foam::volScalarField T(
+            Foam::IOobject(
+                "T",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::MUST_READ,
+                Foam::IOobject::AUTO_WRITE),
+            mesh);
+        forAll(T, celli)
+        {
+            T[celli] = dis(gen);
+        }
+        T.correctBoundaryConditions();
 
-    neoT.internalField().apply(KOKKOS_LAMBDA(int i) {
-        return std::exp(-0.5 * (std::pow((s_cc[i][0] - 0.05) / spread, 2.0) + std::pow((s_cc[i][1] - 0.075) / spread, 2.0)));
-    });
-    neoT.correctBoundaryConditions();
+        Foam::fv::gaussGrad<Foam::scalar> foamGradScalar(mesh, is);
+        Foam::volVectorField ofGradT = foamGradScalar.calcGrad(T, "test");
 
-    NeoFOAM::vectorField nofGradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoT.internalField());
+        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        neoT.correctBoundaryConditions();
+        REQUIRE(neoT.internalField() == T.internalField());
+
+        NeoFOAM::vectorField neoGradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoT.internalField()).copyToHost();
+
+        std::span<Foam::vector> s_ofGradT(ofGradT.primitiveFieldRef().data(), ofGradT.size());
+        REQUIRE_THAT(neoGradT.field(), Catch::Matchers::RangeEquals(s_ofGradT, ApproxVector(1e-12)));
+
+    }
 }
