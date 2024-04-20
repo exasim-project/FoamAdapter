@@ -34,7 +34,7 @@ gradSchemes
 divSchemes
 {
     default         none;
-    div(phi,T)      Gauss vanLeer;
+    div(phi,T)      Gauss upwind;
 }
 
 laplacianSchemes
