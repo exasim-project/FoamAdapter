@@ -41,11 +41,15 @@ Description
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
 #include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/div/gaussGreenDiv.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolationSelector.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/readers/foamFields.hpp"
+
 #include "FoamAdapter/writers/writers.hpp"
 #include "FoamAdapter/setup/setup.hpp"
 
@@ -54,12 +58,13 @@ Description
 int main(int argc, char *argv[])
 {   
     Kokkos::initialize(argc, argv);
-    NeoFOAM::executor exec = NeoFOAM::CPUExecutor();
+    
     {
         #include "addProfilingOption.H"
         #include "addCheckCaseOptions.H"
         #include "setRootCase.H"
         #include "createTime.H"
+        NeoFOAM::executor exec = Foam::createExecutor(runTime.controlDict());
         
         std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec,runTime);
         Foam::fvccNeoMesh& mesh = *meshPtr;
@@ -81,14 +86,17 @@ int main(int argc, char *argv[])
         Foam::Info << "creating neofoam mesh" << Foam::endl;
         NeoFOAM::unstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
         NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
+        neoT.correctBoundaryConditions();
         // NeoFOAM::fvccVolField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
 
-        auto s_cc = uMesh.cellCentres().field();
-        neoT.internalField().apply(KOKKOS_LAMBDA(int celli) 
-        {
-            return std::exp(-0.5 * (std::pow((s_cc[celli][0] - 0.5) / spread, 2.0) + std::pow((s_cc[celli][1] - 0.75) / spread, 2.0)));
-        });
-        neoT.correctBoundaryConditions();
+        // auto s_cc = uMesh.cellCentres().field();
+        // neoT.internalField().apply(KOKKOS_LAMBDA(int celli) 
+        // {
+        //     return std::exp(-0.5 * (std::pow((s_cc[celli][0] - 0.5) / spread, 2.0) + std::pow((s_cc[celli][1] - 0.75) / spread, 2.0)));
+        // });
+        // neoT.correctBoundaryConditions();
+        NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
+        
         Foam::Info << "writing neoT field" << Foam::endl;
         write(neoT.internalField(), mesh, "neoT");
 
@@ -118,6 +126,14 @@ int main(int argc, char *argv[])
             }
         }
         phi0 = Foam::linearInterpolate(U0) & mesh.Sf();
+        NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoPhi0 = constructSurfaceField(exec, uMesh, phi0);
+
+        Foam::volScalarField ofDivT("ofDivT",Foam::fvc::div(phi, T));
+
+        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
+        NeoFOAM::fill(neoDivT.internalField(), 0.0);
+        NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
+        
 
         while (runTime.run())
         {
@@ -133,6 +149,8 @@ int main(int argc, char *argv[])
 
             runTime++;
 
+            Foam::Info << "Time = " << runTime.timeName() << Foam::nl << Foam::endl;
+
             if(spirallingFlow > 0)
             {
                 Foam::Info << "Spiralling flow: " << spirallingFlow << Foam::endl;
@@ -140,19 +158,44 @@ int main(int argc, char *argv[])
                 Foam::scalar dt = runTime.deltaT().value();
                 U = U0*Foam::cos(pi*(t+ 0.5*dt)/spirallingFlow);
                 phi = phi0*Foam::cos(pi*(t+ 0.5*dt)/spirallingFlow);
-                // Foam::volScalarField Test("Test", Foam::fvc::div(phi, T));
-                // Test.write();
+                neoPhi.internalField() = neoPhi0.internalField()*std::cos(pi*(t+ 0.5*dt)/spirallingFlow);
             }
 
-            Foam::fvScalarMatrix TEqn
-            (
-                Foam::fvm::ddt(T)
-                + Foam::fvc::div(phi, T)
-            );
+            {
+                addProfiling(foamAdvection, "foamAdvection");
+                Foam::fvScalarMatrix TEqn
+                (
+                    Foam::fvm::ddt(T)
+                    + Foam::fvc::div(phi, T)
+                );
 
-            TEqn.solve();
+                TEqn.solve();
+            }
+
+            // NeoFOAM Euler hardcoded
+            {
+                addProfiling(neoFoamAdvection, "neoFoamAdvection");
+                NeoFOAM::fill(neoDivT.internalField(), 0.0);
+                NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
+                NeoFOAM::gaussGreenDiv(
+                    exec,
+                    uMesh,
+                    NeoFOAM::surfaceInterpolationSelector(std::string("upwind"),exec ,mesh.uMesh())
+                ).div(neoDivT, neoPhi ,neoT);
+                neoT.internalField() = neoT.internalField() - neoDivT.internalField() * runTime.deltaT().value();
+                neoT.correctBoundaryConditions();
+                Kokkos::fence();
+            }
+
+            if (runTime.outputTime())
+            {
+                Foam::Info << "writing neoT field" << Foam::endl;
+                write(neoT.internalField(), mesh, "neoT");
+            }
 
             runTime.write();
+
+            runTime.printExecutionTime(Foam::Info);
         }
 
         Foam::Info << "End\n" << Foam::endl;
