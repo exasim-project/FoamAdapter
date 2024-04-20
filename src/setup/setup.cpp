@@ -58,3 +58,24 @@ std::unique_ptr<Foam::fvccNeoMesh> Foam::createMesh(const NeoFOAM::executor& exe
     );
     return std::make_unique<Foam::fvccNeoMesh>(exec, io);
 }
+
+NeoFOAM::executor Foam::createExecutor(const Foam::dictionary& dict)
+{
+    auto exec_name = dict.get<Foam::word>("executor");
+    if (exec_name == "CPU")
+    {
+        return NeoFOAM::CPUExecutor();
+    }
+    else if (exec_name == "OMP")
+    {
+        return NeoFOAM::OMPExecutor();
+    }
+    else if (exec_name == "GPU")
+    {
+        return NeoFOAM::GPUExecutor();
+    }
+    else
+    {
+        Foam::FatalError << "Executor not recognized" << Foam::endl;
+    }
+}

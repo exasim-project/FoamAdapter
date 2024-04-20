@@ -8,6 +8,7 @@
 #include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
 #include "fvCFD.H"
 #include <memory>
+#include "NeoFOAM/core/executor/executor.hpp"
 
 namespace Foam {
 
@@ -21,5 +22,8 @@ void setDeltaT(Foam::Time &runTime, Foam::scalar maxCo, Foam::scalar CoNum,
 
 std::unique_ptr<Foam::fvccNeoMesh> createMesh(const NeoFOAM::executor &exec,
                                               const Foam::Time &runTime);
+
+
+NeoFOAM::executor createExecutor(const Foam::dictionary& dict);
 
 } // namespace Foam
