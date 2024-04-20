@@ -33,7 +33,7 @@ int32_t computeNBoundaryFaces(const Foam::fvMesh &mesh)
     return nBoundaryFaces;
 }
 
-NeoFOAM::unstructuredMesh readOpenFOAMMesh(const NeoFOAM::executor exec, Foam::fvMesh &mesh)
+NeoFOAM::unstructuredMesh  readOpenFOAMMesh(const NeoFOAM::executor exec, Foam::fvMesh &mesh)
 {
     const int32_t nCells = mesh.nCells();
     const int32_t nInternalFaces = mesh.nInternalFaces();
@@ -53,6 +53,7 @@ NeoFOAM::unstructuredMesh readOpenFOAMMesh(const NeoFOAM::executor exec, Foam::f
     Foam::scalarField weights = flatBCField<Foam::scalarField>(mesh, [](const Foam::fvPatch& patch){ return patch.weights(); });
     Foam::scalarField deltaCoeffs = flatBCField<Foam::scalarField>(mesh, [](const Foam::fvPatch& patch){ return patch.deltaCoeffs(); });
     std::vector<NeoFOAM::localIdx> offset = computeOffset(mesh);
+
 
     NeoFOAM::BoundaryMesh bMesh(
         exec,

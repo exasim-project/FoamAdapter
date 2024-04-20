@@ -14,10 +14,12 @@ namespace Foam {
 
 std::vector<NeoFOAM::localIdx> computeOffset(const Foam::fvMesh &mesh);
 
+int32_t computeNBoundaryFaces(const Foam::fvMesh &mesh);
+
 template <typename FieldT>
 FieldT flatBCField(const Foam::fvMesh &mesh,
                    std::function<FieldT(const Foam::fvPatch &)> f) {
-  FieldT result(mesh.nFaces() - mesh.nInternalFaces());
+  FieldT result(computeNBoundaryFaces(mesh));
   const Foam::fvBoundaryMesh &bMesh = mesh.boundary();
   Foam::label idx = 0;
   forAll(bMesh, patchI) {
@@ -31,7 +33,6 @@ FieldT flatBCField(const Foam::fvMesh &mesh,
   return result;
 }
 
-int32_t computeNBoundaryFaces(const Foam::fvMesh &mesh);
 
 NeoFOAM::unstructuredMesh readOpenFOAMMesh(const NeoFOAM::executor exec,
                                            Foam::fvMesh &mesh);
