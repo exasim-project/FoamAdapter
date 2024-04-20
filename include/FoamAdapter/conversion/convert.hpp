@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPLv-3.0
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
+
 #include "NeoFOAM/primitives/label.hpp"
 #include "NeoFOAM/primitives/scalar.hpp"
 #include "NeoFOAM/primitives/vector.hpp"

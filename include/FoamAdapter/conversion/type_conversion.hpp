@@ -4,9 +4,11 @@
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
+#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccSurfaceField.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
 #include "volFields.H"
+#include "surfaceFields.H"
 
 namespace Foam {
 template <typename From> struct type_map {};
@@ -23,6 +25,20 @@ template <>
 struct type_map<
     Foam::GeometricField<Foam::vector, Foam::fvPatchField, Foam::volMesh>> {
   using container_type = NeoFOAM::fvccVolField<NeoFOAM::Vector>;
+  using mapped_type = NeoFOAM::Vector;
+};
+
+template <>
+struct type_map<
+    Foam::GeometricField<Foam::scalar, Foam::fvsPatchField, Foam::surfaceMesh>> {
+  using container_type = NeoFOAM::fvccSurfaceField<NeoFOAM::scalar>;
+  using mapped_type = NeoFOAM::scalar;
+};
+
+template <>
+struct type_map<
+    Foam::GeometricField<Foam::vector, Foam::fvsPatchField, Foam::surfaceMesh>> {
+  using container_type = NeoFOAM::fvccSurfaceField<NeoFOAM::Vector>;
   using mapped_type = NeoFOAM::Vector;
 };
 

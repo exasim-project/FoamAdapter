@@ -18,9 +18,15 @@
 namespace Foam {
 
 template <typename Type>
-auto readBoundaryCondition(const NeoFOAM::unstructuredMesh &uMesh, int patchi,
+auto readVolBoundaryCondition(const NeoFOAM::unstructuredMesh &uMesh, int patchi,
                            const NeoFOAM::Dictionary &patchDict) {
   return NeoFOAM::getBC<Type>(uMesh, patchi, patchDict);
+}
+
+template <typename Type>
+auto readSurfaceBoundaryCondition(const NeoFOAM::unstructuredMesh &uMesh, int patchi,
+                           const NeoFOAM::Dictionary &patchDict) {
+  return NeoFOAM::getSurfaceBC<Type>(uMesh, patchi, patchDict);
 }
 
 }; // namespace Foam
