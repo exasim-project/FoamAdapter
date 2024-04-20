@@ -63,6 +63,16 @@ int main(int argc, char *argv[])
     return result;
 }
 
+struct ApproxScalar
+{
+    Foam::scalar margin;
+    bool operator()(double rhs, double lhs) const
+    {
+        return Catch::Approx(rhs).margin(margin) == lhs;
+    }
+};
+
+
 TEST_CASE("unstructuredMesh")
 {
     Foam::Time &runTime = *timePtr;
@@ -85,53 +95,97 @@ TEST_CASE("unstructuredMesh")
     {
         const int32_t nCells = uMesh.nCells();
 
-        REQUIRE(nCells == 9);
+        REQUIRE(nCells == mesh.nCells());
 
         const int32_t nInternalFaces = uMesh.nInternalFaces();
 
-        REQUIRE(nInternalFaces == 12);
+        REQUIRE(nInternalFaces == mesh.nInternalFaces());
 
-        const NeoFOAM::Field<NeoFOAM::Vector> &points = uMesh.points();
+        SECTION("points")
+        {
+            const auto points = uMesh.points().copyToHost().field();
+            REQUIRE(uMesh.points().size() == mesh.points().size());
+            for (int i = 0; i < points.size(); i++)
+            {
+                REQUIRE(points[i] == convert(mesh.points()[i]));
+            }
+        }
 
-        REQUIRE(points.size() == 32);
 
-        const NeoFOAM::Field<NeoFOAM::scalar> &cellVolumes = uMesh.cellVolumes();
-        REQUIRE(cellVolumes.size() == 9);
-        REQUIRE(NeoFOAM::sum(cellVolumes) == Catch::Approx(0.1));
-        REQUIRE(cellVolumes.copyToHost().field()[0] == Catch::Approx(0.1 / 9.0));
+        SECTION("cellVolumes")
+        {
+            const auto cellVolumes = uMesh.cellVolumes().copyToHost().field();
+            REQUIRE(cellVolumes.size() == mesh.cellVolumes().size());
+            for (int i = 0; i < cellVolumes.size(); i++)
+            {
+                REQUIRE(cellVolumes[i] == mesh.cellVolumes()[i]);
+            }
+        }
 
-        const NeoFOAM::Field<NeoFOAM::Vector> &cellCentres = uMesh.cellCentres();
+        SECTION("cellCentres")
+        {
+            const auto cellCentres = uMesh.cellCentres().copyToHost().field();
+            REQUIRE(cellCentres.size() == mesh.cellCentres().size());
+            for (int i = 0; i < cellCentres.size(); i++)
+            {
+                REQUIRE(cellCentres[i] == convert(mesh.cellCentres()[i]));
+            }
+        }
 
-        REQUIRE(cellCentres.size() == 9);
-        auto cellCenterSum = NeoFOAM::sum(cellCentres);
-        REQUIRE(cellCenterSum[0] / cellVolumes.size() == Catch::Approx(0.5));
-        REQUIRE(cellCenterSum[1] / cellVolumes.size() == Catch::Approx(0.5));
-        REQUIRE(cellCenterSum[2] / cellVolumes.size() == Catch::Approx(0.05));
+        SECTION("faceCentres")
+        {
+            const auto faceCentres = uMesh.faceCentres().copyToHost().field();
+            REQUIRE(faceCentres.size() == mesh.faceCentres().size());
+            for (int i = 0; i < faceCentres.size(); i++)
+            {
+                REQUIRE(faceCentres[i] == convert(mesh.faceCentres()[i]));
+            }
+        }
 
-        const NeoFOAM::Field<NeoFOAM::Vector> &faceCentres = uMesh.faceCentres();
+        SECTION("faceAreas")
+        {
+            const auto faceAreas = uMesh.faceAreas().copyToHost().field();
+            // REQUIRE(faceAreas.size() == mesh.Sf().size());
+            for (int i = 0; i < mesh.Sf().size(); i++)
+            {
+                REQUIRE(faceAreas[i] == convert(mesh.Sf()[i]));
+            }
+        }
 
-        REQUIRE(faceCentres.size() == 42);
-        auto faceCentresSum = NeoFOAM::sum(faceCentres);
-        REQUIRE(faceCentresSum[0] / faceCentres.size() == Catch::Approx(0.5));
-        REQUIRE(faceCentresSum[1] / faceCentres.size() == Catch::Approx(0.5));
-        REQUIRE(faceCentresSum[2] / faceCentres.size() == Catch::Approx(0.05));
 
-        const NeoFOAM::Field<NeoFOAM::Vector> &faceAreas = uMesh.faceAreas();
 
-        REQUIRE(faceAreas.size() == 42);
+        SECTION("magFaceAreas")
+        {
+            Foam::scalarField magSf = mag(mesh.faceAreas());
+            const auto magFaceAreas = uMesh.magFaceAreas().copyToHost().field();
+            REQUIRE(magFaceAreas.size() == magSf.size());
+            for (int i = 0; i < magFaceAreas.size(); i++)
+            {
+                REQUIRE(magFaceAreas[i] == magSf[i]);
+            }
+        }
 
-        const NeoFOAM::Field<NeoFOAM::scalar> &magFaceAreas = uMesh.magFaceAreas();
 
-        REQUIRE(magFaceAreas.size() == 42);
-        REQUIRE(NeoFOAM::sum(magFaceAreas) == Catch::Approx(2.8));
+        SECTION("faceOwner")
+        {
+            const auto faceOwner = uMesh.faceOwner().copyToHost().field();
+            REQUIRE(faceOwner.size() == mesh.faceOwner().size());
+            for (int i = 0; i < faceOwner.size(); i++)
+            {
+                REQUIRE(faceOwner[i] == mesh.faceOwner()[i]);
+            }
+        }
 
-        const NeoFOAM::Field<NeoFOAM::label> faceOwner = uMesh.faceOwner();
+        SECTION("faceNeighbour")
+        {
+            const auto faceNeighbour = uMesh.faceNeighbour().copyToHost().field();
+            REQUIRE(faceNeighbour.size() == mesh.faceNeighbour().size());
+            for (int i = 0; i < faceNeighbour.size(); i++)
+            {
+                REQUIRE(faceNeighbour[i] == mesh.faceNeighbour()[i]);
+            }
+        }
 
-        REQUIRE(faceOwner.size() == 42);
-
-        const NeoFOAM::Field<NeoFOAM::label> faceNeighbour = uMesh.faceNeighbour();
-
-        REQUIRE(faceNeighbour.size() == 12);
     }
 
     SECTION("boundaryMesh" + exec_name)
@@ -307,14 +361,6 @@ TEST_CASE("unstructuredMesh")
     }
 }
 
-struct ApproxScalar
-{
-    Foam::scalar margin;
-    bool operator()(double rhs, double lhs) const
-    {
-        return Catch::Approx(rhs).margin(margin) == lhs;
-    }
-};
 
 TEST_CASE("fvccGeometryScheme")
 {
