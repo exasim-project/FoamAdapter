@@ -12,7 +12,7 @@
 #include "NeoFOAM/fields/Field.hpp"
 #include "NeoFOAM/fields/FieldOperations.hpp"
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/fields/comparision/fieldComparison.hpp.hpp"
+#include "NeoFOAM/fields/comparisions/fieldComparision.hpp"
 
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
@@ -36,7 +36,7 @@
 #include "FoamAdapter/fvcc/surfaceInterpolation/surfaceInterpolationFactory.hpp"
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
-#include "FoamAdapter/comparision/fieldComparision.hpp"
+#include "FoamAdapter/comparison/fieldComparison.hpp"
 #include "FoamAdapter/setup/setup.hpp"
 #include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
 
