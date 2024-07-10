@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 
@@ -13,12 +13,6 @@ namespace Foam
 {
 using namespace NeoFOAM;
 
-addNamedToRunTimeSelectionTable
-(
-    surfaceInterpolationFactory,
-    linear,
-    dictionary,
-    linear
-);
+addNamedToRunTimeSelectionTable(surfaceInterpolationFactory, linear, dictionary, linear);
 
 }

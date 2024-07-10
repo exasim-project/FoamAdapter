@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
@@ -9,7 +9,7 @@
 
 namespace Foam
 {
-    defineTypeNameAndDebug(fvccNeoMesh, 0);
+defineTypeNameAndDebug(fvccNeoMesh, 0);
 }
 
 
@@ -18,35 +18,24 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::executor exec,const IOobject& io, const bool doInit)
-:
-    fvMesh(io, doInit),
-    uMesh_(readOpenFOAMMesh(exec, *this))
+Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::executor exec, const IOobject& io, const bool doInit)
+    : fvMesh(io, doInit), uMesh_(readOpenFOAMMesh(exec, *this))
 {
     if (doInit)
     {
-        init(false);    // do not initialise lower levels
+        init(false); // do not initialise lower levels
     }
 }
 
 
-Foam::fvccNeoMesh::fvccNeoMesh
-(
-    const NeoFOAM::executor exec,
-    const IOobject& io,
-    const Foam::zero,
-    bool syncPar
+Foam::fvccNeoMesh::fvccNeoMesh(
+    const NeoFOAM::executor exec, const IOobject& io, const Foam::zero, bool syncPar
 )
-:
-    fvMesh(io, Foam::zero{}, syncPar),
-    uMesh_(readOpenFOAMMesh(exec, *this))
-{
-    
-}
+    : fvMesh(io, Foam::zero {}, syncPar), uMesh_(readOpenFOAMMesh(exec, *this))
+{}
 
 
-Foam::fvccNeoMesh::fvccNeoMesh
-(
+Foam::fvccNeoMesh::fvccNeoMesh(
     const NeoFOAM::executor exec,
     const IOobject& io,
     pointField&& points,
@@ -55,9 +44,7 @@ Foam::fvccNeoMesh::fvccNeoMesh
     labelList&& allNeighbour,
     const bool syncPar
 )
-:
-    fvMesh
-    (
+    : fvMesh(
         io,
         std::move(points),
         std::move(faces),
@@ -65,14 +52,11 @@ Foam::fvccNeoMesh::fvccNeoMesh
         std::move(allNeighbour),
         syncPar
     ),
-    uMesh_(readOpenFOAMMesh(exec, *this))
-{
-    
-}
+      uMesh_(readOpenFOAMMesh(exec, *this))
+{}
 
 
-Foam::fvccNeoMesh::fvccNeoMesh
-(
+Foam::fvccNeoMesh::fvccNeoMesh(
     const NeoFOAM::executor exec,
     const IOobject& io,
     pointField&& points,
@@ -80,21 +64,9 @@ Foam::fvccNeoMesh::fvccNeoMesh
     cellList&& cells,
     const bool syncPar
 )
-:
-    fvMesh
-    (
-        io,
-        std::move(points),
-        std::move(faces),
-        std::move(cells),
-        syncPar
-    ),
-    uMesh_(readOpenFOAMMesh(exec, *this))
-{
-    
-}
-
-
+    : fvMesh(io, std::move(points), std::move(faces), std::move(cells), syncPar),
+      uMesh_(readOpenFOAMMesh(exec, *this))
+{}
 
 
 // ************************************************************************* //

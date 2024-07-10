@@ -55,26 +55,14 @@ int main(int argc, char* argv[])
         NeoFOAM::unstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
         NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
-        // NeoFOAM::fvccVolField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
 
-        // auto s_cc = uMesh.cellCentres().field();
-        // neoT.internalField().apply(KOKKOS_LAMBDA(int celli)
-        // {
-        //     return std::exp(-0.5 * (std::pow((s_cc[celli][0] - 0.5) / spread, 2.0) +
-        //     std::pow((s_cc[celli][1] - 0.75) / spread, 2.0)));
-        // });
-        // neoT.correctBoundaryConditions();
         NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
 
         Foam::Info << "writing neoT field" << Foam::endl;
         write(neoT.internalField(), mesh, "neoT");
 
-        // #include "readTimeControls.H"
-        // [adjustTimeStep, maxCo, maxDeltaT] = createTimeControls(runTime);
-        // updateTimeControls(runTime, adjustTimeStep, maxCo, maxDeltaT);
         std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-        // #include "createUfIfPresent.H"
-        // #include "CourantNo.H"
+
         Foam::scalar CoNum = Foam::calculateCoNum(phi);
         if (adjustTimeStep)
         {
@@ -132,13 +120,6 @@ int main(int argc, char* argv[])
                     neoPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / spirallingFlow);
             }
 
-            {
-                addProfiling(foamAdvection, "foamAdvection");
-                Foam::fvScalarMatrix TEqn(Foam::fvm::ddt(T) + Foam::fvc::div(phi, T));
-
-                TEqn.solve();
-            }
-
             // NeoFOAM Euler hardcoded
             {
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
@@ -150,8 +131,14 @@ int main(int argc, char* argv[])
                     NeoFOAM::surfaceInterpolationSelector(std::string("upwind"), exec, mesh.uMesh())
                 )
                     .div(neoDivT, neoPhi, neoT);
-                neoT.internalField() =
-                    neoT.internalField() - neoDivT.internalField() * runTime.deltaT().value();
+                // neoT.internalField() = neoT.internalField() - neoDivT.internalField() *
+                // runTime.deltaT().value();
+                double dt = runTime.deltaT().value();
+                auto s_neoT = neoT.internalField().field();
+                auto s_neoDivT = neoDivT.internalField().field();
+                neoT.internalField().apply(KOKKOS_LAMBDA(const int celli) {
+                    return s_neoT[celli] + dt * s_neoDivT[celli];
+                });
                 neoT.correctBoundaryConditions();
                 Kokkos::fence();
             }

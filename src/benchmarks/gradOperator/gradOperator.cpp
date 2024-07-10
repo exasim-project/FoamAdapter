@@ -1,37 +1,5 @@
-/*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | www.openfoam.com
-     \\/     M anipulation  |
--------------------------------------------------------------------------------
-    Copyright (C) 2011-2017 OpenFOAM Foundation
-    Copyright (C) 2019 OpenCFD Ltd.
--------------------------------------------------------------------------------
-License
-    This file is part of OpenFOAM.
-
-    OpenFOAM is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-    for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
-
-Application
-    gradOperator
-
-
-Description
-
-
-\*---------------------------------------------------------------------------*/
+// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #include "Time.H"
 #include "fvMesh.H"
@@ -74,7 +42,7 @@ Description
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-template <typename T>
+template<typename T>
 void print_field(NeoFOAM::Field<T> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
@@ -84,18 +52,19 @@ void print_field(NeoFOAM::Field<T> a)
         std::cout << "tmp_view: " << tmp_view[i] << " at: " << i << std::endl;
     }
 }
-template <>
+template<>
 void print_field(NeoFOAM::Field<NeoFOAM::Vector> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
     auto tmp_view = a.copyToHost().field();
     for (int i = 0; i < a.size(); i++)
     {
-        std::cout << "tmp_view: " << tmp_view[i](0) << " " << tmp_view[i](1) << " " << tmp_view[i](2) << " at: " << i << std::endl;
+        std::cout << "tmp_view: " << tmp_view[i](0) << " " << tmp_view[i](1) << " "
+                  << tmp_view[i](2) << " at: " << i << std::endl;
     }
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     Kokkos::initialize(argc, argv);
     {
@@ -103,8 +72,8 @@ int main(int argc, char *argv[])
 #include "addCheckCaseOptions.H"
 #include "setRootCase.H"
 #include "createTime.H"
-std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
-Foam::fvMesh& mesh = *meshPtr;
+        std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+        Foam::fvMesh& mesh = *meshPtr;
 #include "createFields.H"
 
         runTime++;
@@ -136,9 +105,8 @@ Foam::fvMesh& mesh = *meshPtr;
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
-                // NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
-                // Kokkos::fence();
-                // write(gradT, mesh, "gradTGPU");
+                // NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec,
+                // uMesh).grad(Temperature); Kokkos::fence(); write(gradT, mesh, "gradTGPU");
             }
         }
 
@@ -155,9 +123,8 @@ Foam::fvMesh& mesh = *meshPtr;
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
-                // NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
-                // Kokkos::fence();
-                // write(gradT, mesh, "gradTCPU");
+                // NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec,
+                // uMesh).grad(Temperature); Kokkos::fence(); write(gradT, mesh, "gradTCPU");
             }
         }
 
@@ -174,17 +141,15 @@ Foam::fvMesh& mesh = *meshPtr;
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
-            //     NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec, uMesh).grad(Temperature);
-            //     Kokkos::fence();
-            //     write(gradT, mesh, "gradTOMP");
+                //     NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec,
+                //     uMesh).grad(Temperature); Kokkos::fence(); write(gradT, mesh, "gradTOMP");
             }
         }
 
         Foam::profiling::print(Foam::Info);
         runTime.write();
 
-        Foam::Info << "End\n"
-                   << Foam::endl;
+        Foam::Info << "End\n" << Foam::endl;
     }
 
     Kokkos::finalize();
