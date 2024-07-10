@@ -156,7 +156,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("magFaceAreas")
         {
-            Foam::scalarField magSf = mag(mesh.faceAreas());
+            Foam::scalarField magSf(mag(mesh.faceAreas()));
             const auto magFaceAreas = uMesh.magFaceAreas().copyToHost().field();
             REQUIRE(magFaceAreas.size() == magSf.size());
             for (int i = 0; i < magFaceAreas.size(); i++)
