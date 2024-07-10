@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
         // for (int i = 0; i < N; i++)
         {
             addProfiling(foamGradOperator, "foamGradOperator");
-            Foam::volVectorField test = Foam::fvc::grad(T);
+            Foam::volVectorField test(Foam::fvc::grad(T));
             test.write();
         }
 
