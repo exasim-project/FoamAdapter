@@ -75,7 +75,7 @@ jobs:
        run: |
          ls /usr/lib/openfoam/openfoam2406
          openfoam2406 -c 'which icoFoam'
-         source /usr/lib/openfoam/openfoam2406/etc/bashrc | true
+         source /usr/lib/openfoam/openfoam2406/etc/bashrc || true
          which icoFoam
          ls /usr/lib/openfoam/openfoam2406
          CC=${{matrix.compiler.CC}} \
