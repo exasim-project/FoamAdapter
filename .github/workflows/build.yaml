@@ -73,8 +73,10 @@ jobs:
 
      - name: Build NeoFOAM
        run: |
-         ls /usr/lib/openfoam/openfoam2406/
+         ls /usr/lib/openfoam/openfoam2406
+         openfoam2406 -c 'which icoFoam'
          source /usr/lib/openfoam/openfoam2406/etc/bashrc
+         ls /usr/lib/openfoam/openfoam2406
          CC=${{matrix.compiler.CC}} \
          CXX=${{matrix.compiler.CXX}} \
          cmake --preset ninja-cpuonly-all \
