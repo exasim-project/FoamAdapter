@@ -73,10 +73,7 @@ jobs:
 
      - name: Build NeoFOAM
        run: |
-         ls /opt
-         ls /usr
-         ls /usr/lib
-         ls /usr/lib/openfoam
+         ls /usr/lib/openfoam/openfoam2406/
          source /usr/lib/openfoam/openfoam2406/etc/bashrc
          CC=${{matrix.compiler.CC}}
          CXX=${{matrix.compiler.CXX}}
