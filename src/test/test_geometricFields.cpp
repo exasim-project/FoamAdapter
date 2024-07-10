@@ -30,6 +30,7 @@
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
+#include "FoamAdapter/setup/setup.hpp"
 
 Foam::Time *timePtr;    // A single time object
 Foam::argList *argsPtr; // Some forks want argList access at createMesh.H
@@ -49,7 +50,8 @@ int main(int argc, char *argv[])
 
 #include "setRootCase.H"
 #include "createTime.H"
-#include "createMesh.H"
+    std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+    Foam::fvMesh& mesh = *meshPtr;
     argsPtr = &args;
     timePtr = &runTime;
 
@@ -65,7 +67,8 @@ TEST_CASE("fvccVolField")
 {
     Foam::Time &runTime = *timePtr;
     Foam::argList &args = *argsPtr;
-#include "createMesh.H"
+    std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+    Foam::fvMesh& mesh = *meshPtr;
 
     Foam::volScalarField T(
         Foam::IOobject(

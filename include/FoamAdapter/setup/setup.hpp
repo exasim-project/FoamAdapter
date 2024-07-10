@@ -23,6 +23,7 @@ void setDeltaT(Foam::Time &runTime, Foam::scalar maxCo, Foam::scalar CoNum,
 std::unique_ptr<Foam::fvccNeoMesh> createMesh(const NeoFOAM::executor &exec,
                                               const Foam::Time &runTime);
 
+std::unique_ptr<Foam::fvMesh> createMesh(const Foam::Time &runTime);
 
 NeoFOAM::executor createExecutor(const Foam::dictionary& dict);
 

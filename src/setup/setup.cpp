@@ -59,6 +59,32 @@ std::unique_ptr<Foam::fvccNeoMesh> Foam::createMesh(const NeoFOAM::executor& exe
     return std::make_unique<Foam::fvccNeoMesh>(exec, io);
 }
 
+std::unique_ptr<Foam::fvMesh> Foam::createMesh(const Foam::Time& runTime)
+{
+    std::unique_ptr<Foam::fvMesh> meshPtr;
+    Foam::Info << "Create mesh";
+    Foam::word regionName(Foam::polyMesh::defaultRegion);
+    Foam::Info << " for time = " << runTime.timeName() << Foam::nl;
+
+    meshPtr.reset
+    (
+        new Foam::fvMesh
+        (
+            Foam::IOobject
+            (
+                regionName,
+                runTime.timeName(),
+                runTime,
+                Foam::IOobject::MUST_READ
+            ),
+            false
+        )
+    );
+    meshPtr->init(true);   // initialise all (lower levels and current)
+
+    return meshPtr;
+}
+
 NeoFOAM::executor Foam::createExecutor(const Foam::dictionary& dict)
 {
     auto exec_name = dict.get<Foam::word>("executor");

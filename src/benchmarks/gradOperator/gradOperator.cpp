@@ -70,6 +70,7 @@ Description
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
+#include "FoamAdapter/setup/setup.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -102,7 +103,8 @@ int main(int argc, char *argv[])
 #include "addCheckCaseOptions.H"
 #include "setRootCase.H"
 #include "createTime.H"
-#include "createMesh.H"
+std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+Foam::fvMesh& mesh = *meshPtr;
 #include "createFields.H"
 
         runTime++;
