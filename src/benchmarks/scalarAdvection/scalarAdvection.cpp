@@ -114,10 +114,10 @@ int main(int argc, char *argv[])
 
         Foam::scalar pi = Foam::constant::mathematical::pi;
         {
-            Foam::scalarField X = mesh.C().component(0);
-            Foam::scalarField Y = mesh.C().component(1);
-            Foam::scalarField u = -Foam::sin(2.0*pi*Y)*Foam::pow(Foam::sin(pi*X),2.0);
-            Foam::scalarField w = Foam::sin(2.0*pi*X)*Foam::pow(Foam::sin(pi*Y),2.0);
+        Foam::scalarField X(mesh.C().component(0));
+        Foam::scalarField Y(mesh.C().component(1));
+        Foam::scalarField u(-Foam::sin(2.0*pi*Y)*Foam::pow(Foam::sin(pi*X),2.0));
+        Foam::scalarField w(Foam::sin(2.0*pi*X)*Foam::pow(Foam::sin(pi*Y),2.0));
             forAll(U0,celli)
             {
                 U0[celli].x() = u[celli];
