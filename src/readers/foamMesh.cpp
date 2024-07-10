@@ -41,7 +41,7 @@ NeoFOAM::unstructuredMesh  readOpenFOAMMesh(const NeoFOAM::executor exec, Foam::
     const int32_t nBoundaries = mesh.boundary().size();
     const int32_t nFaces = mesh.nFaces();
 
-    Foam::scalarField magFaceAreas = mag(mesh.faceAreas());
+    Foam::scalarField magFaceAreas(mag(mesh.faceAreas()));
 
     Foam::labelList faceCells = flatBCField<Foam::labelList>(mesh, [](const Foam::fvPatch& patch){ return patch.faceCells(); });
     Foam::vectorField Cf = flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch){ return patch.Cf(); });
