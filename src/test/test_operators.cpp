@@ -12,7 +12,7 @@
 #include "NeoFOAM/fields/Field.hpp"
 #include "NeoFOAM/fields/FieldOperations.hpp"
 #include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/fields/comparisions/fieldComparision.hpp"
+#include "NeoFOAM/fields/comparision/fieldComparison.hpp.hpp"
 
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
