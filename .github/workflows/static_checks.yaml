@@ -13,9 +13,10 @@ jobs:
       with:
         submodules: true # Recursively clone submodules
 
-    - name: Add clang repo
+    - name: Add repos
       run: |
         sudo add-apt-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main'
+        wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | sudo bash
         wget https://apt.llvm.org/llvm-snapshot.gpg.key
         sudo apt-key add llvm-snapshot.gpg.key
 
@@ -28,10 +29,12 @@ jobs:
            clang-16 \
            libomp-16-dev \
            libopenmpi-dev \
-           openmpi-bin
+           openmpi-bin \
+           openfoam2406-dev
 
     - name: Create Compilation Database
       run: |
+        source /usr/lib/openfoam/openfoam2406/etc/bashrc || true
         cmake --preset ninja-cpuonly-all \
           -DNEOFOAM_DEVEL_TOOLS=OFF \
           -DCMAKE_CXX_COMPILER=clang++-16 \
@@ -52,9 +55,10 @@ jobs:
       with:
         submodules: true # Recursively clone submodules
 
-    - name: Add clang repo
+    - name: Add repos
       run: |
         sudo add-apt-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main'
+        wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | sudo bash
         wget https://apt.llvm.org/llvm-snapshot.gpg.key
         sudo apt-key add llvm-snapshot.gpg.key
 
@@ -62,10 +66,13 @@ jobs:
       run: |
         sudo apt update
         sudo apt install \
-           clang-tidy-16 \
+           ninja-build \
+           iwyu \
+           clang-16 \
            libomp-16-dev \
            libopenmpi-dev \
-           openmpi-bin
+           openmpi-bin \
+           openfoam2406-dev
 
     - uses: actions/download-artifact@v4
       with:

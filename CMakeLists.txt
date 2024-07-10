@@ -31,21 +31,16 @@ option(NEOFOAM_ENABLE_PCH "Enable precompiled header" FALSE)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
 
-# add_library(project_options INTERFACE)
-# include(cmake/CompilerWarnings.cmake)
-# add_library(project_warnings INTERFACE)
-# myproject_set_project_warnings(project_warnings ${myproject_WARNINGS_AS_ERRORS}
-#                                FALSE "" "" "")
+# add_library(project_options INTERFACE) include(cmake/CompilerWarnings.cmake)
+# add_library(project_warnings INTERFACE) myproject_set_project_warnings(project_warnings
+# ${myproject_WARNINGS_AS_ERRORS} FALSE "" "" "")
 
-# include(cmake/Sanitizer.cmake)
-# enable_sanitizers(
-#   project_options NEOFOAM_ENABLE_SANITIZE_ADDRESS NEOFOAM_ENABLE_SANITIZE_LEAK
-#   NEOFOAM_ENABLE_SANITIZE_UB NEOFOAM_ENABLE_SANITIZE_THREAD
-#   NEOFOAM_ENABLE_SANITIZE_MEMORY)
+# include(cmake/Sanitizer.cmake) enable_sanitizers( project_options NEOFOAM_ENABLE_SANITIZE_ADDRESS
+# NEOFOAM_ENABLE_SANITIZE_LEAK NEOFOAM_ENABLE_SANITIZE_UB NEOFOAM_ENABLE_SANITIZE_THREAD
+# NEOFOAM_ENABLE_SANITIZE_MEMORY)
 
 if(NEOFOAM_ENABLE_PCH)
-  target_precompile_headers(project_options INTERFACE <vector> <string>
-                            <utility>)
+  target_precompile_headers(project_options INTERFACE <vector> <string> <utility>)
 endif()
 
 include(cmake/StaticAnalyzers.cmake)
@@ -58,14 +53,49 @@ endif()
 
 add_subdirectory(src)
 add_subdirectory(applications)
-# if(NEOFOAM_BUILD_APPS)
-#   add_subdirectory(applications)
-# endif()
 
-# add_custom_target(
-#   cmake-format
-#   COMMAND find . -name CMakeLists.txt -exec cmake-format -i {} +
-#   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+if(NEOFOAM_DEVEL_TOOLS)
+  find_program(PRE_COMMIT pre-commit)
+  if(NOT PRE_COMMIT)
+    message(
+      FATAL_ERROR
+        "The pre-commit command was not found. "
+        "It is necessary if you want to commit changes to NeoFOAM. "
+        "If that is not the case, set NEOFOAM_DEVEL_TOOLS=OFF. "
+        "Otherwise install pre-commit via pipx (or pip) using:\n"
+        "    pipx install pre-commit")
+  endif()
 
-# include(cmake/install_helpers.cmake)
-# FoamAdapter_install()
+  execute_process(
+    COMMAND "${PRE_COMMIT}" "install"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    RESULT_VARIABLE pre-commit-result
+    OUTPUT_VARIABLE pre-commit-output
+    ERROR_VARIABLE pre-commit-error)
+  if(pre-commit-result)
+    message(
+      FATAL_ERROR "Failed to install the git hooks via pre-commit."
+                  "Please check the error message:\n" "${pre-commit-output}\n${pre-commit-error}")
+  endif()
+  if(pre-commit-output MATCHES "^Running in migration mode with existing hooks")
+    message(WARNING "An existing git hook was encountered during `pre-commit install`."
+                    "The old git hook will also be executed."
+                    "Consider removing it with `pre-commit install -f`")
+  elseif(NOT pre-commit-output MATCHES "^pre-commit installed at")
+    message(WARNING "`pre-commit install` did not exit normally."
+                    "Please check the output message:\n" "${pre-commit-output}")
+  endif()
+
+  add_custom_target(
+    pre-commit
+    COMMENT "execute precommit"
+    COMMAND bash -c "${PRE_COMMIT} run"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    VERBATIM)
+endif()
+
+if(NEOFOAM_ENABLE_IWYU)
+  find_program(iwyu_path NAMES include-what-you-use iwyu REQUIRED)
+  set(IWYU_PATH_AND_OPTIONS ${iwyu_path})
+  set_property(TARGET NeoFOAM PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${IWYU_PATH_AND_OPTIONS})
+endif()

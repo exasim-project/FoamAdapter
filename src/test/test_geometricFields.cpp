@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
@@ -30,12 +30,13 @@
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
+#include "FoamAdapter/setup/setup.hpp"
 
-Foam::Time *timePtr;    // A single time object
-Foam::argList *argsPtr; // Some forks want argList access at createMesh.H
-Foam::fvMesh *meshPtr;  // A single mesh object
+Foam::Time* timePtr;    // A single time object
+Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
+Foam::fvMesh* meshPtr;  // A single mesh object
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 
     // Initialize Catch2
@@ -49,7 +50,8 @@ int main(int argc, char *argv[])
 
 #include "setRootCase.H"
 #include "createTime.H"
-#include "createMesh.H"
+    std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+    Foam::fvMesh& mesh = *meshPtr;
     argsPtr = &args;
     timePtr = &runTime;
 
@@ -63,28 +65,21 @@ int main(int argc, char *argv[])
 
 TEST_CASE("fvccVolField")
 {
-    Foam::Time &runTime = *timePtr;
-    Foam::argList &args = *argsPtr;
-#include "createMesh.H"
+    Foam::Time& runTime = *timePtr;
+    Foam::argList& args = *argsPtr;
+    std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+    Foam::fvMesh& mesh = *meshPtr;
 
     Foam::volScalarField T(
         Foam::IOobject(
-            "T",
-            runTime.timeName(),
-            mesh,
-            Foam::IOobject::MUST_READ,
-            Foam::IOobject::AUTO_WRITE),
-        mesh);
+            "T", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
+        ),
+        mesh
+    );
 
-    Foam::volVectorField U
-    (
-        Foam::IOobject
-        (
-            "U",
-            runTime.timeName(),
-            mesh,
-            Foam::IOobject::MUST_READ,
-            Foam::IOobject::AUTO_WRITE
+    Foam::volVectorField U(
+        Foam::IOobject(
+            "U", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
         ),
         mesh
     );
@@ -99,7 +94,7 @@ TEST_CASE("fvccVolField")
 
     SECTION("fvccVolField_[scalar]" + exec_name)
     {
-        
+
         Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
         NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
@@ -117,7 +112,7 @@ TEST_CASE("fvccVolField")
 
     SECTION("fvccVolField_[vector]" + exec_name)
     {
-        
+
         Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
         NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 

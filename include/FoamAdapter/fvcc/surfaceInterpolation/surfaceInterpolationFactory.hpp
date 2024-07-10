@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
@@ -11,30 +11,22 @@ namespace Foam
 using namespace NeoFOAM;
 class surfaceInterpolationFactory
 {
-    public:
+public:
+
     //- Runtime type information
     // TypeName("surfaceInterpolationFactory");
 
-    declareRunTimeSelectionTable
-    (
+    declareRunTimeSelectionTable(
         autoPtr,
         surfaceInterpolationKernel,
         dictionary,
-        (
-            const executor& exec,
-            const unstructuredMesh& mesh
-        ),
+        (const executor& exec, const unstructuredMesh& mesh),
         (exec, mesh)
     );
 
     //- Return a reference to the selected phaseChange model
-    static autoPtr<surfaceInterpolationKernel> New
-    (
-        const executor& exec,
-        const unstructuredMesh& mesh
-    );
-
-
+    static autoPtr<surfaceInterpolationKernel>
+    New(const executor& exec, const unstructuredMesh& mesh);
 };
 
 }; // namespace NeoFOAM

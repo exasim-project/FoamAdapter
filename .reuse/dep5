@@ -1,0 +1,52 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: NeoFOAM
+Upstream-Contact: NeoFOAM authors
+Source: https://github.com/exasim-project/NeoFOAM
+
+Files: .github/*
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: .vscode/*.json
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: README.md
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: CHANGELOG.md
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: AUTHORS.md
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: doc/*
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: CMakePresets.json
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: .clang-format .clang-tidy .gitmodules
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: .pre-commit-config.yaml spack.yaml environment.yml
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: benchmark/*
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: tests/*
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
+
+Files: install_t8code.sh
+Copyright: 2023 NeoFOAM authors
+License: Unlicense
