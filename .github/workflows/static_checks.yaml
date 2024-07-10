@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: true # Recursively clone submodules
 
     - name: Add clang repo
       run: |
@@ -47,6 +49,8 @@ jobs:
     needs: [build-compilation-db]
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: true # Recursively clone submodules
 
     - name: Add clang repo
       run: |
@@ -95,6 +99,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: true # Recursively clone submodules
     - name: Install dependencies
       run: |
         sudo apt update
