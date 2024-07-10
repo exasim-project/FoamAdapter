@@ -141,7 +141,7 @@ TEST_CASE("Interpolation")
         }
 
         T.correctBoundaryConditions();
-        Foam::surfaceScalarField surfT = foamInterPol->interpolate(T);
+        Foam::surfaceScalarField surfT (foamInterPol->interpolate(T));
 
         NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
