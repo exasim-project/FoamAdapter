@@ -73,13 +73,13 @@ jobs:
 
      - name: Build NeoFOAM
        run: |
+         source /usr/lib/openfoam/openfoam2312/etc/bashrc \
          CC=${{matrix.compiler.CC}} \
          CXX=${{matrix.compiler.CXX}} \
-         ./build.sh
-        #  cmake --preset ninja-cpuonly-all \
-        #    -DNEOFOAM_DEVEL_TOOLS=OFF \
-        #    -DNEOFOAM_ENABLE_MPI_WITH_THREAD_SUPPORT=OFF
-        #  cmake --build  --preset ninja-cpuonly-all
+         cmake --preset ninja-cpuonly-all \
+           -DNEOFOAM_DEVEL_TOOLS=OFF \
+           -DNEOFOAM_ENABLE_MPI_WITH_THREAD_SUPPORT=OFF
+         cmake --build  --preset ninja-cpuonly-all
 
      - name: Execute unit tests NeoFOAM
        run: |
