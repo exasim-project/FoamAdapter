@@ -74,7 +74,9 @@ jobs:
      - name: Build NeoFOAM
        run: |
          ls /opt \
-         openfoam2406 -c 'which icoFoam'
+         ls /usr \
+         ls /usr/lib \
+         ls /usr/lib/openfoam \
          source /usr/lib/openfoam/openfoam2406/etc/bashrc \
          CC=${{matrix.compiler.CC}} \
          CXX=${{matrix.compiler.CXX}} \
