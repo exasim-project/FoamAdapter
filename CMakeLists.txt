@@ -9,50 +9,86 @@ project(
   VERSION 0.1.0
   DESCRIPTION "An implementation of FOAM")
 
-add_subdirectory(NeoFOAM)
-
-include(cmake/PreventInSourceBuilds.cmake)
-include(cmake/StandardProjectSettings.cmake)
-
-option(NEOFOAM_DP_SCALAR "double precision scalar" TRUE)
-option(NEOFOAM_DP_LABELS "double precision label" TRUE)
-option(NEOFOAM_BUILD_APPS "Build the applications folder" TRUE)
-option(NEOFOAM_BUILD_TESTS "Build the unit tests" TRUE)
-
-option(NEOFOAM_ENABLE_SANITIZE_ADDRESS "Enable address sanitizer" FALSE)
-option(NEOFOAM_ENABLE_SANITIZE_LEAK "Enable leak sanitizer" FALSE)
-option(NEOFOAM_ENABLE_SANITIZE_UB "Enable undefined behaviour sanitizer" FALSE)
-option(NEOFOAM_ENABLE_SANITIZE_THREAD "Enable thread sanitizer" FALSE)
-option(NEOFOAM_ENABLE_SANITIZE_MEMORY "Enable memory sanitizer" FALSE)
-option(NEOFOAM_ENABLE_CPP_CHECK "Enable cpp check static analyzer" FALSE)
-option(NEOFOAM_ENABLE_CLANG_TIDY "Enable clang tidy static analyzer" FALSE)
-option(NEOFOAM_ENABLE_PCH "Enable precompiled header" FALSE)
-
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
 
-# add_library(project_options INTERFACE) include(cmake/CompilerWarnings.cmake)
-# add_library(project_warnings INTERFACE) myproject_set_project_warnings(project_warnings
-# ${myproject_WARNINGS_AS_ERRORS} FALSE "" "" "")
+# Add the cmake folder so the find_package command finds custom packages
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
-# include(cmake/Sanitizer.cmake) enable_sanitizers( project_options NEOFOAM_ENABLE_SANITIZE_ADDRESS
-# NEOFOAM_ENABLE_SANITIZE_LEAK NEOFOAM_ENABLE_SANITIZE_UB NEOFOAM_ENABLE_SANITIZE_THREAD
-# NEOFOAM_ENABLE_SANITIZE_MEMORY)
+# Set the output directories for all binaries and libraries
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-if(NEOFOAM_ENABLE_PCH)
+# Eventhough we compile NeoFOAM as SHARED library we need to explicitly enable PIC for all targets
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+if(NOT DEFINED CPM_USE_LOCAL_PACKAGES)
+  message(STATUS "Set CPM_USE_LOCAL_PACKAGES=ON by default.")
+  set(CPM_USE_LOCAL_PACKAGES ON)
+endif()
+
+if(NOT CMAKE_BUILD_TYPE)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE
+      Release
+      CACHE STRING "Choose the type of build." FORCE)
+endif()
+
+if(NOT DEFINED CMAKE_EXPORT_COMPILE_COMMANDS)
+  message(STATUS "Enabling generation of compilation database.")
+  set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
+
+include(cmake/CxxThirdParty.cmake)
+include(cmake/PreventInSourceBuilds.cmake)
+include(cmake/StandardProjectSettings.cmake)
+include(cmake/CompilerWarnings.cmake)
+include(cmake/Sanitizer.cmake)
+include(cmake/StaticAnalyzers.cmake)
+include(cmake/FoamAdapaterConfig.cmake)
+
+add_library(project_options INTERFACE)
+add_library(project_warnings INTERFACE)
+myproject_set_project_warnings(project_warnings ${myproject_WARNINGS_AS_ERRORS} FALSE "" "" "")
+
+if(NEOFOAM_BUILD_PCH)
   target_precompile_headers(project_options INTERFACE <vector> <string> <utility>)
 endif()
 
-include(cmake/StaticAnalyzers.cmake)
 if(NEOFOAM_ENABLE_CPP_CHECK)
-  myproject_enable_cppcheck(FALSE "")
-endif()
-if(NEOFOAM_ENABLE_CLANG_TIDY)
-  myproject_enable_cppcheck(FALSE "")
+  neofoam_enable_cppcheck(FALSE "")
 endif()
 
+if(NEOFOAM_ENABLE_CLANG_TIDY)
+  neofoam_enable_clang_tidy(FALSE "")
+endif()
+
+add_subdirectory(NeoFOAM)
 add_subdirectory(src)
-add_subdirectory(applications)
+
+if(NEOFOAM_BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(test)
+endif()
+
+if(NEOFOAM_BUILD_BENCHMARKS)
+  add_subdirectory(benchmarks)
+endif()
+
+if(${NEOFOAM_DP_SCALAR})
+  target_compile_definitions(NeoFOAM PUBLIC NEOFOAM_DP_SCALAR=1)
+endif()
+if(${NEOFOAM_DP_LABEL})
+  target_compile_definitions(NeoFOAM PUBLIC NEOFOAM_DP_LABEL=1)
+endif()
+if(${NEOFOAM_ENABLE_MPI_WITH_THREAD_SUPPORT})
+  target_compile_definitions(NeoFOAM PUBLIC NEOFOAM_MPI_THREAD=1)
+endif()
+
+if(NEOFOAM_BUILD_DOC)
+  include(cmake/Docs.cmake)
+  neofoam_build_docs()
+endif()
 
 if(NEOFOAM_DEVEL_TOOLS)
   find_program(PRE_COMMIT pre-commit)

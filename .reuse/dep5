@@ -39,7 +39,7 @@ Files: .pre-commit-config.yaml spack.yaml environment.yml
 Copyright: 2023 NeoFOAM authors
 License: Unlicense
 
-Files: benchmark/*
+Files: benchmarkSuite/*
 Copyright: 2023 NeoFOAM authors
 License: Unlicense
 

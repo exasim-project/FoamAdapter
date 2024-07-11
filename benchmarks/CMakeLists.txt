@@ -7,11 +7,8 @@
 # )
 # FetchContent_MakeAvailable(googletest)
 
-# include(FetchContent)
-# FetchContent_Declare(
-#   googlebenchmark
-#   URL https://github.com/google/benchmark/archive/refs/tags/v1.8.3.zip
-# )
+# include(FetchContent) FetchContent_Declare( googlebenchmark URL
+# https://github.com/google/benchmark/archive/refs/tags/v1.8.3.zip )
 
 # FetchContent_MakeAvailable(googlebenchmark)
 

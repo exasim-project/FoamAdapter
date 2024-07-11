@@ -4,11 +4,11 @@ add_executable(gradOperator "gradOperator.cpp")
 
 set_target_properties(gradOperator PROPERTIES CXX_STANDARD 17)
 
-target_compile_definitions(gradOperator PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306 OMPI_SKIP_MPICXX)
+target_compile_definitions(gradOperator PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306
+                                               OMPI_SKIP_MPICXX)
 
 target_include_directories(
-gradOperator
- SYSTEM
+  gradOperator SYSTEM
   PUBLIC $ENV{FOAM_SRC}/finiteVolume/lnInclude
          $ENV{FOAM_SRC}/meshTools/lnInclude
          $ENV{FOAM_SRC}/meshTools/lnInclude
@@ -28,4 +28,3 @@ target_link_libraries(
          Kokkos::kokkos)
 
 install(TARGETS gradOperator DESTINATION bin)
-
