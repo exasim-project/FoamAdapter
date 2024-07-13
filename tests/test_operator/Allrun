@@ -10,7 +10,7 @@ runApplication blockMesh
 
 runApplication ../../build/src/test/test_unstructuredMesh
 runApplication ../../build/src/test/test_geometricFields
-runApplication ../../build/src/test/test_operators 
+runApplication ../../build/src/test/test_operators
 
 
 

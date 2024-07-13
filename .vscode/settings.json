@@ -1,8 +1,8 @@
 {
-    "cmake.configureOnOpen": true,
-    "files.associations": {
-        "*.H": "cpp",
-        "*.C": "cpp"
-    },
-    "C_Cpp.errorSquiggles": "enabled"
+  "cmake.configureOnOpen": true,
+  "files.associations": {
+    "*.H": "cpp",
+    "*.C": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "enabled"
 }
