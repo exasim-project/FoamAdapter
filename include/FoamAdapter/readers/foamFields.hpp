@@ -9,7 +9,6 @@
 #include "NeoFOAM/fields/field.hpp"
 
 #include "FoamAdapter/conversion/type_conversion.hpp"
-#include "FoamAdapter/readers/foamBCFields.hpp"
 
 namespace Foam
 {
@@ -69,9 +68,9 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const Foa
         Foam::dictionary patchDict = bDict.subDict(bName);
         Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
         Foam::word type = patchDict.get<Foam::word>("type");
-        NeoFOAM::Dictionary npatchDict;
-        npatchDict.insert("type", std::string(type));
-        bcs.push_back(readVolBoundaryCondition<type_primitive_t>(uMesh, patchi, npatchDict));
+        NeoFOAM::Dictionary neoPatchDict;
+        neoPatchDict.insert("type", std::string(type));
+        bcs.push_back(VolumeBoundary<type_primitive_t>(uMesh, patchi, neoPatchDict));
         patchi++;
     }
     return bcs;
