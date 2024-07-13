@@ -3,8 +3,6 @@
 
 add_library(FoamAdapter)
 
-# find_package(Kokkos REQUIRED) find_package(MPI REQUIRED) find_package(ZLIB REQUIRED)
-set_target_properties(FoamAdapter PROPERTIES CXX_STANDARD 17) # does not compile with c++20
 target_compile_definitions(FoamAdapter PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306
                                               OMPI_SKIP_MPICXX)
 
