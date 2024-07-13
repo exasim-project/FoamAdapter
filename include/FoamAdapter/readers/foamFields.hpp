@@ -101,28 +101,28 @@ auto readSurfaceBoundaryConditions(
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    //     std::vector<std::unique_ptr<fvcc::fvccSurfaceBoundaryField<type_primitive_t>>> bcs;
+    std::vector<std::unique_ptr<fvcc::SurfaceBoundary<type_primitive_t>>> bcs;
 
-    //     // get boundary as dictionary
-    //     Foam::OStringStream os;
-    //     surfaceField.boundaryField().writeEntries(os);
-    //     Foam::IStringStream is(os.str());
-    //     Foam::dictionary bDict(is);
-    //     Foam::wordList bNames = bDict.toc();
-    //     int patchi = 0;
+    // get boundary as dictionary
+    Foam::OStringStream os;
+    surfaceField.boundaryField().writeEntries(os);
+    Foam::IStringStream is(os.str());
+    Foam::dictionary bDict(is);
+    Foam::wordList bNames = bDict.toc();
+    int patchi = 0;
 
-    //     for (const auto& bName : bNames)
-    //     {
-    //         Foam::Info << "Boundary name: " << bName << Foam::endl;
-    //         Foam::dictionary patchDict = bDict.subDict(bName);
-    //         Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
-    //         Foam::word type = patchDict.get<Foam::word>("type");
-    //         NeoFOAM::Dictionary npatchDict;
-    //         npatchDict.insert("type", std::string(type));
-    //         bcs.push_back(readSurfaceBoundaryCondition<type_primitive_t>(uMesh, patchi,
-    //         npatchDict)); patchi++;
-    //     }
-    //     return bcs;
+    for (const auto& bName : bNames)
+    {
+        Foam::Info << "Boundary name: " << bName << Foam::endl;
+        Foam::dictionary patchDict = bDict.subDict(bName);
+        Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
+        Foam::word type = patchDict.get<Foam::word>("type");
+        NeoFOAM::Dictionary npatchDict;
+        npatchDict.insert("type", std::string(type));
+        bcs.push_back(SurfaceBoundary<type_primitive_t>(uMesh, patchi, npatchDict));
+        patchi++;
+    }
+    return bcs;
 }
 
 template<typename FoamType>
