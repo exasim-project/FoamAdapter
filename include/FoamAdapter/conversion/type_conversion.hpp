@@ -3,15 +3,16 @@
 #pragma once
 
 #include "FoamAdapter/conversion/convert.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccSurfaceField.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
+#include "NeoFOAM/fields/field.hpp"
 #include "volFields.H"
 #include "surfaceFields.H"
 
 namespace Foam
 {
+
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 template<typename From>
 struct type_map
 {
@@ -21,28 +22,28 @@ struct type_map
 template<>
 struct type_map<Foam::GeometricField<Foam::scalar, Foam::fvPatchField, Foam::volMesh>>
 {
-    using container_type = NeoFOAM::fvccVolField<NeoFOAM::scalar>;
+    using container_type = fvcc::VolumeField<NeoFOAM::scalar>;
     using mapped_type = NeoFOAM::scalar;
 };
 
 template<>
 struct type_map<Foam::GeometricField<Foam::vector, Foam::fvPatchField, Foam::volMesh>>
 {
-    using container_type = NeoFOAM::fvccVolField<NeoFOAM::Vector>;
+    using container_type = fvcc::VolumeField<NeoFOAM::Vector>;
     using mapped_type = NeoFOAM::Vector;
 };
 
 template<>
 struct type_map<Foam::GeometricField<Foam::scalar, Foam::fvsPatchField, Foam::surfaceMesh>>
 {
-    using container_type = NeoFOAM::fvccSurfaceField<NeoFOAM::scalar>;
+    using container_type = fvcc::SurfaceField<NeoFOAM::scalar>;
     using mapped_type = NeoFOAM::scalar;
 };
 
 template<>
 struct type_map<Foam::GeometricField<Foam::vector, Foam::fvsPatchField, Foam::surfaceMesh>>
 {
-    using container_type = NeoFOAM::fvccSurfaceField<NeoFOAM::Vector>;
+    using container_type = fvcc::SurfaceField<NeoFOAM::Vector>;
     using mapped_type = NeoFOAM::Vector;
 };
 

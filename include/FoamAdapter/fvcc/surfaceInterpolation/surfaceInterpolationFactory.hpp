@@ -4,7 +4,7 @@
 
 #include "typeInfo.H"
 #include "runTimeSelectionTables.H"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolation.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolation.hpp"
 
 namespace Foam
 {
@@ -18,15 +18,15 @@ public:
 
     declareRunTimeSelectionTable(
         autoPtr,
-        surfaceInterpolationKernel,
+        SurfaceInterpolationKernel,
         dictionary,
-        (const executor& exec, const unstructuredMesh& mesh),
+        (const Executor& exec, const UnstructuredMesh& mesh),
         (exec, mesh)
     );
 
     //- Return a reference to the selected phaseChange model
-    static autoPtr<surfaceInterpolationKernel>
-    New(const executor& exec, const unstructuredMesh& mesh);
+    static autoPtr<SurfaceInterpolationKernel>
+    New(const Executor& exec, const UnstructuredMesh& mesh);
 };
 
 }; // namespace NeoFOAM

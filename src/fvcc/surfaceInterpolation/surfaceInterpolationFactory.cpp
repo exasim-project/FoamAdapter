@@ -11,22 +11,22 @@ defineRunTimeSelectionTable(surfaceInterpolationFactory, dictionary);
 
 } // namespace NeoFOAM
 
-Foam::autoPtr<Foam::surfaceInterpolationKernel> Foam::surfaceInterpolationFactory::New(
-    const NeoFOAM::executor& exec, const NeoFOAM::unstructuredMesh& mesh
+Foam::autoPtr<Foam::SurfaceInterpolationKernel> Foam::surfaceInterpolationFactory::New(
+    const NeoFOAM::Executor& exec, const NeoFOAM::UnstructuredMesh& mesh
 )
 {
     word schemeType("isoAlpha");
 
-    Info << "Selecting surfaceInterpolationKernel: " << schemeType << endl;
+    Info << "Selecting SurfaceInterpolationKernel: " << schemeType << endl;
 
     auto* ctorPtr = dictionaryConstructorTable(schemeType);
 
     if (!ctorPtr)
     {
         FatalErrorInLookup(
-            "surfaceInterpolationKernels", schemeType, *dictionaryConstructorTablePtr_
+            "SurfaceInterpolationKernels", schemeType, *dictionaryConstructorTablePtr_
         ) << exit(FatalIOError);
     }
 
-    return autoPtr<surfaceInterpolationKernel>(ctorPtr(exec, mesh));
+    return autoPtr<SurfaceInterpolationKernel>(ctorPtr(exec, mesh));
 }

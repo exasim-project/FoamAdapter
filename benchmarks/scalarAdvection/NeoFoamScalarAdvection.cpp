@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 #include "addCheckCaseOptions.H"
 #include "setRootCase.H"
 #include "createTime.H"
-        NeoFOAM::executor exec = Foam::createExecutor(runTime.controlDict());
+        NeoFOAM::Executor exec = Foam::createExecutor(runTime.controlDict());
 
         std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
         Foam::fvccNeoMesh& mesh = *meshPtr;

@@ -84,10 +84,10 @@ TEST_CASE("fvccVolField")
         mesh
     );
 
-    NeoFOAM::executor exec = GENERATE(
-        NeoFOAM::executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::executor(NeoFOAM::OMPExecutor {}),
-        NeoFOAM::executor(NeoFOAM::GPUExecutor {})
+    NeoFOAM::Executor exec = GENERATE(
+        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 

@@ -27,5 +27,5 @@ target_link_libraries(
 target_sources(
   FoamAdapter
   PRIVATE "conversion/convert.cpp" "setup/setup.cpp" "readers/foamMesh.cpp"
-          "fvcc/mesh/fvccNeoMesh.cpp" "fvcc/surfaceInterpolation/surfaceInterpolationFactory.cpp"
-          "fvcc/surfaceInterpolation/surfaceInterpolations.cpp")
+          "fvcc/mesh/fvccNeoMesh.cpp" "fvcc/surfaceInterpolation/surfaceInterpolationFactory.cpp")
+# "fvcc/surfaceInterpolation/surfaceInterpolations.cpp")

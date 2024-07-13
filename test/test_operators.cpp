@@ -99,10 +99,10 @@ TEST_CASE("Interpolation")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoFOAM::executor exec = GENERATE(
-        NeoFOAM::executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::executor(NeoFOAM::OMPExecutor {}),
-        NeoFOAM::executor(NeoFOAM::GPUExecutor {})
+    NeoFOAM::Executor exec = GENERATE(
+        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
 
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
@@ -110,7 +110,7 @@ TEST_CASE("Interpolation")
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 
     Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
-    NeoFOAM::unstructuredMesh& uMesh = mesh.uMesh();
+    NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
@@ -151,7 +151,7 @@ TEST_CASE("Interpolation")
 
         SECTION("linear")
         {
-            // std::unique_ptr<NeoFOAM::surfaceInterpolationKernel> linearKernel(new
+            // std::unique_ptr<NeoFOAM::SurfaceInterpolationKernel> linearKernel(new
             // NeoFOAM::linear(exec, uMesh));
 
             NeoFOAM::surfaceInterpolation interp(
@@ -173,20 +173,20 @@ TEST_CASE("GradOperator")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoFOAM::executor exec = GENERATE(
-        NeoFOAM::executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::executor(NeoFOAM::OMPExecutor {}),
-        NeoFOAM::executor(NeoFOAM::GPUExecutor {})
+    NeoFOAM::Executor exec = GENERATE(
+        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
 
-    // NeoFOAM::executor exec = NeoFOAM::CPUExecutor{};
+    // NeoFOAM::Executor exec = NeoFOAM::CPUExecutor{};
 
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 
     Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
     Foam::fvccNeoMesh& mesh = *meshPtr;
-    NeoFOAM::unstructuredMesh& uMesh = mesh.uMesh();
+    NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
@@ -246,10 +246,10 @@ TEST_CASE("DivOperator")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoFOAM::executor exec = GENERATE(
-        NeoFOAM::executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::executor(NeoFOAM::OMPExecutor {}),
-        NeoFOAM::executor(NeoFOAM::GPUExecutor {})
+    NeoFOAM::Executor exec = GENERATE(
+        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
 
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
@@ -257,7 +257,7 @@ TEST_CASE("DivOperator")
     Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
     Foam::fvccNeoMesh& mesh = *meshPtr;
-    NeoFOAM::unstructuredMesh& uMesh = mesh.uMesh();
+    NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
     SECTION("gaussDiv_scalar_" + exec_name)
     {

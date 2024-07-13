@@ -77,18 +77,17 @@ TEST_CASE("unstructuredMesh")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
-    NeoFOAM::executor exec = GENERATE(
-        NeoFOAM::executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::executor(NeoFOAM::OMPExecutor {}),
-        NeoFOAM::executor(NeoFOAM::GPUExecutor {})
+    NeoFOAM::Executor exec = GENERATE(
+        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
-    // NeoFOAM::executor exec = NeoFOAM::CPUExecutor {};
-    // NeoFOAM::executor exec = NeoFOAM::CPUExecutor{};
+
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
     Foam::fvccNeoMesh& mesh = *meshPtr;
-    const NeoFOAM::unstructuredMesh& uMesh = mesh.uMesh();
+    const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
     SECTION("Fields" + exec_name)
     {
@@ -365,17 +364,17 @@ TEST_CASE("fvccGeometryScheme")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
-    NeoFOAM::executor exec = GENERATE(
-        NeoFOAM::executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::executor(NeoFOAM::OMPExecutor {}),
-        NeoFOAM::executor(NeoFOAM::GPUExecutor {})
+    NeoFOAM::Executor exec = GENERATE(
+        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
-    // NeoFOAM::executor exec = NeoFOAM::CPUExecutor{};
+    // NeoFOAM::Executor exec = NeoFOAM::CPUExecutor{};
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
     Foam::fvccNeoMesh& mesh = *meshPtr;
-    const NeoFOAM::unstructuredMesh& uMesh = mesh.uMesh();
+    const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
     SECTION("BasicFvccGeometryScheme" + exec_name)
     {

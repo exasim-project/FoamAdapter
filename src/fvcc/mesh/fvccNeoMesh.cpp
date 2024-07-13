@@ -18,7 +18,7 @@ defineTypeNameAndDebug(fvccNeoMesh, 0);
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::executor exec, const IOobject& io, const bool doInit)
+Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io, const bool doInit)
     : fvMesh(io, doInit), uMesh_(readOpenFOAMMesh(exec, *this))
 {
     if (doInit)
@@ -29,14 +29,14 @@ Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::executor exec, const IOobject& io,
 
 
 Foam::fvccNeoMesh::fvccNeoMesh(
-    const NeoFOAM::executor exec, const IOobject& io, const Foam::zero, bool syncPar
+    const NeoFOAM::Executor exec, const IOobject& io, const Foam::zero, bool syncPar
 )
     : fvMesh(io, Foam::zero {}, syncPar), uMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 
 Foam::fvccNeoMesh::fvccNeoMesh(
-    const NeoFOAM::executor exec,
+    const NeoFOAM::Executor exec,
     const IOobject& io,
     pointField&& points,
     faceList&& faces,
@@ -57,7 +57,7 @@ Foam::fvccNeoMesh::fvccNeoMesh(
 
 
 Foam::fvccNeoMesh::fvccNeoMesh(
-    const NeoFOAM::executor exec,
+    const NeoFOAM::Executor exec,
     const IOobject& io,
     pointField&& points,
     faceList&& faces,

@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 
 
         {
-            NeoFOAM::executor exec = NeoFOAM::GPUExecutor();
+            NeoFOAM::Executor exec = NeoFOAM::GPUExecutor();
             Foam::Info << "reading mesh" << Foam::endl;
             NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
         }
 
         {
-            NeoFOAM::executor exec = NeoFOAM::CPUExecutor();
+            NeoFOAM::Executor exec = NeoFOAM::CPUExecutor();
             Foam::Info << "reading mesh" << Foam::endl;
             NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
         }
 
         {
-            NeoFOAM::executor exec = NeoFOAM::OMPExecutor();
+            NeoFOAM::Executor exec = NeoFOAM::OMPExecutor();
             Foam::Info << "reading mesh" << Foam::endl;
             NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
