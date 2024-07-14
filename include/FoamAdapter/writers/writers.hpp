@@ -3,7 +3,7 @@
 #pragma once
 
 #include "FoamAdapter/conversion/convert.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
+#include "NeoFOAM/fields/field.hpp"
 #include "fvMesh.H"
 #include "volFields.H"
 
@@ -16,7 +16,7 @@ void write(NeoFOAM::scalarField& sf, const Foam::fvMesh& mesh, const std::string
     if (field)
     {
         // field is already present and needs to be updated
-        auto sf_host = sf.copyToHost().field();
+        auto sf_host = sf.copyToHost().span();
         Foam::scalarField& field_ref = field->ref();
         for (int i = 0; i < field_ref.size(); i++)
         {
@@ -37,7 +37,7 @@ void write(NeoFOAM::scalarField& sf, const Foam::fvMesh& mesh, const std::string
             mesh,
             Foam::dimensionedScalar(Foam::dimless, 0)
         );
-        auto sf_host = sf.copyToHost().field();
+        auto sf_host = sf.copyToHost().span();
         Foam::scalarField& field_ref = foamField.ref();
         for (int i = 0; i < field_ref.size(); i++)
         {
@@ -53,7 +53,7 @@ void write(NeoFOAM::vectorField& sf, const Foam::fvMesh& mesh, const std::string
     if (field)
     {
         // field is already present and needs to be updated
-        auto sf_host = sf.copyToHost().field();
+        auto sf_host = sf.copyToHost().span();
         Foam::vectorField& field_ref = field->ref();
         for (int i = 0; i < field_ref.size(); i++)
         {
@@ -74,7 +74,7 @@ void write(NeoFOAM::vectorField& sf, const Foam::fvMesh& mesh, const std::string
             mesh,
             Foam::dimensionedVector(Foam::dimless, Foam::Zero)
         );
-        auto sf_host = sf.copyToHost().field();
+        auto sf_host = sf.copyToHost().span();
         Foam::vectorField& field_ref = foamField.ref();
         for (int i = 0; i < field_ref.size(); i++)
         {

@@ -6,7 +6,7 @@
 #include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/div/gaussGreenDiv.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolationSelector.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolationSelector.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
@@ -52,8 +52,8 @@ int main(int argc, char* argv[])
         T.write();
         // creating neofoam fields
         Foam::Info << "creating neofoam mesh" << Foam::endl;
-        NeoFOAM::unstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
+        NeoFOAM::UnstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
+        fvcc::VolumeField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
 
         NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 
         Foam::volScalarField ofDivT("ofDivT", Foam::fvc::div(phi, T));
 
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
+        fvcc::VolumeField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
         NeoFOAM::fill(neoDivT.internalField(), 0.0);
         NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
 
@@ -134,8 +134,8 @@ int main(int argc, char* argv[])
                 // neoT.internalField() = neoT.internalField() - neoDivT.internalField() *
                 // runTime.deltaT().value();
                 double dt = runTime.deltaT().value();
-                auto s_neoT = neoT.internalField().field();
-                auto s_neoDivT = neoDivT.internalField().field();
+                auto s_neoT = neoT.internalField().span();
+                auto s_neoDivT = neoDivT.internalField().span();
                 neoT.internalField().apply(KOKKOS_LAMBDA(const int celli) {
                     return s_neoT[celli] + dt * s_neoDivT[celli];
                 });

@@ -7,23 +7,16 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
 
-#include "NeoFOAM/fields/Field.hpp"
-#include "NeoFOAM/fields/FieldOperations.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/fields/comparisions/fieldComparision.hpp"
+#include "NeoFOAM/fields/field.hpp"
 
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccSurfaceField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarZeroGradientBoundaryField.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred.hpp"
 
-#include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/linear.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/upwind.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolation.hpp"
+#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/linear.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/upwind.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolation.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -63,7 +56,17 @@ int main(int argc, char* argv[])
     return result;
 }
 
-TEST_CASE("fvccVolField")
+template<typename ValueType>
+void checkField(const NeoFOAM::Field<ValueType>& field, ValueType value)
+{
+    auto field_host = field.copyToHost().span();
+    for (int i = 0; i < field_host.size(); i++)
+    {
+        REQUIRE(field_host[i] == value);
+    }
+}
+
+TEST_CASE("fvcc::VolumeField")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
@@ -96,35 +99,37 @@ TEST_CASE("fvccVolField")
     {
 
         Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
-        NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
+        NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        NeoFOAM::fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
 
+        REQUIRE(neoT.internalField().size() == T.internalField().size());
         fill(neoT.internalField(), 1.0);
-        REQUIRE(compare(neoT.internalField(), 1.0));
+        checkField(neoT.internalField(), 1.0);
         neoT.correctBoundaryConditions();
-        REQUIRE(compare(neoT.boundaryField().value(), 1.0));
+        checkField(neoT.boundaryField().value(), 1.0);
 
         fill(neoT.internalField(), 2.0);
         neoT.correctBoundaryConditions();
-        REQUIRE(compare(neoT.boundaryField().value(), 2.0));
+        checkField(neoT.boundaryField().value(), 2.0);
     }
 
     SECTION("fvccVolField_[vector]" + exec_name)
     {
 
         Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
-        NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
+        NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-        NeoFOAM::fvccVolField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
+        NeoFOAM::fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
 
+        REQUIRE(neoU.internalField().size() == U.internalField().size());
         fill(neoU.internalField(), NeoFOAM::Vector(1.0, 1.0, 1.0));
-        REQUIRE(compare(neoU.internalField(), NeoFOAM::Vector(1.0, 1.0, 1.0)));
+        checkField(neoU.internalField(), NeoFOAM::Vector(1.0, 1.0, 1.0));
         neoU.correctBoundaryConditions();
-        REQUIRE(compare(neoU.boundaryField().value(), NeoFOAM::Vector(1.0, 1.0, 1.0)));
+        checkField(neoU.boundaryField().value(), NeoFOAM::Vector(1.0, 1.0, 1.0));
 
         fill(neoU.internalField(), NeoFOAM::Vector(2.0, 2.0, 2.0));
         neoU.correctBoundaryConditions();
-        REQUIRE(compare(neoU.boundaryField().value(), NeoFOAM::Vector(2.0, 2.0, 2.0)));
+        checkField(neoU.boundaryField().value(), NeoFOAM::Vector(2.0, 2.0, 2.0));
     }
 }

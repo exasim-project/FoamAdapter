@@ -3,7 +3,7 @@
 
 add_executable(matrixAssembly "matrixAssembly.cpp")
 
-set_target_properties(matrixAssembly PROPERTIES CXX_STANDARD 17)
+set_target_properties(matrixAssembly PROPERTIES CXX_STANDARD 20)
 
 target_compile_definitions(matrixAssembly PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306
                                                  OMPI_SKIP_MPICXX)

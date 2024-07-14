@@ -6,7 +6,7 @@
 #include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
 #include "NeoFOAM/cellCentredFiniteVolume/div/gaussGreenDiv.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolationSelector.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolationSelector.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
@@ -52,12 +52,12 @@ int main(int argc, char* argv[])
         T.write();
         // creating neofoam fields
         Foam::Info << "creating neofoam mesh" << Foam::endl;
-        NeoFOAM::unstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
+        NeoFOAM::UnstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
+        fvcc::VolumeField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
-        // NeoFOAM::fvccVolField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
+        // fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
 
-        // auto s_cc = uMesh.cellCentres().field();
+        // auto s_cc = uMesh.cellCentres().span();
         // neoT.internalField().apply(KOKKOS_LAMBDA(int celli)
         // {
         //     return std::exp(-0.5 * (std::pow((s_cc[celli][0] - 0.5) / spread, 2.0) +
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 
         Foam::volScalarField ofDivT("ofDivT", Foam::fvc::div(phi, T));
 
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
+        fvcc::VolumeField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
         NeoFOAM::fill(neoDivT.internalField(), 0.0);
         NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
 

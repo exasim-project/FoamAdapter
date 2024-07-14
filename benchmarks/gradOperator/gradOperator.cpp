@@ -46,7 +46,7 @@ template<typename T>
 void print_field(NeoFOAM::Field<T> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
-    auto tmp_view = a.copyToHost().field();
+    auto tmp_view = a.copyToHost().span();
     for (int i = 0; i < a.size(); i++)
     {
         std::cout << "tmp_view: " << tmp_view[i] << " at: " << i << std::endl;
@@ -56,7 +56,7 @@ template<>
 void print_field(NeoFOAM::Field<NeoFOAM::Vector> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
-    auto tmp_view = a.copyToHost().field();
+    auto tmp_view = a.copyToHost().span();
     for (int i = 0; i < a.size(); i++)
     {
         std::cout << "tmp_view: " << tmp_view[i](0) << " " << tmp_view[i](1) << " "
@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
         {
             NeoFOAM::Executor exec = NeoFOAM::GPUExecutor();
             Foam::Info << "reading mesh" << Foam::endl;
-            NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
+            NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
             NeoFOAM::scalarField Temperature(exec, T.internalField().size());
             Temperature.apply(KOKKOS_LAMBDA(int i) { return i; });
@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
         {
             NeoFOAM::Executor exec = NeoFOAM::CPUExecutor();
             Foam::Info << "reading mesh" << Foam::endl;
-            NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
+            NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
             NeoFOAM::scalarField Temperature(exec, T.internalField().size());
             Temperature.apply(KOKKOS_LAMBDA(int i) { return i; });
@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
         {
             NeoFOAM::Executor exec = NeoFOAM::OMPExecutor();
             Foam::Info << "reading mesh" << Foam::endl;
-            NeoFOAM::unstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
+            NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
             NeoFOAM::scalarField Temperature(exec, T.internalField().size());
             Temperature.apply(KOKKOS_LAMBDA(int i) { return i; });

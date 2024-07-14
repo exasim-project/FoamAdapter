@@ -5,8 +5,8 @@
 #include "Field.H"
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"
-#include "NeoFOAM/fields/Field.hpp"
-#include "NeoFOAM/primitives/label.hpp"
+#include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/core/primitives/label.hpp"
 #include "surfaceFields.H"
 #include "volFields.H"
 #include <span>
@@ -14,10 +14,12 @@
 namespace Foam
 {
 
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+
 #define FIELD_EQUALITY_OPERATOR(NFIELD_TYPE, FFIELD_TYPE)                                          \
     bool operator==(NeoFOAM::Field<NFIELD_TYPE>& nfield, const Foam::Field<FFIELD_TYPE>& ffield)   \
     {                                                                                              \
-        auto hostSpan = nfield.copyToHost().field();                                               \
+        auto hostSpan = nfield.copyToHost().span();                                                \
                                                                                                    \
         for (int i = 0; i < hostSpan.size(); i++)                                                  \
         {                                                                                          \
@@ -34,11 +36,11 @@ FIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
 
 #define VOLGEOFIELD_EQUALITY_OPERATOR(NFIELD_TYPE, FFIELD_TYPE)                                    \
     bool operator==(                                                                               \
-        NeoFOAM::fvccVolField<NFIELD_TYPE>& nfield,                                                \
+        fvcc::VolumeField<NFIELD_TYPE>& nfield,                                                    \
         const Foam::GeometricField<FFIELD_TYPE, Foam::fvPatchField, Foam::volMesh>& ffield         \
     )                                                                                              \
     {                                                                                              \
-        auto hostSpan = nfield.internalField().copyToHost().field();                               \
+        auto hostSpan = nfield.internalField().copyToHost().span();                                \
         const auto& internalFField = ffield.internalField();                                       \
         /* compare internalField*/                                                                 \
         for (int i = 0; i < hostSpan.size(); i++)                                                  \
@@ -51,7 +53,7 @@ FIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
         /* compare boundaryField */                                                                \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
-        auto patchValueSpan = nfield.boundaryField().value().copyToHost().field();                 \
+        auto patchValueSpan = nfield.boundaryField().value().copyToHost().span();                  \
         NeoFOAM::label pFacei = 0;                                                                 \
         for (const auto& patch : ffield.boundaryField())                                           \
         {                                                                                          \
@@ -74,11 +76,11 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
 
 #define SURFGEOFIELD_EQUALITY_OPERATOR(NFIELD_TYPE, FFIELD_TYPE)                                   \
     bool operator==(                                                                               \
-        NeoFOAM::fvccSurfaceField<NFIELD_TYPE>& nfield,                                            \
+        fvcc::SurfaceField<NFIELD_TYPE>& nfield,                                                   \
         const Foam::GeometricField<FFIELD_TYPE, Foam::fvsPatchField, Foam::surfaceMesh>& ffield    \
     )                                                                                              \
     {                                                                                              \
-        auto hostSpan = nfield.internalField().copyToHost().field();                               \
+        auto hostSpan = nfield.internalField().copyToHost().span();                                \
         const auto& internalFField = ffield.internalField();                                       \
         /* compare internalField the fvccSurfaceField contains the boundaryValues                  \
          */                                                                                        \

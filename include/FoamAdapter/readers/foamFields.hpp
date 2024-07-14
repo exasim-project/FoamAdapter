@@ -70,7 +70,18 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const Foa
         Foam::word type = patchDict.get<Foam::word>("type");
         NeoFOAM::Dictionary neoPatchDict;
         neoPatchDict.insert("type", std::string(type));
-        bcs.push_back(VolumeBoundary<type_primitive_t>(uMesh, patchi, neoPatchDict));
+        if (type == "zeroGradient")
+        {
+            neoPatchDict.insert("type", std::string("fixedGradient"));
+            neoPatchDict.insert("fixedGradient", type_primitive_t {});
+        }
+        if (type == "extrapolatedCalculated")
+        {
+            neoPatchDict.insert("type", std::string("calculated"));
+        }
+        bcs.push_back(
+            std::make_unique<fvcc::VolumeBoundary<type_primitive_t>>(uMesh, neoPatchDict, patchi)
+        );
         patchi++;
     }
     return bcs;
@@ -117,9 +128,11 @@ auto readSurfaceBoundaryConditions(
         Foam::dictionary patchDict = bDict.subDict(bName);
         Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
         Foam::word type = patchDict.get<Foam::word>("type");
-        NeoFOAM::Dictionary npatchDict;
-        npatchDict.insert("type", std::string(type));
-        bcs.push_back(SurfaceBoundary<type_primitive_t>(uMesh, patchi, npatchDict));
+        NeoFOAM::Dictionary neoPatchDict;
+        neoPatchDict.insert("type", std::string(type));
+        bcs.push_back(
+            std::make_unique<fvcc::SurfaceBoundary<type_primitive_t>>(uMesh, neoPatchDict, patchi)
+        );
         patchi++;
     }
     return bcs;

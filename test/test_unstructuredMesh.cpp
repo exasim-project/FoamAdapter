@@ -8,21 +8,15 @@
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <catch2/catch_approx.hpp>
 
-#include "NeoFOAM/fields/Field.hpp"
-#include "NeoFOAM/fields/FieldOperations.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/fields/comparisions/fieldComparision.hpp"
+#include "NeoFOAM/fields/field.hpp"
 
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/fields/operations/sum.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred.hpp"
 
-#include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
-#include "NeoFOAM/mesh/stencil/FvccGeometryScheme.hpp"
-#include "NeoFOAM/mesh/stencil/BasicFvccGeometryScheme.hpp"
+#include "NeoFOAM/mesh/unstructured.hpp"
+#include "NeoFOAM/mesh/stencil/fvccGeometryScheme.hpp"
+#include "NeoFOAM/mesh/stencil/basicFvccGeometryScheme.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -101,7 +95,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("points")
         {
-            const auto points = uMesh.points().copyToHost().field();
+            const auto points = uMesh.points().copyToHost().span();
             REQUIRE(uMesh.points().size() == mesh.points().size());
             for (int i = 0; i < points.size(); i++)
             {
@@ -112,7 +106,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("cellVolumes")
         {
-            const auto cellVolumes = uMesh.cellVolumes().copyToHost().field();
+            const auto cellVolumes = uMesh.cellVolumes().copyToHost().span();
             REQUIRE(cellVolumes.size() == mesh.cellVolumes().size());
             for (int i = 0; i < cellVolumes.size(); i++)
             {
@@ -122,7 +116,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("cellCentres")
         {
-            const auto cellCentres = uMesh.cellCentres().copyToHost().field();
+            const auto cellCentres = uMesh.cellCentres().copyToHost().span();
             REQUIRE(cellCentres.size() == mesh.cellCentres().size());
             for (int i = 0; i < cellCentres.size(); i++)
             {
@@ -132,7 +126,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("faceCentres")
         {
-            const auto faceCentres = uMesh.faceCentres().copyToHost().field();
+            const auto faceCentres = uMesh.faceCentres().copyToHost().span();
             REQUIRE(faceCentres.size() == mesh.faceCentres().size());
             for (int i = 0; i < faceCentres.size(); i++)
             {
@@ -142,7 +136,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("faceAreas")
         {
-            const auto faceAreas = uMesh.faceAreas().copyToHost().field();
+            const auto faceAreas = uMesh.faceAreas().copyToHost().span();
             // REQUIRE(faceAreas.size() == mesh.Sf().size());
             for (int i = 0; i < mesh.Sf().size(); i++)
             {
@@ -154,7 +148,7 @@ TEST_CASE("unstructuredMesh")
         SECTION("magFaceAreas")
         {
             Foam::scalarField magSf(mag(mesh.faceAreas()));
-            const auto magFaceAreas = uMesh.magFaceAreas().copyToHost().field();
+            const auto magFaceAreas = uMesh.magFaceAreas().copyToHost().span();
             REQUIRE(magFaceAreas.size() == magSf.size());
             for (int i = 0; i < magFaceAreas.size(); i++)
             {
@@ -165,7 +159,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("faceOwner")
         {
-            const auto faceOwner = uMesh.faceOwner().copyToHost().field();
+            const auto faceOwner = uMesh.faceOwner().copyToHost().span();
             REQUIRE(faceOwner.size() == mesh.faceOwner().size());
             for (int i = 0; i < faceOwner.size(); i++)
             {
@@ -175,7 +169,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("faceNeighbour")
         {
-            const auto faceNeighbour = uMesh.faceNeighbour().copyToHost().field();
+            const auto faceNeighbour = uMesh.faceNeighbour().copyToHost().span();
             REQUIRE(faceNeighbour.size() == mesh.faceNeighbour().size());
             for (int i = 0; i < faceNeighbour.size(); i++)
             {
@@ -203,7 +197,7 @@ TEST_CASE("unstructuredMesh")
         // TODO: prettify the following tests
         SECTION("faceCells")
         {
-            auto faceCells = bMesh.faceCells().copyToHost().field();
+            auto faceCells = bMesh.faceCells().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -219,7 +213,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("Cf")
         {
-            const auto& Cf = bMesh.Cf().copyToHost().field();
+            const auto& Cf = bMesh.cf().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -237,7 +231,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("Cn")
         {
-            const auto& Cn = bMesh.Cn().copyToHost().field();
+            const auto& Cn = bMesh.cn().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -255,7 +249,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("Sf")
         {
-            const auto& Sf = bMesh.Sf().copyToHost().field();
+            const auto& Sf = bMesh.sf().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -273,7 +267,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("magSf")
         {
-            const auto& magSf = bMesh.magSf().copyToHost().field();
+            const auto& magSf = bMesh.magSf().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -289,7 +283,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("nf")
         {
-            const auto& nf = bMesh.nf().copyToHost().field();
+            const auto& nf = bMesh.nf().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -307,7 +301,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("delta")
         {
-            const auto& delta = bMesh.delta().copyToHost().field();
+            const auto& delta = bMesh.delta().copyToHost().span();
             ;
             forAll(bMeshOF, patchi)
             {
@@ -326,7 +320,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("weights")
         {
-            const auto& weights = bMesh.weights().copyToHost().field();
+            const auto& weights = bMesh.weights().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -342,7 +336,7 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("deltaCoeffs")
         {
-            const auto& deltaCoeffs = bMesh.deltaCoeffs().copyToHost().field();
+            const auto& deltaCoeffs = bMesh.deltaCoeffs().copyToHost().span();
             ;
             forAll(bMeshOF, patchi)
             {
@@ -385,7 +379,7 @@ TEST_CASE("fvccGeometryScheme")
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 
-        auto weights = scheme.weights().internalField().copyToHost().field();
+        auto weights = scheme.weights().internalField().copyToHost().span();
         std::span<Foam::scalar> s_foam_weights(
             foam_weights.primitiveFieldRef().data(), foam_weights.size()
         );
@@ -402,7 +396,7 @@ TEST_CASE("fvccGeometryScheme")
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 
-        auto weights = scheme.weights().internalField().copyToHost().field();
+        auto weights = scheme.weights().internalField().copyToHost().span();
         std::span<Foam::scalar> s_foam_weights(
             foam_weights.primitiveFieldRef().data(), foam_weights.size()
         );

@@ -10,7 +10,7 @@ project(
   DESCRIPTION "An implementation of FOAM")
 
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Add the cmake folder so the find_package command finds custom packages
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
@@ -24,4 +24,4 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_subdirectory(NeoFOAM)
 add_subdirectory(src)
-
+add_subdirectory(test)

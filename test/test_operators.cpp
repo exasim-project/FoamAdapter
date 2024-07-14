@@ -9,29 +9,20 @@
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <catch2/catch_approx.hpp>
 
-#include "NeoFOAM/fields/Field.hpp"
-#include "NeoFOAM/fields/FieldOperations.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/fields/comparisions/fieldComparision.hpp"
+#include "NeoFOAM/fields/field.hpp"
 
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccSurfaceField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarZeroGradientBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/surface/scalar/fvccSurfaceScalarCalculatedBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/surface/scalar/fvccSurfaceScalarEmptyBoundaryField.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred.hpp"
 
-#include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
+#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
 
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/linear.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/upwind.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolation.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/surfaceInterpolationSelector.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/linear.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/upwind.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolation.hpp"
 
-#include "NeoFOAM/cellCentredFiniteVolume/div/gaussGreenDiv.hpp"
+#include "NeoFOAM/finiteVolume/operators/gaussGreenDiv.hpp"
+
 
 #include "FoamAdapter/fvcc/surfaceInterpolation/surfaceInterpolationFactory.hpp"
 #include "FoamAdapter/readers/foamMesh.hpp"
@@ -46,6 +37,8 @@
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
 #include "gaussConvectionScheme.H"
+
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
 Foam::Time* timePtr;    // A single time object
 Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
@@ -139,26 +132,22 @@ TEST_CASE("Interpolation")
         T.correctBoundaryConditions();
         Foam::surfaceScalarField surfT(foamInterPol->interpolate(T));
 
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
 
         REQUIRE(neoT == T);
-        std::vector<std::unique_ptr<NeoFOAM::fvccSurfaceBoundaryField<NeoFOAM::scalar>>> bcs;
-        bcs.push_back(std::make_unique<NeoFOAM::fvccSurfaceScalarCalculatedBoundaryField>(uMesh, 0)
-        );
-        bcs.push_back(std::make_unique<NeoFOAM::fvccSurfaceScalarEmptyBoundaryField>(uMesh, 1));
-        NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoSurfT(exec, uMesh, std::move(bcs));
+
+        fvcc::SurfaceField<NeoFOAM::scalar> neoSurfT = constructSurfaceField(exec, uMesh, surfT);
 
         SECTION("linear")
         {
-            // std::unique_ptr<NeoFOAM::SurfaceInterpolationKernel> linearKernel(new
-            // NeoFOAM::linear(exec, uMesh));
-
-            NeoFOAM::surfaceInterpolation interp(
-                NeoFOAM::surfaceInterpolationSelector(std::string("linear"), exec, mesh.uMesh())
+            std::unique_ptr<NeoFOAM::SurfaceInterpolationKernel> linearKernel(
+                new NeoFOAM::Linear(exec, uMesh)
             );
+
+            NeoFOAM::SurfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
             interp.interpolate(neoSurfT, neoT);
-            auto s_neoSurfT = neoSurfT.internalField().copyToHost().field();
+            auto s_neoSurfT = neoSurfT.internalField().copyToHost().span();
             std::span<Foam::scalar> surfT_span(surfT.primitiveFieldRef().data(), surfT.size());
             REQUIRE_THAT(
                 s_neoSurfT.subspan(0, surfT.size()),
@@ -218,14 +207,14 @@ TEST_CASE("GradOperator")
         Foam::volVectorField ofGradT("ofGradT", foamGradScalar.calcGrad(T, "test"));
         ofGradT.write();
 
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
         REQUIRE_THAT(
-            neoT.internalField().copyToHost().field(),
+            neoT.internalField().copyToHost().span(),
             Catch::Matchers::RangeEquals(s_T, ApproxScalar(1e-16))
         );
 
-        NeoFOAM::fvccVolField<NeoFOAM::Vector> neoGradT = constructFrom(exec, uMesh, ofGradT);
+        fvcc::VolumeField<NeoFOAM::Vector> neoGradT = constructFrom(exec, uMesh, ofGradT);
         NeoFOAM::fill(neoGradT.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
         NeoFOAM::fill(neoGradT.boundaryField().value(), NeoFOAM::Vector(0.0, 0.0, 0.0));
         NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoGradT, neoT);
@@ -234,7 +223,7 @@ TEST_CASE("GradOperator")
 
         std::span<Foam::vector> s_ofGradT(ofGradT.primitiveFieldRef().data(), ofGradT.size());
         REQUIRE_THAT(
-            neoGradT.internalField().copyToHost().field(),
+            neoGradT.internalField().copyToHost().span(),
             Catch::Matchers::RangeEquals(s_ofGradT, ApproxVector(1e-12))
         );
     }
@@ -301,12 +290,13 @@ TEST_CASE("DivOperator")
         Foam::volScalarField ofDivT("ofDivT", foamDivScalar.fvcDiv(phi, T));
         ofDivT.write();
 
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
 
 
-        NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
+        NeoFOAM::fvcc::SurfaceField<NeoFOAM::scalar> neoPhi =
+            constructSurfaceField(exec, uMesh, phi);
         std::span<Foam::scalar> s_phi(phi.primitiveFieldRef().data(), T.size());
-        const auto s_neoPhi_host = neoPhi.internalField().copyToHost().field();
+        const auto s_neoPhi_host = neoPhi.internalField().copyToHost().span();
         REQUIRE_THAT(
             s_neoPhi_host.subspan(0, s_phi.size()),
             Catch::Matchers::RangeEquals(s_phi, ApproxScalar(1e-15))
@@ -314,15 +304,19 @@ TEST_CASE("DivOperator")
 
         neoT.correctBoundaryConditions();
         REQUIRE_THAT(
-            neoT.internalField().copyToHost().field(),
+            neoT.internalField().copyToHost().span(),
             Catch::Matchers::RangeEquals(s_T, ApproxScalar(1e-15))
         );
 
-        NeoFOAM::fvccVolField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
+        fvcc::VolumeField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
         NeoFOAM::fill(neoDivT.internalField(), 0.0);
         NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
-        NeoFOAM::gaussGreenDiv(
-            exec, uMesh, NeoFOAM::surfaceInterpolationSelector(std::string("linear"), exec, uMesh)
+        NeoFOAM::GaussGreenDiv(
+            exec,
+            uMesh,
+            NeoFOAM::SurfaceInterpolation(
+                exec, uMesh, std::make_unique<NeoFOAM::Linear>(exec, uMesh)
+            )
         )
             .div(neoDivT, neoPhi, neoT);
         Foam::Info << "writing divT field for exector: " << exec_name << Foam::endl;
@@ -330,7 +324,7 @@ TEST_CASE("DivOperator")
 
         std::span<Foam::scalar> s_ofDivT(ofDivT.primitiveFieldRef().data(), ofDivT.size());
         REQUIRE_THAT(
-            neoDivT.internalField().copyToHost().field(),
+            neoDivT.internalField().copyToHost().span(),
             Catch::Matchers::RangeEquals(s_ofDivT, ApproxScalar(1e-15))
         );
     }
