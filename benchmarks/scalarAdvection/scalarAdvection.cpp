@@ -2,11 +2,11 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/div/gaussGreenDiv.hpp"
-#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolationSelector.hpp"
+#include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/mesh/unstructured.hpp"
+#include "NeoFOAM/finiteVolume/operators/gaussGreenDiv.hpp"
+#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolation.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
@@ -18,6 +18,7 @@
 #include "FoamAdapter/setup/setup.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
 int main(int argc, char* argv[])
 {
@@ -64,7 +65,7 @@ int main(int argc, char* argv[])
         //     std::pow((s_cc[celli][1] - 0.75) / spread, 2.0)));
         // });
         // neoT.correctBoundaryConditions();
-        NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
+        fvcc::SurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
 
         Foam::Info << "writing neoT field" << Foam::endl;
         write(neoT.internalField(), mesh, "neoT");
@@ -95,8 +96,7 @@ int main(int argc, char* argv[])
             }
         }
         phi0 = Foam::linearInterpolate(U0) & mesh.Sf();
-        NeoFOAM::fvccSurfaceField<NeoFOAM::scalar> neoPhi0 =
-            constructSurfaceField(exec, uMesh, phi0);
+        fvcc::SurfaceField<NeoFOAM::scalar> neoPhi0 = constructSurfaceField(exec, uMesh, phi0);
 
         Foam::volScalarField ofDivT("ofDivT", Foam::fvc::div(phi, T));
 
@@ -144,10 +144,15 @@ int main(int argc, char* argv[])
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
                 NeoFOAM::fill(neoDivT.internalField(), 0.0);
                 NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
-                NeoFOAM::gaussGreenDiv(
+
+                NeoFOAM::GaussGreenDiv(
                     exec,
                     uMesh,
-                    NeoFOAM::surfaceInterpolationSelector(std::string("upwind"), exec, mesh.uMesh())
+                    NeoFOAM::SurfaceInterpolation(
+                        exec,
+                        uMesh,
+                        NeoFOAM::SurfaceInterpolationFactory::create("upwind", exec, uMesh)
+                    )
                 )
                     .div(neoDivT, neoPhi, neoT);
                 neoT.internalField() =

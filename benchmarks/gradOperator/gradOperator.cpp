@@ -32,9 +32,9 @@
 #include "Kokkos_Core.hpp"
 
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
+#include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/mesh/unstructured.hpp"
+#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"

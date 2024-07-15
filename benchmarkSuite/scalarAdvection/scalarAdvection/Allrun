@@ -10,7 +10,7 @@ mesh=$2
 
 runApplication blockMesh
 
-runApplication ../../../build/src/benchmarks/scalarAdvection/scalarAdvection
+runApplication ../../../build/ReleaseCudaAll/bin/scalarAdvection
 
 
 #------------------------------------------------------------------------------

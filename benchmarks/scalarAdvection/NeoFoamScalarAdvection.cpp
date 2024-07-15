@@ -2,11 +2,11 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
-#include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/grad/gaussGreenGrad.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/div/gaussGreenDiv.hpp"
-#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolationSelector.hpp"
+#include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/mesh/unstructured.hpp"
+#include "NeoFOAM/finiteVolume/operators/gaussGreenDiv.hpp"
+#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
+#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolation.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
