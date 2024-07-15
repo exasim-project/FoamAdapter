@@ -23,8 +23,6 @@
 
 #include "NeoFOAM/finiteVolume/operators/gaussGreenDiv.hpp"
 
-
-#include "FoamAdapter/fvcc/surfaceInterpolation/surfaceInterpolationFactory.hpp"
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
 #include "FoamAdapter/comparison/fieldComparison.hpp"
@@ -141,9 +139,7 @@ TEST_CASE("Interpolation")
 
         SECTION("linear")
         {
-            std::unique_ptr<NeoFOAM::SurfaceInterpolationKernel> linearKernel(
-                new NeoFOAM::Linear(exec, uMesh)
-            );
+            auto linearKernel = NeoFOAM::SurfaceInterpolationFactory::create("linear", exec, uMesh);
 
             NeoFOAM::SurfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
             interp.interpolate(neoSurfT, neoT);
