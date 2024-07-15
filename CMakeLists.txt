@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Unlicense
-# SPDX-FileCopyrightText: 2023 NeoFOAM authors
+# SPDX-FileCopyrightText: 2024 NeoFOAM authors
 
 cmake_minimum_required(VERSION 3.22.0)
 
@@ -12,6 +12,7 @@ project(
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Add the cmake folder so the find_package command finds custom packages
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 

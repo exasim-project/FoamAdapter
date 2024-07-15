@@ -52,7 +52,7 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const Foa
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    std::vector<std::unique_ptr<fvcc::VolumeBoundary<type_primitive_t>>> bcs;
+    std::vector<fvcc::VolumeBoundary<type_primitive_t>> bcs;
 
     // get boundary as dictionary
     Foam::OStringStream os;
@@ -79,9 +79,7 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const Foa
         {
             neoPatchDict.insert("type", std::string("calculated"));
         }
-        bcs.push_back(
-            std::make_unique<fvcc::VolumeBoundary<type_primitive_t>>(uMesh, neoPatchDict, patchi)
-        );
+        bcs.push_back(fvcc::VolumeBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
         patchi++;
     }
     return bcs;
@@ -96,7 +94,7 @@ auto constructFrom(
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    type_container_t nfVolField(exec, uMesh, std::move(readVolBoundaryConditions(uMesh, volField)));
+    type_container_t nfVolField(exec, uMesh, readVolBoundaryConditions(uMesh, volField));
 
     nfVolField.internalField() = fromFoamField(exec, volField.primitiveField());
     nfVolField.correctBoundaryConditions();
@@ -112,7 +110,7 @@ auto readSurfaceBoundaryConditions(
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    std::vector<std::unique_ptr<fvcc::SurfaceBoundary<type_primitive_t>>> bcs;
+    std::vector<fvcc::SurfaceBoundary<type_primitive_t>> bcs;
 
     // get boundary as dictionary
     Foam::OStringStream os;
@@ -130,9 +128,7 @@ auto readSurfaceBoundaryConditions(
         Foam::word type = patchDict.get<Foam::word>("type");
         NeoFOAM::Dictionary neoPatchDict;
         neoPatchDict.insert("type", std::string(type));
-        bcs.push_back(
-            std::make_unique<fvcc::SurfaceBoundary<type_primitive_t>>(uMesh, neoPatchDict, patchi)
-        );
+        bcs.push_back(fvcc::SurfaceBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
         patchi++;
     }
     return bcs;
