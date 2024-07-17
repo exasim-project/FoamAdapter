@@ -30,7 +30,7 @@ jobs:
             CXX: clang++
           - CC: gcc
             CXX: g++
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
      - name: Checkout to repository
        uses: actions/checkout@v4
