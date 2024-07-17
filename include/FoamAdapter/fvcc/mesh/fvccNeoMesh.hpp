@@ -75,7 +75,6 @@ public:
     virtual ~fvccNeoMesh() = default;
 
     NeoFOAM::UnstructuredMesh& uMesh() { return uMesh_; }
-    // const NeoFOAM::UnstructuredMesh &uMesh() { return uMesh_; } const
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
