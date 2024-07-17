@@ -3,23 +3,18 @@
 #pragma once
 
 #include "FoamAdapter/conversion/convert.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/fvccBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarEmptyBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarFixedValueBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/bcFields/vol/scalar/fvccScalarZeroGradientBoundaryField.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/fields/fvccVolField.hpp"
-#include "NeoFOAM/core/Dictionary.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred.hpp"
+#include "NeoFOAM/core/dictionary.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/fields/FieldTypeDefs.hpp"
+#include "NeoFOAM/fields/field.hpp"
 
 #include "FoamAdapter/conversion/type_conversion.hpp"
-#include "FoamAdapter/readers/foamBCFields.hpp"
 
 namespace Foam
 {
-
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 template<typename FoamType>
-auto fromFoamField(const NeoFOAM::executor& exec, const FoamType& field)
+auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
 {
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
@@ -52,12 +47,12 @@ auto fromFoamField(const NeoFOAM::executor& exec, const FoamType& field)
 };
 
 template<typename FoamType>
-auto readVolBoundaryConditions(const NeoFOAM::unstructuredMesh& uMesh, const FoamType& volField)
+auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& volField)
 {
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    std::vector<std::unique_ptr<NeoFOAM::fvccBoundaryField<type_primitive_t>>> bcs;
+    std::vector<fvcc::VolumeBoundary<type_primitive_t>> bcs;
 
     // get boundary as dictionary
     Foam::OStringStream os;
@@ -73,9 +68,18 @@ auto readVolBoundaryConditions(const NeoFOAM::unstructuredMesh& uMesh, const Foa
         Foam::dictionary patchDict = bDict.subDict(bName);
         Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
         Foam::word type = patchDict.get<Foam::word>("type");
-        NeoFOAM::Dictionary npatchDict;
-        npatchDict.insert("type", std::string(type));
-        bcs.push_back(readVolBoundaryCondition<type_primitive_t>(uMesh, patchi, npatchDict));
+        NeoFOAM::Dictionary neoPatchDict;
+        neoPatchDict.insert("type", std::string(type));
+        if (type == "zeroGradient")
+        {
+            neoPatchDict.insert("type", std::string("fixedGradient"));
+            neoPatchDict.insert("fixedGradient", type_primitive_t {});
+        }
+        if (type == "extrapolatedCalculated")
+        {
+            neoPatchDict.insert("type", std::string("calculated"));
+        }
+        bcs.push_back(fvcc::VolumeBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
         patchi++;
     }
     return bcs;
@@ -83,14 +87,14 @@ auto readVolBoundaryConditions(const NeoFOAM::unstructuredMesh& uMesh, const Foa
 
 template<typename FoamType>
 auto constructFrom(
-    const NeoFOAM::executor exec, const NeoFOAM::unstructuredMesh& uMesh, const FoamType& volField
+    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& volField
 )
 {
 
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    type_container_t nfVolField(exec, uMesh, std::move(readVolBoundaryConditions(uMesh, volField)));
+    type_container_t nfVolField(exec, uMesh, readVolBoundaryConditions(uMesh, volField));
 
     nfVolField.internalField() = fromFoamField(exec, volField.primitiveField());
     nfVolField.correctBoundaryConditions();
@@ -100,13 +104,13 @@ auto constructFrom(
 
 template<typename FoamType>
 auto readSurfaceBoundaryConditions(
-    const NeoFOAM::unstructuredMesh& uMesh, const FoamType& surfaceField
+    const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& surfaceField
 )
 {
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    std::vector<std::unique_ptr<NeoFOAM::fvccSurfaceBoundaryField<type_primitive_t>>> bcs;
+    std::vector<fvcc::SurfaceBoundary<type_primitive_t>> bcs;
 
     // get boundary as dictionary
     Foam::OStringStream os;
@@ -122,9 +126,9 @@ auto readSurfaceBoundaryConditions(
         Foam::dictionary patchDict = bDict.subDict(bName);
         Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
         Foam::word type = patchDict.get<Foam::word>("type");
-        NeoFOAM::Dictionary npatchDict;
-        npatchDict.insert("type", std::string(type));
-        bcs.push_back(readSurfaceBoundaryCondition<type_primitive_t>(uMesh, patchi, npatchDict));
+        NeoFOAM::Dictionary neoPatchDict;
+        neoPatchDict.insert("type", std::string(type));
+        bcs.push_back(fvcc::SurfaceBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
         patchi++;
     }
     return bcs;
@@ -132,7 +136,7 @@ auto readSurfaceBoundaryConditions(
 
 template<typename FoamType>
 auto constructSurfaceField(
-    const NeoFOAM::executor exec, const NeoFOAM::unstructuredMesh& uMesh, const FoamType& surfField
+    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& surfField
 )
 {
 

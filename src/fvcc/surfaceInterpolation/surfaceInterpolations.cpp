@@ -5,7 +5,7 @@
 #include "addToRunTimeSelectionTable.H"
 
 #include "FoamAdapter/fvcc/surfaceInterpolation/surfaceInterpolationFactory.hpp"
-#include "NeoFOAM/cellCentredFiniteVolume/surfaceInterpolation/linear.hpp"
+
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 

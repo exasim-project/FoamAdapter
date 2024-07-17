@@ -2,15 +2,15 @@
 cd "${0%/*}" || exit                                # Run from this directory
 . ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
 #------------------------------------------------------------------------------
-touch test.foam
-
+touch scalarAdvection.foam
 restore0Dir
+
+nProcs=$1
+mesh=$2
 
 runApplication blockMesh
 
-runApplication ../../build/ReleaseAll/bin/test_unstructuredMesh
-runApplication ../../build/ReleaseAll/bin/test_geometricFields
-runApplication ../../build/ReleaseAll/bin/test_operators
+runApplication ../../../build/ReleaseCudaAll/bin/scalarAdvection
 
 
 #------------------------------------------------------------------------------

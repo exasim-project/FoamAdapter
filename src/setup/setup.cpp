@@ -43,7 +43,7 @@ void Foam::setDeltaT(
 
 
 std::unique_ptr<Foam::fvccNeoMesh>
-Foam::createMesh(const NeoFOAM::executor& exec, const Foam::Time& runTime)
+Foam::createMesh(const NeoFOAM::Executor& exec, const Foam::Time& runTime)
 {
     Foam::word regionName(Foam::polyMesh::defaultRegion);
     Foam::IOobject io(regionName, runTime.timeName(), runTime, Foam::IOobject::MUST_READ);
@@ -65,7 +65,7 @@ std::unique_ptr<Foam::fvMesh> Foam::createMesh(const Foam::Time& runTime)
     return meshPtr;
 }
 
-NeoFOAM::executor Foam::createExecutor(const Foam::dictionary& dict)
+NeoFOAM::Executor Foam::createExecutor(const Foam::dictionary& dict)
 {
     auto exec_name = dict.get<Foam::word>("executor");
     if (exec_name == "CPU")

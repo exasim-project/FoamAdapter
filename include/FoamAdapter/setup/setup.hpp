@@ -20,10 +20,10 @@ Foam::scalar calculateCoNum(const Foam::surfaceScalarField& phi);
 void setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT);
 
 std::unique_ptr<Foam::fvccNeoMesh>
-createMesh(const NeoFOAM::executor& exec, const Foam::Time& runTime);
+createMesh(const NeoFOAM::Executor& exec, const Foam::Time& runTime);
 
 std::unique_ptr<Foam::fvMesh> createMesh(const Foam::Time& runTime);
 
-NeoFOAM::executor createExecutor(const Foam::dictionary& dict);
+NeoFOAM::Executor createExecutor(const Foam::dictionary& dict);
 
 } // namespace Foam

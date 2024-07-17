@@ -2,9 +2,9 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "NeoFOAM/primitives/label.hpp"
-#include "NeoFOAM/primitives/scalar.hpp"
-#include "NeoFOAM/primitives/vector.hpp"
+#include "NeoFOAM/core/primitives/label.hpp"
+#include "NeoFOAM/core//primitives/scalar.hpp"
+#include "NeoFOAM/core/primitives/vector.hpp"
 #include "volFields.H"
 
 namespace Foam

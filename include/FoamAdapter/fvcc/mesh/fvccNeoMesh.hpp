@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "NeoFOAM/mesh/unstructuredMesh/unstructuredMesh.hpp"
+#include "NeoFOAM/mesh/unstructured.hpp"
 #include "fvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -17,9 +17,9 @@ namespace Foam
 class fvccNeoMesh : public Foam::fvMesh
 {
     // Private Data
-    const NeoFOAM::executor exec;
+    const NeoFOAM::Executor exec;
 
-    NeoFOAM::unstructuredMesh uMesh_;
+    NeoFOAM::UnstructuredMesh uMesh_;
 
     // Private Member Functions
 
@@ -38,19 +38,19 @@ public:
 
     //- Construct from IOobject
     explicit fvccNeoMesh(
-        const NeoFOAM::executor exec, const IOobject& io, const bool doInit = true
+        const NeoFOAM::Executor exec, const IOobject& io, const bool doInit = true
     );
 
     //- Construct from IOobject or as zero-sized mesh
     //  Boundary is added using addFvPatches() member function
     fvccNeoMesh(
-        const NeoFOAM::executor exec, const IOobject& io, const Foam::zero, bool syncPar = true
+        const NeoFOAM::Executor exec, const IOobject& io, const Foam::zero, bool syncPar = true
     );
 
     //- Construct from components without boundary.
     //  Boundary is added using addFvPatches() member function
     fvccNeoMesh(
-        const NeoFOAM::executor exec,
+        const NeoFOAM::Executor exec,
         const IOobject& io,
 
         pointField&& points,
@@ -63,7 +63,7 @@ public:
     //- Construct without boundary from cells rather than owner/neighbour.
     //  Boundary is added using addPatches() member function
     fvccNeoMesh(
-        const NeoFOAM::executor exec,
+        const NeoFOAM::Executor exec,
         const IOobject& io,
         pointField&& points,
         faceList&& faces,
@@ -74,8 +74,7 @@ public:
     //- Destructor
     virtual ~fvccNeoMesh() = default;
 
-    NeoFOAM::unstructuredMesh& uMesh() { return uMesh_; }
-    // const NeoFOAM::unstructuredMesh &uMesh() { return uMesh_; } const
+    NeoFOAM::UnstructuredMesh& uMesh() { return uMesh_; }
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -15,7 +15,7 @@
           "type": "BOOL",
           "value": "ON"
         },
-        "Kokkos_ENABLE_OPENMP": {
+        "Kokkos_ENABLE_THREADS": {
           "type": "BOOL",
           "value": "ON"
         }
