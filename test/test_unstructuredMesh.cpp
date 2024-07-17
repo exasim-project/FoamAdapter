@@ -373,8 +373,8 @@ TEST_CASE("fvccGeometryScheme")
     SECTION("BasicFvccGeometryScheme" + exec_name)
     {
         // update on construction
-        NeoFOAM::FvccGeometryScheme scheme(
-            exec, uMesh, std::make_unique<NeoFOAM::BasicFvccGeometryScheme>(uMesh)
+        NeoFOAM::GeometryScheme scheme(
+            exec, uMesh, std::make_unique<NeoFOAM::BasicGeometryScheme>(uMesh)
         );
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
@@ -392,7 +392,7 @@ TEST_CASE("fvccGeometryScheme")
     SECTION("DefaultBasicFvccGeometryScheme" + exec_name)
     {
         // update on construction
-        NeoFOAM::FvccGeometryScheme scheme(uMesh);
+        NeoFOAM::GeometryScheme scheme(uMesh);
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 

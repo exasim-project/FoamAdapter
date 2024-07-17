@@ -13,10 +13,10 @@
 #include "NeoFOAM/fields/domainField.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred.hpp"
 
-#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
-#include "NeoFOAM/finiteVolume/interpolation/linear.hpp"
-#include "NeoFOAM/finiteVolume/interpolation/upwind.hpp"
-#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolation.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/interpolation/linear.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/interpolation/upwind.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"

@@ -4,9 +4,9 @@
 #include "NeoFOAM/core/executor/executor.hpp"
 #include "NeoFOAM/fields/field.hpp"
 #include "NeoFOAM/mesh/unstructured.hpp"
-#include "NeoFOAM/finiteVolume/operators/gaussGreenDiv.hpp"
-#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
-#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolation.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
@@ -145,13 +145,13 @@ int main(int argc, char* argv[])
                 NeoFOAM::fill(neoDivT.internalField(), 0.0);
                 NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
 
-                NeoFOAM::GaussGreenDiv(
+                fvcc::GaussGreenDiv(
                     exec,
                     uMesh,
-                    NeoFOAM::SurfaceInterpolation(
+                    fvcc::SurfaceInterpolation(
                         exec,
                         uMesh,
-                        NeoFOAM::SurfaceInterpolationFactory::create("upwind", exec, uMesh)
+                        fvcc::SurfaceInterpolationFactory::create("upwind", exec, uMesh)
                     )
                 )
                     .div(neoDivT, neoPhi, neoT);

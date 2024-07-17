@@ -15,13 +15,11 @@
 #include "NeoFOAM/fields/domainField.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred.hpp"
 
-#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
-
-#include "NeoFOAM/finiteVolume/interpolation/linear.hpp"
-#include "NeoFOAM/finiteVolume/interpolation/upwind.hpp"
-#include "NeoFOAM/finiteVolume/interpolation/surfaceInterpolation.hpp"
-
-#include "NeoFOAM/finiteVolume/operators/gaussGreenDiv.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/interpolation/linear.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/interpolation/upwind.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -139,9 +137,9 @@ TEST_CASE("Interpolation")
 
         SECTION("linear")
         {
-            auto linearKernel = NeoFOAM::SurfaceInterpolationFactory::create("linear", exec, uMesh);
+            auto linearKernel = fvcc::SurfaceInterpolationFactory::create("linear", exec, uMesh);
 
-            NeoFOAM::SurfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
+            fvcc::SurfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
             interp.interpolate(neoSurfT, neoT);
             auto s_neoSurfT = neoSurfT.internalField().copyToHost().span();
             std::span<Foam::scalar> surfT_span(surfT.primitiveFieldRef().data(), surfT.size());
@@ -213,7 +211,7 @@ TEST_CASE("GradOperator")
         fvcc::VolumeField<NeoFOAM::Vector> neoGradT = constructFrom(exec, uMesh, ofGradT);
         NeoFOAM::fill(neoGradT.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
         NeoFOAM::fill(neoGradT.boundaryField().value(), NeoFOAM::Vector(0.0, 0.0, 0.0));
-        NeoFOAM::gaussGreenGrad(exec, uMesh).grad(neoGradT, neoT);
+        fvcc::gaussGreenGrad(exec, uMesh).grad(neoGradT, neoT);
         Foam::Info << "writing gradT field for exector: " << exec_name << Foam::endl;
         write(neoGradT.internalField(), mesh, "gradT_" + exec_name);
 
@@ -307,12 +305,10 @@ TEST_CASE("DivOperator")
         fvcc::VolumeField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
         NeoFOAM::fill(neoDivT.internalField(), 0.0);
         NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
-        NeoFOAM::GaussGreenDiv(
+        fvcc::GaussGreenDiv(
             exec,
             uMesh,
-            NeoFOAM::SurfaceInterpolation(
-                exec, uMesh, std::make_unique<NeoFOAM::Linear>(exec, uMesh)
-            )
+            fvcc::SurfaceInterpolation(exec, uMesh, std::make_unique<fvcc::Linear>(exec, uMesh))
         )
             .div(neoDivT, neoPhi, neoT);
         Foam::Info << "writing divT field for exector: " << exec_name << Foam::endl;

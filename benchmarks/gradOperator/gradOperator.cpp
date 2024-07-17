@@ -34,7 +34,7 @@
 #include "NeoFOAM/core/executor/executor.hpp"
 #include "NeoFOAM/fields/field.hpp"
 #include "NeoFOAM/mesh/unstructured.hpp"
-#include "NeoFOAM/finiteVolume/operators/gaussGreenGrad.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
