@@ -3,8 +3,9 @@
 
 add_library(FoamAdapter SHARED)
 
-target_compile_definitions(FoamAdapter PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306
-                                              OMPI_SKIP_MPICXX)
+target_compile_definitions(
+  FoamAdapter PUBLIC WM_LABEL_SIZE=$ENV{WM_LABEL_SIZE} NoRepository WM_$ENV{WM_PRECISION_OPTION}
+                     OPENFOAM=2406 OMPI_SKIP_MPICXX)
 
 target_include_directories(
   FoamAdapter
