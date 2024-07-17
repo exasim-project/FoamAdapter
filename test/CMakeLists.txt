@@ -11,7 +11,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 add_executable(test_geometricFields "test_geometricFields.cpp")
-set_target_properties(test_geometricFields PROPERTIES CXX_STANDARD 20)
 
 target_compile_definitions(test_geometricFields PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP
                                                        OPENFOAM=2306 OMPI_SKIP_MPICXX)

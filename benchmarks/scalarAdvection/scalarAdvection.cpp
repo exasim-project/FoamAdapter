@@ -58,10 +58,6 @@ int main(int argc, char* argv[])
         neoT.correctBoundaryConditions();
         // fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
 
-        // auto s_cc = uMesh.cellCentres().span();
-        // neoT.internalField().apply(KOKKOS_LAMBDA(int celli)
-        // {
-        //     return std::exp(-0.5 * (std::pow((s_cc[celli][0] - 0.5) / spread, 2.0) +
         //     std::pow((s_cc[celli][1] - 0.75) / spread, 2.0)));
         // });
         // neoT.correctBoundaryConditions();

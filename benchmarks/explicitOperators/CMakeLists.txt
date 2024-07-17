@@ -3,7 +3,6 @@
 
 add_executable(explicitOperators "explicitOperators.cpp")
 
-set_target_properties(explicitOperators PROPERTIES CXX_STANDARD 20)
 target_compile_definitions(explicitOperators PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP
                                                     OPENFOAM=2306 OMPI_SKIP_MPICXX)
 
