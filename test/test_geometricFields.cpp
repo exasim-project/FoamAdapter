@@ -89,7 +89,7 @@ TEST_CASE("fvcc::VolumeField")
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);

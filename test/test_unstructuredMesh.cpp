@@ -71,7 +71,7 @@ TEST_CASE("unstructuredMesh")
     Foam::argList& args = *argsPtr;
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
 
@@ -358,7 +358,7 @@ TEST_CASE("fvccGeometryScheme")
     Foam::argList& args = *argsPtr;
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
     // NeoFOAM::Executor exec = NeoFOAM::CPUExecutor{};
