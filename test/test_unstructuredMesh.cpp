@@ -9,14 +9,12 @@
 #include <catch2/catch_approx.hpp>
 
 #include "NeoFOAM/fields/field.hpp"
-
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred.hpp"
-
+#include "NeoFOAM/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
 #include "NeoFOAM/mesh/unstructured.hpp"
-#include "NeoFOAM/mesh/stencil/fvccGeometryScheme.hpp"
-#include "NeoFOAM/mesh/stencil/basicFvccGeometryScheme.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
