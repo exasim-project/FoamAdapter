@@ -70,11 +70,11 @@ NeoFOAM::Executor Foam::createExecutor(const Foam::dictionary& dict)
     auto exec_name = dict.get<Foam::word>("executor");
     if (exec_name == "CPU")
     {
-        return NeoFOAM::CPUExecutor();
+        return NeoFOAM::SerialExecutor();
     }
     else if (exec_name == "OMP")
     {
-        return NeoFOAM::OMPExecutor();
+        return NeoFOAM::CPUExecutor();
     }
     else if (exec_name == "GPU")
     {

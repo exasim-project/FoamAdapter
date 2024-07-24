@@ -27,7 +27,9 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Eventhough we compile NeoFOAM as SHARED library we need to explicitly enable PIC for all targets
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+include(cmake/OpenFOAM.cmake)
+
 add_subdirectory(NeoFOAM)
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(benchmarks)
+# add_subdirectory(benchmarks)
