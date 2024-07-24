@@ -287,8 +287,7 @@ TEST_CASE("DivOperator")
         fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
 
 
-        NeoFOAM::fvcc::SurfaceField<NeoFOAM::scalar> neoPhi =
-            constructSurfaceField(exec, uMesh, phi);
+        fvcc::SurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
         std::span<Foam::scalar> s_phi(phi.primitiveFieldRef().data(), T.size());
         const auto s_neoPhi_host = neoPhi.internalField().copyToHost().span();
         REQUIRE_THAT(
