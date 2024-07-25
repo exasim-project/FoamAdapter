@@ -34,8 +34,6 @@ jobs:
     steps:
      - name: Checkout to repository
        uses: actions/checkout@v4
-       with:
-         submodules: true # Recursively clone submodules
 
      - name: Add repos
        run: |
@@ -71,15 +69,21 @@ jobs:
          ninja --version
          cmake --version
 
+     - name: Checkout submodule
+       uses: actions/checkout@v4
+       with:
+        repository: exasim-project/NeoFOAM
+        path: NeoFOAM
+        ref: '${{ github.head_ref }}'
+
      - name: Build NeoFOAM
        run: |
          source /usr/lib/openfoam/openfoam2406/etc/bashrc || true
          CC=${{matrix.compiler.CC}} \
          CXX=${{matrix.compiler.CXX}} \
-         cmake --preset ninja-cpuonly-all \
-           -DNEOFOAM_DEVEL_TOOLS=OFF \
+         cmake --preset develop \
            -DNEOFOAM_ENABLE_MPI_WITH_THREAD_SUPPORT=OFF
-         cmake --build  --preset ninja-cpuonly-all
+         cmake --build  --preset develop
 
      - name: Execute unit tests NeoFOAM
        run: |
