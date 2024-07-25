@@ -34,6 +34,8 @@ jobs:
     steps:
      - name: Checkout to repository
        uses: actions/checkout@v4
+       with:
+         submodules: true # Recursively clone submodules
 
      - name: Add repos
        run: |
@@ -68,13 +70,6 @@ jobs:
          clang --version
          ninja --version
          cmake --version
-
-     - name: Checkout submodule
-       uses: actions/checkout@v4
-       with:
-        repository: exasim-project/NeoFOAM
-        path: NeoFOAM
-        ref: '${{ github.head_ref }}'
 
      - name: Build NeoFOAM
        run: |
