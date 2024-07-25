@@ -16,14 +16,14 @@ list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 
 function(foam_adapter_unit_test TEST WORKING_DIRECTORY)
 
-  add_executable(${TEST} "test_${TEST}.cpp")
+  add_executable(adapter_${TEST} "test_${TEST}.cpp")
 
-  target_compile_definitions(${TEST} PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306
+  target_compile_definitions(adapter_${TEST} PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306
                                             OMPI_SKIP_MPICXX)
 
-  target_include_directories(${TEST} PUBLIC ${CMAKE_SOURCE_DIR}/include)
+  target_include_directories(adapter_${TEST} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-  target_link_libraries(${TEST} NeoFOAM OpenFOAM FoamAdapter Catch2::Catch2 Kokkos::kokkos)
+  target_link_libraries(adapter_${TEST} NeoFOAM OpenFOAM FoamAdapter Catch2::Catch2 Kokkos::kokkos)
 
   add_test(
     NAME adapter_${TEST}
