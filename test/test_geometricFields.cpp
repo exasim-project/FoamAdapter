@@ -99,7 +99,6 @@ TEST_CASE("fvcc::VolumeField")
 
     SECTION("fvccVolField_[scalar]" + exec_name)
     {
-
         Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
         NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
@@ -118,7 +117,6 @@ TEST_CASE("fvcc::VolumeField")
 
     SECTION("fvccVolField_[vector]" + exec_name)
     {
-
         Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
         NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
