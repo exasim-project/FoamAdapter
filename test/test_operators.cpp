@@ -211,7 +211,7 @@ TEST_CASE("GradOperator")
         fvcc::VolumeField<NeoFOAM::Vector> neoGradT = constructFrom(exec, uMesh, ofGradT);
         NeoFOAM::fill(neoGradT.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
         NeoFOAM::fill(neoGradT.boundaryField().value(), NeoFOAM::Vector(0.0, 0.0, 0.0));
-        fvcc::gaussGreenGrad(exec, uMesh).grad(neoGradT, neoT);
+        fvcc::GaussGreenGrad(exec, uMesh).grad(neoGradT, neoT);
         Foam::Info << "writing gradT field for exector: " << exec_name << Foam::endl;
         write(neoGradT.internalField(), mesh, "gradT_" + exec_name);
 
