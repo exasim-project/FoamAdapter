@@ -83,4 +83,4 @@ jobs:
 
      - name: Execute unit tests FoamAdapter
        run: |
-         ctest --preset ninja-cpuonly-all
+         ctest --preset develop
