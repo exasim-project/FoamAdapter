@@ -21,7 +21,7 @@ SPDX-License-Identifier = "Unlicense"
 
 [[annotations]]
 path = [
-    "tests/**",
+    "test/**",
      "benchmarkSuite/**",
      ".github/workflows/build.yaml",
      ".github/workflows/static_checks.yaml",

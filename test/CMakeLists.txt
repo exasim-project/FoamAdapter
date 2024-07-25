@@ -18,8 +18,8 @@ function(foam_adapter_unit_test TEST WORKING_DIRECTORY)
 
   add_executable(adapter_${TEST} "test_${TEST}.cpp")
 
-  target_compile_definitions(adapter_${TEST} PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306
-                                            OMPI_SKIP_MPICXX)
+  target_compile_definitions(adapter_${TEST} PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP
+                                                    OPENFOAM=2306 OMPI_SKIP_MPICXX)
 
   target_include_directories(adapter_${TEST} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
@@ -32,6 +32,6 @@ function(foam_adapter_unit_test TEST WORKING_DIRECTORY)
 
 endfunction()
 
-foam_adapter_unit_test(geometricFields)
+foam_adapter_unit_test(geometricFields setup_operator)
 foam_adapter_unit_test(operators setup_operator)
 foam_adapter_unit_test(unstructuredMesh setup_unstructuredMesh)
