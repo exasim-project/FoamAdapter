@@ -98,7 +98,8 @@ int main(int argc, char* argv[])
             NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
             NeoFOAM::scalarField Temperature(exec, T.internalField().size());
-            Temperature.apply(KOKKOS_LAMBDA(int i) { return i; });
+            Temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
+            );
 
             Foam::Info << "writing temperature field" << Foam::endl;
             write(Temperature, mesh, "Temperature");
@@ -111,12 +112,13 @@ int main(int argc, char* argv[])
         }
 
         {
-            NeoFOAM::Executor exec = NeoFOAM::CPUExecutor();
+            NeoFOAM::Executor exec = NeoFOAM::SerialExecutor();
             Foam::Info << "reading mesh" << Foam::endl;
             NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
             NeoFOAM::scalarField Temperature(exec, T.internalField().size());
-            Temperature.apply(KOKKOS_LAMBDA(int i) { return i; });
+            Temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
+            );
 
             Foam::Info << "writing temperature field" << Foam::endl;
             write(Temperature, mesh, "Temperature");
@@ -129,12 +131,13 @@ int main(int argc, char* argv[])
         }
 
         {
-            NeoFOAM::Executor exec = NeoFOAM::OMPExecutor();
+            NeoFOAM::Executor exec = NeoFOAM::CPUExecutor();
             Foam::Info << "reading mesh" << Foam::endl;
             NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
             NeoFOAM::scalarField Temperature(exec, T.internalField().size());
-            Temperature.apply(KOKKOS_LAMBDA(int i) { return i; });
+            Temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
+            );
 
             Foam::Info << "writing temperature field" << Foam::endl;
             write(Temperature, mesh, "Temperature");

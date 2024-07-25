@@ -9,14 +9,12 @@
 #include <catch2/catch_approx.hpp>
 
 #include "NeoFOAM/fields/field.hpp"
-
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred.hpp"
-
+#include "NeoFOAM/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
 #include "NeoFOAM/mesh/unstructured.hpp"
-#include "NeoFOAM/mesh/stencil/fvccGeometryScheme.hpp"
-#include "NeoFOAM/mesh/stencil/basicFvccGeometryScheme.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -30,6 +28,8 @@
 Foam::Time* timePtr;    // A single time object
 Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 Foam::fvMesh* meshPtr;  // A single mesh object
+
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
 int main(int argc, char* argv[])
 {
@@ -73,7 +73,7 @@ TEST_CASE("unstructuredMesh")
     Foam::argList& args = *argsPtr;
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
 
@@ -360,7 +360,7 @@ TEST_CASE("fvccGeometryScheme")
     Foam::argList& args = *argsPtr;
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
     // NeoFOAM::Executor exec = NeoFOAM::CPUExecutor{};
@@ -373,8 +373,8 @@ TEST_CASE("fvccGeometryScheme")
     SECTION("BasicFvccGeometryScheme" + exec_name)
     {
         // update on construction
-        NeoFOAM::GeometryScheme scheme(
-            exec, uMesh, std::make_unique<NeoFOAM::BasicGeometryScheme>(uMesh)
+        fvcc::GeometryScheme scheme(
+            exec, uMesh, std::make_unique<fvcc::BasicGeometryScheme>(uMesh)
         );
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
@@ -392,7 +392,7 @@ TEST_CASE("fvccGeometryScheme")
     SECTION("DefaultBasicFvccGeometryScheme" + exec_name)
     {
         // update on construction
-        NeoFOAM::GeometryScheme scheme(uMesh);
+        fvcc::GeometryScheme scheme(uMesh);
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 

@@ -9,6 +9,13 @@ project(
   VERSION 0.1.0
   DESCRIPTION "An implementation of FOAM")
 
+if(NOT DEFINED ENV{FOAM_SRC})
+  message(FATAL_ERROR "You must source OpenFOAM before building FOAM_ADAPTER")
+endif()
+
+option(FOAMADAPTER_BUILD_TESTS "Build the unit tests" OFF)
+option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" OFF)
+
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
 
@@ -23,7 +30,19 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Eventhough we compile NeoFOAM as SHARED library we need to explicitly enable PIC for all targets
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+include(cmake/OpenFOAM.cmake)
+if(FOAMADAPTER_BUILD_TESTS)
+  set(NEOFOAM_BUILD_TESTS ON)
+endif()
+if(FOAMADAPTER_BUILD_BENCHMARKS)
+  set(NEOFOAM_BUILD_BENCHMARKS ON)
+endif()
+
 add_subdirectory(NeoFOAM)
 add_subdirectory(src)
-add_subdirectory(test)
-add_subdirectory(benchmarks)
+if(FOAMADAPTER_BUILD_TESTS)
+  add_subdirectory(test)
+endif()
+if(FOAMADAPTER_BUILD_BENCHMARKS)
+  add_subdirectory(benchmarks)
+endif()

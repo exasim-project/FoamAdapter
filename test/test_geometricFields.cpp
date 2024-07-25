@@ -25,6 +25,8 @@
 #include "fvCFD.H"
 #include "FoamAdapter/setup/setup.hpp"
 
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+
 Foam::Time* timePtr;    // A single time object
 Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 Foam::fvMesh* meshPtr;  // A single mesh object
@@ -89,7 +91,7 @@ TEST_CASE("fvcc::VolumeField")
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::OMPExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
@@ -101,7 +103,7 @@ TEST_CASE("fvcc::VolumeField")
         Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
         NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-        NeoFOAM::fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
 
         REQUIRE(neoT.internalField().size() == T.internalField().size());
         fill(neoT.internalField(), 1.0);
@@ -120,7 +122,7 @@ TEST_CASE("fvcc::VolumeField")
         Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
         NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-        NeoFOAM::fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
+        fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
 
         REQUIRE(neoU.internalField().size() == U.internalField().size());
         fill(neoU.internalField(), NeoFOAM::Vector(1.0, 1.0, 1.0));
