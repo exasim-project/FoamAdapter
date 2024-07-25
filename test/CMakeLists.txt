@@ -26,9 +26,10 @@ function(foam_adapter_unit_test TEST WORKING_DIRECTORY)
   target_link_libraries(${TEST} NeoFOAM OpenFOAM FoamAdapter Catch2::Catch2 Kokkos::kokkos)
 
   add_test(
-    NAME ${TEST}
+    NAME adapter_${TEST}
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${TEST}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/test/${WORKING_DIRECTORY})
+
 endfunction()
 
 foam_adapter_unit_test(geometricFields)
