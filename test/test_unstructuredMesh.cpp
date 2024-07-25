@@ -29,6 +29,8 @@ Foam::Time* timePtr;    // A single time object
 Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 Foam::fvMesh* meshPtr;  // A single mesh object
 
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+
 int main(int argc, char* argv[])
 {
 
@@ -371,8 +373,8 @@ TEST_CASE("fvccGeometryScheme")
     SECTION("BasicFvccGeometryScheme" + exec_name)
     {
         // update on construction
-        NeoFOAM::GeometryScheme scheme(
-            exec, uMesh, std::make_unique<NeoFOAM::BasicGeometryScheme>(uMesh)
+        fvcc::GeometryScheme scheme(
+            exec, uMesh, std::make_unique<fvcc::BasicGeometryScheme>(uMesh)
         );
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
@@ -390,7 +392,7 @@ TEST_CASE("fvccGeometryScheme")
     SECTION("DefaultBasicFvccGeometryScheme" + exec_name)
     {
         // update on construction
-        NeoFOAM::GeometryScheme scheme(uMesh);
+        fvcc::GeometryScheme scheme(uMesh);
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 
