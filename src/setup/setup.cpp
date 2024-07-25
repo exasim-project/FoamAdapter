@@ -68,11 +68,11 @@ std::unique_ptr<Foam::fvMesh> Foam::createMesh(const Foam::Time& runTime)
 NeoFOAM::Executor Foam::createExecutor(const Foam::dictionary& dict)
 {
     auto exec_name = dict.get<Foam::word>("executor");
-    if (exec_name == "CPU")
+    if (exec_name == "Serial")
     {
         return NeoFOAM::SerialExecutor();
     }
-    else if (exec_name == "OMP")
+    else if (exec_name == "CPU")
     {
         return NeoFOAM::CPUExecutor();
     }
@@ -84,4 +84,5 @@ NeoFOAM::Executor Foam::createExecutor(const Foam::dictionary& dict)
     {
         Foam::FatalError << "Executor not recognized" << Foam::endl;
     }
+    return NeoFOAM::SerialExecutor();
 }
