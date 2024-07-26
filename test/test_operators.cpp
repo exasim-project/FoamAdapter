@@ -53,6 +53,7 @@ int main(int argc, char* argv[])
 #include "setRootCase.H"
 #include "createTime.H"
     argsPtr = &args;
+    args.unsetOption("--verbosity");
     timePtr = &runTime;
 
     int result = session.run();
@@ -87,6 +88,7 @@ TEST_CASE("Interpolation")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
+    args.unsetOption("--verbosity");
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
@@ -155,6 +157,7 @@ TEST_CASE("GradOperator")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
+    args.unsetOption("--verbosity");
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),

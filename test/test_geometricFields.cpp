@@ -43,6 +43,39 @@ int main(int argc, char* argv[])
     if (returnCode != 0) // Indicates a command line error
         return returnCode;
 
+    // Find position of separator "---"
+    int sepIdx = argc - 1;
+    for (int i = 1; i < argc; i++)
+    {
+        if (strcmp(argv[i], "---") == 0) sepIdx = i;
+    }
+
+    // Figure out argc for each part
+    int doctestArgc = (sepIdx == argc - 1) ? argc : sepIdx;
+    int foamArgc = (sepIdx == argc - 1) ? 1 : argc - sepIdx;
+
+    // Prepare argv for doctestArgv
+    char* doctestArgv[doctestArgc];
+    for (int i = 0; i < doctestArgc; i++)
+    {
+        doctestArgv[i] = argv[i];
+    }
+
+    // Prepare argv for OpenFOAM
+    char* foamArgv[foamArgc];
+    foamArgv[0] = argv[0];
+    for (int i = 1; i < foamArgc; i++)
+    {
+        foamArgv[i] = argv[doctestArgc + i];
+    }
+
+    // Overwrite argv and argc for Foam include files
+    argc = foamArgc;
+    for (int i = 1; i < foamArgc; i++)
+    {
+        argv[i] = foamArgv[i];
+    }
+
 #include "setRootCase.H"
 #include "createTime.H"
     std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
@@ -72,6 +105,7 @@ TEST_CASE("fvcc::VolumeField")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
+    args.unsetOption("--verbosity");
     std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
     Foam::fvMesh& mesh = *meshPtr;
 

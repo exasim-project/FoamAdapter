@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Unlicense
 # SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
-
 FetchContent_Declare(
   Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
@@ -10,11 +8,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-enable_testing()
+include(CTest)
+include(Catch)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 
-function(foam_adapter_unit_test TEST WORKING_DIRECTORY)
+function(foam_adapter_unit_test TEST SETUP_DIRECTORY)
+  if(NOT DEFINED "adapter_WORKING_DIRECTORY")
+    set(adapter_WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests)
+  endif()
 
   add_executable(adapter_${TEST} "test_${TEST}.cpp")
 
@@ -23,12 +25,15 @@ function(foam_adapter_unit_test TEST WORKING_DIRECTORY)
 
   target_include_directories(adapter_${TEST} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-  target_link_libraries(adapter_${TEST} NeoFOAM OpenFOAM FoamAdapter Catch2::Catch2 Kokkos::kokkos)
+  target_link_libraries(adapter_${TEST} NeoFOAM OpenFOAM FoamAdapter Catch2::Catch2WithMain)
+
+  set_target_properties(adapter_${TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+                                                   ${adapter_WORKING_DIRECTORY})
 
   add_test(
     NAME adapter_${TEST}
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${TEST}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/test/${WORKING_DIRECTORY})
+    COMMAND ${adapter_WORKING_DIRECTORY}/adapter_${TEST}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/test/${SETUP_DIRECTORY})
 
 endfunction()
 
