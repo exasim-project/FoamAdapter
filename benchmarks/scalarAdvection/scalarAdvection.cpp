@@ -223,46 +223,19 @@ int main(int argc, char* argv[])
             // NeoFOAM Euler hardcoded
             {
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
-                // NeoFOAM::fill(neoDivT.internalField(), 0.0);
-                // NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
-
-                // fvcc::GaussGreenDiv(
-                //     exec,
-                //     uMesh,
-                //     fvcc::SurfaceInterpolation(
-                //         exec,
-                //         uMesh,
-                //         fvcc::SurfaceInterpolationFactory::create("upwind", exec, uMesh)
-                //     )
-                // )
-                //     .div(neoDivT, neoPhi, neoT);
-                // neoT.internalField() =
-                //     neoT.internalField() - neoDivT.internalField() * runTime.deltaT().value();
-                // neoT.correctBoundaryConditions();
+                
                 dsl::EqnTerm neoTimeTerm = Temporal(neoT);
                 dsl::EqnTerm neoDivTerm = Divergence(neoPhi, neoT);
                 dsl::EqnSystem eqnSys = neoTimeTerm + neoDivTerm;
+                eqnSys.dt = runTime.deltaT().value();
 
                 NeoFOAM::Dictionary dict;
                 dict.insert("type", std::string("forwardEuler"));
-
+                
                 fvcc::TimeIntegration timeIntergrator(eqnSys, dict);
                 timeIntergrator.solve();
             }
 
-            {
-                addProfiling(neoFoamAdvection, "DSL NeoFoamAdvection");
-
-                dsl::EqnTerm neoTimeTerm = Temporal(neoT);
-                dsl::EqnTerm neoDivTerm = Divergence(neoPhi, neoT);
-                dsl::EqnSystem eqnSys = neoTimeTerm + neoDivTerm;
-
-                NeoFOAM::Dictionary dict;
-                dict.insert("type", std::string("forwardEuler"));
-
-                fvcc::TimeIntegration timeIntergrator(eqnSys, dict);
-                // timeIntergrator.solve();
-            }
 
             if (runTime.outputTime())
             {
