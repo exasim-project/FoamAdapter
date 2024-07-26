@@ -25,72 +25,12 @@
 #include "fvCFD.H"
 #include <vector>
 
-Foam::Time* timePtr;    // A single time object
-Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
-Foam::fvMesh* meshPtr;  // A single mesh object
-
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
-int main(int argc, char* argv[])
-{
-    // Initialize Catch2
-    Kokkos::initialize(argc, argv);
-    Catch::Session session;
+extern Foam::Time* timePtr;    // A single time object
+extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
+extern Foam::fvMesh* meshPtr;  // A single mesh object
 
-    // Specify command line options
-    int returnCode = session.applyCommandLine(argc, argv);
-    if (returnCode != 0) // Indicates a command line error
-        return returnCode;
-
-
-    // Find position of separator "---"
-    int sepIdx = argc - 1;
-    for (int i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "---") == 0) sepIdx = i;
-    }
-
-    // Figure out argc for each part
-    int doctestArgc = (sepIdx == argc - 1) ? argc : sepIdx;
-    int foamArgc = (sepIdx == argc - 1) ? 1 : argc - sepIdx;
-
-    // Prepare argv for doctestArgv
-    char* doctestArgv[doctestArgc];
-    for (int i = 0; i < doctestArgc; i++)
-    {
-        doctestArgv[i] = argv[i];
-    }
-
-    // Prepare argv for OpenFOAM
-    char* foamArgv[foamArgc];
-    foamArgv[0] = argv[0];
-    for (int i = 1; i < foamArgc; i++)
-    {
-        foamArgv[i] = argv[doctestArgc + i];
-    }
-
-    // Overwrite argv and argc for Foam include files
-    argc = foamArgc;
-    for (int i = 1; i < foamArgc; i++)
-    {
-        argv[i] = foamArgv[i];
-    }
-
-
-#include "setRootCase.H"
-#include "createTime.H"
-
-    // #include "createMesh.H"
-    argsPtr = &args;
-    timePtr = &runTime;
-
-    int result = session.run();
-
-    // Run benchmarks if there are any
-    Kokkos::finalize();
-
-    return result;
-}
 
 struct ApproxScalar
 {

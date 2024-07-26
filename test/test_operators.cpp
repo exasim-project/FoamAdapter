@@ -36,33 +36,9 @@
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
-Foam::Time* timePtr;    // A single time object
-Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
-
-int main(int argc, char* argv[])
-{
-    // Initialize Catch2
-    Kokkos::initialize(argc, argv);
-    Catch::Session session;
-
-    // Specify command line options
-    int returnCode = session.applyCommandLine(argc, argv);
-    if (returnCode != 0) // Indicates a command line error
-        return returnCode;
-
-#include "setRootCase.H"
-#include "createTime.H"
-    argsPtr = &args;
-    args.unsetOption("--verbosity");
-    timePtr = &runTime;
-
-    int result = session.run();
-
-    // Run benchmarks if there are any
-    Kokkos::finalize();
-
-    return result;
-}
+extern Foam::Time* timePtr;    // A single time object
+extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
+extern Foam::fvMesh* meshPtr;  // A single mesh object
 
 struct ApproxScalar
 {
@@ -157,7 +133,6 @@ TEST_CASE("GradOperator")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
-    args.unsetOption("--verbosity");
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
