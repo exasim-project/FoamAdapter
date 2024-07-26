@@ -5,7 +5,6 @@ add_executable(test_treeAMR "test_treeAMR.cpp")
 find_package(MPI REQUIRED)
 find_package(ZLIB REQUIRED)
 
-
 # OMPI_SKIP_MPICXX)
 
 target_include_directories(

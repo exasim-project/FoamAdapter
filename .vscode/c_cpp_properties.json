@@ -1,28 +1,26 @@
 {
-    "configurations": [
-        {
-            "name": "Linux-GCC",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/NeoFOAM/**",
-                "/usr/local/cuda/include/**"
-            ],
-            "defines": [],
-            "compilerPath": "/usr/bin/g++",
-            "cStandard": "c17",
-            "cppStandard": "c++20",
-            "intelliSenseMode": "linux-gcc-x64",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/**",
-                    "${workspaceFolder}/NeoFOAM/**"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            // "configurationProvider": "ms-vscode.cmake-tools",
-            // "compileCommands": "${workspaceFolder}/build/compile_commands.json"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "Linux-GCC",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/NeoFOAM/**",
+        "/usr/local/cuda/include/**"
+      ],
+      "defines": [],
+      "compilerPath": "/usr/bin/g++",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "linux-gcc-x64",
+      "browse": {
+        "path": [
+          "${workspaceFolder}/**",
+          "${workspaceFolder}/NeoFOAM/**"
+        ],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      }
+    }
+  ],
+  "version": 4
 }
