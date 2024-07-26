@@ -17,8 +17,93 @@
 #include "FoamAdapter/writers/writers.hpp"
 #include "FoamAdapter/setup/setup.hpp"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "NeoFOAM/DSL/eqnTerm.hpp"
+#include "NeoFOAM/DSL/eqnSystem.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/timeIntegration/timeIntegration.hpp"
+
+
+namespace dsl = NeoFOAM::DSL;
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+
+class Temporal
+{
+
+public:
+
+    Temporal(fvcc::VolumeField<NeoFOAM::scalar>& Phi)
+        : termType_(dsl::EqnTerm::Type::Temporal), Phi_(Phi), exec_(Phi.exec()),
+          nCells_(Phi.mesh().nCells())
+    {}
+
+    std::string display() const { return "Temporal"; }
+
+    void temporalOperation(NeoFOAM::Field<NeoFOAM::scalar>& field, NeoFOAM::scalar scale) {}
+
+    dsl::EqnTerm::Type getType() const { return termType_; }
+
+    fvcc::VolumeField<NeoFOAM::scalar>* volumeField() { return &Phi_; }
+
+    const NeoFOAM::Executor& exec() const { return exec_; }
+
+    std::size_t nCells() const { return nCells_; }
+
+    dsl::EqnTerm::Type termType_;
+
+
+    fvcc::VolumeField<NeoFOAM::scalar>& Phi_;
+    const NeoFOAM::Executor exec_;
+    const std::size_t nCells_;
+};
+
+class Divergence
+{
+
+public:
+
+    Divergence(
+        const fvcc::SurfaceField<NeoFOAM::scalar>& faceFlux, fvcc::VolumeField<NeoFOAM::scalar>& Phi
+    )
+        : termType_(dsl::EqnTerm::Type::Explicit), exec_(Phi.exec()), nCells_(Phi.mesh().nCells()),
+          faceFlux_(faceFlux), Phi_(Phi),
+          div_(
+              Phi.exec(),
+              Phi.mesh(),
+              fvcc::SurfaceInterpolation(
+                  Phi.exec(),
+                  Phi.mesh(),
+                  fvcc::SurfaceInterpolationFactory::create("upwind", Phi.exec(), Phi.mesh())
+              )
+          )
+    {}
+
+    std::string display() const { return "Divergence"; }
+
+    void explicitOperation(NeoFOAM::Field<NeoFOAM::scalar>& source, NeoFOAM::scalar scale)
+    {
+        div_.div(source, faceFlux_, Phi_);
+    }
+
+    dsl::EqnTerm::Type getType() const { return termType_; }
+
+    fvcc::VolumeField<NeoFOAM::scalar>* volumeField() { return nullptr; }
+
+
+    const NeoFOAM::Executor& exec() const { return exec_; }
+
+    std::size_t nCells() const { return nCells_; }
+
+    dsl::EqnTerm::Type termType_;
+
+    const NeoFOAM::Executor exec_;
+    const std::size_t nCells_;
+    const fvcc::SurfaceField<NeoFOAM::scalar>& faceFlux_;
+    fvcc::VolumeField<NeoFOAM::scalar>& Phi_;
+    fvcc::GaussGreenDiv div_;
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 
 int main(int argc, char* argv[])
 {
@@ -138,23 +223,45 @@ int main(int argc, char* argv[])
             // NeoFOAM Euler hardcoded
             {
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
-                NeoFOAM::fill(neoDivT.internalField(), 0.0);
-                NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
+                // NeoFOAM::fill(neoDivT.internalField(), 0.0);
+                // NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
 
-                fvcc::GaussGreenDiv(
-                    exec,
-                    uMesh,
-                    fvcc::SurfaceInterpolation(
-                        exec,
-                        uMesh,
-                        fvcc::SurfaceInterpolationFactory::create("upwind", exec, uMesh)
-                    )
-                )
-                    .div(neoDivT, neoPhi, neoT);
-                neoT.internalField() =
-                    neoT.internalField() - neoDivT.internalField() * runTime.deltaT().value();
-                neoT.correctBoundaryConditions();
-                Kokkos::fence();
+                // fvcc::GaussGreenDiv(
+                //     exec,
+                //     uMesh,
+                //     fvcc::SurfaceInterpolation(
+                //         exec,
+                //         uMesh,
+                //         fvcc::SurfaceInterpolationFactory::create("upwind", exec, uMesh)
+                //     )
+                // )
+                //     .div(neoDivT, neoPhi, neoT);
+                // neoT.internalField() =
+                //     neoT.internalField() - neoDivT.internalField() * runTime.deltaT().value();
+                // neoT.correctBoundaryConditions();
+                dsl::EqnTerm neoTimeTerm = Temporal(neoT);
+                dsl::EqnTerm neoDivTerm = Divergence(neoPhi, neoT);
+                dsl::EqnSystem eqnSys = neoTimeTerm + neoDivTerm;
+
+                NeoFOAM::Dictionary dict;
+                dict.insert("type", std::string("forwardEuler"));
+
+                fvcc::TimeIntegration timeIntergrator(eqnSys, dict);
+                timeIntergrator.solve();
+            }
+
+            {
+                addProfiling(neoFoamAdvection, "DSL NeoFoamAdvection");
+
+                dsl::EqnTerm neoTimeTerm = Temporal(neoT);
+                dsl::EqnTerm neoDivTerm = Divergence(neoPhi, neoT);
+                dsl::EqnSystem eqnSys = neoTimeTerm + neoDivTerm;
+
+                NeoFOAM::Dictionary dict;
+                dict.insert("type", std::string("forwardEuler"));
+
+                fvcc::TimeIntegration timeIntergrator(eqnSys, dict);
+                // timeIntergrator.solve();
             }
 
             if (runTime.outputTime())
