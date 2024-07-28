@@ -90,7 +90,7 @@ jobs:
           | sed 's/^"\(.*\)"$/\1/' \
           | grep -F -f pattern - > files
         # run clang-tidy on all specified files
-        clang-tidy-16 --fix --extra-arg=-w -p build/ReleaseAll $(cat files)
+        clang-tidy-16 --fix --extra-arg=-w -p build/develop $(cat files)
 
     - name: Check for fixes
       run: |
