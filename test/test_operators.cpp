@@ -27,14 +27,12 @@
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
-extern Foam::Time* timePtr;    // A single time object
-extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
-extern Foam::fvMesh* meshPtr;  // A single mesh object
+extern Foam::Time* timePtr;   // A single time object
+extern Foam::fvMesh* meshPtr; // A single mesh object
 
 TEST_CASE("Interpolation")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
@@ -102,7 +100,6 @@ TEST_CASE("Interpolation")
 TEST_CASE("GradOperator")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
@@ -174,7 +171,6 @@ TEST_CASE("GradOperator")
 TEST_CASE("DivOperator")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
