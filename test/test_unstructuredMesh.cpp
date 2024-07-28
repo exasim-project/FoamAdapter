@@ -6,15 +6,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
-#include <catch2/catch_approx.hpp>
-
-#include "NeoFOAM/fields/field.hpp"
-#include "NeoFOAM/fields/boundaryFields.hpp"
-#include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
-#include "NeoFOAM/mesh/unstructured.hpp"
+#include "catch2/common.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -22,90 +14,16 @@
 #include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
-#include "fvCFD.H"
 #include <vector>
-
-Foam::Time* timePtr;    // A single time object
-Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
-Foam::fvMesh* meshPtr;  // A single mesh object
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
-int main(int argc, char* argv[])
-{
-    // Initialize Catch2
-    Kokkos::initialize(argc, argv);
-    Catch::Session session;
-
-    // Specify command line options
-    int returnCode = session.applyCommandLine(argc, argv);
-    if (returnCode != 0) // Indicates a command line error
-        return returnCode;
-
-
-    // Find position of separator "---"
-    int sepIdx = argc - 1;
-    for (int i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "---") == 0) sepIdx = i;
-    }
-
-    // Figure out argc for each part
-    int doctestArgc = (sepIdx == argc - 1) ? argc : sepIdx;
-    int foamArgc = (sepIdx == argc - 1) ? 1 : argc - sepIdx;
-
-    // Prepare argv for doctestArgv
-    char* doctestArgv[doctestArgc];
-    for (int i = 0; i < doctestArgc; i++)
-    {
-        doctestArgv[i] = argv[i];
-    }
-
-    // Prepare argv for OpenFOAM
-    char* foamArgv[foamArgc];
-    foamArgv[0] = argv[0];
-    for (int i = 1; i < foamArgc; i++)
-    {
-        foamArgv[i] = argv[doctestArgc + i];
-    }
-
-    // Overwrite argv and argc for Foam include files
-    argc = foamArgc;
-    for (int i = 1; i < foamArgc; i++)
-    {
-        argv[i] = foamArgv[i];
-    }
-
-
-#include "setRootCase.H"
-#include "createTime.H"
-
-    // #include "createMesh.H"
-    argsPtr = &args;
-    timePtr = &runTime;
-
-    int result = session.run();
-
-    // Run benchmarks if there are any
-    Kokkos::finalize();
-
-    return result;
-}
-
-struct ApproxScalar
-{
-    Foam::scalar margin;
-    bool operator()(double rhs, double lhs) const
-    {
-        return Catch::Approx(rhs).margin(margin) == lhs;
-    }
-};
+extern Foam::Time* timePtr;   // A single time object
+extern Foam::fvMesh* meshPtr; // A single mesh object
 
 
 TEST_CASE("unstructuredMesh")
 {
-    Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
@@ -114,7 +32,7 @@ TEST_CASE("unstructuredMesh")
 
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 
-    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
+    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::fvccNeoMesh& mesh = *meshPtr;
     const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
@@ -391,27 +309,23 @@ TEST_CASE("unstructuredMesh")
 
 TEST_CASE("fvccGeometryScheme")
 {
-    Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
-    args.unsetOption("--verbosity");
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
-    // NeoFOAM::Executor exec = NeoFOAM::CPUExecutor{};
+
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 
-    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
+    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::fvccNeoMesh& mesh = *meshPtr;
     const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
     SECTION("BasicFvccGeometryScheme" + exec_name)
     {
         // update on construction
-        fvcc::GeometryScheme scheme(
-            exec, uMesh, std::make_unique<fvcc::BasicGeometryScheme>(uMesh)
-        );
+        auto scheme =
+            fvcc::GeometryScheme(exec, uMesh, std::make_unique<fvcc::BasicGeometryScheme>(uMesh));
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 

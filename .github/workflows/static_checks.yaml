@@ -66,13 +66,10 @@ jobs:
       run: |
         sudo apt update
         sudo apt install \
-           ninja-build \
-           iwyu \
-           clang-16 \
+           clang-tidy-16 \
            libomp-16-dev \
            libopenmpi-dev \
-           openmpi-bin \
-           openfoam2406-dev
+           openmpi-bin
 
     - uses: actions/download-artifact@v4
       with:
@@ -86,11 +83,11 @@ jobs:
         # Create list of .cpp files that are in this repository and part of the
         # compilation database
         # also filters out " at the begin and end of the filename
-        jq ".[] | .file" build/ReleaseAll/compile_commands.json \
+        jq ".[] | .file" build/develop/compile_commands.json \
           | sed 's/^"\(.*\)"$/\1/' \
           | grep -F -f pattern - > files
         # run clang-tidy on all specified files
-        clang-tidy-16 --fix --extra-arg=-w -p build/ReleaseAll $(cat files)
+        clang-tidy-16 --fix --extra-arg=-w -p build/develop $(cat files)
 
     - name: Check for fixes
       run: |

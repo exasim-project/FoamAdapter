@@ -8,16 +8,8 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <catch2/catch_approx.hpp>
+#include "catch2/common.hpp"
 
-#include "NeoFOAM/fields/field.hpp"
-
-#include "NeoFOAM/fields/boundaryFields.hpp"
-#include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred.hpp"
-
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/linear.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/upwind.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 
@@ -31,64 +23,18 @@
 #include <span>
 
 #define namespaceFoam // Suppress <using namespace Foam;>
-#include "fvCFD.H"
 #include "gaussConvectionScheme.H"
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
-Foam::Time* timePtr;    // A single time object
-Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
-
-int main(int argc, char* argv[])
-{
-    // Initialize Catch2
-    Kokkos::initialize(argc, argv);
-    Catch::Session session;
-
-    // Specify command line options
-    int returnCode = session.applyCommandLine(argc, argv);
-    if (returnCode != 0) // Indicates a command line error
-        return returnCode;
-
-#include "setRootCase.H"
-#include "createTime.H"
-    argsPtr = &args;
-    args.unsetOption("--verbosity");
-    timePtr = &runTime;
-
-    int result = session.run();
-
-    // Run benchmarks if there are any
-    Kokkos::finalize();
-
-    return result;
-}
-
-struct ApproxScalar
-{
-    Foam::scalar margin;
-    bool operator()(double rhs, double lhs) const
-    {
-        return Catch::Approx(rhs).margin(margin) == lhs;
-    }
-};
-
-struct ApproxVector
-{
-    Foam::scalar margin;
-    bool operator()(NeoFOAM::Vector rhs, Foam::vector lhs) const
-    {
-        NeoFOAM::Vector diff(rhs[0] - lhs[0], rhs[1] - lhs[1], rhs[2] - lhs[2]);
-
-        return Catch::Approx(0).margin(margin) == mag(diff);
-    }
-};
+extern Foam::Time* timePtr;    // A single time object
+extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
+extern Foam::fvMesh* meshPtr;  // A single mesh object
 
 TEST_CASE("Interpolation")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
-    args.unsetOption("--verbosity");
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
@@ -157,7 +103,6 @@ TEST_CASE("GradOperator")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
-    args.unsetOption("--verbosity");
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
@@ -193,7 +138,6 @@ TEST_CASE("GradOperator")
         );
         forAll(T, celli)
         {
-            // T[celli] = dis(gen);
             T[celli] = celli;
         }
         T.correctBoundaryConditions();
@@ -269,14 +213,12 @@ TEST_CASE("DivOperator")
 
         forAll(phi, facei)
         {
-            // T[celli] = dis(gen);
             phi[facei] = facei;
         }
         phi.write();
 
         forAll(T, celli)
         {
-            // T[celli] = dis(gen);
             T[celli] = celli;
         }
         T.correctBoundaryConditions();
