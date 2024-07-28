@@ -20,14 +20,15 @@
 #include "fvCFD.H"
 
 #include <catch2/catch_approx.hpp>
+#include <catch2/matchers/catch_matchers_all.hpp>
 
 template<typename ValueType>
 void checkField(const NeoFOAM::Field<ValueType>& field, ValueType value)
 {
-    auto field_host = field.copyToHost().span();
-    for (int i = 0; i < field_host.size(); i++)
+    auto fieldCopy = field.copyToHost().span();
+    for (int i = 0; i < fieldCopy.size(); i++)
     {
-        REQUIRE(field_host[i] == value);
+        REQUIRE(fieldCopy[i] == value);
     }
 }
 
