@@ -66,13 +66,10 @@ jobs:
       run: |
         sudo apt update
         sudo apt install \
-           ninja-build \
-           iwyu \
-           clang-16 \
+           clang-tidy-16 \
            libomp-16-dev \
            libopenmpi-dev \
-           openmpi-bin \
-           openfoam2406-dev
+           openmpi-bin
 
     - uses: actions/download-artifact@v4
       with:
