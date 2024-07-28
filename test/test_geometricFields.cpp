@@ -18,9 +18,8 @@
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
-extern Foam::Time* timePtr;    // A single time object
-extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
-extern Foam::fvMesh* meshPtr;  // A single mesh object
+extern Foam::Time* timePtr;   // A single time object
+extern Foam::fvMesh* meshPtr; // A single mesh object
 
 
 TEST_CASE("fvcc::VolumeField")

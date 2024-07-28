@@ -1,0 +1,2 @@
+CMake Error: Could not read presets from /Users/go/Code/FoamAdapter/test:
+File not found: /Users/go/Code/FoamAdapter/test/CMakePresets.json

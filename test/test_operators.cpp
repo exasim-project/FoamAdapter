@@ -35,7 +35,6 @@ TEST_CASE("Interpolation")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
-    args.unsetOption("--verbosity");
 
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
@@ -139,7 +138,6 @@ TEST_CASE("GradOperator")
         );
         forAll(T, celli)
         {
-            // T[celli] = dis(gen);
             T[celli] = celli;
         }
         T.correctBoundaryConditions();
@@ -215,14 +213,12 @@ TEST_CASE("DivOperator")
 
         forAll(phi, facei)
         {
-            // T[celli] = dis(gen);
             phi[facei] = facei;
         }
         phi.write();
 
         forAll(T, celli)
         {
-            // T[celli] = dis(gen);
             T[celli] = celli;
         }
         T.correctBoundaryConditions();
