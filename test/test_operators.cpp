@@ -8,16 +8,8 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <catch2/catch_approx.hpp>
+#include "catch2/common.hpp"
 
-#include "NeoFOAM/fields/field.hpp"
-
-#include "NeoFOAM/fields/boundaryFields.hpp"
-#include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred.hpp"
-
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/linear.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/upwind.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 
@@ -31,7 +23,6 @@
 #include <span>
 
 #define namespaceFoam // Suppress <using namespace Foam;>
-#include "fvCFD.H"
 #include "gaussConvectionScheme.H"
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
@@ -39,26 +30,6 @@ namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 extern Foam::fvMesh* meshPtr;  // A single mesh object
-
-struct ApproxScalar
-{
-    Foam::scalar margin;
-    bool operator()(double rhs, double lhs) const
-    {
-        return Catch::Approx(rhs).margin(margin) == lhs;
-    }
-};
-
-struct ApproxVector
-{
-    Foam::scalar margin;
-    bool operator()(NeoFOAM::Vector rhs, Foam::vector lhs) const
-    {
-        NeoFOAM::Vector diff(rhs[0] - lhs[0], rhs[1] - lhs[1], rhs[2] - lhs[2]);
-
-        return Catch::Approx(0).margin(margin) == mag(diff);
-    }
-};
 
 TEST_CASE("Interpolation")
 {

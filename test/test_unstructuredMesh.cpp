@@ -6,15 +6,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
-#include <catch2/catch_approx.hpp>
-
-#include "NeoFOAM/fields/field.hpp"
-#include "NeoFOAM/fields/boundaryFields.hpp"
-#include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
-#include "NeoFOAM/mesh/unstructured.hpp"
+#include "catch2/common.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -22,7 +14,6 @@
 #include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
-#include "fvCFD.H"
 #include <vector>
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
@@ -32,20 +23,8 @@ extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 extern Foam::fvMesh* meshPtr;  // A single mesh object
 
 
-struct ApproxScalar
-{
-    Foam::scalar margin;
-    bool operator()(double rhs, double lhs) const
-    {
-        return Catch::Approx(rhs).margin(margin) == lhs;
-    }
-};
-
-
 TEST_CASE("unstructuredMesh")
 {
-    Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
@@ -54,7 +33,7 @@ TEST_CASE("unstructuredMesh")
 
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 
-    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
+    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::fvccNeoMesh& mesh = *meshPtr;
     const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
@@ -331,27 +310,23 @@ TEST_CASE("unstructuredMesh")
 
 TEST_CASE("fvccGeometryScheme")
 {
-    Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
-    args.unsetOption("--verbosity");
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
-    // NeoFOAM::Executor exec = NeoFOAM::CPUExecutor{};
+
     std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
 
-    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
+    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::fvccNeoMesh& mesh = *meshPtr;
     const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
     SECTION("BasicFvccGeometryScheme" + exec_name)
     {
         // update on construction
-        fvcc::GeometryScheme scheme(
-            exec, uMesh, std::make_unique<fvcc::BasicGeometryScheme>(uMesh)
-        );
+        auto scheme =
+            fvcc::GeometryScheme(exec, uMesh, std::make_unique<fvcc::BasicGeometryScheme>(uMesh));
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 

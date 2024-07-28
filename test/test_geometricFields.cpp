@@ -6,23 +6,14 @@
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
+#include "catch2/common.hpp"
 
 #include "NeoFOAM/fields/field.hpp"
-
-#include "NeoFOAM/fields/boundaryFields.hpp"
-#include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred.hpp"
-
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/linear.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/upwind.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
-#include "fvCFD.H"
 #include "FoamAdapter/setup/setup.hpp"
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
@@ -31,15 +22,6 @@ extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 extern Foam::fvMesh* meshPtr;  // A single mesh object
 
-template<typename ValueType>
-void checkField(const NeoFOAM::Field<ValueType>& field, ValueType value)
-{
-    auto field_host = field.copyToHost().span();
-    for (int i = 0; i < field_host.size(); i++)
-    {
-        REQUIRE(field_host[i] == value);
-    }
-}
 
 TEST_CASE("fvcc::VolumeField")
 {
