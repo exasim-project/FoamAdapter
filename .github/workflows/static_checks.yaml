@@ -86,7 +86,7 @@ jobs:
         # Create list of .cpp files that are in this repository and part of the
         # compilation database
         # also filters out " at the begin and end of the filename
-        jq ".[] | .file" build/ReleaseAll/compile_commands.json \
+        jq ".[] | .file" build/develop/compile_commands.json \
           | sed 's/^"\(.*\)"$/\1/' \
           | grep -F -f pattern - > files
         # run clang-tidy on all specified files
