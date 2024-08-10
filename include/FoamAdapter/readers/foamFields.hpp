@@ -21,9 +21,9 @@ auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
     // Create device-side views
     type_container_t nfField(exec, field.size());
 
-    type_container_t CPUField(NeoFOAM::CPUExecutor {}, field.size());
+    type_container_t SerialField(NeoFOAM::SerialExecutor {}, field.size());
     Kokkos::View<type_primitive_t*, Kokkos::HostSpace, Kokkos::MemoryUnmanaged> CPU_view(
-        CPUField.data(), field.size()
+        SerialField.data(), field.size()
     );
     for (Foam::label i = 0; i < field.size(); i++)
     {

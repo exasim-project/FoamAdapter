@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #include "FoamAdapter/setup/setup.hpp"
+#include "error.H"
 
 
 std::tuple<bool, Foam::scalar, Foam::scalar> Foam::timeControls(const Foam::Time& runTime)
@@ -67,26 +68,26 @@ std::unique_ptr<Foam::fvMesh> Foam::createMesh(const Foam::Time& runTime)
 
 NeoFOAM::Executor Foam::createExecutor(const Foam::dictionary& dict)
 {
-    std::cout << "Creating Executor" << std::endl;
     auto exec_name = dict.get<Foam::word>("executor");
+    Foam::Info << "Creating Executor: " << exec_name << Foam::endl;
     if (exec_name == "Serial")
     {
-        std::cout << "Serial Executor" << std::endl;
+        Foam::Info << "Serial Executor" << Foam::endl;
         return NeoFOAM::SerialExecutor();
     }
-    else if (exec_name == "CPU")
+    if (exec_name == "CPU")
     {
-        std::cout << "CPU Executor" << std::endl;
+        Foam::Info << "CPU Executor" << Foam::endl;
         return NeoFOAM::CPUExecutor();
     }
-    else if (exec_name == "GPU")
+    if (exec_name == "GPU")
     {
-        std::cout << "GPU Executor" << std::endl;
+        Foam::Info << "GPU Executor" << Foam::endl;
         return NeoFOAM::GPUExecutor();
     }
-    else
-    {
-        Foam::FatalError << "Executor not recognized" << Foam::endl;
-    }
+    Foam::FatalError << "unknown Executor: " << exec_name << Foam::nl
+                     << "Available executors: Serial, CPU, GPU" << Foam::nl
+                     << Foam::abort(Foam::FatalError);
+
     return NeoFOAM::SerialExecutor();
 }

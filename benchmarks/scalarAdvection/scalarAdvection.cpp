@@ -141,22 +141,15 @@ int main(int argc, char* argv[])
         NeoFOAM::UnstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
         fvcc::VolumeField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
-        // fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
 
-        //     std::pow((s_cc[celli][1] - 0.75) / spread, 2.0)));
-        // });
-        // neoT.correctBoundaryConditions();
         fvcc::SurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
 
         Foam::Info << "writing neoT field" << Foam::endl;
         write(neoT.internalField(), mesh, "neoT");
 
         // #include "readTimeControls.H"
-        // [adjustTimeStep, maxCo, maxDeltaT] = createTimeControls(runTime);
-        // updateTimeControls(runTime, adjustTimeStep, maxCo, maxDeltaT);
         std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-        // #include "createUfIfPresent.H"
-        // #include "CourantNo.H"
+
         Foam::scalar CoNum = Foam::calculateCoNum(phi);
         if (adjustTimeStep)
         {
@@ -178,13 +171,6 @@ int main(int argc, char* argv[])
         }
         phi0 = Foam::linearInterpolate(U0) & mesh.Sf();
         fvcc::SurfaceField<NeoFOAM::scalar> neoPhi0 = constructSurfaceField(exec, uMesh, phi0);
-
-        Foam::volScalarField ofDivT("ofDivT", Foam::fvc::div(phi, T));
-
-        fvcc::VolumeField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
-        NeoFOAM::fill(neoDivT.internalField(), 0.0);
-        NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
-
 
         while (runTime.run())
         {
@@ -223,7 +209,7 @@ int main(int argc, char* argv[])
             // NeoFOAM Euler hardcoded
             {
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
-                
+
                 dsl::EqnTerm neoTimeTerm = Temporal(neoT);
                 dsl::EqnTerm neoDivTerm = Divergence(neoPhi, neoT);
                 dsl::EqnSystem eqnSys = neoTimeTerm + neoDivTerm;
@@ -231,7 +217,7 @@ int main(int argc, char* argv[])
 
                 NeoFOAM::Dictionary dict;
                 dict.insert("type", std::string("forwardEuler"));
-                
+
                 fvcc::TimeIntegration timeIntergrator(eqnSys, dict);
                 timeIntergrator.solve();
             }
