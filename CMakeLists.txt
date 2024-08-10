@@ -30,17 +30,14 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Eventhough we compile NeoFOAM as SHARED library we need to explicitly enable PIC for all targets
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+# if (APPLE) #if __cplusplus >= 201703L endif()
+
 include(cmake/OpenFOAM.cmake)
-if(FOAMADAPTER_BUILD_TESTS)
-  set(NEOFOAM_BUILD_TESTS ON)
-endif()
-if(FOAMADAPTER_BUILD_BENCHMARKS)
-  set(NEOFOAM_BUILD_BENCHMARKS ON)
-endif()
 
 add_subdirectory(NeoFOAM)
 add_subdirectory(src)
 if(FOAMADAPTER_BUILD_TESTS)
+  enable_testing()
   add_subdirectory(test)
 endif()
 if(FOAMADAPTER_BUILD_BENCHMARKS)

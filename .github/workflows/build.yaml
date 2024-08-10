@@ -83,4 +83,5 @@ jobs:
 
      - name: Execute unit tests FoamAdapter
        run: |
+         source /usr/lib/openfoam/openfoam2406/etc/bashrc || true
          ctest --preset develop

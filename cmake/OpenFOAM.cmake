@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+add_library(OpenFOAM::api INTERFACE IMPORTED)
 add_library(OpenFOAM::core SHARED IMPORTED)
 add_library(OpenFOAM::meshtools SHARED IMPORTED)
 add_library(OpenFOAM::finiteVolume SHARED IMPORTED)
@@ -33,8 +34,13 @@ else()
                                                        $ENV{FOAM_LIBBIN}/libmeshTools.so)
 endif()
 
+target_compile_definitions(OpenFOAM::api INTERFACE WM_LABEL_SIZE=32 NoRepository WM_DP
+                                                   OPENFOAM=2406)
+
 add_library(OpenFOAM INTERFACE)
+
 target_link_libraries(
   OpenFOAM
   PUBLIC
-  INTERFACE OpenFOAM::core OpenFOAM::finiteVolume OpenFOAM::Pstream OpenFOAM::meshtools)
+  INTERFACE OpenFOAM::api OpenFOAM::core OpenFOAM::finiteVolume OpenFOAM::Pstream
+            OpenFOAM::meshtools)

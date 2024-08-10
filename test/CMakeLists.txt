@@ -1,32 +1,31 @@
 # SPDX-License-Identifier: Unlicense
 # SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+add_subdirectory(catch2)
 
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG v3.4.0 # or a later release
-)
-FetchContent_MakeAvailable(Catch2)
+function(foam_adapter_unit_test TEST SETUP_DIRECTORY)
+  if(NOT DEFINED "adapter_WORKING_DIRECTORY")
+    set(adapter_WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests)
+  endif()
 
-enable_testing()
+  add_executable(adapter_${TEST} "test_${TEST}.cpp")
 
-list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+  target_compile_definitions(adapter_${TEST} PUBLIC OMPI_SKIP_MPICXX)
 
-function(foam_adapter_unit_test TEST)
+  target_include_directories(adapter_${TEST} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-  add_executable(test_${TEST} "test_${TEST}.cpp")
+  target_link_libraries(adapter_${TEST} foamadapter_catch_main NeoFOAM OpenFOAM)
 
-  target_compile_definitions(test_${TEST} PUBLIC WM_LABEL_SIZE=32 NoRepository WM_DP OPENFOAM=2306
-                                                 OMPI_SKIP_MPICXX)
+  set_target_properties(adapter_${TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+                                                   ${adapter_WORKING_DIRECTORY})
 
-  target_include_directories(test_${TEST} PUBLIC ${CMAKE_SOURCE_DIR}/include)
-
-  target_link_libraries(test_${TEST} NeoFOAM OpenFOAM FoamAdapter Catch2::Catch2 Kokkos::kokkos)
+  add_test(
+    NAME adapter_${TEST}
+    COMMAND ${adapter_WORKING_DIRECTORY}/adapter_${TEST}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/test/${SETUP_DIRECTORY})
 
 endfunction()
 
-foam_adapter_unit_test(geometricFields)
-foam_adapter_unit_test(operators)
-foam_adapter_unit_test(unstructuredMesh)
+foam_adapter_unit_test(geometricFields setup_operator)
+foam_adapter_unit_test(operators setup_operator)
+foam_adapter_unit_test(unstructuredMesh setup_unstructuredMesh)
