@@ -13,5 +13,6 @@ target_include_directories(
 
 target_link_libraries(FoamAdapter PUBLIC OpenFOAM NeoFOAM Kokkos::kokkos)
 
-target_sources(FoamAdapter PRIVATE "conversion/convert.cpp" "setup/setup.cpp"
-                                   "readers/foamMesh.cpp" "fvcc/mesh/fvccNeoMesh.cpp")
+target_sources(
+  FoamAdapter PRIVATE "conversion/convert.cpp" "setup/setup.cpp" "readers/foamMesh.cpp"
+                      "readers/foamDictionary.cpp" "fvcc/mesh/fvccNeoMesh.cpp")
