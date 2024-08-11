@@ -20,9 +20,9 @@ extern Foam::Time* timePtr; // A single time object
 
 TEST_CASE("read dict")
 {
-    Foam::Info << "\nReading testDict" << Foam::endl;
-
     Foam::dictionary testDict;
+    Foam::Time& runTime = *timePtr;
+
     testDict.add("label", 1);
     testDict.add("scalar", 2.1);
     testDict.add("scalar2", 2.0);
@@ -43,7 +43,6 @@ TEST_CASE("read dict")
     REQUIRE(neoDict.get<NeoFOAM::Vector>("vector") == NeoFOAM::Vector(1.0, 2.0, 3.0));
     REQUIRE(neoDict.get<std::string>("word") == "word");
 
-
     NeoFOAM::Dictionary& subNeoDict = neoDict.subDict("subDict");
     REQUIRE(subNeoDict.get<NeoFOAM::scalar>("subScalar") == 4.1);
     REQUIRE(subNeoDict.get<NeoFOAM::Vector>("subVector") == NeoFOAM::Vector(5.0, 6.0, 7.0));
@@ -57,7 +56,6 @@ TEST_CASE("read fvSchemes")
     Foam::MeshAdapter& mesh = *meshPtr;
 
     Foam::dictionary fvSchemes = mesh.schemesDict();
-    Foam::Info << "reading fvSchemes" << fvSchemes << Foam::endl;
 
     NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
     auto keys = fvSchemesDict.keys();

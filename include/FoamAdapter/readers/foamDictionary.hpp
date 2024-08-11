@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
+
 #include "dictionary.H"
 #include "NeoFOAM/core/dictionary.hpp"
 
@@ -24,8 +25,8 @@ bool convertEntry(NeoFOAM::Dictionary& neoDict, const Foam::entry& entry)
 template<typename T>
 bool checkEntryType(const Foam::entry& entry)
 {
-    FatalError.throwExceptions(true);
-    FatalIOError.throwExceptions(true);
+    const bool throwingError = FatalError.throwExceptions();
+    const bool throwingIOerr = FatalIOError.throwExceptions();
     try
     {
         entry.get<T>();
@@ -40,9 +41,6 @@ bool checkEntryType(const Foam::entry& entry)
     }
 
     return true;
-
-    FatalError.throwExceptions(false);
-    FatalIOError.throwExceptions(false);
 }
 
 NeoFOAM::Dictionary readFoamDictionary(const Foam::dictionary& dict);
