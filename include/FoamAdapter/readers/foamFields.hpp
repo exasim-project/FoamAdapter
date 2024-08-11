@@ -87,14 +87,21 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const Foa
 
 template<typename FoamType>
 auto constructFrom(
-    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& volField
+    const NeoFOAM::Executor exec,
+    const NeoFOAM::UnstructuredMesh& uMesh,
+    const FoamType& volField,
+    std::string fieldName = ""
 )
 {
 
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    type_container_t nfVolField(exec, uMesh, readVolBoundaryConditions(uMesh, volField));
+    if (fieldName.empty())
+    {
+        fieldName = volField.name();
+    }
+    type_container_t nfVolField(exec, fieldName, uMesh, readVolBoundaryConditions(uMesh, volField));
 
     nfVolField.internalField() = fromFoamField(exec, volField.primitiveField());
     nfVolField.correctBoundaryConditions();
@@ -136,7 +143,10 @@ auto readSurfaceBoundaryConditions(
 
 template<typename FoamType>
 auto constructSurfaceField(
-    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& surfField
+    const NeoFOAM::Executor exec,
+    const NeoFOAM::UnstructuredMesh& uMesh,
+    const FoamType& surfField,
+    std::string fieldName = ""
 )
 {
 
@@ -144,8 +154,12 @@ auto constructSurfaceField(
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
     using foam_primitive_t = typename FoamType::cmptType;
 
+    if (fieldName.empty())
+    {
+        fieldName = surfField.name();
+    }
     type_container_t nfSurfField(
-        exec, uMesh, std::move(readSurfaceBoundaryConditions(uMesh, surfField))
+        exec, fieldName, uMesh, std::move(readSurfaceBoundaryConditions(uMesh, surfField))
     );
 
     Field<foam_primitive_t> flattenedField(nfSurfField.internalField().size());
