@@ -16,90 +16,16 @@
 
 #include "FoamAdapter/writers/writers.hpp"
 #include "FoamAdapter/setup/setup.hpp"
+#include "FoamAdapter/readers/foamDictionary.hpp"
 
+#include "NeoFOAM/core/dictionary.hpp"
 #include "NeoFOAM/DSL/eqnTerm.hpp"
 #include "NeoFOAM/DSL/eqnSystem.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/timeIntegration/timeIntegration.hpp"
-
+#include "NeoFOAM/finiteVolume/cellCentred/operators/explicitOperators/expOp.hpp"
 
 namespace dsl = NeoFOAM::DSL;
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
-
-class Temporal
-{
-
-public:
-
-    Temporal(fvcc::VolumeField<NeoFOAM::scalar>& Phi)
-        : termType_(dsl::EqnTerm::Type::Temporal), Phi_(Phi), exec_(Phi.exec()),
-          nCells_(Phi.mesh().nCells())
-    {}
-
-    std::string display() const { return "Temporal"; }
-
-    void temporalOperation(NeoFOAM::Field<NeoFOAM::scalar>& field, NeoFOAM::scalar scale) {}
-
-    dsl::EqnTerm::Type getType() const { return termType_; }
-
-    fvcc::VolumeField<NeoFOAM::scalar>* volumeField() { return &Phi_; }
-
-    const NeoFOAM::Executor& exec() const { return exec_; }
-
-    std::size_t nCells() const { return nCells_; }
-
-    dsl::EqnTerm::Type termType_;
-
-
-    fvcc::VolumeField<NeoFOAM::scalar>& Phi_;
-    const NeoFOAM::Executor exec_;
-    const std::size_t nCells_;
-};
-
-class Divergence
-{
-
-public:
-
-    Divergence(
-        const fvcc::SurfaceField<NeoFOAM::scalar>& faceFlux, fvcc::VolumeField<NeoFOAM::scalar>& Phi
-    )
-        : termType_(dsl::EqnTerm::Type::Explicit), exec_(Phi.exec()), nCells_(Phi.mesh().nCells()),
-          faceFlux_(faceFlux), Phi_(Phi),
-          div_(
-              Phi.exec(),
-              Phi.mesh(),
-              fvcc::SurfaceInterpolation(
-                  Phi.exec(),
-                  Phi.mesh(),
-                  fvcc::SurfaceInterpolationFactory::create("upwind", Phi.exec(), Phi.mesh())
-              )
-          )
-    {}
-
-    std::string display() const { return "Divergence"; }
-
-    void explicitOperation(NeoFOAM::Field<NeoFOAM::scalar>& source, NeoFOAM::scalar scale)
-    {
-        div_.div(source, faceFlux_, Phi_);
-    }
-
-    dsl::EqnTerm::Type getType() const { return termType_; }
-
-    fvcc::VolumeField<NeoFOAM::scalar>* volumeField() { return nullptr; }
-
-
-    const NeoFOAM::Executor& exec() const { return exec_; }
-
-    std::size_t nCells() const { return nCells_; }
-
-    dsl::EqnTerm::Type termType_;
-
-    const NeoFOAM::Executor exec_;
-    const std::size_t nCells_;
-    const fvcc::SurfaceField<NeoFOAM::scalar>& faceFlux_;
-    fvcc::VolumeField<NeoFOAM::scalar>& Phi_;
-    fvcc::GaussGreenDiv div_;
-};
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -118,6 +44,8 @@ int main(int argc, char* argv[])
 
         std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
         Foam::fvccNeoMesh& mesh = *meshPtr;
+
+        NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
 #include "createControl.H"
         // #include "createTimeControls.H"
         auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
@@ -139,10 +67,11 @@ int main(int argc, char* argv[])
         // creating neofoam fields
         Foam::Info << "creating neofoam mesh" << Foam::endl;
         NeoFOAM::UnstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
-        fvcc::VolumeField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T);
+        fvcc::VolumeField<NeoFOAM::scalar> neoT = Foam::constructFrom(exec, uMesh, T, "neoT");
         neoT.correctBoundaryConditions();
 
-        fvcc::SurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
+        fvcc::SurfaceField<NeoFOAM::scalar> neoPhi =
+            constructSurfaceField(exec, uMesh, phi, "neoPhi");
 
         Foam::Info << "writing neoT field" << Foam::endl;
         write(neoT.internalField(), mesh, "neoT");
@@ -170,7 +99,8 @@ int main(int argc, char* argv[])
             }
         }
         phi0 = Foam::linearInterpolate(U0) & mesh.Sf();
-        fvcc::SurfaceField<NeoFOAM::scalar> neoPhi0 = constructSurfaceField(exec, uMesh, phi0);
+        fvcc::SurfaceField<NeoFOAM::scalar> neoPhi0 =
+            constructSurfaceField(exec, uMesh, phi0, "neoPhi0");
 
         while (runTime.run())
         {
@@ -210,8 +140,8 @@ int main(int argc, char* argv[])
             {
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
 
-                dsl::EqnTerm neoTimeTerm = Temporal(neoT);
-                dsl::EqnTerm neoDivTerm = Divergence(neoPhi, neoT);
+                dsl::EqnTerm neoTimeTerm = fvcc::expOp::ddt(neoT);
+                dsl::EqnTerm neoDivTerm = fvcc::expOp::div(neoPhi, neoT, "upwind");
                 dsl::EqnSystem eqnSys = neoTimeTerm + neoDivTerm;
                 eqnSys.dt = runTime.deltaT().value();
 
@@ -226,7 +156,8 @@ int main(int argc, char* argv[])
             if (runTime.outputTime())
             {
                 Foam::Info << "writing neoT field" << Foam::endl;
-                write(neoT.internalField(), mesh, "neoT");
+                // write(neoT.internalField(), mesh, "neoT");
+                write(neoT, mesh);
             }
 
             runTime.write();
