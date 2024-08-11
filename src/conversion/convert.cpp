@@ -15,6 +15,8 @@ NeoFOAM::scalar convert(const Foam::scalar& Type) { return Type; };
 
 NeoFOAM::label convert(const Foam::label& Type) { return Type; };
 
+std::string convert(const Foam::word& Type) { return Type; };
+
 // To Foam
 Foam::vector convert(const NeoFOAM::Vector& Type)
 {
