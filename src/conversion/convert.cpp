@@ -17,6 +17,36 @@ NeoFOAM::label convert(const Foam::label& Type) { return Type; };
 
 std::string convert(const Foam::word& Type) { return Type; };
 
+NeoFOAM::TokenList convert(const Foam::ITstream& Type)
+{
+    NeoFOAM::TokenList tokens;
+    for (const auto& token : Type)
+    {
+        if (token.isBool())
+        {
+            tokens.insert(token.boolToken());
+            continue;
+        }
+        if (token.isLabel())
+        {
+            tokens.insert(token.labelToken());
+            continue;
+        }
+        if (token.isScalar())
+        {
+            tokens.insert(token.scalarToken());
+            continue;
+        }
+        if (token.isWord())
+        {
+            tokens.insert(std::string(token.wordToken()));
+            continue;
+        }
+        std::runtime_error("Unsupported token type");
+    }
+    return tokens;
+};
+
 // To Foam
 Foam::vector convert(const NeoFOAM::Vector& Type)
 {

@@ -9,6 +9,7 @@
 #include "catch2/common.hpp"
 
 #include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/core/tokenList.hpp"
 
 #include "FoamAdapter/readers/foamDictionary.hpp"
 #include "FoamAdapter/writers/writers.hpp"
@@ -62,10 +63,15 @@ TEST_CASE("read fvSchemes")
     Foam::Info << "reading fvSchemes" << fvSchemes << Foam::endl;
 
     NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+    auto keys = fvSchemesDict.keys();
 
     REQUIRE(fvSchemesDict.subDict("ddtSchemes").get<std::string>("ddt(T)") == "Euler");
-    REQUIRE(
-        fvSchemesDict.subDict("gradSchemes").get<std::string>("limited")
-        == "cellLimited Gauss linear 1"
-    );
+    auto gradSchemeKeys = fvSchemesDict.subDict("gradSchemes").keys();
+    NeoFOAM::TokenList limitedToken =
+        fvSchemesDict.subDict("gradSchemes").get<NeoFOAM::TokenList>("limited");
+    REQUIRE(limitedToken.size() == 4);
+    REQUIRE(limitedToken.get<std::string>(0) == "cellLimited");
+    REQUIRE(limitedToken.get<std::string>(1) == "Gauss");
+    REQUIRE(limitedToken.get<std::string>(2) == "linear");
+    REQUIRE(limitedToken.get<NeoFOAM::label>(3) == 1);
 }

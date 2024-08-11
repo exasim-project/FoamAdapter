@@ -34,7 +34,7 @@ static std::vector<std::function<bool(NeoFOAM::Dictionary&, const Foam::entry&)>
      {
          if (entry.isStream())
          {
-             neoDict.insert(entry.keyword(), std::string(entry.stream().toString()));
+             neoDict.insert(entry.keyword(), convert(entry.stream()));
              return true;
          }
          return false;
