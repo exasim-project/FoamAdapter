@@ -33,8 +33,9 @@ gradSchemes
 
 divSchemes
 {
-    default         none;
-    div(phi,T)      Gauss upwind;
+    default             none;
+    div(phi,T)          Gauss upwind;
+    div(neoPhi,neoT)    Gauss upwind;
 }
 
 laplacianSchemes

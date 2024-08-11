@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
 
                 dsl::EqnTerm neoTimeTerm = fvcc::expOp::ddt(neoT);
-                dsl::EqnTerm neoDivTerm = fvcc::expOp::div(neoPhi, neoT, "upwind");
+                dsl::EqnTerm neoDivTerm = fvcc::expOp::div(neoPhi, neoT, fvSchemesDict);
                 dsl::EqnSystem eqnSys = neoTimeTerm + neoDivTerm;
                 eqnSys.dt = runTime.deltaT().value();
 
@@ -156,7 +156,6 @@ int main(int argc, char* argv[])
             if (runTime.outputTime())
             {
                 Foam::Info << "writing neoT field" << Foam::endl;
-                // write(neoT.internalField(), mesh, "neoT");
                 write(neoT, mesh);
             }
 
