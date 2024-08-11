@@ -18,6 +18,7 @@ FoamFile
 
 ddtSchemes
 {
+    type            forwardEuler;
     default         none;
     ddt(T)          Euler;
     ddt(rho,U)      Euler;
