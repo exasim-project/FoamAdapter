@@ -140,15 +140,12 @@ int main(int argc, char* argv[])
             {
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
 
-                dsl::EqnTerm neoTimeTerm = fvcc::expOp::ddt(neoT);
-                dsl::EqnTerm neoDivTerm = fvcc::expOp::div(neoPhi, neoT, fvSchemesDict);
-                dsl::EqnSystem eqnSys = neoTimeTerm + neoDivTerm;
+                dsl::EqnSystem eqnSys(
+                    fvcc::expOp::ddt(neoT) + fvcc::expOp::div(neoPhi, neoT, fvSchemesDict)
+                );
                 eqnSys.dt = runTime.deltaT().value();
 
-                NeoFOAM::Dictionary dict;
-                dict.insert("type", std::string("forwardEuler"));
-
-                fvcc::TimeIntegration timeIntergrator(eqnSys, dict);
+                fvcc::TimeIntegration timeIntergrator(eqnSys, fvSchemesDict.subDict("ddtSchemes"));
                 timeIntergrator.solve();
             }
 
