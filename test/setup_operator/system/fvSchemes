@@ -28,6 +28,7 @@ gradSchemes
     //default         none;
     grad(T)         $GRADSCHEME; //  Gauss linear leastSquares pointCellsLeastSquares
     grad(U)         $GRADSCHEME;
+    limited         cellLimited Gauss linear 1;
 }
 
 divSchemes
