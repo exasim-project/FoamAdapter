@@ -21,7 +21,7 @@
 #include "NeoFOAM/core/dictionary.hpp"
 #include "NeoFOAM/DSL/eqnTerm.hpp"
 #include "NeoFOAM/DSL/eqnSystem.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/timeIntegration/timeIntegration.hpp"
+
 #include "NeoFOAM/finiteVolume/cellCentred/operators/explicitOperators/expOp.hpp"
 
 namespace dsl = NeoFOAM::DSL;
@@ -140,13 +140,13 @@ int main(int argc, char* argv[])
             {
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
 
-                dsl::EqnSystem eqnSys(
+                dsl::EqnSystem<NeoFOAM::scalar> eqnSys(
                     fvcc::expOp::ddt(neoT) + fvcc::expOp::div(neoPhi, neoT, fvSchemesDict)
                 );
                 eqnSys.dt = runTime.deltaT().value();
+                eqnSys.fvSchemesDict = fvSchemesDict;
 
-                fvcc::TimeIntegration timeIntergrator(eqnSys, fvSchemesDict.subDict("ddtSchemes"));
-                timeIntergrator.solve();
+                eqnSys.solve();
             }
 
 

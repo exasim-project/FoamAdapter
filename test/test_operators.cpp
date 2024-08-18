@@ -85,7 +85,10 @@ TEST_CASE("Interpolation")
 
         SECTION("linear")
         {
-            auto linearKernel = fvcc::SurfaceInterpolationFactory::create("linear", exec, uMesh);
+            // NeoFOAM::Input input = NeoFOAM::TokenList({std::string("linear")});
+            NeoFOAM::Input input =
+                NeoFOAM::Dictionary({{"surfaceInterpolation", std::string("linear")}});
+            auto linearKernel = fvcc::SurfaceInterpolationFactory::create(exec, uMesh, input);
 
             fvcc::SurfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
             interp.interpolate(neoSurfT, neoT);
@@ -249,12 +252,13 @@ TEST_CASE("DivOperator")
         fvcc::VolumeField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
         NeoFOAM::fill(neoDivT.internalField(), 0.0);
         NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
-        fvcc::GaussGreenDiv(
-            exec,
-            uMesh,
-            fvcc::SurfaceInterpolation(exec, uMesh, std::make_unique<fvcc::Linear>(exec, uMesh))
-        )
-            .div(neoDivT, neoPhi, neoT);
+
+        // NeoFOAM::TokenList input =
+        // NeoFOAM::TokenList({std::string("Gauss"),std::string("linear")}); fvcc::DivOperator(exec,
+        // uMesh, input)
+
+        NeoFOAM::TokenList input = NeoFOAM::TokenList({std::string("linear")});
+        fvcc::GaussGreenDiv(exec, uMesh, input).div(neoDivT, neoPhi, neoT);
         Foam::Info << "writing divT field for exector: " << exec_name << Foam::endl;
         write(neoDivT.internalField(), mesh, "divT_" + exec_name);
 
