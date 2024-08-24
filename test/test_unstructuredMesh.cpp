@@ -48,7 +48,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("points")
         {
-            const auto points = uMesh.points().copyToHost().span();
+            const auto hostPoints = uMesh.points().copyToHost();
+            const auto points = hostPoints.span();
             REQUIRE(uMesh.points().size() == mesh.points().size());
             for (int i = 0; i < points.size(); i++)
             {
@@ -59,7 +60,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("cellVolumes")
         {
-            const auto cellVolumes = uMesh.cellVolumes().copyToHost().span();
+            const auto hostCellVolumes = uMesh.cellVolumes().copyToHost();
+            const auto cellVolumes = hostCellVolumes.span();
             REQUIRE(cellVolumes.size() == mesh.cellVolumes().size());
             for (int i = 0; i < cellVolumes.size(); i++)
             {
@@ -69,7 +71,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("cellCentres")
         {
-            const auto cellCentres = uMesh.cellCentres().copyToHost().span();
+            const auto hostCellCentres = uMesh.cellCentres().copyToHost();
+            const auto cellCentres = hostCellCentres.span();
             REQUIRE(cellCentres.size() == mesh.cellCentres().size());
             for (int i = 0; i < cellCentres.size(); i++)
             {
@@ -79,7 +82,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("faceCentres")
         {
-            const auto faceCentres = uMesh.faceCentres().copyToHost().span();
+            const auto hostFaceCentres = uMesh.faceCentres().copyToHost();
+            const auto faceCentres = hostFaceCentres.span();
             REQUIRE(faceCentres.size() == mesh.faceCentres().size());
             for (int i = 0; i < faceCentres.size(); i++)
             {
@@ -89,7 +93,9 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("faceAreas")
         {
-            const auto faceAreas = uMesh.faceAreas().copyToHost().span();
+
+            const auto hostFaceAreas = uMesh.faceAreas().copyToHost();
+            const auto faceAreas = hostFaceAreas.span();
             // REQUIRE(faceAreas.size() == mesh.Sf().size());
             for (int i = 0; i < mesh.Sf().size(); i++)
             {
@@ -101,7 +107,8 @@ TEST_CASE("unstructuredMesh")
         SECTION("magFaceAreas")
         {
             Foam::scalarField magSf(mag(mesh.faceAreas()));
-            const auto magFaceAreas = uMesh.magFaceAreas().copyToHost().span();
+            const auto hostMagFaceAreas = uMesh.magFaceAreas().copyToHost();
+            const auto magFaceAreas = hostMagFaceAreas.span();
             REQUIRE(magFaceAreas.size() == magSf.size());
             for (int i = 0; i < magFaceAreas.size(); i++)
             {
@@ -112,7 +119,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("faceOwner")
         {
-            const auto faceOwner = uMesh.faceOwner().copyToHost().span();
+            const auto hostFaceOwner = uMesh.faceOwner().copyToHost();
+            const auto faceOwner = hostFaceOwner.span();
             REQUIRE(faceOwner.size() == mesh.faceOwner().size());
             for (int i = 0; i < faceOwner.size(); i++)
             {
@@ -122,7 +130,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("faceNeighbour")
         {
-            const auto faceNeighbour = uMesh.faceNeighbour().copyToHost().span();
+            const auto hostFaceNeighbour = uMesh.faceNeighbour().copyToHost();
+            const auto faceNeighbour = hostFaceNeighbour.span();
             REQUIRE(faceNeighbour.size() == mesh.faceNeighbour().size());
             for (int i = 0; i < faceNeighbour.size(); i++)
             {
@@ -150,7 +159,8 @@ TEST_CASE("unstructuredMesh")
         // TODO: prettify the following tests
         SECTION("faceCells")
         {
-            auto faceCells = bMesh.faceCells().copyToHost().span();
+            auto hostFaceCells = bMesh.faceCells().copyToHost();
+            const auto faceCells = hostFaceCells.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -166,7 +176,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("Cf")
         {
-            const auto& Cf = bMesh.cf().copyToHost().span();
+            const auto hostCf = bMesh.cf().copyToHost();
+            const auto Cf = hostCf.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -184,7 +195,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("Cn")
         {
-            const auto& Cn = bMesh.cn().copyToHost().span();
+            const auto hostCn = bMesh.cn().copyToHost();
+            const auto Cn = hostCn.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -202,7 +214,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("Sf")
         {
-            const auto& Sf = bMesh.sf().copyToHost().span();
+            const auto hostSf = bMesh.sf().copyToHost();
+            const auto Sf = hostSf.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -220,7 +233,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("magSf")
         {
-            const auto& magSf = bMesh.magSf().copyToHost().span();
+            const auto hostMagSf = bMesh.magSf().copyToHost();
+            const auto magSf = hostMagSf.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -236,7 +250,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("nf")
         {
-            const auto& nf = bMesh.nf().copyToHost().span();
+            const auto hostNf = bMesh.nf().copyToHost();
+            const auto nf = hostNf.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -254,8 +269,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("delta")
         {
-            const auto& delta = bMesh.delta().copyToHost().span();
-            ;
+            const auto hostDelta = bMesh.delta().copyToHost();
+            const auto delta = hostDelta.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -273,7 +288,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("weights")
         {
-            const auto& weights = bMesh.weights().copyToHost().span();
+            const auto hostWeights = bMesh.weights().copyToHost();
+            const auto weights = hostWeights.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -289,8 +305,8 @@ TEST_CASE("unstructuredMesh")
 
         SECTION("deltaCoeffs")
         {
-            const auto& deltaCoeffs = bMesh.deltaCoeffs().copyToHost().span();
-            ;
+            const auto hostDeltaCoeffs = bMesh.deltaCoeffs().copyToHost();
+            const auto deltaCoeffs = hostDeltaCoeffs.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
@@ -329,7 +345,8 @@ TEST_CASE("fvccGeometryScheme")
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 
-        auto weights = scheme.weights().internalField().copyToHost().span();
+        auto hostWeights = scheme.weights().internalField().copyToHost();
+        auto weights = hostWeights.span();
         std::span<Foam::scalar> s_foam_weights(
             foam_weights.primitiveFieldRef().data(), foam_weights.size()
         );
@@ -346,7 +363,8 @@ TEST_CASE("fvccGeometryScheme")
         scheme.update(); // make sure it uptodate
         auto foam_weights = mesh.weights();
 
-        auto weights = scheme.weights().internalField().copyToHost().span();
+        auto hostWeights = scheme.weights().internalField().copyToHost();
+        auto weights = hostWeights.span();
         std::span<Foam::scalar> s_foam_weights(
             foam_weights.primitiveFieldRef().data(), foam_weights.size()
         );

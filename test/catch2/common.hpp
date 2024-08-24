@@ -24,10 +24,11 @@
 template<typename ValueType>
 void checkField(const NeoFOAM::Field<ValueType>& field, ValueType value)
 {
-    auto field_host = field.copyToHost().span();
-    for (int i = 0; i < field_host.size(); i++)
+    auto hostField = field.copyToHost();
+    auto hostSpan = hostField.span();
+    for (int i = 0; i < hostSpan.size(); i++)
     {
-        REQUIRE(field_host[i] == value);
+        REQUIRE(hostSpan[i] == value);
     }
 }
 

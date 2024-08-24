@@ -15,6 +15,7 @@ FoamFile
 }
 
 NX              5;
+TIMESCHEME      Euler;
 
 GRADSCHEME      Gauss linear;
 

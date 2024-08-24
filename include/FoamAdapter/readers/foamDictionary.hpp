@@ -8,7 +8,6 @@
 namespace Foam
 {
 
-// std::vector<std::function<bool(NeoFOAM::Dictionary&, const Foam::entry&)>> mapEntries;
 
 template<typename T>
 bool convertEntry(NeoFOAM::Dictionary& neoDict, const Foam::entry& entry)
@@ -26,8 +25,8 @@ bool convertEntry(NeoFOAM::Dictionary& neoDict, const Foam::entry& entry)
 template<typename T>
 bool checkEntryType(const Foam::entry& entry)
 {
-    const bool throwingError = FatalError.throwExceptions();
-    const bool throwingIOerr = FatalIOError.throwExceptions();
+    FatalError.throwExceptions(true);
+    FatalIOError.throwExceptions(true);
     try
     {
         entry.get<T>();
@@ -42,6 +41,9 @@ bool checkEntryType(const Foam::entry& entry)
     }
 
     return true;
+
+    FatalError.throwExceptions(false);
+    FatalIOError.throwExceptions(false);
 }
 
 NeoFOAM::Dictionary readFoamDictionary(const Foam::dictionary& dict);

@@ -18,7 +18,7 @@ FoamFile
 ddtSchemes
 {
     default         none;
-    ddt(T)          Euler;
+    ddt(T)          $TIMESCHEME;
     ddt(rho,U)      Euler;
     ddt(rho,T)      Euler;
 }
@@ -28,6 +28,8 @@ gradSchemes
     //default         none;
     grad(T)         $GRADSCHEME; //  Gauss linear leastSquares pointCellsLeastSquares
     grad(U)         $GRADSCHEME;
+    grad(T2)        pointCellsLeastSquares;
+    limited         cellLimited Gauss linear 1;
 }
 
 divSchemes
