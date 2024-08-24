@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
 
                 dsl::EqnSystem<NeoFOAM::scalar> eqnSys(
-                    fvcc::expOp::ddt(neoT) + fvcc::expOp::div(neoPhi, neoT, fvSchemesDict)
+                    fvcc::expOp::ddt(neoT) + fvcc::expOp::div(neoPhi, neoT)
                 );
                 eqnSys.dt = runTime.deltaT().value();
                 eqnSys.fvSchemesDict = fvSchemesDict;
