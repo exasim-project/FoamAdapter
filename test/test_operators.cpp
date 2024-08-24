@@ -92,10 +92,11 @@ TEST_CASE("Interpolation")
 
             fvcc::SurfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
             interp.interpolate(neoSurfT, neoT);
-            auto s_neoSurfT = neoSurfT.internalField().copyToHost().span();
+            auto hostNeoSurfT = neoSurfT.internalField().copyToHost();
+            auto sNeoSurfT = hostNeoSurfT.span();
             std::span<Foam::scalar> surfT_span(surfT.primitiveFieldRef().data(), surfT.size());
             REQUIRE_THAT(
-                s_neoSurfT.subspan(0, surfT.size()),
+                sNeoSurfT.subspan(0, surfT.size()),
                 Catch::Matchers::RangeEquals(surfT_span, ApproxScalar(1e-15))
             );
         }
@@ -153,10 +154,9 @@ TEST_CASE("GradOperator")
 
         fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
         neoT.correctBoundaryConditions();
-        REQUIRE_THAT(
-            neoT.internalField().copyToHost().span(),
-            Catch::Matchers::RangeEquals(s_T, ApproxScalar(1e-16))
-        );
+        const auto hostNeoT = neoT.internalField().copyToHost();
+        const auto sNeoT = hostNeoT.span();
+        REQUIRE_THAT(sNeoT, Catch::Matchers::RangeEquals(s_T, ApproxScalar(1e-16)));
 
         fvcc::VolumeField<NeoFOAM::Vector> neoGradT = constructFrom(exec, uMesh, ofGradT);
         NeoFOAM::fill(neoGradT.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
@@ -166,10 +166,9 @@ TEST_CASE("GradOperator")
         write(neoGradT.internalField(), mesh, "gradT_" + exec_name);
 
         std::span<Foam::vector> s_ofGradT(ofGradT.primitiveFieldRef().data(), ofGradT.size());
-        REQUIRE_THAT(
-            neoGradT.internalField().copyToHost().span(),
-            Catch::Matchers::RangeEquals(s_ofGradT, ApproxVector(1e-12))
-        );
+        const auto hostNeoGradT = neoGradT.internalField().copyToHost();
+        const auto sNeoGradT = hostNeoGradT.span();
+        REQUIRE_THAT(sNeoGradT, Catch::Matchers::RangeEquals(s_ofGradT, ApproxVector(1e-12)));
     }
 }
 
@@ -237,17 +236,17 @@ TEST_CASE("DivOperator")
 
         fvcc::SurfaceField<NeoFOAM::scalar> neoPhi = constructSurfaceField(exec, uMesh, phi);
         std::span<Foam::scalar> s_phi(phi.primitiveFieldRef().data(), T.size());
-        const auto s_neoPhi_host = neoPhi.internalField().copyToHost().span();
+        const auto hostNeoPhi = neoPhi.internalField().copyToHost();
+        const auto sNeoPhi = hostNeoPhi.span();
         REQUIRE_THAT(
-            s_neoPhi_host.subspan(0, s_phi.size()),
+            sNeoPhi.subspan(0, s_phi.size()),
             Catch::Matchers::RangeEquals(s_phi, ApproxScalar(1e-15))
         );
 
         neoT.correctBoundaryConditions();
-        REQUIRE_THAT(
-            neoT.internalField().copyToHost().span(),
-            Catch::Matchers::RangeEquals(s_T, ApproxScalar(1e-15))
-        );
+        const auto hostNeoT = neoT.internalField().copyToHost();
+        const auto sNeoT = hostNeoT.span();
+        REQUIRE_THAT(sNeoT, Catch::Matchers::RangeEquals(s_T, ApproxScalar(1e-15)));
 
         fvcc::VolumeField<NeoFOAM::scalar> neoDivT = constructFrom(exec, uMesh, ofDivT);
         NeoFOAM::fill(neoDivT.internalField(), 0.0);
@@ -263,9 +262,8 @@ TEST_CASE("DivOperator")
         write(neoDivT.internalField(), mesh, "divT_" + exec_name);
 
         std::span<Foam::scalar> s_ofDivT(ofDivT.primitiveFieldRef().data(), ofDivT.size());
-        REQUIRE_THAT(
-            neoDivT.internalField().copyToHost().span(),
-            Catch::Matchers::RangeEquals(s_ofDivT, ApproxScalar(1e-15))
-        );
+        const auto hostNeoDivT = neoDivT.internalField().copyToHost();
+        const auto sNeoDivT = hostNeoDivT.span();
+        REQUIRE_THAT(sNeoDivT, Catch::Matchers::RangeEquals(s_ofDivT, ApproxScalar(1e-15)));
     }
 }

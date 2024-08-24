@@ -46,21 +46,23 @@ template<typename T>
 void print_field(NeoFOAM::Field<T> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
-    auto tmp_view = a.copyToHost().span();
+    auto aHost = a.copyToHost();
+    auto aSpan = aHost.span();
     for (int i = 0; i < a.size(); i++)
     {
-        std::cout << "tmp_view: " << tmp_view[i] << " at: " << i << std::endl;
+        std::cout << "tmp_view: " << aSpan[i] << " at: " << i << std::endl;
     }
 }
 template<>
 void print_field(NeoFOAM::Field<NeoFOAM::Vector> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
-    auto tmp_view = a.copyToHost().span();
+    auto aHost = a.copyToHost();
+    auto aSpan = aHost.span();
     for (int i = 0; i < a.size(); i++)
     {
-        std::cout << "tmp_view: " << tmp_view[i](0) << " " << tmp_view[i](1) << " "
-                  << tmp_view[i](2) << " at: " << i << std::endl;
+        std::cout << "tmp_view: " << aSpan[i](0) << " " << aSpan[i](1) << " " << aSpan[i](2)
+                  << " at: " << i << std::endl;
     }
 }
 
