@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-#ifndef TREEAMRMESH_HPP
-#define TREEAMRMESH_HPP
+#pragma once
 
 #include <cstdint>
 
@@ -96,5 +95,3 @@ private:
     t8_forest_t forest_;     ///< The underlying forest data structure.
     t8_scheme_cxx_t* scheme; ///< The scheme used for mesh operations.
 };
-
-#endif // TREEAMRMESH_HPP

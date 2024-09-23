@@ -2,8 +2,9 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "NeoFOAM/mesh/unstructured.hpp"
 #include "fvMesh.H"
+
+#include "NeoFOAM/mesh/unstructured.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

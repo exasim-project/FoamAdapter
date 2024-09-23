@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
-#include "FoamAdapter/conversion/convert.hpp"
 
+#include "FoamAdapter/conversion/convert.hpp"
 
 namespace Foam
 {

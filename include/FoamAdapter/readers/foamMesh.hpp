@@ -2,12 +2,14 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
+#include <functional>
+
+#include "foamFields.hpp"
+#include "fvMesh.H"
+
 #include "NeoFOAM/core/primitives/label.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
 #include "NeoFOAM/mesh/unstructured.hpp"
-#include "foamFields.hpp"
-#include "fvMesh.H"
-#include <functional>
 
 namespace Foam
 {

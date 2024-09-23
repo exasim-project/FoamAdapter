@@ -3,7 +3,6 @@
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 
-
 namespace Foam
 {
 
