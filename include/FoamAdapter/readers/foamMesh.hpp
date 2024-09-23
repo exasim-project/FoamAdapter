@@ -37,7 +37,6 @@ FieldT flatBCField(const Foam::fvMesh& mesh, std::function<FieldT(const Foam::fv
     return result;
 }
 
-
 NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::fvMesh& mesh);
 
 }; // namespace Foam

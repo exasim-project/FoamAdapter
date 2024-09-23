@@ -8,10 +8,4 @@
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-namespace Foam
-{
-using namespace NeoFOAM;
-
-addNamedToRunTimeSelectionTable(surfaceInterpolationFactory, linear, dictionary, linear);
-
-}
+Foam::addNamedToRunTimeSelectionTable(surfaceInterpolationFactory, linear, dictionary, linear);

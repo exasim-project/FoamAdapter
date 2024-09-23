@@ -3,6 +3,9 @@
 
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
+#include <random>
+#include <span>
+
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
@@ -18,9 +21,6 @@
 #include "FoamAdapter/comparison/fieldComparison.hpp"
 #include "FoamAdapter/setup/setup.hpp"
 #include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
-
-#include <random>
-#include <span>
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "gaussConvectionScheme.H"

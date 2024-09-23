@@ -5,8 +5,6 @@
 #include <span>
 
 #include "Field.H"
-#include "surfaceFields.H"
-#include "volFields.H"
 
 #include "NeoFOAM/fields/field.hpp"
 #include "NeoFOAM/core/primitives/label.hpp"

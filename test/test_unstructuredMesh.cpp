@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-// Add necessary include paths
+#include <vector>
+
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
@@ -14,7 +15,6 @@
 #include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
-#include <vector>
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 

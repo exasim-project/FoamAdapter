@@ -11,10 +11,8 @@
 namespace Foam
 {
 
-/*---------------------------------------------------------------------------*\
-                        Class fvccNeoMesh Declaration
-\*---------------------------------------------------------------------------*/
-
+/** @class fvccNeoMesh
+ */
 class fvccNeoMesh : public Foam::fvMesh
 {
     // Private Data
