@@ -12,6 +12,9 @@ project(
 if(NOT DEFINED ENV{FOAM_SRC})
   message(FATAL_ERROR "You must source OpenFOAM before building FOAM_ADAPTER")
 endif()
+if(ENV{FOAM_API} NOT "2406")
+  message(WARNING "OpenFOAM version != 2406")
+endif()
 
 option(FOAMADAPTER_BUILD_TESTS "Build the unit tests" OFF)
 option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" OFF)
