@@ -30,13 +30,13 @@ TEST_CASE("unstructuredMesh")
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
 
-    std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
+    std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::fvccNeoMesh& mesh = *meshPtr;
     const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
-    SECTION("Fields" + exec_name)
+    SECTION("Fields" + execName)
     {
         const int32_t nCells = uMesh.nCells();
 
@@ -131,7 +131,7 @@ TEST_CASE("unstructuredMesh")
         }
     }
 
-    SECTION("boundaryMesh" + exec_name)
+    SECTION("boundaryMesh" + execName)
     {
         const Foam::fvBoundaryMesh& bMeshOF = mesh.boundary();
         const NeoFOAM::BoundaryMesh& bMesh = uMesh.boundaryMesh();
@@ -156,64 +156,64 @@ TEST_CASE("unstructuredMesh")
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_face_cells = faceCells.subspan(start, end - start);
+                auto pFaceCells = faceCells.subspan(start, end - start);
                 forAll(patchOF.faceCells(), i)
                 {
-                    REQUIRE(p_face_cells[i] == patchOF.faceCells()[i]);
+                    REQUIRE(pFaceCells[i] == patchOF.faceCells()[i]);
                 }
             }
         }
 
         SECTION("Cf")
         {
-            const auto& Cf = bMesh.cf().copyToHost().span();
+            const auto& cf = bMesh.cf().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_Cf = Cf.subspan(start, end - start);
+                auto pCf = cf.subspan(start, end - start);
                 forAll(patchOF.Cf(), i)
                 {
-                    REQUIRE(p_Cf[i][0] == patchOF.Cf()[i][0]);
-                    REQUIRE(p_Cf[i][1] == patchOF.Cf()[i][1]);
-                    REQUIRE(p_Cf[i][2] == patchOF.Cf()[i][2]);
+                    REQUIRE(pCf[i][0] == patchOF.Cf()[i][0]);
+                    REQUIRE(pCf[i][1] == patchOF.Cf()[i][1]);
+                    REQUIRE(pCf[i][2] == patchOF.Cf()[i][2]);
                 }
             }
         }
 
         SECTION("Cn")
         {
-            const auto& Cn = bMesh.cn().copyToHost().span();
+            const auto& cn = bMesh.cn().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_Cn = Cn.subspan(start, end - start);
+                auto pCn = cn.subspan(start, end - start);
                 forAll(patchOF.Cn()(), i)
                 {
-                    REQUIRE(p_Cn[i][0] == patchOF.Cn()()[i][0]);
-                    REQUIRE(p_Cn[i][1] == patchOF.Cn()()[i][1]);
-                    REQUIRE(p_Cn[i][2] == patchOF.Cn()()[i][2]);
+                    REQUIRE(pCn[i][0] == patchOF.Cn()()[i][0]);
+                    REQUIRE(pCn[i][1] == patchOF.Cn()()[i][1]);
+                    REQUIRE(pCn[i][2] == patchOF.Cn()()[i][2]);
                 }
             }
         }
 
         SECTION("Sf")
         {
-            const auto& Sf = bMesh.sf().copyToHost().span();
+            const auto& sF = bMesh.sf().copyToHost().span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_Sf = Sf.subspan(start, end - start);
+                auto psF = sF.subspan(start, end - start);
                 forAll(patchOF.Sf(), i)
                 {
-                    REQUIRE(p_Sf[i][0] == patchOF.Sf()[i][0]);
-                    REQUIRE(p_Sf[i][1] == patchOF.Sf()[i][1]);
-                    REQUIRE(p_Sf[i][2] == patchOF.Sf()[i][2]);
+                    REQUIRE(pSf[i][0] == patchOF.Sf()[i][0]);
+                    REQUIRE(pSf[i][1] == patchOF.Sf()[i][1]);
+                    REQUIRE(pSf[i][2] == patchOF.Sf()[i][2]);
                 }
             }
         }
@@ -226,10 +226,10 @@ TEST_CASE("unstructuredMesh")
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_magSf = magSf.subspan(start, end - start);
+                auto pMagSf = magSf.subspan(start, end - start);
                 forAll(patchOF.magSf(), i)
                 {
-                    REQUIRE(p_magSf[i] == patchOF.magSf()[i]);
+                    REQUIRE(pMagSf[i] == patchOF.magSf()[i]);
                 }
             }
         }
@@ -242,12 +242,12 @@ TEST_CASE("unstructuredMesh")
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_nf = nf.subspan(start, end - start);
+                auto pNf = nf.subspan(start, end - start);
                 forAll(patchOF.nf()(), i)
                 {
-                    REQUIRE(p_nf[i][0] == patchOF.nf()()[i][0]);
-                    REQUIRE(p_nf[i][1] == patchOF.nf()()[i][1]);
-                    REQUIRE(p_nf[i][2] == patchOF.nf()()[i][2]);
+                    REQUIRE(pNf[i][0] == patchOF.nf()()[i][0]);
+                    REQUIRE(pNf[i][1] == patchOF.nf()()[i][1]);
+                    REQUIRE(pNf[i][2] == patchOF.nf()()[i][2]);
                 }
             }
         }
@@ -261,12 +261,12 @@ TEST_CASE("unstructuredMesh")
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_delta = delta.subspan(start, end - start);
+                auto pDelta = delta.subspan(start, end - start);
                 forAll(patchOF.delta()(), i)
                 {
-                    REQUIRE(p_delta[i][0] == patchOF.delta()()[i][0]);
-                    REQUIRE(p_delta[i][1] == patchOF.delta()()[i][1]);
-                    REQUIRE(p_delta[i][2] == patchOF.delta()()[i][2]);
+                    REQUIRE(pDelta[i][0] == patchOF.delta()()[i][0]);
+                    REQUIRE(pDelta[i][1] == patchOF.delta()()[i][1]);
+                    REQUIRE(pDelta[i][2] == patchOF.delta()()[i][2]);
                 }
             }
         }
@@ -279,10 +279,10 @@ TEST_CASE("unstructuredMesh")
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_weights = weights.subspan(start, end - start);
+                auto pWeights = weights.subspan(start, end - start);
                 forAll(patchOF.weights(), i)
                 {
-                    REQUIRE(p_weights[i] == patchOF.weights()[i]);
+                    REQUIRE(pWeights[i] == patchOF.weights()[i]);
                 }
             }
         }
@@ -296,10 +296,10 @@ TEST_CASE("unstructuredMesh")
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto p_deltaCoeffs = deltaCoeffs.subspan(start, end - start);
+                auto pDeltaCoeffs = deltaCoeffs.subspan(start, end - start);
                 forAll(patchOF.deltaCoeffs(), i)
                 {
-                    REQUIRE(p_deltaCoeffs[i] == patchOF.deltaCoeffs()[i]);
+                    REQUIRE(pDeltaCoeffs[i] == patchOF.deltaCoeffs()[i]);
                 }
             }
         }
@@ -315,44 +315,44 @@ TEST_CASE("fvccGeometryScheme")
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
 
-    std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
+    std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::fvccNeoMesh& mesh = *meshPtr;
     const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
 
-    SECTION("BasicFvccGeometryScheme" + exec_name)
+    SECTION("BasicFvccGeometryScheme" + execName)
     {
         // update on construction
         auto scheme =
             fvcc::GeometryScheme(exec, uMesh, std::make_unique<fvcc::BasicGeometryScheme>(uMesh));
         scheme.update(); // make sure it uptodate
-        auto foam_weights = mesh.weights();
+        auto foamWeights = mesh.weights();
 
         auto weights = scheme.weights().internalField().copyToHost().span();
-        std::span<Foam::scalar> s_foam_weights(
-            foam_weights.primitiveFieldRef().data(), foam_weights.size()
+        std::span<Foam::scalar> sFoamWeights(
+            foamWeights.primitiveFieldRef().data(), foamWeights.size()
         );
         REQUIRE_THAT(
-            weights.subspan(0, foam_weights.size()),
-            Catch::Matchers::RangeEquals(s_foam_weights, ApproxScalar(1e-16))
+            weights.subspan(0, foamWeights.size()),
+            Catch::Matchers::RangeEquals(sFoamWeights, ApproxScalar(1e-16))
         );
     }
 
-    SECTION("DefaultBasicFvccGeometryScheme" + exec_name)
+    SECTION("DefaultBasicFvccGeometryScheme" + execName)
     {
         // update on construction
         fvcc::GeometryScheme scheme(uMesh);
         scheme.update(); // make sure it uptodate
-        auto foam_weights = mesh.weights();
+        auto foamWeights = mesh.weights();
 
         auto weights = scheme.weights().internalField().copyToHost().span();
-        std::span<Foam::scalar> s_foam_weights(
-            foam_weights.primitiveFieldRef().data(), foam_weights.size()
+        std::span<Foam::scalar> sFoamWeights(
+            foamWeights.primitiveFieldRef().data(), foamWeights.size()
         );
         REQUIRE_THAT(
-            weights.subspan(0, foam_weights.size()),
-            Catch::Matchers::RangeEquals(s_foam_weights, ApproxScalar(1e-16))
+            weights.subspan(0, foamWeights.size()),
+            Catch::Matchers::RangeEquals(sFoamWeights, ApproxScalar(1e-16))
         );
     }
 }

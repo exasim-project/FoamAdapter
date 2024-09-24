@@ -22,18 +22,18 @@ Foam::scalar Foam::calculateCoNum(const Foam::surfaceScalarField& phi)
     const Foam::fvMesh& mesh = phi.mesh();
     const Foam::Time& runTime = mesh.time();
     Foam::scalarField sumPhi(Foam::fvc::surfaceSum(mag(phi))().primitiveField());
-    Foam::scalar CoNum = 0.5 * Foam::gMax(sumPhi / mesh.V().field()) * runTime.deltaTValue();
+    Foam::scalar coNum = 0.5 * Foam::gMax(sumPhi / mesh.V().field()) * runTime.deltaTValue();
     Foam::scalar meanCoNum = 0.5 * (gSum(sumPhi) / gSum(mesh.V().field())) * runTime.deltaTValue();
 
-    Foam::Info << "Courant Number mean: " << meanCoNum << " max: " << CoNum << Foam::endl;
-    return CoNum;
+    Foam::Info << "Courant Number mean: " << meanCoNum << " max: " << coNum << Foam::endl;
+    return coNum;
 }
 
 void Foam::setDeltaT(
-    Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT
+    Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar coNum, Foam::scalar maxDeltaT
 )
 {
-    Foam::scalar maxDeltaTFact = maxCo / (CoNum + Foam::SMALL);
+    Foam::scalar maxDeltaTFact = maxCo / (coNum + Foam::SMALL);
     Foam::scalar deltaTFact = Foam::min(Foam::min(maxDeltaTFact, 1.0 + 0.1 * maxDeltaTFact), 1.2);
 
     runTime.setDeltaT(Foam::min(deltaTFact * runTime.deltaTValue(), maxDeltaT));
@@ -67,16 +67,16 @@ std::unique_ptr<Foam::fvMesh> Foam::createMesh(const Foam::Time& runTime)
 
 NeoFOAM::Executor Foam::createExecutor(const Foam::dictionary& dict)
 {
-    auto exec_name = dict.get<Foam::word>("executor");
-    if (exec_name == "Serial")
+    auto execName = dict.get<Foam::word>("executor");
+    if (execName == "Serial")
     {
         return NeoFOAM::SerialExecutor();
     }
-    else if (exec_name == "CPU")
+    else if (execName == "CPU")
     {
         return NeoFOAM::CPUExecutor();
     }
-    else if (exec_name == "GPU")
+    else if (execName == "GPU")
     {
         return NeoFOAM::GPUExecutor();
     }
