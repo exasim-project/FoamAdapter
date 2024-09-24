@@ -208,7 +208,7 @@ TEST_CASE("unstructuredMesh")
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto psF = sF.subspan(start, end - start);
+                auto pSf = sF.subspan(start, end - start);
                 forAll(patchOF.Sf(), i)
                 {
                     REQUIRE(pSf[i][0] == patchOF.Sf()[i][0]);
