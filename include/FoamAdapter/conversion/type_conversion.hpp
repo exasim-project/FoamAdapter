@@ -2,12 +2,14 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "FoamAdapter/conversion/convert.hpp"
+#include "volFields.H"
+#include "surfaceFields.H"
+
 #include "NeoFOAM/finiteVolume/cellCentred.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
 #include "NeoFOAM/fields/field.hpp"
-#include "volFields.H"
-#include "surfaceFields.H"
+
+#include "FoamAdapter/conversion/convert.hpp"
 
 namespace Foam
 {

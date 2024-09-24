@@ -2,18 +2,17 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "NeoFOAM/mesh/unstructured.hpp"
 #include "fvMesh.H"
+
+#include "NeoFOAM/mesh/unstructured.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-/*---------------------------------------------------------------------------*\
-                        Class fvccNeoMesh Declaration
-\*---------------------------------------------------------------------------*/
-
+/** @class fvccNeoMesh
+ */
 class fvccNeoMesh : public Foam::fvMesh
 {
     // Private Data

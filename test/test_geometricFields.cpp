@@ -28,14 +28,14 @@ TEST_CASE("fvcc::VolumeField")
     std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
     Foam::fvMesh& mesh = *meshPtr;
 
-    Foam::volScalarField T(
+    Foam::volScalarField t(
         Foam::IOobject(
             "T", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
         ),
         mesh
     );
 
-    Foam::volVectorField U(
+    Foam::volVectorField u(
         Foam::IOobject(
             "U", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
         ),
@@ -47,17 +47,17 @@ TEST_CASE("fvcc::VolumeField")
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
-    std::string exec_name = std::visit([](auto e) { return e.print(); }, exec);
+    std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
 
-    SECTION("fvccVolField_[scalar]" + exec_name)
+    SECTION("fvccVolField_[scalar]" + execName)
     {
-        Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
+        Foam::Info << "reading mesh with executor: " << execName << Foam::endl;
         NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-        fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, T);
+        fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, t);
 
-        REQUIRE(neoT.internalField().size() == T.internalField().size());
+        REQUIRE(neoT.internalField().size() == t.internalField().size());
         fill(neoT.internalField(), 1.0);
         checkField(neoT.internalField(), 1.0);
         neoT.correctBoundaryConditions();
@@ -68,14 +68,14 @@ TEST_CASE("fvcc::VolumeField")
         checkField(neoT.boundaryField().value(), 2.0);
     }
 
-    SECTION("fvccVolField_[vector]" + exec_name)
+    SECTION("fvccVolField_[vector]" + execName)
     {
-        Foam::Info << "reading mesh with executor: " << exec_name << Foam::endl;
+        Foam::Info << "reading mesh with executor: " << execName << Foam::endl;
         NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-        fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, U);
+        fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, u);
 
-        REQUIRE(neoU.internalField().size() == U.internalField().size());
+        REQUIRE(neoU.internalField().size() == u.internalField().size());
         fill(neoU.internalField(), NeoFOAM::Vector(1.0, 1.0, 1.0));
         checkField(neoU.internalField(), NeoFOAM::Vector(1.0, 1.0, 1.0));
         neoU.correctBoundaryConditions();

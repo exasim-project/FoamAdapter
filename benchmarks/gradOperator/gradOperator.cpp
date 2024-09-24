@@ -43,24 +43,24 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 template<typename T>
-void print_field(NeoFOAM::Field<T> a)
+void printField(NeoFOAM::Field<T> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
-    auto tmp_view = a.copyToHost().span();
+    auto tmpView = a.copyToHost().span();
     for (int i = 0; i < a.size(); i++)
     {
-        std::cout << "tmp_view: " << tmp_view[i] << " at: " << i << std::endl;
+        std::cout << "tmp_view: " << tmpView[i] << " at: " << i << std::endl;
     }
 }
 template<>
-void print_field(NeoFOAM::Field<NeoFOAM::Vector> a)
+void printField(NeoFOAM::Field<NeoFOAM::Vector> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
-    auto tmp_view = a.copyToHost().span();
+    auto tmpView = a.copyToHost().span();
     for (int i = 0; i < a.size(); i++)
     {
-        std::cout << "tmp_view: " << tmp_view[i](0) << " " << tmp_view[i](1) << " "
-                  << tmp_view[i](2) << " at: " << i << std::endl;
+        std::cout << "tmp_view: " << tmpView[i](0) << " " << tmpView[i](1) << " " << tmpView[i](2)
+                  << " at: " << i << std::endl;
     }
 }
 
@@ -77,7 +77,6 @@ int main(int argc, char* argv[])
 #include "createFields.H"
 
         runTime++;
-        int N = 1000;
 
         for (int celli = 0; celli < mesh.nCells(); celli++)
         {
@@ -97,17 +96,17 @@ int main(int argc, char* argv[])
             Foam::Info << "reading mesh" << Foam::endl;
             NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-            NeoFOAM::scalarField Temperature(exec, T.internalField().size());
-            Temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
+            NeoFOAM::scalarField temperature(exec, T.internalField().size());
+            temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
             );
 
             Foam::Info << "writing temperature field" << Foam::endl;
-            write(Temperature, mesh, "Temperature");
+            write(temperature, mesh, "temperature");
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
                 // NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec,
-                // uMesh).grad(Temperature); Kokkos::fence(); write(gradT, mesh, "gradTGPU");
+                // uMesh).grad(temperature); Kokkos::fence(); write(gradT, mesh, "gradTGPU");
             }
         }
 
@@ -116,17 +115,17 @@ int main(int argc, char* argv[])
             Foam::Info << "reading mesh" << Foam::endl;
             NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-            NeoFOAM::scalarField Temperature(exec, T.internalField().size());
-            Temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
+            NeoFOAM::scalarField temperature(exec, T.internalField().size());
+            temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
             );
 
             Foam::Info << "writing temperature field" << Foam::endl;
-            write(Temperature, mesh, "Temperature");
+            write(temperature, mesh, "temperature");
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
                 // NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec,
-                // uMesh).grad(Temperature); Kokkos::fence(); write(gradT, mesh, "gradTCPU");
+                // uMesh).grad(temperature); Kokkos::fence(); write(gradT, mesh, "gradTCPU");
             }
         }
 
@@ -135,17 +134,17 @@ int main(int argc, char* argv[])
             Foam::Info << "reading mesh" << Foam::endl;
             NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
 
-            NeoFOAM::scalarField Temperature(exec, T.internalField().size());
-            Temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
+            NeoFOAM::scalarField temperature(exec, T.internalField().size());
+            temperature.apply(KOKKOS_LAMBDA(const NeoFOAM::size_t i) { return NeoFOAM::scalar(i); }
             );
 
             Foam::Info << "writing temperature field" << Foam::endl;
-            write(Temperature, mesh, "Temperature");
+            write(temperature, mesh, "temperature");
 
             {
                 addProfiling(neofoamGradOperator, "neofoamGradOperator");
                 //     NeoFOAM::vectorField gradT = NeoFOAM::gaussGreenGrad(exec,
-                //     uMesh).grad(Temperature); Kokkos::fence(); write(gradT, mesh, "gradTOMP");
+                //     uMesh).grad(temperature); Kokkos::fence(); write(gradT, mesh, "gradTOMP");
             }
         }
 

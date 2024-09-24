@@ -3,7 +3,6 @@
 
 #include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
 #include "FoamAdapter/readers/foamMesh.hpp"
-#include "profiling.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 

@@ -69,7 +69,8 @@ jobs:
            clang-tidy-16 \
            libomp-16-dev \
            libopenmpi-dev \
-           openmpi-bin
+           openmpi-bin \
+           openfoam2406-dev
 
     - uses: actions/download-artifact@v4
       with:

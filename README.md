@@ -1,18 +1,21 @@
 **[Requirements](#requirements)** |
 **[Compilation](#Compilation)** |
-# NeoFOAM
+# FoamAdapter
 
 ## Requirements
 
-NeoFOAM has the following requirements
+FoamAdapter has the following requirements
 
-*  _cmake 3.28+_
-*  _clang 17+_
+*  _cmake 3.22+_
+*  _gcc >= 10_ or  _clang >= 17+_
+* OpenFOAM _2406_
 
 ## Compilation
 
-    ./build.sh
+We provide several Cmake presets to set commmonly required flags if you compile FoamAdapter
 
+    cmake --list-presets # To list existing presets
+    cmake --preset production # To compile for production use
 
 ## run
 

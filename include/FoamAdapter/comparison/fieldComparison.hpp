@@ -2,14 +2,15 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
+#include <span>
+
 #include "Field.H"
-#include "FoamAdapter/conversion/convert.hpp"
-#include "FoamAdapter/conversion/type_conversion.hpp"
+
 #include "NeoFOAM/fields/field.hpp"
 #include "NeoFOAM/core/primitives/label.hpp"
-#include "surfaceFields.H"
-#include "volFields.H"
-#include <span>
+
+#include "FoamAdapter/conversion/convert.hpp"
+#include "FoamAdapter/conversion/type_conversion.hpp"
 
 namespace Foam
 {

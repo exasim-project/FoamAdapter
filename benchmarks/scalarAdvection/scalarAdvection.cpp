@@ -72,19 +72,19 @@ int main(int argc, char* argv[])
         std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
         // #include "createUfIfPresent.H"
         // #include "CourantNo.H"
-        Foam::scalar CoNum = Foam::calculateCoNum(phi);
+        Foam::scalar coNum = Foam::calculateCoNum(phi);
         if (adjustTimeStep)
         {
-            Foam::setDeltaT(runTime, maxCo, CoNum, maxDeltaT);
+            Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
         }
 
         Foam::scalar pi = Foam::constant::mathematical::pi;
         {
-            Foam::scalarField X(mesh.C().component(0));
-            Foam::scalarField Y(mesh.C().component(1));
-            Foam::scalarField u(-Foam::sin(2.0 * pi * Y) * Foam::pow(Foam::sin(pi * X), 2.0));
-            Foam::scalarField w(Foam::sin(2.0 * pi * X) * Foam::pow(Foam::sin(pi * Y), 2.0));
-            forAll(U0, celli)
+            Foam::scalarField x(mesh.C().component(0));
+            Foam::scalarField y(mesh.C().component(1));
+            Foam::scalarField u(-Foam::sin(2.0 * pi * y) * Foam::pow(Foam::sin(pi * x), 2.0));
+            Foam::scalarField w(Foam::sin(2.0 * pi * x) * Foam::pow(Foam::sin(pi * y), 2.0));
+            forAll(u, celli)
             {
                 U0[celli].x() = u[celli];
                 U0[celli].y() = w[celli];
@@ -105,12 +105,12 @@ int main(int argc, char* argv[])
         {
             // #include "readTimeControls.H"
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-            CoNum = calculateCoNum(phi);
+            coNum = calculateCoNum(phi);
             Foam::Info << "max(phi) : " << max(phi) << Foam::endl;
             Foam::Info << "max(U) : " << max(U) << Foam::endl;
             if (adjustTimeStep)
             {
-                Foam::setDeltaT(runTime, maxCo, CoNum, maxDeltaT);
+                Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
             }
 
             runTime++;
@@ -130,9 +130,9 @@ int main(int argc, char* argv[])
 
             {
                 addProfiling(foamAdvection, "foamAdvection");
-                Foam::fvScalarMatrix TEqn(Foam::fvm::ddt(T) + Foam::fvc::div(phi, T));
+                Foam::fvScalarMatrix tEqn(Foam::fvm::ddt(T) + Foam::fvc::div(phi, T));
 
-                TEqn.solve();
+                tEqn.solve();
             }
 
             // NeoFOAM Euler hardcoded

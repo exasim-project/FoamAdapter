@@ -2,7 +2,6 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "NeoFOAM/mesh/treeAMR/treeAMRMeshModifier.hpp"
 #include <cstdint>
 
 #include <t8.h>                              /* General t8code header, always include this. */
@@ -14,6 +13,8 @@
 #include <t8_forest/t8_forest_io.h>          /* save forest */
 #include <t8_schemes/t8_default/t8_default_cxx.hxx> /* default refinement scheme. */
 #include <t8_vec.h>                                 /* Basic operations on 3D vectors. */
+
+#include "NeoFOAM/mesh/treeAMR/treeAMRMeshModifier.hpp"
 
 struct t8_step3_adapt_data
 {

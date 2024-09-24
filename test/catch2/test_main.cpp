@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-// Add necessary include paths
 #include "Kokkos_Core.hpp"
 
 #include <catch2/catch_session.hpp>
@@ -13,9 +12,6 @@
 #include "FoamAdapter/setup/setup.hpp"
 
 #include "fvCFD.H"
-
-#include <vector>
-
 
 Foam::Time* timePtr;    // A single time object
 Foam::argList* argsPtr; // Some forks want argList access at createMesh.H

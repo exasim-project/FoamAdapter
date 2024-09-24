@@ -12,5 +12,4 @@ runApplication blockMesh
 
 runApplication ../../../build/ReleaseCudaAll/bin/scalarAdvection
 
-
 #------------------------------------------------------------------------------

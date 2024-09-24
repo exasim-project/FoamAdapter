@@ -2,10 +2,12 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
-#include "FoamAdapter/conversion/convert.hpp"
-#include "NeoFOAM/fields/field.hpp"
 #include "fvMesh.H"
 #include "volFields.H"
+
+#include "NeoFOAM/fields/field.hpp"
+
+#include "FoamAdapter/conversion/convert.hpp"
 
 namespace Foam
 {
