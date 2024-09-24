@@ -8,6 +8,7 @@ FoamAdapter has the following requirements
 
 *  _cmake 3.22+_
 *  _gcc >= 10_ or  _clang >= 17+_
+* OpenFOAM _2406_
 
 ## Compilation
 
