@@ -30,12 +30,9 @@ void copy_impl(DestField& dest, const SrcField src)
 
 void write(NeoFOAM::scalarField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
 {
-    auto copy_impl = [](auto dest, const auto src) {};
-
     Foam::volScalarField* field = mesh.getObjectPtr<Foam::volScalarField>(fieldName);
     if (field)
     {
-        // field is already present and needs to be updated
         detail::copy_impl(field->ref(), sf);
         field->write();
     }
@@ -52,8 +49,7 @@ void write(NeoFOAM::scalarField& sf, const Foam::fvMesh& mesh, const std::string
             mesh,
             Foam::dimensionedScalar(Foam::dimless, 0)
         );
-        Foam::scalarField& field_ref = foamField.ref();
-        detail::copy_impl(field_ref, sf);
+        detail::copy_impl(foamField.ref(), sf);
         foamField.write();
     }
 }
@@ -80,7 +76,7 @@ void write(NeoFOAM::vectorField& sf, const Foam::fvMesh& mesh, const std::string
             mesh,
             Foam::dimensionedVector(Foam::dimless, Foam::Zero)
         );
-        detail::copy_impl(field->ref(), sf);
+        detail::copy_impl(foamField.ref(), sf);
         foamField.write();
     }
 }
