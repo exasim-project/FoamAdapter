@@ -6,24 +6,37 @@
 #include "volFields.H"
 
 #include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/core/error.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 
 namespace Foam
 {
 
+namespace detail
+{
+template<class DestField, class SrcField>
+void copy_impl(DestField& dest, const SrcField src)
+{
+    NF_ASSERT_EQUAL(dest.size(), src.size());
+    auto src_host = src.copyToHost();
+    auto src_span = src.span();
+    for (int i = 0; i < dest.size(); i++)
+    {
+        dest[i] = convert(src_span[i]);
+    }
+}
+}
+
 void write(NeoFOAM::scalarField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
 {
+    auto copy_impl = [](auto dest, const auto src) {};
+
     Foam::volScalarField* field = mesh.getObjectPtr<Foam::volScalarField>(fieldName);
     if (field)
     {
         // field is already present and needs to be updated
-        auto sf_host = sf.copyToHost().span();
-        Foam::scalarField& field_ref = field->ref();
-        for (int i = 0; i < field_ref.size(); i++)
-        {
-            field_ref[i] = sf_host[i];
-        }
+        detail::copy_impl(field->ref(), sf);
         field->write();
     }
     else
@@ -39,12 +52,8 @@ void write(NeoFOAM::scalarField& sf, const Foam::fvMesh& mesh, const std::string
             mesh,
             Foam::dimensionedScalar(Foam::dimless, 0)
         );
-        auto sf_host = sf.copyToHost().span();
         Foam::scalarField& field_ref = foamField.ref();
-        for (int i = 0; i < field_ref.size(); i++)
-        {
-            field_ref[i] = sf_host[i];
-        }
+        detail::copy_impl(field_ref, sf);
         foamField.write();
     }
 }
@@ -55,12 +64,7 @@ void write(NeoFOAM::vectorField& sf, const Foam::fvMesh& mesh, const std::string
     if (field)
     {
         // field is already present and needs to be updated
-        auto sf_host = sf.copyToHost().span();
-        Foam::vectorField& field_ref = field->ref();
-        for (int i = 0; i < field_ref.size(); i++)
-        {
-            field_ref[i] = convert(sf_host[i]);
-        }
+        detail::copy_impl(field->ref(), sf);
         field->write();
     }
     else
@@ -76,12 +80,7 @@ void write(NeoFOAM::vectorField& sf, const Foam::fvMesh& mesh, const std::string
             mesh,
             Foam::dimensionedVector(Foam::dimless, Foam::Zero)
         );
-        auto sf_host = sf.copyToHost().span();
-        Foam::vectorField& field_ref = foamField.ref();
-        for (int i = 0; i < field_ref.size(); i++)
-        {
-            field_ref[i] = convert(sf_host[i]);
-        }
+        detail::copy_impl(field->ref(), sf);
         foamField.write();
     }
 }
