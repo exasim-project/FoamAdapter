@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "FoamAdapter/conversion/convert.hpp"
+
 #include "NeoFOAM/fields/field.hpp"
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
@@ -32,6 +34,20 @@ void checkField(const NeoFOAM::Field<ValueType>& field, ValueType value)
         REQUIRE(fieldSpan[i] == value);
     }
 }
+
+template<typename NF_FIELD, typename OF_FIELD>
+void checkField(const NF_FIELD& a, const OF_FIELD& b)
+{
+    auto aHost = a.copyToHost();
+    auto aSpan = aHost.span();
+
+    REQUIRE(a.size() == b.size());
+    for (int i = 0; i < aSpan.size(); i++)
+    {
+        REQUIRE(aSpan[i] == convert(b[i]));
+    }
+}
+
 
 struct ApproxScalar
 {

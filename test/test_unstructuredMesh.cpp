@@ -46,95 +46,25 @@ TEST_CASE("unstructuredMesh")
 
         REQUIRE(nInternalFaces == mesh.nInternalFaces());
 
-        SECTION("points")
-        {
-            const auto pointsHost = uMesh.points().copyToHost();
-            const auto points = pointsHost.span();
-            REQUIRE(uMesh.points().size() == mesh.points().size());
-            for (int i = 0; i < points.size(); i++)
-            {
-                REQUIRE(points[i] == convert(mesh.points()[i]));
-            }
-        }
+        SECTION("points") { checkField(uMesh.points(), mesh.points()); }
 
+        SECTION("cellVolumes") { checkField(uMesh.cellVolumes(), mesh.cellVolumes()); }
 
-        SECTION("cellVolumes")
-        {
-            const auto cellVolumesHost = uMesh.cellVolumes().copyToHost();
-            const auto cellVolumes = cellVolumesHost.span();
-            REQUIRE(cellVolumes.size() == mesh.cellVolumes().size());
-            for (int i = 0; i < cellVolumes.size(); i++)
-            {
-                REQUIRE(cellVolumes[i] == mesh.cellVolumes()[i]);
-            }
-        }
+        SECTION("cellCentres") { checkField(uMesh.cellCentres(), mesh.cellCentres()); }
 
-        SECTION("cellCentres")
-        {
-            const auto cellCentresHost = uMesh.cellCentres().copyToHost();
-            const auto cellCentres = cellCentresHost.span();
-            REQUIRE(cellCentres.size() == mesh.cellCentres().size());
-            for (int i = 0; i < cellCentres.size(); i++)
-            {
-                REQUIRE(cellCentres[i] == convert(mesh.cellCentres()[i]));
-            }
-        }
+        SECTION("faceCentres") { checkField(uMesh.faceCentres(), mesh.faceCentres()); }
 
-        SECTION("faceCentres")
-        {
-            const auto faceCentresHost = uMesh.faceCentres().copyToHost();
-            const auto faceCentres = faceCentresHost.span();
-            REQUIRE(faceCentres.size() == mesh.faceCentres().size());
-            for (int i = 0; i < faceCentres.size(); i++)
-            {
-                REQUIRE(faceCentres[i] == convert(mesh.faceCentres()[i]));
-            }
-        }
-
-        SECTION("faceAreas")
-        {
-            const auto faceAreasHost = uMesh.faceAreas().copyToHost();
-            const auto faceAreas = faceAreasHost.span();
-            // REQUIRE(faceAreas.size() == mesh.Sf().size());
-            for (int i = 0; i < mesh.Sf().size(); i++)
-            {
-                REQUIRE(faceAreas[i] == convert(mesh.Sf()[i]));
-            }
-        }
+        SECTION("faceAreas") { checkField(uMesh.faceAreas(), mesh.faceAreas()); }
 
         SECTION("magFaceAreas")
         {
             Foam::scalarField magSf(mag(mesh.faceAreas()));
-            const auto magFaceAreasHost = uMesh.magFaceAreas().copyToHost();
-            const auto magFaceAreas = magFaceAreasHost.span();
-            REQUIRE(magFaceAreas.size() == magSf.size());
-            for (int i = 0; i < magFaceAreas.size(); i++)
-            {
-                REQUIRE(magFaceAreas[i] == magSf[i]);
-            }
+            checkField(uMesh.magFaceAreas(), magSf);
         }
 
-        SECTION("faceOwner")
-        {
-            const auto faceOwnerHost = uMesh.faceOwner().copyToHost();
-            const auto faceOwner = faceOwnerHost.span();
-            REQUIRE(faceOwner.size() == mesh.faceOwner().size());
-            for (int i = 0; i < faceOwner.size(); i++)
-            {
-                REQUIRE(faceOwner[i] == mesh.faceOwner()[i]);
-            }
-        }
+        SECTION("faceOwner") { checkField(uMesh.faceOwner(), mesh.faceOwner()); }
 
-        SECTION("faceNeighbour")
-        {
-            const auto faceNeighbourHost = uMesh.faceNeighbour().copyToHost();
-            const auto faceNeighbour = faceNeighbourHost.span();
-            REQUIRE(faceNeighbour.size() == mesh.faceNeighbour().size());
-            for (int i = 0; i < faceNeighbour.size(); i++)
-            {
-                REQUIRE(faceNeighbour[i] == mesh.faceNeighbour()[i]);
-            }
-        }
+        SECTION("faceNeighbour") { checkField(uMesh.faceNeighbour(), mesh.faceNeighbour()); }
     }
 
     SECTION("boundaryMesh" + execName)
@@ -157,13 +87,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("faceCells")
         {
             auto faceCellsHost = bMesh.faceCells().copyToHost();
-            auto faceCells = faceCellsHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pFaceCells = faceCells.subspan(start, end - start);
+                auto pFaceCells = faceCellsHost.span({start, end});
                 forAll(patchOF.faceCells(), i)
                 {
                     REQUIRE(pFaceCells[i] == patchOF.faceCells()[i]);
@@ -174,13 +103,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("Cf")
         {
             const auto& cfHost = bMesh.cf().copyToHost();
-            const auto& cf = cfHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pCf = cf.subspan(start, end - start);
+                auto pCf = cfHost.span({start, end});
                 forAll(patchOF.Cf(), i)
                 {
                     REQUIRE(pCf[i][0] == patchOF.Cf()[i][0]);
@@ -193,13 +121,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("Cn")
         {
             const auto& cnHost = bMesh.cn().copyToHost();
-            const auto& cn = cnHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pCn = cn.subspan(start, end - start);
+                auto pCn = cnHost.span({start, end});
                 forAll(patchOF.Cn()(), i)
                 {
                     REQUIRE(pCn[i][0] == patchOF.Cn()()[i][0]);
@@ -212,13 +139,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("Sf")
         {
             const auto& sFHost = bMesh.sf().copyToHost();
-            const auto& sF = sFHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pSf = sF.subspan(start, end - start);
+                auto pSf = sFHost.span({start, end});
                 forAll(patchOF.Sf(), i)
                 {
                     REQUIRE(pSf[i][0] == patchOF.Sf()[i][0]);
@@ -231,13 +157,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("magSf")
         {
             const auto& magSfHost = bMesh.magSf().copyToHost();
-            const auto& magSf = magSfHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pMagSf = magSf.subspan(start, end - start);
+                auto pMagSf = magSfHost.span({start, end});
                 forAll(patchOF.magSf(), i)
                 {
                     REQUIRE(pMagSf[i] == patchOF.magSf()[i]);
@@ -248,13 +173,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("nf")
         {
             const auto& nfHost = bMesh.nf().copyToHost();
-            const auto& nf = nfHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pNf = nf.subspan(start, end - start);
+                auto pNf = nfHost.span({start, end});
                 forAll(patchOF.nf()(), i)
                 {
                     REQUIRE(pNf[i][0] == patchOF.nf()()[i][0]);
@@ -267,13 +191,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("delta")
         {
             const auto& deltaHost = bMesh.delta().copyToHost();
-            const auto& delta = deltaHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pDelta = delta.subspan(start, end - start);
+                auto pDelta = deltaHost.span({start, end});
                 forAll(patchOF.delta()(), i)
                 {
                     REQUIRE(pDelta[i][0] == patchOF.delta()()[i][0]);
@@ -286,13 +209,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("weights")
         {
             const auto& weightsHost = bMesh.weights().copyToHost();
-            const auto& weights = weightsHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pWeights = weights.subspan(start, end - start);
+                auto pWeights = weightsHost.span({start, end});
                 forAll(patchOF.weights(), i)
                 {
                     REQUIRE(pWeights[i] == patchOF.weights()[i]);
@@ -303,13 +225,12 @@ TEST_CASE("unstructuredMesh")
         SECTION("deltaCoeffs")
         {
             const auto& deltaCoeffsHost = bMesh.deltaCoeffs().copyToHost();
-            const auto& deltaCoeffs = deltaCoeffsHost.span();
             forAll(bMeshOF, patchi)
             {
                 const Foam::fvPatch& patchOF = bMeshOF[patchi];
                 NeoFOAM::label start = bMesh.offset()[patchi];
                 NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pDeltaCoeffs = deltaCoeffs.subspan(start, end - start);
+                auto pDeltaCoeffs = deltaCoeffsHost.span({start, end});
                 forAll(patchOF.deltaCoeffs(), i)
                 {
                     REQUIRE(pDeltaCoeffs[i] == patchOF.deltaCoeffs()[i]);
@@ -343,12 +264,11 @@ TEST_CASE("fvccGeometryScheme")
         auto foamWeights = mesh.weights();
 
         auto weightsHost = scheme.weights().internalField().copyToHost();
-        auto weights = weightsHost.span();
         std::span<Foam::scalar> sFoamWeights(
             foamWeights.primitiveFieldRef().data(), foamWeights.size()
         );
         REQUIRE_THAT(
-            weights.subspan(0, foamWeights.size()),
+            weightsHost.span({0, foamWeights.size()}),
             Catch::Matchers::RangeEquals(sFoamWeights, ApproxScalar(1e-16))
         );
     }
@@ -361,12 +281,11 @@ TEST_CASE("fvccGeometryScheme")
         auto foamWeights = mesh.weights();
 
         auto weightsHost = scheme.weights().internalField().copyToHost();
-        auto weights = weightsHost.span();
         std::span<Foam::scalar> sFoamWeights(
             foamWeights.primitiveFieldRef().data(), foamWeights.size()
         );
         REQUIRE_THAT(
-            weights.subspan(0, foamWeights.size()),
+            weightsHost.span({0, foamWeights.size()}),
             Catch::Matchers::RangeEquals(sFoamWeights, ApproxScalar(1e-16))
         );
     }

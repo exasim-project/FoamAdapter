@@ -90,10 +90,9 @@ TEST_CASE("Interpolation")
             fvcc::SurfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
             interp.interpolate(neoT, neoSurfT);
             auto sNeoSurfTHost = neoSurfT.internalField().copyToHost();
-            auto sNeoSurfT = sNeoSurfTHost.span();
             std::span<Foam::scalar> surfTSpan(surfT.primitiveFieldRef().data(), surfT.size());
             REQUIRE_THAT(
-                sNeoSurfT.subspan(0, surfT.size()),
+                sNeoSurfTHost.span({0, surfT.size()}),
                 Catch::Matchers::RangeEquals(surfTSpan, ApproxScalar(1e-15))
             );
         }
@@ -110,8 +109,6 @@ TEST_CASE("GradOperator")
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
-
-    // NeoFOAM::Executor exec = NeoFOAM::CPUExecutor{};
 
     std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
