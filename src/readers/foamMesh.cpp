@@ -72,7 +72,7 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
 
     NeoFOAM::BoundaryMesh bMesh(
         exec,
-        fromFoamField(exec, faceCells),
+        {exec, static_cast<size_t>(faceCells.size()), faceCells.data()},
         fromFoamField(exec, cf),
         fromFoamField(exec, cn),
         fromFoamField(exec, sf),
