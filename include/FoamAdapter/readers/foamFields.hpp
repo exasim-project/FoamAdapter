@@ -17,31 +17,10 @@ template<typename FoamType>
 auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
 {
     using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitive_t = typename type_map<FoamType>::mapped_type;
-    // Create device-side views
-    type_container_t nfField(exec, field.size());
-
-    type_container_t CPUField(NeoFOAM::CPUExecutor {}, field.size());
-    Kokkos::View<type_primitive_t*, Kokkos::HostSpace, Kokkos::MemoryUnmanaged> CPU_view(
-        CPUField.data(), field.size()
+    using mapped_t = typename type_map<FoamType>::mapped_type;
+    type_container_t nfField(
+        exec, static_cast<size_t>(field.size()), reinterpret_cast<const mapped_t*>(field.cdata())
     );
-    for (Foam::label i = 0; i < field.size(); i++)
-    {
-        CPU_view(i) = convert(field[i]);
-    }
-    if (std::holds_alternative<NeoFOAM::GPUExecutor>(exec))
-    {
-        Kokkos::View<type_primitive_t*, NeoFOAM::GPUExecutor::exec, Kokkos::MemoryUnmanaged>
-            GPU_view(nfField.data(), field.size());
-        Kokkos::deep_copy(GPU_view, CPU_view);
-    }
-    else
-    {
-        Kokkos::View<type_primitive_t*, Kokkos::HostSpace, Kokkos::MemoryUnmanaged> N_CPU_view(
-            nfField.data(), field.size()
-        );
-        Kokkos::deep_copy(N_CPU_view, CPU_view);
-    }
 
     return nfField;
 };
