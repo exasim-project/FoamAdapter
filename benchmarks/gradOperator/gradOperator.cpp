@@ -46,17 +46,20 @@ template<typename T>
 void printField(NeoFOAM::Field<T> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
-    auto tmpView = a.copyToHost().span();
+    auto tmpViewHost = a.copyToHost();
+    auto tmpView = tmpViewHost.span();
     for (int i = 0; i < a.size(); i++)
     {
         std::cout << "tmp_view: " << tmpView[i] << " at: " << i << std::endl;
     }
 }
+
 template<>
 void printField(NeoFOAM::Field<NeoFOAM::Vector> a)
 {
     std::cout << "a has a size of: " << a.size() << std::endl;
-    auto tmpView = a.copyToHost().span();
+    auto tmpViewHost = a.copyToHost();
+    auto tmpView = tmpViewHost.span();
     for (int i = 0; i < a.size(); i++)
     {
         std::cout << "tmp_view: " << tmpView[i](0) << " " << tmpView[i](1) << " " << tmpView[i](2)
@@ -83,13 +86,11 @@ int main(int argc, char* argv[])
             T[celli] = celli;
         }
         T.write();
-        // for (int i = 0; i < N; i++)
         {
             addProfiling(foamGradOperator, "foamGradOperator");
             Foam::volVectorField test(Foam::fvc::grad(T));
             test.write();
         }
-
 
         {
             NeoFOAM::Executor exec = NeoFOAM::GPUExecutor();
