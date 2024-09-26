@@ -13,7 +13,6 @@ namespace Foam
 
 NeoFOAM::Vector convert(const Foam::vector& Type);
 NeoFOAM::scalar convert(const Foam::scalar& Type);
-
 NeoFOAM::label convert(const Foam::label& Type);
 
 // To Foam
