@@ -88,7 +88,7 @@ TEST_CASE("Interpolation")
             auto linearKernel = fvcc::SurfaceInterpolationFactory::create("linear", exec, uMesh);
 
             fvcc::SurfaceInterpolation interp(exec, uMesh, std::move(linearKernel));
-            interp.interpolate(neoSurfT, neoT);
+            interp.interpolate(neoT, neoSurfT);
             auto sNeoSurfTHost = neoSurfT.internalField().copyToHost();
             std::span<Foam::scalar> surfTSpan(surfT.primitiveFieldRef().data(), surfT.size());
             REQUIRE_THAT(
