@@ -16,6 +16,7 @@ jobs:
     - name: Add repos
       run: |
         sudo add-apt-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main'
+        wget https://apt.llvm.org/llvm-snapshot.gpg.key
         sudo apt-key add llvm-snapshot.gpg.key
         chmod +x .github/workflows/add-debian-repo.sh
         sudo bash .github/workflows/add-debian-repo.sh
