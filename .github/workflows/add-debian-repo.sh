@@ -3,7 +3,7 @@
 # Add openfoam debian/ubuntu repository
 #
 # Copyright (C) 2020-2023 OpenCFD Ltd.
-# SPDX-License-Identifier: (GPL-3.0+)
+# SPDX-License-Identifier: (GPL-3.0-or-later)
 #
 # Usage
 #     curl -s https://dl.openfoam.com/add-debian-repo.sh | sudo bash
