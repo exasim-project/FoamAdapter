@@ -2,6 +2,13 @@
 **[Compilation](#Compilation)** |
 # FoamAdapter
 
+This repository showcases how NeoFOAM can be used in combination with OpenFOAM.
+It provides converters between OpenFOAM and NeoFOAM datastructures.
+
+The repository is structured in the following way:
+- src and include implement common functionality to copy data between OpenFOAM and NeoFOAM
+- tests demonstrating that NeoFOAM and OpenFOAM deliver identical results are provided by this repository in the test folder.
+
 ## Requirements
 
 FoamAdapter has the following requirements
