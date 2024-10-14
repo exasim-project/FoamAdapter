@@ -19,7 +19,7 @@ auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
     using type_container_t = typename type_map<FoamType>::container_type;
     using mapped_t = typename type_map<FoamType>::mapped_type;
     type_container_t nfField(
-        exec, static_cast<size_t>(field.size()), reinterpret_cast<const mapped_t*>(field.cdata())
+        exec, reinterpret_cast<const mapped_t*>(field.cdata()), static_cast<size_t>(field.size())
     );
 
     return nfField;
