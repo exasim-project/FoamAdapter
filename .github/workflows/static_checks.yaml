@@ -111,8 +111,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt install \
-           pre-commit
-        pip install identify --upgrade
+           pre-commit python3-identify
         pre-commit install
     - name: Run pre-commit on all files
       run: pre-commit run --all --color always --verbose
