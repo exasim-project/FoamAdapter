@@ -5,7 +5,7 @@ SPDX-PackageDownloadLocation = "https://github.com/exasim-project/NeoFOAM"
 
 [[annotations]]
 path = [
-    ".github/**",  ".vscode/**.json", "AUTHORS.md",  "doc/**"
+   "AUTHORS.md",  "doc/**"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2023 NeoFOAM authors"
@@ -25,6 +25,7 @@ path = [
      "benchmarks/**",
      ".github/workflows/build.yaml",
      ".github/workflows/static_checks.yaml",
+     ".github/workflows/pubkey.gpg",
      ".vscode/c_cpp_properties.json",
      ".vscode/settings.json",
      "CHANGELOG.md",
