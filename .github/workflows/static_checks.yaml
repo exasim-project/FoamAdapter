@@ -7,7 +7,7 @@ on:
 jobs:
   build-compilation-db:
     name: Build with IWYU
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -46,7 +46,7 @@ jobs:
         path: build
   clang-tidy-check:
     name: Clang-tidy Check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build-compilation-db]
     steps:
     - uses: actions/checkout@v4
@@ -100,7 +100,7 @@ jobs:
         exit 1
   pre-commit-run:
     name: Pre-commit run
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -120,7 +120,7 @@ jobs:
         ! grep -q -r "TODO DONT MERGE" --exclude-dir=.github
   changelog:
     name: Changelog check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: dangoslen/changelog-enforcer@v3
       with:
