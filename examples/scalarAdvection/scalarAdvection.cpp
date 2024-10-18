@@ -77,12 +77,12 @@ int main(int argc, char* argv[])
             Foam::Info << "Time = " << runTime.timeName() << Foam::nl << max(phi) << Foam::nl
                        << max(U) << Foam::endl;
 
-            // NeoFOAM Euler hardcoded
+            // NeoFOAM Euler
+            // NOTE for now hardcoded
             // this will soon be replaced by the NeoFOAM DSL
             {
-                // Needed
-                // NeoFOAM::fill(neoDivT.internalField(), 0.0);
-                // NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
+                NeoFOAM::fill(neoDivT.internalField(), 0.0);
+                NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
 
                 fvcc::GaussGreenDiv(
                     exec,
