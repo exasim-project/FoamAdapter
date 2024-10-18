@@ -16,6 +16,7 @@ if(NOT ENV{FOAM_API} STREQUAL "2406")
   message(WARNING "OpenFOAM version != 2406")
 endif()
 
+option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoFOAM examples" OFF)
 option(FOAMADAPTER_BUILD_TESTS "Build the unit tests" OFF)
 option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" OFF)
 
@@ -36,11 +37,11 @@ add_subdirectory(include)
 add_subdirectory(NeoFOAM)
 add_subdirectory(src)
 
+if(FOAMADAPTER_BUILD_EXAMPLES)
+  add_subdirectory(examples)
+endif()
+
 if(FOAMADAPTER_BUILD_TESTS)
   enable_testing()
   add_subdirectory(test)
-endif()
-
-if(FOAMADAPTER_BUILD_BENCHMARKS)
-  add_subdirectory(benchmarks)
 endif()
