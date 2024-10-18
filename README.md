@@ -2,7 +2,7 @@
 **[Compilation](#Compilation)** |
 # FoamAdapter
 
-The purpose of this repository is to simplify and showcase how NeoFOAM can be used in combination with OpenFOAM.
+The purpose of this repository is to simplify and showcase how [NeoFOAM](https://github.com/exasim-project/NeoFOAM) can be used in combination with OpenFOAM.
 It provides converters between OpenFOAM and NeoFOAM datastructures, examples and tests.
 
 ## Requirements
