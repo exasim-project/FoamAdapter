@@ -1,0 +1,114 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       dictionary;
+    location    "0.4/uniform";
+    object      profiling;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+profiling
+{
+    trigger0
+    {
+        id              0;
+        description     "application::main";
+        calls           1;
+        totalTime       0.090094042;
+        childTime       0.03228787599999999;
+        active          true;
+    }
+
+    trigger2
+    {
+        id              2;
+        parentId        0;
+        description     "time.run() case";
+        calls           17;
+        totalTime       0.031887627;
+        childTime       0.016745877;
+        active          true;
+    }
+
+    trigger1
+    {
+        id              1;
+        parentId        0;
+        description     "functionObjects.start()";
+        calls           1;
+        totalTime       6.958e-06;
+        childTime       0;
+        active          false;
+    }
+
+    trigger3
+    {
+        id              3;
+        parentId        2;
+        description     "neoFoamAdvection";
+        calls           17;
+        totalTime       0.016437918;
+        childTime       0;
+        active          false;
+    }
+
+    trigger4
+    {
+        id              4;
+        parentId        0;
+        description     "functionObjects.execute()";
+        calls           16;
+        totalTime       0.000393291;
+        childTime       0;
+        active          false;
+    }
+
+    trigger5
+    {
+        id              5;
+        parentId        2;
+        description     "objectRegistry::writeObject";
+        calls           4;
+        totalTime       0.000307959;
+        childTime       0;
+        active          false;
+    }
+}
+
+sysInfo
+{
+    host            "oo-u2-x695-01.link.informatik.kit.edu";
+    date            "2024-10-18T13:32:03";
+    version         "v2406";
+    build           "69b2a667c9-20240625";
+    arch            "darwin64";
+    compilerType    "system";
+    compiler        "Clang";
+    mplib           "SYSTEMOPENMPI";
+    options         "darwin64ClangDPInt32Opt";
+}
+
+cpuInfo
+{
+}
+
+memInfo
+{
+    size            0;
+    peak            0;
+    rss             0;
+    free            0;
+    units           kB;
+}
+
+
+// ************************************************************************* //
