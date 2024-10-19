@@ -11,47 +11,51 @@
 namespace Foam
 {
 
-/** @class fvccNeoMesh
+/** @class MeshAdapter adapter class simplifying conversion between an unstructured
+ * OpenFOAM mesh and the corresponding NeoFOAM datastructure.
  */
-class fvccNeoMesh : public Foam::fvMesh
+class MeshAdapter : public Foam::fvMesh
 {
     // Private Data
     const NeoFOAM::Executor exec;
 
-    NeoFOAM::UnstructuredMesh uMesh_;
-
-    // Private Member Functions
+    NeoFOAM::UnstructuredMesh mesh_;
 
     //- No copy construct
-    fvccNeoMesh(const fvccNeoMesh&) = delete;
+    MeshAdapter(const MeshAdapter&) = delete;
 
     //- No copy assignment
-    void operator=(const fvccNeoMesh&) = delete;
+    void operator=(const MeshAdapter&) = delete;
 
 public:
 
     //- Runtime type information
-    TypeName("fvccNeoMesh");
+    TypeName("MeshAdapter");
 
     // Constructors
+    /* @brief Construct from IOobject
+     * */
+    explicit MeshAdapter(const NeoFOAM::Executor exec, const fvMesh& mesh);
 
-    //- Construct from IOobject
-    explicit fvccNeoMesh(
+    /* @brief Construct from IOobject
+     * */
+    explicit MeshAdapter(
         const NeoFOAM::Executor exec, const IOobject& io, const bool doInit = true
     );
 
-    //- Construct from IOobject or as zero-sized mesh
-    //  Boundary is added using addFvPatches() member function
-    fvccNeoMesh(
+    /* @brief Construct from IOobject or as zero-sized mesh
+     * Boundary is added using addFvPatches() member function
+     */
+    MeshAdapter(
         const NeoFOAM::Executor exec, const IOobject& io, const Foam::zero, bool syncPar = true
     );
 
-    //- Construct from components without boundary.
-    //  Boundary is added using addFvPatches() member function
-    fvccNeoMesh(
+    /* @brief Construct from components without boundary.
+     * Boundary is added using addFvPatches() member function
+     * */
+    MeshAdapter(
         const NeoFOAM::Executor exec,
         const IOobject& io,
-
         pointField&& points,
         faceList&& faces,
         labelList&& allOwner,
@@ -59,9 +63,11 @@ public:
         const bool syncPar = true
     );
 
-    //- Construct without boundary from cells rather than owner/neighbour.
-    //  Boundary is added using addPatches() member function
-    fvccNeoMesh(
+    /* @brief  Construct without boundary from cells rather than owner/neighbour.
+     *
+     * Boundary is added using addPatches() member function
+     */
+    MeshAdapter(
         const NeoFOAM::Executor exec,
         const IOobject& io,
         pointField&& points,
@@ -70,10 +76,11 @@ public:
         const bool syncPar = true
     );
 
-    //- Destructor
-    virtual ~fvccNeoMesh() = default;
+    /* @brief Destructor
+     * */
+    virtual ~MeshAdapter() = default;
 
-    NeoFOAM::UnstructuredMesh& uMesh() { return uMesh_; }
+    NeoFOAM::UnstructuredMesh& mesh() { return mesh_; }
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -11,7 +11,7 @@
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
 
-#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/mesh/meshAdapter.hpp"
 #include "FoamAdapter/readers/foamFields.hpp"
 
 #include "FoamAdapter/writers/writers.hpp"
@@ -39,12 +39,12 @@ int main(int argc, char* argv[])
         auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
 
         Foam::Info << "creating NeoFOAM mesh" << Foam::endl;
-        NeoFOAM::UnstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
+        auto nfMesh = toNeoFOAM(exec, mesh);
 
         Foam::Info << "creating NeoFOAM fields" << Foam::endl;
-        auto neoT = Foam::constructFrom(exec, uMesh, T);
+        auto neoT = toNeoFOAM(exec, nfMesh, T);
         neoT.correctBoundaryConditions();
-        auto neoPhi = constructSurfaceField(exec, uMesh, phi);
+        auto neoPhi = toNeoFOAM(exec, nfMesh, phi);
 
         Foam::Info << "writing neoT field" << Foam::endl;
         write(neoT.internalField(), mesh, "neoT");
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 
         Foam::volScalarField ofDivT("ofDivT", Foam::fvc::div(phi, T));
 
-        auto neoDivT = constructFrom(exec, uMesh, ofDivT);
+        auto neoDivT = toNeoFOAM(exec, uMesh, ofDivT);
         NeoFOAM::fill(neoDivT.internalField(), 0.0);
         NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
 

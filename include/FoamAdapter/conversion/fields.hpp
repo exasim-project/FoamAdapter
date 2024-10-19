@@ -13,17 +13,39 @@
 namespace Foam
 {
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+
 template<typename FoamType>
-auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
+auto readSurfaceBoundaryConditions(
+    const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& surfaceField
+)
 {
     using type_container_t = typename type_map<FoamType>::container_type;
-    using mapped_t = typename type_map<FoamType>::mapped_type;
-    type_container_t nfField(
-        exec, reinterpret_cast<const mapped_t*>(field.cdata()), static_cast<size_t>(field.size())
-    );
+    using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    return nfField;
-};
+    std::vector<fvcc::SurfaceBoundary<type_primitive_t>> bcs;
+
+    // get boundary as dictionary
+    Foam::OStringStream os;
+    surfaceField.boundaryField().writeEntries(os);
+    Foam::IStringStream is(os.str());
+    Foam::dictionary bDict(is);
+    Foam::wordList bNames = bDict.toc();
+    int patchi = 0;
+
+    for (const auto& bName : bNames)
+    {
+        Foam::Info << "Boundary name: " << bName << Foam::endl;
+        Foam::dictionary patchDict = bDict.subDict(bName);
+        Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
+        Foam::word type = patchDict.get<Foam::word>("type");
+        NeoFOAM::Dictionary neoPatchDict;
+        neoPatchDict.insert("type", std::string(type));
+        bcs.push_back(fvcc::SurfaceBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
+        patchi++;
+    }
+    return bcs;
+}
+
 
 template<typename FoamType>
 auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& volField)
@@ -64,54 +86,6 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const Foa
     return bcs;
 }
 
-template<typename FoamType>
-auto constructFrom(
-    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& volField
-)
-{
-
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitive_t = typename type_map<FoamType>::mapped_type;
-
-    type_container_t nfVolField(exec, uMesh, readVolBoundaryConditions(uMesh, volField));
-
-    nfVolField.internalField() = fromFoamField(exec, volField.primitiveField());
-    nfVolField.correctBoundaryConditions();
-
-    return nfVolField;
-};
-
-template<typename FoamType>
-auto readSurfaceBoundaryConditions(
-    const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& surfaceField
-)
-{
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitive_t = typename type_map<FoamType>::mapped_type;
-
-    std::vector<fvcc::SurfaceBoundary<type_primitive_t>> bcs;
-
-    // get boundary as dictionary
-    Foam::OStringStream os;
-    surfaceField.boundaryField().writeEntries(os);
-    Foam::IStringStream is(os.str());
-    Foam::dictionary bDict(is);
-    Foam::wordList bNames = bDict.toc();
-    int patchi = 0;
-
-    for (const auto& bName : bNames)
-    {
-        Foam::Info << "Boundary name: " << bName << Foam::endl;
-        Foam::dictionary patchDict = bDict.subDict(bName);
-        Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
-        Foam::word type = patchDict.get<Foam::word>("type");
-        NeoFOAM::Dictionary neoPatchDict;
-        neoPatchDict.insert("type", std::string(type));
-        bcs.push_back(fvcc::SurfaceBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
-        patchi++;
-    }
-    return bcs;
-}
 
 template<typename FoamType>
 auto constructSurfaceField(

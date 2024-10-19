@@ -7,7 +7,7 @@
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 
-#include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
+#include "FoamAdapter/mesh/meshAdapter.hpp"
 
 #include "NeoFOAM/core/executor/executor.hpp"
 

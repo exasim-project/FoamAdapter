@@ -1,15 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
+
 #pragma once
 
 #include <functional>
 
-#include "foamFields.hpp"
 #include "fvMesh.H"
 
 #include "NeoFOAM/core/primitives/label.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
 #include "NeoFOAM/mesh/unstructured.hpp"
+
+#include "FoamAdapter/conversion/fields.hpp"
 
 namespace Foam
 {
@@ -37,6 +39,5 @@ FieldT flatBCField(const Foam::fvMesh& mesh, std::function<FieldT(const Foam::fv
     return result;
 }
 
-NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::fvMesh& mesh);
 
 }; // namespace Foam

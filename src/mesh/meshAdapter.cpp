@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-#include "FoamAdapter/fvcc/mesh/MeshAdapter.hpp"
-#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/mesh/meshAdapter.hpp"
+#include "FoamAdapter/conversion/mesh.hpp"
+#include "FoamAdapter/conversion/toNeoFOAM.hpp"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -17,8 +18,8 @@ defineTypeNameAndDebug(MeshAdapter, 0);
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::MeshAdapter::fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io, const bool doInit)
-    : fvMesh(io, doInit), uMesh_(readOpenFOAMMesh(exec, *this))
+Foam::MeshAdapter::MeshAdapter(const NeoFOAM::Executor exec, const IOobject& io, const bool doInit)
+    : fvMesh(io, doInit), mesh_(toNeoFOAM(exec, *this))
 {
     if (doInit)
     {
@@ -27,14 +28,14 @@ Foam::MeshAdapter::fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io,
 }
 
 
-Foam::MeshAdapter::fvccNeoMesh(
+Foam::MeshAdapter::MeshAdapter(
     const NeoFOAM::Executor exec, const IOobject& io, const Foam::zero, bool syncPar
 )
-    : fvMesh(io, Foam::zero {}, syncPar), uMesh_(readOpenFOAMMesh(exec, *this))
+    : fvMesh(io, Foam::zero {}, syncPar), mesh_(toNeoFOAM(exec, *this))
 {}
 
 
-Foam::MeshAdapter::fvccNeoMesh(
+Foam::MeshAdapter::MeshAdapter(
     const NeoFOAM::Executor exec,
     const IOobject& io,
     pointField&& points,
@@ -51,11 +52,11 @@ Foam::MeshAdapter::fvccNeoMesh(
         std::move(allNeighbour),
         syncPar
     ),
-      uMesh_(readOpenFOAMMesh(exec, *this))
+      mesh_(toNeoFOAM(exec, *this))
 {}
 
 
-Foam::MeshAdapter::fvccNeoMesh(
+Foam::MeshAdapter::MeshAdapter(
     const NeoFOAM::Executor exec,
     const IOobject& io,
     pointField&& points,
@@ -64,7 +65,7 @@ Foam::MeshAdapter::fvccNeoMesh(
     const bool syncPar
 )
     : fvMesh(io, std::move(points), std::move(faces), std::move(cells), syncPar),
-      uMesh_(readOpenFOAMMesh(exec, *this))
+      mesh_(toNeoFOAM(exec, *this))
 {}
 
 

@@ -1,38 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 NeoFOAM authors
+// SPDX-FileCopyrightText: 2024 NeoFOAM authors
 
-#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/conversion/toNeoFOAM.hpp"
 
-namespace Foam
-{
-
-std::vector<NeoFOAM::localIdx> computeOffset(const Foam::fvMesh& mesh)
-{
-    std::vector<NeoFOAM::localIdx> result;
-    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
-    result.push_back(0);
-    forAll(bMesh, patchI)
-    {
-        NeoFOAM::localIdx curOffset = result.back();
-        const Foam::fvPatch& patch = bMesh[patchI];
-        result.push_back(curOffset + patch.size());
-    }
-    return result;
-}
-
-int32_t computeNBoundaryFaces(const Foam::fvMesh& mesh)
-{
-    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
-    int32_t nBoundaryFaces = 0;
-    forAll(bMesh, patchI)
-    {
-        const Foam::fvPatch& patch = bMesh[patchI];
-        nBoundaryFaces += patch.size();
-    }
-    return nBoundaryFaces;
-}
-
-NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::fvMesh& mesh)
+template<>
+NeoFOAM::UnstructuredMesh toNeoFOAM(const NeoFOAM::Executor exec, Foam::fvMesh& mesh)
 {
     const int32_t nCells = mesh.nCells();
     const int32_t nInternalFaces = mesh.nInternalFaces();
@@ -69,30 +41,29 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
     );
     std::vector<NeoFOAM::localIdx> offset = computeOffset(mesh);
 
-
     NeoFOAM::BoundaryMesh bMesh(
         exec,
-        fromFoamField(exec, faceCells),
-        fromFoamField(exec, cf),
-        fromFoamField(exec, cn),
-        fromFoamField(exec, sf),
-        fromFoamField(exec, magSf),
-        fromFoamField(exec, nf),
-        fromFoamField(exec, delta),
-        fromFoamField(exec, weights),
-        fromFoamField(exec, deltaCoeffs),
+        toNeoFOAM(exec, faceCells),
+        toNeoFOAM(exec, cf),
+        toNeoFOAM(exec, cn),
+        toNeoFOAM(exec, sf),
+        toNeoFOAM(exec, magSf),
+        toNeoFOAM(exec, nf),
+        toNeoFOAM(exec, delta),
+        toNeoFOAM(exec, weights),
+        toNeoFOAM(exec, deltaCoeffs),
         offset
     );
 
     NeoFOAM::UnstructuredMesh uMesh(
-        fromFoamField(exec, mesh.points()),
-        fromFoamField(exec, mesh.cellVolumes()),
-        fromFoamField(exec, mesh.cellCentres()),
-        fromFoamField(exec, mesh.faceAreas()),
-        fromFoamField(exec, mesh.faceCentres()),
-        fromFoamField(exec, magFaceAreas),
-        fromFoamField(exec, mesh.faceOwner()),
-        fromFoamField(exec, mesh.faceNeighbour()),
+        toNeoFOAM(exec, mesh.points()),
+        toNeoFOAM(exec, mesh.cellVolumes()),
+        toNeoFOAM(exec, mesh.cellCentres()),
+        toNeoFOAM(exec, mesh.faceAreas()),
+        toNeoFOAM(exec, mesh.faceCentres()),
+        toNeoFOAM(exec, magFaceAreas),
+        toNeoFOAM(exec, mesh.faceOwner()),
+        toNeoFOAM(exec, mesh.faceNeighbour()),
         nCells,
         nInternalFaces,
         nBoundaryFaces,
@@ -103,5 +74,3 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
 
     return uMesh;
 }
-
-}; // namespace Foam
