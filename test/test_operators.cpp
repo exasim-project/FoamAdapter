@@ -3,26 +3,14 @@
 
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
-#include <random>
-#include <span>
-
-#include <catch2/catch_session.hpp>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators_all.hpp>
-#include <catch2/matchers/catch_matchers_all.hpp>
-#include <catch2/catch_approx.hpp>
-#include "catch2/common.hpp"
 
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 
-#include "FoamAdapter/readers/foamMesh.hpp"
-#include "FoamAdapter/writers/writers.hpp"
-#include "FoamAdapter/comparison/fieldComparison.hpp"
-#include "FoamAdapter/setup/setup.hpp"
-
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "gaussConvectionScheme.H"
+
+#include "common.hpp"
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
@@ -30,37 +18,6 @@ extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 extern Foam::fvMesh* meshPtr;  // A single mesh object
 
-
-Foam::volScalarField createRandomField(const Foam::Time& runTime, const Foam::fvccNeoMesh& mesh)
-{
-    std::random_device rd;  // Will be used to obtain a seed for the random number engine
-    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-    std::uniform_real_distribution<> dis(1.0, 2.0);
-
-    Foam::volScalarField t(
-        Foam::IOobject(
-            "T", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
-        ),
-        mesh
-    );
-
-    forAll(t, celli)
-    {
-        t[celli] = dis(gen);
-    }
-
-    t.correctBoundaryConditions();
-    return t;
-}
-
-template<typename NFFIELD, typename OFFIELD, typename Compare>
-void compare(NFFIELD& a, OFFIELD& b, Compare comp)
-{
-    auto aHost = a.internalField().copyToHost();
-    auto bSpan = std::span(b.primitiveFieldRef().data(), b.size());
-    // nf a span might be shorter than bSpan for surface fields
-    REQUIRE_THAT(aHost.span({0, bSpan.size()}), Catch::Matchers::RangeEquals(bSpan, comp));
-}
 
 TEST_CASE("Interpolation")
 {
@@ -85,7 +42,7 @@ TEST_CASE("Interpolation")
         Foam::tmp<Foam::surfaceInterpolationScheme<Foam::scalar>> foamInterPol =
             Foam::surfaceInterpolationScheme<Foam::scalar>::New(mesh, is);
 
-        auto ofT = createRandomField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh);
         auto nfT = constructFrom(exec, nfMesh, ofT);
         nfT.correctBoundaryConditions();
         REQUIRE(nfT == ofT);
@@ -125,7 +82,7 @@ TEST_CASE("GradOperator")
         // linear interpolation hardcoded for now
         Foam::IStringStream is("linear");
 
-        auto ofT = createRandomField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh);
         auto nfT = constructFrom(exec, nfMesh, ofT);
         nfT.correctBoundaryConditions();
         REQUIRE(nfT == ofT);
@@ -164,7 +121,7 @@ TEST_CASE("DivOperator")
         // linear interpolation hardcoded for now
         Foam::IStringStream is("linear");
 
-        auto ofT = createRandomField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh);
         auto nfT = constructFrom(exec, nfMesh, ofT);
         nfT.correctBoundaryConditions();
         REQUIRE(nfT == ofT);
