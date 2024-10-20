@@ -11,8 +11,7 @@
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
-#include "FoamAdapter/setup/setup.hpp"
-#include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
+#include "FoamAdapter/setup.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 
@@ -34,43 +33,43 @@ TEST_CASE("unstructuredMesh")
 
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::fvccNeoMesh& mesh = *meshPtr;
-    const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
+    const NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
     SECTION("Fields" + execName)
     {
-        const int32_t nCells = uMesh.nCells();
+        const int32_t nCells = nfMesh.nCells();
 
         REQUIRE(nCells == mesh.nCells());
 
-        const int32_t nInternalFaces = uMesh.nInternalFaces();
+        const int32_t nInternalFaces = nfMesh.nInternalFaces();
 
         REQUIRE(nInternalFaces == mesh.nInternalFaces());
 
-        SECTION("points") { checkField(uMesh.points(), mesh.points()); }
+        SECTION("points") { checkField(nfMesh.points(), mesh.points()); }
 
-        SECTION("cellVolumes") { checkField(uMesh.cellVolumes(), mesh.cellVolumes()); }
+        SECTION("cellVolumes") { checkField(nfMesh.cellVolumes(), mesh.cellVolumes()); }
 
-        SECTION("cellCentres") { checkField(uMesh.cellCentres(), mesh.cellCentres()); }
+        SECTION("cellCentres") { checkField(nfMesh.cellCentres(), mesh.cellCentres()); }
 
-        SECTION("faceCentres") { checkField(uMesh.faceCentres(), mesh.faceCentres()); }
+        SECTION("faceCentres") { checkField(nfMesh.faceCentres(), mesh.faceCentres()); }
 
-        SECTION("faceAreas") { checkField(uMesh.faceAreas(), mesh.faceAreas()); }
+        SECTION("faceAreas") { checkField(nfMesh.faceAreas(), mesh.faceAreas()); }
 
         SECTION("magFaceAreas")
         {
             Foam::scalarField magSf(mag(mesh.faceAreas()));
-            checkField(uMesh.magFaceAreas(), magSf);
+            checkField(nfMesh.magFaceAreas(), magSf);
         }
 
-        SECTION("faceOwner") { checkField(uMesh.faceOwner(), mesh.faceOwner()); }
+        SECTION("faceOwner") { checkField(nfMesh.faceOwner(), mesh.faceOwner()); }
 
-        SECTION("faceNeighbour") { checkField(uMesh.faceNeighbour(), mesh.faceNeighbour()); }
+        SECTION("faceNeighbour") { checkField(nfMesh.faceNeighbour(), mesh.faceNeighbour()); }
     }
 
     SECTION("boundaryMesh" + execName)
     {
         const Foam::fvBoundaryMesh& bMeshOF = mesh.boundary();
-        const NeoFOAM::BoundaryMesh& bMesh = uMesh.boundaryMesh();
+        const NeoFOAM::BoundaryMesh& bMesh = nfMesh.boundaryMesh();
         const auto& offset = bMesh.offset();
 
         SECTION("offset")
@@ -253,13 +252,13 @@ TEST_CASE("fvccGeometryScheme")
 
     std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::fvccNeoMesh& mesh = *meshPtr;
-    const NeoFOAM::UnstructuredMesh& uMesh = mesh.uMesh();
+    const NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
     SECTION("BasicFvccGeometryScheme" + execName)
     {
         // update on construction
         auto scheme =
-            fvcc::GeometryScheme(exec, uMesh, std::make_unique<fvcc::BasicGeometryScheme>(uMesh));
+            fvcc::GeometryScheme(exec, nfMesh, std::make_unique<fvcc::BasicGeometryScheme>(nfMesh));
         scheme.update(); // make sure it uptodate
         auto foamWeights = mesh.weights();
 
@@ -276,7 +275,7 @@ TEST_CASE("fvccGeometryScheme")
     SECTION("DefaultBasicFvccGeometryScheme" + execName)
     {
         // update on construction
-        fvcc::GeometryScheme scheme(uMesh);
+        fvcc::GeometryScheme scheme(nfMesh);
         scheme.update(); // make sure it uptodate
         auto foamWeights = mesh.weights();
 
