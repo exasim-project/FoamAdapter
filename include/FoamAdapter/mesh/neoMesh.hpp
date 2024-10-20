@@ -18,7 +18,7 @@ class fvccNeoMesh : public Foam::fvMesh
     // Private Data
     const NeoFOAM::Executor exec;
 
-    NeoFOAM::UnstructuredMesh uMesh_;
+    NeoFOAM::UnstructuredMesh nfMesh_;
 
     // Private Member Functions
 
@@ -73,7 +73,7 @@ public:
     //- Destructor
     virtual ~fvccNeoMesh() = default;
 
-    NeoFOAM::UnstructuredMesh& uMesh() { return uMesh_; }
+    NeoFOAM::UnstructuredMesh& nfMesh() { return nfMesh_; }
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

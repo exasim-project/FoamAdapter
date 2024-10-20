@@ -27,4 +27,3 @@ Foam::surfaceScalarField phi0 = phi;
 Foam::volVectorField U0 = U;
 
 const Foam::dictionary& fvSolutionDict = mesh.solutionDict();
-Foam::scalar spirallingFlow = fvSolutionDict.get<Foam::scalar>("spirallingFlow");

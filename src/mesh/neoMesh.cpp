@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-#include "FoamAdapter/fvcc/mesh/fvccNeoMesh.hpp"
+#include "FoamAdapter/mesh/neoMesh.hpp"
 #include "FoamAdapter/readers/foamMesh.hpp"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -18,7 +18,7 @@ defineTypeNameAndDebug(fvccNeoMesh, 0);
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io, const bool doInit)
-    : fvMesh(io, doInit), uMesh_(readOpenFOAMMesh(exec, *this))
+    : fvMesh(io, doInit), nfMesh_(readOpenFOAMMesh(exec, *this))
 {
     if (doInit)
     {
@@ -30,7 +30,7 @@ Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io,
 Foam::fvccNeoMesh::fvccNeoMesh(
     const NeoFOAM::Executor exec, const IOobject& io, const Foam::zero, bool syncPar
 )
-    : fvMesh(io, Foam::zero {}, syncPar), uMesh_(readOpenFOAMMesh(exec, *this))
+    : fvMesh(io, Foam::zero {}, syncPar), nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 
@@ -51,7 +51,7 @@ Foam::fvccNeoMesh::fvccNeoMesh(
         std::move(allNeighbour),
         syncPar
     ),
-      uMesh_(readOpenFOAMMesh(exec, *this))
+      nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 
@@ -64,7 +64,7 @@ Foam::fvccNeoMesh::fvccNeoMesh(
     const bool syncPar
 )
     : fvMesh(io, std::move(points), std::move(faces), std::move(cells), syncPar),
-      uMesh_(readOpenFOAMMesh(exec, *this))
+      nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 
