@@ -7,4 +7,4 @@ add_library(FoamAdapter SHARED)
 target_link_libraries(FoamAdapter PUBLIC FoamAdapter_public_api OpenFOAM NeoFOAM)
 
 target_sources(FoamAdapter PRIVATE "conversion/convert.cpp" "setup/setup.cpp"
-                                   "readers/foamMesh.cpp" "fvcc/mesh/fvccNeoMesh.cpp")
+                                   "readers/foamMesh.cpp" "mesh/neoMesh.cpp")
