@@ -33,15 +33,11 @@ TEST_CASE("fvcc::VolumeField")
     {
         auto nfT = constructFrom(exec, nfMesh, ofT);
         compare(nfT, ofT, ApproxScalar(1e-15));
-        // TODO compare only handles internal fields atm
-        // need to check if boundary fields are correct
     }
 
     SECTION("VolumeField<vector>" + execName)
     {
         auto nfU = constructFrom(exec, nfMesh, ofU);
         compare(nfU, ofU, ApproxVector(1e-15));
-        // TODO compare only handles internal fields atm
-        // need to check if boundary fields are correct
     }
 }

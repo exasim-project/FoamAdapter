@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+//
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
+/* This file implements comparison operator to compare OpenFOAM and corresponding NeoFOAM fields
+ */
 #pragma once
 
 #include <span>
@@ -17,15 +20,14 @@ namespace Foam
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
-#define FIELD_EQUALITY_OPERATOR(NFIELD_TYPE, FFIELD_TYPE)                                          \
-    bool operator==(NeoFOAM::Field<NFIELD_TYPE>& nfield, const Foam::Field<FFIELD_TYPE>& ffield)   \
+#define FIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                                  \
+    bool operator==(const NeoFOAM::Field<NF_TYPE>& nf, const Foam::Field<OF_TYPE>& of)             \
     {                                                                                              \
-        auto hostSpan = nfield.copyToHost();                                                       \
-        auto span = hostSpan.span();                                                               \
-                                                                                                   \
-        for (int i = 0; i < span.size(); i++)                                                      \
+        auto nfHost = nf.copyToHost();                                                             \
+        auto nfSpan = nfHost.span();                                                               \
+        for (int i = 0; i < nfSpan.size(); i++)                                                    \
         {                                                                                          \
-            if (span[i] != Foam::convert(ffield[i]))                                               \
+            if (nfSpan[i] != Foam::convert(of[i]))                                                 \
             {                                                                                      \
                 return false;                                                                      \
             }                                                                                      \
@@ -33,38 +35,33 @@ namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
         return true;                                                                               \
     };
 
+
 FIELD_EQUALITY_OPERATOR(NeoFOAM::scalar, Foam::scalar)
 FIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
 
-#define VOLGEOFIELD_EQUALITY_OPERATOR(NFIELD_TYPE, FFIELD_TYPE)                                    \
+#define VOLGEOFIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                            \
     bool operator==(                                                                               \
-        fvcc::VolumeField<NFIELD_TYPE>& nfield,                                                    \
-        const Foam::GeometricField<FFIELD_TYPE, Foam::fvPatchField, Foam::volMesh>& ffield         \
+        fvcc::VolumeField<NF_TYPE>& nf,                                                            \
+        const Foam::GeometricField<OF_TYPE, Foam::fvPatchField, Foam::volMesh>& of                 \
     )                                                                                              \
     {                                                                                              \
-        auto hostSpan = nfield.internalField().copyToHost();                                       \
-        auto span = hostSpan.span();                                                               \
-        const auto& internalFField = ffield.internalField();                                       \
-        /* compare internalField*/                                                                 \
-        for (int i = 0; i < span.size(); i++)                                                      \
+        if (nf.internalField() != of.internalField())                                              \
         {                                                                                          \
-            if (span[i] != Foam::convert(internalFField[i]))                                       \
-            {                                                                                      \
-                return false;                                                                      \
-            }                                                                                      \
+            return false;                                                                          \
         }                                                                                          \
+                                                                                                   \
         /* compare boundaryField */                                                                \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
-        auto patchValueHost = nfield.boundaryField().value().copyToHost();                         \
-        auto patchValueSpan = patchValueHost.span();                                               \
+        auto nfBoundaryHost = nf.boundaryField().value().copyToHost();                             \
+        auto nfBoundarySpan = nfBoundaryHost.span();                                               \
         NeoFOAM::label pFacei = 0;                                                                 \
-        for (const auto& patch : ffield.boundaryField())                                           \
+        for (const auto& patch : of.boundaryField())                                               \
         {                                                                                          \
             int patchSize = patch.size();                                                          \
             for (const auto& patchValue : patch)                                                   \
             {                                                                                      \
-                if (patchValueSpan[pFacei] != Foam::convert(patchValue))                           \
+                if (nfBoundarySpan[pFacei] != Foam::convert(patchValue))                           \
                 {                                                                                  \
                     return false;                                                                  \
                 }                                                                                  \
@@ -78,35 +75,33 @@ FIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
 VOLGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::scalar, Foam::scalar)
 VOLGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
 
-#define SURFGEOFIELD_EQUALITY_OPERATOR(NFIELD_TYPE, FFIELD_TYPE)                                   \
+/*
+ *
+ */
+#define SURFGEOFIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                           \
     bool operator==(                                                                               \
-        fvcc::SurfaceField<NFIELD_TYPE>& nfield,                                                   \
-        const Foam::GeometricField<FFIELD_TYPE, Foam::fvsPatchField, Foam::surfaceMesh>& ffield    \
+        const fvcc::SurfaceField<NF_TYPE>& nf,                                                     \
+        const Foam::GeometricField<OF_TYPE, Foam::fvsPatchField, Foam::surfaceMesh>& of            \
     )                                                                                              \
     {                                                                                              \
-        auto hostSpan = nfield.internalField().copyToHost();                                       \
-        auto span = hostSpan.span();                                                               \
-        const auto& internalFField = ffield.internalField();                                       \
-        /* compare internalField the fvccSurfaceField contains the boundaryValues                  \
-         */                                                                                        \
-        for (int i = 0; i < internalFField.size(); i++)                                            \
+        if (nf.internalField() != of.internalField())                                              \
         {                                                                                          \
-            if (span[i] != Foam::convert(internalFField[i]))                                       \
-            {                                                                                      \
-                return false;                                                                      \
-            }                                                                                      \
+            return false;                                                                          \
         }                                                                                          \
+                                                                                                   \
         /* compare boundaryField */                                                                \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
-        NeoFOAM::label nInternalFaces = nfield.internalField().size();                             \
+        auto nfHost = nf.internalField().copyToHost();                                             \
+        auto nfSpan = nfHost.span();                                                               \
+        NeoFOAM::label nInternalFaces = nf.internalField().size();                                 \
         NeoFOAM::label pFacei = nInternalFaces;                                                    \
-        for (const auto& patch : ffield.boundaryField())                                           \
+        for (const auto& patch : of.boundaryField())                                               \
         {                                                                                          \
             int patchSize = patch.size();                                                          \
             for (const auto& patchValue : patch)                                                   \
             {                                                                                      \
-                if (hostSpan[pFacei] != Foam::convert(patchValue))                                 \
+                if (nfSpan[pFacei] != Foam::convert(patchValue))                                   \
                 {                                                                                  \
                     return false;                                                                  \
                 }                                                                                  \

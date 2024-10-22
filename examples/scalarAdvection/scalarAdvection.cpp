@@ -15,7 +15,7 @@
 #include "FoamAdapter/readers/foamFields.hpp"
 
 #include "FoamAdapter/writers/writers.hpp"
-#include "FoamAdapter/setup/setup.hpp"
+#include "FoamAdapter/setup.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;

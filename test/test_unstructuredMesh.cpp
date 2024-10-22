@@ -11,7 +11,7 @@
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 #include "FoamAdapter/writers/writers.hpp"
-#include "FoamAdapter/setup/setup.hpp"
+#include "FoamAdapter/setup.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 

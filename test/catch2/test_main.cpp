@@ -9,7 +9,7 @@
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <catch2/catch_approx.hpp>
 
-#include "FoamAdapter/setup/setup.hpp"
+#include "FoamAdapter/setup.hpp"
 
 #include "fvCFD.H"
 

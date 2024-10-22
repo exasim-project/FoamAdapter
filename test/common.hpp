@@ -13,10 +13,9 @@
 #include <catch2/catch_approx.hpp>
 #include "catch2/common.hpp"
 
-#include "FoamAdapter/setup/setup.hpp"
 #include "FoamAdapter/readers/foamMesh.hpp"
-#include "FoamAdapter/setup/setup.hpp"
-#include "FoamAdapter/comparison/fieldComparison.hpp"
+#include "FoamAdapter/setup.hpp"
+#include "FoamAdapter/comparison.hpp"
 
 namespace Foam
 {
@@ -70,6 +69,17 @@ void compare(NFFIELD& a, OFFIELD& b, Compare comp)
     auto bSpan = std::span(b.primitiveFieldRef().data(), b.size());
     // nf a span might be shorter than bSpan for surface fields
     REQUIRE_THAT(aHost.span({0, bSpan.size()}), Catch::Matchers::RangeEquals(bSpan, comp));
+
+    // size_t start = 0;
+    // auto aBoundaryHost = a.boundaryField().value().copyToHost();
+    // for (const auto& patch : b.boundaryField())
+    // {
+    //     auto bBoundarySpan = std::span(patch.internalField().cdata(), patch.size());
+    //     REQUIRE_THAT(
+    //         aBoundaryHost.span({start, start + patch.size()}),
+    //         Catch::Matchers::RangeEquals(bBoundarySpan, comp));
+    //     start += patch.size();
+    // }
 }
 
 }
