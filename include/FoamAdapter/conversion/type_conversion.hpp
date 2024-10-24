@@ -22,28 +22,28 @@ struct type_map
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Foam::GeometricField<Foam::scalar, Foam::fvPatchField, Foam::volMesh>>
+struct type_map<GeometricField<scalar, fvPatchField, volMesh>>
 {
     using container_type = fvcc::VolumeField<NeoFOAM::scalar>;
     using mapped_type = NeoFOAM::scalar;
 };
 
 template<>
-struct type_map<Foam::GeometricField<Foam::vector, Foam::fvPatchField, Foam::volMesh>>
+struct type_map<GeometricField<vector, fvPatchField, volMesh>>
 {
     using container_type = fvcc::VolumeField<NeoFOAM::Vector>;
     using mapped_type = NeoFOAM::Vector;
 };
 
 template<>
-struct type_map<Foam::GeometricField<Foam::scalar, Foam::fvsPatchField, Foam::surfaceMesh>>
+struct type_map<GeometricField<scalar, fvsPatchField, surfaceMesh>>
 {
     using container_type = fvcc::SurfaceField<NeoFOAM::scalar>;
     using mapped_type = NeoFOAM::scalar;
 };
 
 template<>
-struct type_map<Foam::GeometricField<Foam::vector, Foam::fvsPatchField, Foam::surfaceMesh>>
+struct type_map<GeometricField<vector, fvsPatchField, surfaceMesh>>
 {
     using container_type = fvcc::SurfaceField<NeoFOAM::Vector>;
     using mapped_type = NeoFOAM::Vector;
@@ -51,7 +51,7 @@ struct type_map<Foam::GeometricField<Foam::vector, Foam::fvsPatchField, Foam::su
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Foam::Field<Foam::scalar>>
+struct type_map<Field<scalar>>
 {
     using container_type = NeoFOAM::Field<NeoFOAM::scalar>;
     using mapped_type = NeoFOAM::scalar;
@@ -59,7 +59,7 @@ struct type_map<Foam::Field<Foam::scalar>>
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Foam::Field<Foam::vector>>
+struct type_map<Field<vector>>
 {
     using container_type = NeoFOAM::Field<NeoFOAM::Vector>;
     using mapped_type = NeoFOAM::Vector;
@@ -67,7 +67,7 @@ struct type_map<Foam::Field<Foam::vector>>
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Foam::List<Foam::scalar>>
+struct type_map<List<scalar>>
 {
     using container_type = NeoFOAM::Field<NeoFOAM::scalar>;
     using mapped_type = NeoFOAM::scalar;
@@ -75,7 +75,7 @@ struct type_map<Foam::List<Foam::scalar>>
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Foam::List<Foam::label>>
+struct type_map<List<label>>
 {
     using container_type = NeoFOAM::Field<NeoFOAM::label>;
     using mapped_type = NeoFOAM::label;
