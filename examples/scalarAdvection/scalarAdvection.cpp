@@ -14,7 +14,7 @@
 #include "FoamAdapter/meshAdapter.hpp"
 #include "FoamAdapter/readers/foamFields.hpp"
 
-#include "FoamAdapter/writers/writers.hpp"
+#include "FoamAdapter/writers.hpp"
 #include "FoamAdapter/setup.hpp"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
