@@ -9,7 +9,7 @@
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include "catch2/common.hpp"
 
-#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/meshAdapter.hpp"
 #include "FoamAdapter/writers/writers.hpp"
 #include "FoamAdapter/setup.hpp"
 

@@ -1,19 +1,51 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+//
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
+
 #pragma once
+
+#include <functional>
 
 #include "fvMesh.H"
 
 #include "NeoFOAM/mesh/unstructured.hpp"
+#include "NeoFOAM/core/primitives/label.hpp"
+#include "NeoFOAM/core/executor/executor.hpp"
+#include "NeoFOAM/mesh/unstructured.hpp"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "readers/foamFields.hpp"
 
 namespace Foam
 {
 
+std::vector<NeoFOAM::localIdx> computeOffset(const fvMesh& mesh);
+
+int32_t computeNBoundaryFaces(const fvMesh& mesh);
+
+template<typename FieldT>
+FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f)
+{
+    FieldT result(computeNBoundaryFaces(mesh));
+    const fvBoundaryMesh& bMesh = mesh.boundary();
+    label idx = 0;
+    forAll(bMesh, patchI)
+    {
+        const fvPatch& patch = bMesh[patchI];
+        auto pResult = f(patch);
+        forAll(pResult, i)
+        {
+            result[idx] = pResult[i];
+            idx++;
+        }
+    }
+    return result;
+}
+
+NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, fvMesh& mesh);
+
 /** @class fvccNeoMesh
  */
-class fvccNeoMesh : public Foam::fvMesh
+class fvccNeoMesh : public fvMesh
 {
     // Private Data
     const NeoFOAM::Executor exec;
@@ -42,9 +74,7 @@ public:
 
     //- Construct from IOobject or as zero-sized mesh
     //  Boundary is added using addFvPatches() member function
-    fvccNeoMesh(
-        const NeoFOAM::Executor exec, const IOobject& io, const Foam::zero, bool syncPar = true
-    );
+    fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io, const zero, bool syncPar = true);
 
     //- Construct from components without boundary.
     //  Boundary is added using addFvPatches() member function

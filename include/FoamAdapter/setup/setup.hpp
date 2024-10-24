@@ -7,12 +7,11 @@
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 
-#include "FoamAdapter/meshAdapter.hpp"
-
 #include "NeoFOAM/core/executor/executor.hpp"
 
 #include "fvCFD.H" // include after NeoFOAM to avoid ambiguous sqrt error
 
+#include "FoamAdapter/meshAdapter.hpp"
 
 namespace Foam
 {

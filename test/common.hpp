@@ -13,7 +13,7 @@
 #include <catch2/catch_approx.hpp>
 #include "catch2/common.hpp"
 
-#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/meshAdapter.hpp"
 #include "FoamAdapter/setup.hpp"
 #include "FoamAdapter/comparison.hpp"
 
