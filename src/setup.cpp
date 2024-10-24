@@ -3,71 +3,69 @@
 
 #include "FoamAdapter/setup.hpp"
 
+namespace Foam
+{
 
-std::tuple<bool, Foam::scalar, Foam::scalar> Foam::timeControls(const Foam::Time& runTime)
+std::tuple<bool, scalar, scalar> timeControls(const Time& runTime)
 {
     bool adjustTimeStep = runTime.controlDict().getOrDefault("adjustTimeStep", false);
 
-    Foam::scalar maxCo = runTime.controlDict().getOrDefault<Foam::scalar>("maxCo", 1);
+    scalar maxCo = runTime.controlDict().getOrDefault<scalar>("maxCo", 1);
 
-    Foam::scalar maxDeltaT =
-        runTime.controlDict().getOrDefault<Foam::scalar>("maxDeltaT", Foam::GREAT);
+    scalar maxDeltaT = runTime.controlDict().getOrDefault<scalar>("maxDeltaT", GREAT);
 
     return std::make_tuple(adjustTimeStep, maxCo, maxDeltaT);
 }
 
 
-Foam::scalar Foam::calculateCoNum(const Foam::surfaceScalarField& phi)
+scalar calculateCoNum(const surfaceScalarField& phi)
 {
-    const Foam::fvMesh& mesh = phi.mesh();
-    const Foam::Time& runTime = mesh.time();
-    Foam::scalarField sumPhi(Foam::fvc::surfaceSum(mag(phi))().primitiveField());
-    Foam::scalar coNum = 0.5 * Foam::gMax(sumPhi / mesh.V().field()) * runTime.deltaTValue();
-    Foam::scalar meanCoNum = 0.5 * (gSum(sumPhi) / gSum(mesh.V().field())) * runTime.deltaTValue();
+    const fvMesh& mesh = phi.mesh();
+    const Time& runTime = mesh.time();
+    scalarField sumPhi(fvc::surfaceSum(mag(phi))().primitiveField());
+    scalar coNum = 0.5 * gMax(sumPhi / mesh.V().field()) * runTime.deltaTValue();
+    scalar meanCoNum = 0.5 * (gSum(sumPhi) / gSum(mesh.V().field())) * runTime.deltaTValue();
 
-    Foam::Info << "Courant Number mean: " << meanCoNum << " max: " << coNum << Foam::endl;
+    Info << "Courant Number mean: " << meanCoNum << " max: " << coNum << endl;
     return coNum;
 }
 
-void Foam::setDeltaT(
-    Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar coNum, Foam::scalar maxDeltaT
-)
+void setDeltaT(Time& runTime, scalar maxCo, scalar coNum, scalar maxDeltaT)
 {
-    Foam::scalar maxDeltaTFact = maxCo / (coNum + Foam::SMALL);
-    Foam::scalar deltaTFact = Foam::min(Foam::min(maxDeltaTFact, 1.0 + 0.1 * maxDeltaTFact), 1.2);
+    scalar maxDeltaTFact = maxCo / (coNum + SMALL);
+    scalar deltaTFact = min(min(maxDeltaTFact, 1.0 + 0.1 * maxDeltaTFact), 1.2);
 
-    runTime.setDeltaT(Foam::min(deltaTFact * runTime.deltaTValue(), maxDeltaT));
+    runTime.setDeltaT(min(deltaTFact * runTime.deltaTValue(), maxDeltaT));
 
-    Foam::Info << "deltaT = " << runTime.deltaTValue() << Foam::endl;
+    Info << "deltaT = " << runTime.deltaTValue() << endl;
 }
 
 
-std::unique_ptr<Foam::fvccNeoMesh>
-Foam::createMesh(const NeoFOAM::Executor& exec, const Foam::Time& runTime)
+std::unique_ptr<MeshAdapter> createMesh(const NeoFOAM::Executor& exec, const Time& runTime)
 {
-    Foam::word regionName(Foam::polyMesh::defaultRegion);
-    Foam::IOobject io(regionName, runTime.timeName(), runTime, Foam::IOobject::MUST_READ);
-    return std::make_unique<Foam::fvccNeoMesh>(exec, io);
+    word regionName(polyMesh::defaultRegion);
+    IOobject io(regionName, runTime.timeName(), runTime, IOobject::MUST_READ);
+    return std::make_unique<MeshAdapter>(exec, io);
 }
 
-std::unique_ptr<Foam::fvMesh> Foam::createMesh(const Foam::Time& runTime)
+std::unique_ptr<fvMesh> createMesh(const Time& runTime)
 {
-    std::unique_ptr<Foam::fvMesh> meshPtr;
-    Foam::Info << "Create mesh";
-    Foam::word regionName(Foam::polyMesh::defaultRegion);
-    Foam::Info << " for time = " << runTime.timeName() << Foam::nl;
+    std::unique_ptr<fvMesh> meshPtr;
+    Info << "Create mesh";
+    word regionName(polyMesh::defaultRegion);
+    Info << " for time = " << runTime.timeName() << nl;
 
-    meshPtr.reset(new Foam::fvMesh(
-        Foam::IOobject(regionName, runTime.timeName(), runTime, Foam::IOobject::MUST_READ), false
-    ));
+    meshPtr.reset(
+        new fvMesh(IOobject(regionName, runTime.timeName(), runTime, IOobject::MUST_READ), false)
+    );
     meshPtr->init(true); // initialise all (lower levels and current)
 
     return meshPtr;
 }
 
-NeoFOAM::Executor Foam::createExecutor(const Foam::dictionary& dict)
+NeoFOAM::Executor createExecutor(const dictionary& dict)
 {
-    auto execName = dict.get<Foam::word>("executor");
+    auto execName = dict.get<word>("executor");
     if (execName == "Serial")
     {
         return NeoFOAM::SerialExecutor();
@@ -82,7 +80,9 @@ NeoFOAM::Executor Foam::createExecutor(const Foam::dictionary& dict)
     }
     else
     {
-        Foam::FatalError << "Executor not recognized" << Foam::endl;
+        FatalError << "Executor not recognized" << endl;
     }
     return NeoFOAM::SerialExecutor();
+}
+
 }

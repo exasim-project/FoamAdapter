@@ -46,7 +46,7 @@ auto randomScalarField(const Time& runTime, const fvMesh& mesh)
     return createRandomField<volScalarField>(runTime, mesh, "T", [&]() { return dis(gen); });
 }
 
-auto randomVectorField(const Time& runTime, const fvccNeoMesh& mesh)
+auto randomVectorField(const Time& runTime, const MeshAdapter& mesh)
 {
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
