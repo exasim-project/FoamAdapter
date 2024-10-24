@@ -3,45 +3,17 @@
 
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
-#include <catch2/catch_session.hpp>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators_all.hpp>
-#include "catch2/common.hpp"
 
 #include "NeoFOAM/fields/field.hpp"
 
-#include "FoamAdapter/readers/foamMesh.hpp"
-#include "FoamAdapter/writers/writers.hpp"
+#include "common.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
-#include "FoamAdapter/setup/setup.hpp"
 
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+extern Foam::Time* timePtr; // A single time object
 
-extern Foam::Time* timePtr;   // A single time object
-extern Foam::fvMesh* meshPtr; // A single mesh object
-
-
-TEST_CASE("fvcc::VolumeField")
+TEST_CASE("VolumeField")
 {
-    Foam::Time& runTime = *timePtr;
-    std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
-    Foam::fvMesh& mesh = *meshPtr;
-
-    Foam::volScalarField t(
-        Foam::IOobject(
-            "T", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
-        ),
-        mesh
-    );
-
-    Foam::volVectorField u(
-        Foam::IOobject(
-            "U", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
-        ),
-        mesh
-    );
-
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
@@ -49,40 +21,23 @@ TEST_CASE("fvcc::VolumeField")
     );
     std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
+    Foam::Time& runTime = *timePtr;
+    auto meshPtr = Foam::createMesh(exec, runTime);
+    Foam::MeshAdapter& mesh = *meshPtr;
+    auto nfMesh = mesh.nfMesh();
 
-    SECTION("fvccVolField_[scalar]" + execName)
+    auto ofT = randomScalarField(runTime, mesh);
+    auto ofU = randomVectorField(runTime, mesh);
+
+    SECTION("volumeScalarField " + execName)
     {
-        Foam::Info << "reading mesh with executor: " << execName << Foam::endl;
-        NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
-
-        fvcc::VolumeField<NeoFOAM::scalar> neoT = constructFrom(exec, uMesh, t);
-
-        REQUIRE(neoT.internalField().size() == t.internalField().size());
-        fill(neoT.internalField(), 1.0);
-        checkField(neoT.internalField(), 1.0);
-        neoT.correctBoundaryConditions();
-        checkField(neoT.boundaryField().value(), 1.0);
-
-        fill(neoT.internalField(), 2.0);
-        neoT.correctBoundaryConditions();
-        checkField(neoT.boundaryField().value(), 2.0);
+        auto nfT = constructFrom(exec, nfMesh, ofT);
+        compare(nfT, ofT, ApproxScalar(1e-15));
     }
 
-    SECTION("fvccVolField_[vector]" + execName)
+    SECTION("volumeVectorField " + execName)
     {
-        Foam::Info << "reading mesh with executor: " << execName << Foam::endl;
-        NeoFOAM::UnstructuredMesh uMesh = readOpenFOAMMesh(exec, mesh);
-
-        fvcc::VolumeField<NeoFOAM::Vector> neoU = constructFrom(exec, uMesh, u);
-
-        REQUIRE(neoU.internalField().size() == u.internalField().size());
-        fill(neoU.internalField(), NeoFOAM::Vector(1.0, 1.0, 1.0));
-        checkField(neoU.internalField(), NeoFOAM::Vector(1.0, 1.0, 1.0));
-        neoU.correctBoundaryConditions();
-        checkField(neoU.boundaryField().value(), NeoFOAM::Vector(1.0, 1.0, 1.0));
-
-        fill(neoU.internalField(), NeoFOAM::Vector(2.0, 2.0, 2.0));
-        neoU.correctBoundaryConditions();
-        checkField(neoU.boundaryField().value(), NeoFOAM::Vector(2.0, 2.0, 2.0));
+        auto nfU = constructFrom(exec, nfMesh, ofU);
+        compare(nfU, ofU, ApproxVector(1e-15));
     }
 }

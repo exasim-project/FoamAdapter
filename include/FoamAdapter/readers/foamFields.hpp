@@ -26,39 +26,45 @@ auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
 };
 
 template<typename FoamType>
-auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& volField)
+auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const FoamType& ofVolField)
 {
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    std::vector<fvcc::VolumeBoundary<type_primitive_t>> bcs;
-
     // get boundary as dictionary
-    Foam::OStringStream os;
-    volField.boundaryField().writeEntries(os);
-    Foam::IStringStream is(os.str());
-    Foam::dictionary bDict(is);
-    Foam::wordList bNames = bDict.toc();
-    int patchi = 0;
+    OStringStream os;
+    ofVolField.boundaryField().writeEntries(os);
+    IStringStream is(os.str());
+    dictionary bDict(is);
 
-    for (const auto& bName : bNames)
+    std::map<std::string, std::function<void(NeoFOAM::Dictionary&)>> patchInserter {
+        {"fixedGradient", [](auto& dict) { dict.insert("type", std::string("fixedGradient")); }},
+        {"zeroGradient",
+         [&](auto& dict)
+         {
+             dict.insert("type", std::string("fixedGradient"));
+             dict.insert("fixedGradient", type_primitive_t {});
+         }},
+        {"fixedValue",
+         [](auto& dict)
+         {
+             dict.insert("type", std::string("fixedValue"));
+             dict.insert("fixedValue", type_primitive_t {});
+         }},
+        {"calculated", [](auto& dict) { dict.insert("type", std::string("calculated")); }},
+        {"extrapolatedCalculated",
+         [](auto& dict) { dict.insert("type", std::string("calculated")); }},
+        {"empty", [](auto& dict) { dict.insert("type", std::string("empty")); }}
+    };
+
+    int patchi = 0;
+    std::vector<fvcc::VolumeBoundary<type_primitive_t>> bcs;
+    for (const auto& bName : bDict.toc())
     {
-        Foam::Info << "Boundary name: " << bName << Foam::endl;
-        Foam::dictionary patchDict = bDict.subDict(bName);
-        Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
-        Foam::word type = patchDict.get<Foam::word>("type");
+        dictionary patchDict = bDict.subDict(bName);
         NeoFOAM::Dictionary neoPatchDict;
-        neoPatchDict.insert("type", std::string(type));
-        if (type == "zeroGradient")
-        {
-            neoPatchDict.insert("type", std::string("fixedGradient"));
-            neoPatchDict.insert("fixedGradient", type_primitive_t {});
-        }
-        if (type == "extrapolatedCalculated")
-        {
-            neoPatchDict.insert("type", std::string("calculated"));
-        }
-        bcs.push_back(fvcc::VolumeBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
+        patchInserter[patchDict.get<word>("type")](neoPatchDict);
+        bcs.emplace_back(nfMesh, neoPatchDict, patchi);
         patchi++;
     }
     return bcs;
@@ -66,19 +72,18 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& uMesh, const Foa
 
 template<typename FoamType>
 auto constructFrom(
-    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& volField
+    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& nfMesh, const FoamType& in
 )
 {
-
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    type_container_t nfVolField(exec, uMesh, readVolBoundaryConditions(uMesh, volField));
+    type_container_t out(exec, nfMesh, readVolBoundaryConditions(nfMesh, in));
 
-    nfVolField.internalField() = fromFoamField(exec, volField.primitiveField());
-    nfVolField.correctBoundaryConditions();
+    out.internalField() = fromFoamField(exec, in.primitiveField());
+    out.correctBoundaryConditions();
 
-    return nfVolField;
+    return out;
 };
 
 template<typename FoamType>
@@ -92,21 +97,35 @@ auto readSurfaceBoundaryConditions(
     std::vector<fvcc::SurfaceBoundary<type_primitive_t>> bcs;
 
     // get boundary as dictionary
-    Foam::OStringStream os;
+    OStringStream os;
     surfaceField.boundaryField().writeEntries(os);
-    Foam::IStringStream is(os.str());
-    Foam::dictionary bDict(is);
-    Foam::wordList bNames = bDict.toc();
+    IStringStream is(os.str());
+    dictionary bDict(is);
     int patchi = 0;
 
-    for (const auto& bName : bNames)
+    std::map<std::string, std::function<void(NeoFOAM::Dictionary&)>> patchInserter {
+        {"fixedGradient", [](auto& dict) { dict.insert("type", std::string("fixedGradient")); }},
+        {"zeroGradient",
+         [&](auto& dict)
+         {
+             dict.insert("type", std::string("fixedGradient"));
+             dict.insert("fixedGradient", type_primitive_t {});
+         }},
+        {"fixedValue",
+         [](auto& dict)
+         {
+             dict.insert("type", std::string("fixedValue"));
+             dict.insert("fixedValue", type_primitive_t {});
+         }},
+        {"calculated", [](auto& dict) { dict.insert("type", std::string("calculated")); }},
+        {"empty", [](auto& dict) { dict.insert("type", std::string("empty")); }}
+    };
+
+    for (const auto& bName : bDict.toc())
     {
-        Foam::Info << "Boundary name: " << bName << Foam::endl;
-        Foam::dictionary patchDict = bDict.subDict(bName);
-        Foam::Info << "Boundary type: " << patchDict.get<Foam::word>("type") << Foam::endl;
-        Foam::word type = patchDict.get<Foam::word>("type");
+        dictionary patchDict = bDict.subDict(bName);
         NeoFOAM::Dictionary neoPatchDict;
-        neoPatchDict.insert("type", std::string(type));
+        patchInserter[patchDict.get<word>("type")](neoPatchDict);
         bcs.push_back(fvcc::SurfaceBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
         patchi++;
     }
@@ -115,42 +134,40 @@ auto readSurfaceBoundaryConditions(
 
 template<typename FoamType>
 auto constructSurfaceField(
-    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& surfField
+    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& nfMesh, const FoamType& in
 )
 {
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
     using foam_primitive_t = typename FoamType::cmptType;
 
-    type_container_t nfSurfField(
-        exec, uMesh, std::move(readSurfaceBoundaryConditions(uMesh, surfField))
-    );
+    type_container_t out(exec, nfMesh, std::move(readSurfaceBoundaryConditions(nfMesh, in)));
 
-    Field<foam_primitive_t> flattenedField(nfSurfField.internalField().size());
-    size_t nInternal = uMesh.nInternalFaces();
+    Field<foam_primitive_t> flattenedField(out.internalField().size());
+    size_t nInternal = nfMesh.nInternalFaces();
 
-    forAll(surfField, facei)
+    forAll(in, facei)
     {
-        flattenedField[facei] = convert(surfField[facei]);
+        flattenedField[facei] = convert(in[facei]);
     }
 
-    Foam::label idx = nInternal;
-    forAll(surfField.boundaryField(), patchi)
+    label idx = nInternal;
+    forAll(in.boundaryField(), patchi)
     {
-        const fvsPatchField<foam_primitive_t>& psurfField = surfField.boundaryField()[patchi];
+        const fvsPatchField<foam_primitive_t>& pin = in.boundaryField()[patchi];
 
-        forAll(psurfField, facei)
+        forAll(pin, facei)
         {
-            flattenedField[idx] = psurfField[facei];
+            flattenedField[idx] = pin[facei];
             idx++;
         }
     }
     assert(idx == flattenedField.size());
 
-    nfSurfField.internalField() = fromFoamField(exec, flattenedField);
-    nfSurfField.correctBoundaryConditions();
+    out.internalField() = fromFoamField(exec, flattenedField);
+    out.correctBoundaryConditions();
 
-    return nfSurfField;
+    return out;
 }
 
 }; // namespace Foam
