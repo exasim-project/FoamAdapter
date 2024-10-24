@@ -23,29 +23,13 @@ std::vector<NeoFOAM::localIdx> computeOffset(const fvMesh& mesh);
 int32_t computeNBoundaryFaces(const fvMesh& mesh);
 
 template<typename FieldT>
-FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f)
-{
-    FieldT result(computeNBoundaryFaces(mesh));
-    const fvBoundaryMesh& bMesh = mesh.boundary();
-    label idx = 0;
-    forAll(bMesh, patchI)
-    {
-        const fvPatch& patch = bMesh[patchI];
-        auto pResult = f(patch);
-        forAll(pResult, i)
-        {
-            result[idx] = pResult[i];
-            idx++;
-        }
-    }
-    return result;
-}
+FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f);
 
 NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, fvMesh& mesh);
 
-/** @class fvccNeoMesh
+/** @class MeshAdapter
  */
-class fvccNeoMesh : public fvMesh
+class MeshAdapter : public fvMesh
 {
     // Private Data
     const NeoFOAM::Executor exec;
@@ -55,30 +39,30 @@ class fvccNeoMesh : public fvMesh
     // Private Member Functions
 
     //- No copy construct
-    fvccNeoMesh(const fvccNeoMesh&) = delete;
+    MeshAdapter(const MeshAdapter&) = delete;
 
     //- No copy assignment
-    void operator=(const fvccNeoMesh&) = delete;
+    void operator=(const MeshAdapter&) = delete;
 
 public:
 
     //- Runtime type information
-    TypeName("fvccNeoMesh");
+    TypeName("MeshAdapter");
 
     // Constructors
 
     //- Construct from IOobject
-    explicit fvccNeoMesh(
+    explicit MeshAdapter(
         const NeoFOAM::Executor exec, const IOobject& io, const bool doInit = true
     );
 
     //- Construct from IOobject or as zero-sized mesh
     //  Boundary is added using addFvPatches() member function
-    fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io, const zero, bool syncPar = true);
+    MeshAdapter(const NeoFOAM::Executor exec, const IOobject& io, const zero, bool syncPar = true);
 
     //- Construct from components without boundary.
     //  Boundary is added using addFvPatches() member function
-    fvccNeoMesh(
+    MeshAdapter(
         const NeoFOAM::Executor exec,
         const IOobject& io,
 
@@ -91,7 +75,7 @@ public:
 
     //- Construct without boundary from cells rather than owner/neighbour.
     //  Boundary is added using addPatches() member function
-    fvccNeoMesh(
+    MeshAdapter(
         const NeoFOAM::Executor exec,
         const IOobject& io,
         pointField&& points,
@@ -101,15 +85,9 @@ public:
     );
 
     //- Destructor
-    virtual ~fvccNeoMesh() = default;
+    virtual ~MeshAdapter() = default;
 
     NeoFOAM::UnstructuredMesh& nfMesh() { return nfMesh_; }
 };
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-}; // End namespace Foam
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-// ************************************************************************* //
+} // End namespace Foam

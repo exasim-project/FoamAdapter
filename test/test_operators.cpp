@@ -33,7 +33,7 @@ TEST_CASE("Interpolation")
     std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
     auto meshPtr = Foam::createMesh(exec, runTime);
-    Foam::fvccNeoMesh& mesh = *meshPtr;
+    Foam::MeshAdapter& mesh = *meshPtr;
     auto nfMesh = mesh.nfMesh();
 
     SECTION("scalar_" + execName)
@@ -76,8 +76,8 @@ TEST_CASE("GradOperator")
 
     std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
-    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
-    Foam::fvccNeoMesh& mesh = *meshPtr;
+    std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
+    Foam::MeshAdapter& mesh = *meshPtr;
     NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
     SECTION("GaussGrad on " + execName)
@@ -117,7 +117,7 @@ TEST_CASE("DivOperator")
     std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
     auto meshPtr = Foam::createMesh(exec, runTime);
-    Foam::fvccNeoMesh& mesh = *meshPtr;
+    Foam::MeshAdapter& mesh = *meshPtr;
     auto nfMesh = mesh.nfMesh();
 
     SECTION("gaussDiv_scalar_" + execName)

@@ -23,7 +23,7 @@ TEST_CASE("VolumeField")
 
     Foam::Time& runTime = *timePtr;
     auto meshPtr = Foam::createMesh(exec, runTime);
-    Foam::fvccNeoMesh& mesh = *meshPtr;
+    Foam::MeshAdapter& mesh = *meshPtr;
     auto nfMesh = mesh.nfMesh();
 
     auto ofT = randomScalarField(runTime, mesh);

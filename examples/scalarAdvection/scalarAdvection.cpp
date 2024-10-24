@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
 #include "createTime.H"
         NeoFOAM::Executor exec = Foam::createExecutor(runTime.controlDict());
 
-        std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, runTime);
-        Foam::fvccNeoMesh& mesh = *meshPtr;
+        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
+        Foam::MeshAdapter& mesh = *meshPtr;
 #include "createControl.H"
 #include "createFields.H"
 

@@ -5,42 +5,58 @@
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
+
 namespace Foam
 {
-defineTypeNameAndDebug(fvccNeoMesh, 0);
+
+template<typename FieldT>
+FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f)
+{
+    FieldT result(computeNBoundaryFaces(mesh));
+    const fvBoundaryMesh& bMesh = mesh.boundary();
+    label idx = 0;
+    forAll(bMesh, patchI)
+    {
+        const fvPatch& patch = bMesh[patchI];
+        auto pResult = f(patch);
+        forAll(pResult, i)
+        {
+            result[idx] = pResult[i];
+            idx++;
+        }
+    }
+    return result;
 }
 
+defineTypeNameAndDebug(MeshAdapter, 0);
 
-namespace Foam
-{
-
-std::vector<NeoFOAM::localIdx> computeOffset(const Foam::fvMesh& mesh)
+std::vector<NeoFOAM::localIdx> computeOffset(const fvMesh& mesh)
 {
     std::vector<NeoFOAM::localIdx> result;
-    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
+    const fvBoundaryMesh& bMesh = mesh.boundary();
     result.push_back(0);
     forAll(bMesh, patchI)
     {
         NeoFOAM::localIdx curOffset = result.back();
-        const Foam::fvPatch& patch = bMesh[patchI];
+        const fvPatch& patch = bMesh[patchI];
         result.push_back(curOffset + patch.size());
     }
     return result;
 }
 
-int32_t computeNBoundaryFaces(const Foam::fvMesh& mesh)
+int32_t computeNBoundaryFaces(const fvMesh& mesh)
 {
-    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
+    const fvBoundaryMesh& bMesh = mesh.boundary();
     int32_t nBoundaryFaces = 0;
     forAll(bMesh, patchI)
     {
-        const Foam::fvPatch& patch = bMesh[patchI];
+        const fvPatch& patch = bMesh[patchI];
         nBoundaryFaces += patch.size();
     }
     return nBoundaryFaces;
 }
 
-NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::fvMesh& mesh)
+NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, fvMesh& mesh)
 {
     const int32_t nCells = mesh.nCells();
     const int32_t nInternalFaces = mesh.nInternalFaces();
@@ -48,33 +64,29 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
     const int32_t nBoundaries = mesh.boundary().size();
     const int32_t nFaces = mesh.nFaces();
 
-    Foam::scalarField magFaceAreas(mag(mesh.faceAreas()));
+    scalarField magFaceAreas(mag(mesh.faceAreas()));
 
-    Foam::labelList faceCells = flatBCField<Foam::labelList>(
-        mesh, [](const Foam::fvPatch& patch) { return patch.faceCells(); }
+    labelList faceCells =
+        flatBCField<labelList>(mesh, [](const fvPatch& patch) { return patch.faceCells(); });
+    vectorField cf =
+        flatBCField<vectorField>(mesh, [](const fvPatch& patch) { return patch.Cf(); });
+    vectorField cn = flatBCField<vectorField>(
+        mesh, [](const fvPatch& patch) { return vectorField(patch.Cn()); }
     );
-    Foam::vectorField cf =
-        flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch) { return patch.Cf(); });
-    Foam::vectorField cn = flatBCField<Foam::vectorField>(
-        mesh, [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.Cn()); }
+    vectorField sf =
+        flatBCField<vectorField>(mesh, [](const fvPatch& patch) { return patch.Sf(); });
+    scalarField magSf =
+        flatBCField<scalarField>(mesh, [](const fvPatch& patch) { return patch.magSf(); });
+    vectorField nf = flatBCField<vectorField>(
+        mesh, [](const fvPatch& patch) { return vectorField(patch.nf()); }
     );
-    Foam::vectorField sf =
-        flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch) { return patch.Sf(); });
-    Foam::scalarField magSf = flatBCField<Foam::scalarField>(
-        mesh, [](const Foam::fvPatch& patch) { return patch.magSf(); }
+    vectorField delta = flatBCField<vectorField>(
+        mesh, [](const fvPatch& patch) { return vectorField(patch.delta()); }
     );
-    Foam::vectorField nf = flatBCField<Foam::vectorField>(
-        mesh, [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.nf()); }
-    );
-    Foam::vectorField delta = flatBCField<Foam::vectorField>(
-        mesh, [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.delta()); }
-    );
-    Foam::scalarField weights = flatBCField<Foam::scalarField>(
-        mesh, [](const Foam::fvPatch& patch) { return patch.weights(); }
-    );
-    Foam::scalarField deltaCoeffs = flatBCField<Foam::scalarField>(
-        mesh, [](const Foam::fvPatch& patch) { return patch.deltaCoeffs(); }
-    );
+    scalarField weights =
+        flatBCField<scalarField>(mesh, [](const fvPatch& patch) { return patch.weights(); });
+    scalarField deltaCoeffs =
+        flatBCField<scalarField>(mesh, [](const fvPatch& patch) { return patch.deltaCoeffs(); });
     std::vector<NeoFOAM::localIdx> offset = computeOffset(mesh);
 
 
@@ -112,9 +124,7 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
     return uMesh;
 }
 
-}; // namespace Foam
-
-Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io, const bool doInit)
+MeshAdapter::MeshAdapter(const NeoFOAM::Executor exec, const IOobject& io, const bool doInit)
     : fvMesh(io, doInit), nfMesh_(readOpenFOAMMesh(exec, *this))
 {
     if (doInit)
@@ -124,14 +134,12 @@ Foam::fvccNeoMesh::fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io,
 }
 
 
-Foam::fvccNeoMesh::fvccNeoMesh(
-    const NeoFOAM::Executor exec, const IOobject& io, const Foam::zero, bool syncPar
-)
-    : fvMesh(io, Foam::zero {}, syncPar), nfMesh_(readOpenFOAMMesh(exec, *this))
+MeshAdapter::MeshAdapter(const NeoFOAM::Executor exec, const IOobject& io, const zero, bool syncPar)
+    : fvMesh(io, zero {}, syncPar), nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 
-Foam::fvccNeoMesh::fvccNeoMesh(
+MeshAdapter::MeshAdapter(
     const NeoFOAM::Executor exec,
     const IOobject& io,
     pointField&& points,
@@ -152,7 +160,7 @@ Foam::fvccNeoMesh::fvccNeoMesh(
 {}
 
 
-Foam::fvccNeoMesh::fvccNeoMesh(
+MeshAdapter::MeshAdapter(
     const NeoFOAM::Executor exec,
     const IOobject& io,
     pointField&& points,
@@ -164,5 +172,4 @@ Foam::fvccNeoMesh::fvccNeoMesh(
       nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
-
-// ************************************************************************* //
+}

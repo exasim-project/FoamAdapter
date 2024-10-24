@@ -31,8 +31,8 @@ TEST_CASE("unstructuredMesh")
 
     std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
-    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
-    Foam::fvccNeoMesh& mesh = *meshPtr;
+    std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, *timePtr);
+    Foam::MeshAdapter& mesh = *meshPtr;
     const NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
     SECTION("Fields" + execName)
@@ -250,8 +250,8 @@ TEST_CASE("fvccGeometryScheme")
 
     std::string execName = std::visit([](auto e) { return e.print(); }, exec);
 
-    std::unique_ptr<Foam::fvccNeoMesh> meshPtr = Foam::createMesh(exec, *timePtr);
-    Foam::fvccNeoMesh& mesh = *meshPtr;
+    std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, *timePtr);
+    Foam::MeshAdapter& mesh = *meshPtr;
     const NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
     SECTION("BasicFvccGeometryScheme" + execName)
