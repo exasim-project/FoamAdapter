@@ -18,19 +18,19 @@
 namespace Foam
 {
 
-std::vector<NeoFOAM::localIdx> computeOffset(const Foam::fvMesh& mesh);
+std::vector<NeoFOAM::localIdx> computeOffset(const fvMesh& mesh);
 
-int32_t computeNBoundaryFaces(const Foam::fvMesh& mesh);
+int32_t computeNBoundaryFaces(const fvMesh& mesh);
 
 template<typename FieldT>
-FieldT flatBCField(const Foam::fvMesh& mesh, std::function<FieldT(const Foam::fvPatch&)> f)
+FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f)
 {
     FieldT result(computeNBoundaryFaces(mesh));
-    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
-    Foam::label idx = 0;
+    const fvBoundaryMesh& bMesh = mesh.boundary();
+    label idx = 0;
     forAll(bMesh, patchI)
     {
-        const Foam::fvPatch& patch = bMesh[patchI];
+        const fvPatch& patch = bMesh[patchI];
         auto pResult = f(patch);
         forAll(pResult, i)
         {
@@ -41,11 +41,11 @@ FieldT flatBCField(const Foam::fvMesh& mesh, std::function<FieldT(const Foam::fv
     return result;
 }
 
-NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::fvMesh& mesh);
+NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, fvMesh& mesh);
 
 /** @class fvccNeoMesh
  */
-class fvccNeoMesh : public Foam::fvMesh
+class fvccNeoMesh : public fvMesh
 {
     // Private Data
     const NeoFOAM::Executor exec;
@@ -74,9 +74,7 @@ public:
 
     //- Construct from IOobject or as zero-sized mesh
     //  Boundary is added using addFvPatches() member function
-    fvccNeoMesh(
-        const NeoFOAM::Executor exec, const IOobject& io, const Foam::zero, bool syncPar = true
-    );
+    fvccNeoMesh(const NeoFOAM::Executor exec, const IOobject& io, const zero, bool syncPar = true);
 
     //- Construct from components without boundary.
     //  Boundary is added using addFvPatches() member function
