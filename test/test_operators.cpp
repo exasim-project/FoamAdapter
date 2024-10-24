@@ -54,8 +54,11 @@ TEST_CASE("Interpolation")
         {
             auto linearKernel = fvcc::SurfaceInterpolationFactory::create("linear", exec, nfMesh);
             fvcc::SurfaceInterpolation interp(exec, nfMesh, std::move(linearKernel));
+            // TODO since it is constructed from ofField it is trivial
+            // we should reset the field first
             interp.interpolate(nfT, nfSurfT);
-            compare(nfSurfT, ofSurfT, ApproxScalar(1e-15));
+            nfSurfT.correctBoundaryConditions();
+            compare(nfSurfT, ofSurfT, ApproxScalar(1e-15), false);
         }
     }
 }
@@ -94,8 +97,9 @@ TEST_CASE("GradOperator")
         NeoFOAM::fill(nfGradT.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
         NeoFOAM::fill(nfGradT.boundaryField().value(), NeoFOAM::Vector(0.0, 0.0, 0.0));
         fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
+        nfGradT.correctBoundaryConditions();
 
-        compare(nfGradT, ofGradT, ApproxVector(1e-12));
+        compare(nfGradT, ofGradT, ApproxVector(1e-12), false);
     }
 }
 
@@ -146,6 +150,7 @@ TEST_CASE("DivOperator")
         SECTION("Computes correct divT")
         {
             auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
+            // Reset
             NeoFOAM::fill(nfDivT.internalField(), 0.0);
             NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
             fvcc::GaussGreenDiv(
@@ -156,8 +161,9 @@ TEST_CASE("DivOperator")
                 )
             )
                 .div(nfDivT, nfPhi, nfT);
+            nfDivT.correctBoundaryConditions();
 
-            compare(nfDivT, ofDivT, ApproxScalar(1e-15));
+            compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
         }
     }
 }

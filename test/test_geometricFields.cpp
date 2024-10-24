@@ -12,7 +12,7 @@
 
 extern Foam::Time* timePtr; // A single time object
 
-TEST_CASE("fvcc::VolumeField")
+TEST_CASE("VolumeField")
 {
     NeoFOAM::Executor exec = GENERATE(
         NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
@@ -29,13 +29,13 @@ TEST_CASE("fvcc::VolumeField")
     auto ofT = randomScalarField(runTime, mesh);
     auto ofU = randomVectorField(runTime, mesh);
 
-    SECTION("VolumeField<scalar>" + execName)
+    SECTION("volumeScalarField " + execName)
     {
         auto nfT = constructFrom(exec, nfMesh, ofT);
         compare(nfT, ofT, ApproxScalar(1e-15));
     }
 
-    SECTION("VolumeField<vector>" + execName)
+    SECTION("volumeVectorField " + execName)
     {
         auto nfU = constructFrom(exec, nfMesh, ofU);
         compare(nfU, ofU, ApproxVector(1e-15));

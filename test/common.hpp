@@ -63,23 +63,27 @@ auto randomVectorField(const Time& runTime, const fvccNeoMesh& mesh)
 
 /* comparison function for volumeFields */
 template<typename NFFIELD, typename OFFIELD, typename Compare>
-void compare(NFFIELD& a, OFFIELD& b, Compare comp)
+void compare(NFFIELD& a, OFFIELD& b, Compare comp, bool withBoundaries = true)
 {
     auto aHost = a.internalField().copyToHost();
     auto bSpan = std::span(b.primitiveFieldRef().data(), b.size());
     // nf a span might be shorter than bSpan for surface fields
     REQUIRE_THAT(aHost.span({0, bSpan.size()}), Catch::Matchers::RangeEquals(bSpan, comp));
 
-    // size_t start = 0;
-    // auto aBoundaryHost = a.boundaryField().value().copyToHost();
-    // for (const auto& patch : b.boundaryField())
-    // {
-    //     auto bBoundarySpan = std::span(patch.internalField().cdata(), patch.size());
-    //     REQUIRE_THAT(
-    //         aBoundaryHost.span({start, start + patch.size()}),
-    //         Catch::Matchers::RangeEquals(bBoundarySpan, comp));
-    //     start += patch.size();
-    // }
+    if (withBoundaries)
+    {
+        size_t start = 0;
+        auto aBoundaryHost = a.boundaryField().value().copyToHost();
+        for (const auto& patch : b.boundaryField())
+        {
+            auto bBoundarySpan = std::span(patch.cdata(), patch.size());
+            REQUIRE_THAT(
+                aBoundaryHost.span({start, start + patch.size()}),
+                Catch::Matchers::RangeEquals(bBoundarySpan, comp)
+            );
+            start += patch.size();
+        }
+    }
 }
 
 }
