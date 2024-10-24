@@ -10,7 +10,6 @@
 #include "catch2/common.hpp"
 
 #include "FoamAdapter/meshAdapter.hpp"
-#include "FoamAdapter/writers/writers.hpp"
 #include "FoamAdapter/setup.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
