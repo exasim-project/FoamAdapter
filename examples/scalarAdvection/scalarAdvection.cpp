@@ -11,7 +11,7 @@
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
 
-#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/meshAdapter.hpp"
 #include "FoamAdapter/readers/foamFields.hpp"
 
 #include "FoamAdapter/writers/writers.hpp"
