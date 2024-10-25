@@ -1,20 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-#include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/fields/field.hpp"
-#include "NeoFOAM/mesh/unstructured.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
+#include "FoamAdapter/FoamAdapter.hpp"
 
 #include "fvCFD.H"
 
-#include "FoamAdapter/meshAdapter.hpp"
-#include "FoamAdapter/readers/foamFields.hpp"
-
-#include "FoamAdapter/writers.hpp"
-#include "FoamAdapter/setup.hpp"
+using namespace Foam;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
