@@ -25,7 +25,7 @@ int32_t computeNBoundaryFaces(const fvMesh& mesh);
 template<typename FieldT>
 FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f);
 
-NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, fvMesh& mesh);
+NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, const fvMesh& mesh);
 
 /** @class MeshAdapter
  */
@@ -65,7 +65,6 @@ public:
     MeshAdapter(
         const NeoFOAM::Executor exec,
         const IOobject& io,
-
         pointField&& points,
         faceList&& faces,
         labelList&& allOwner,
@@ -88,6 +87,8 @@ public:
     virtual ~MeshAdapter() = default;
 
     NeoFOAM::UnstructuredMesh& nfMesh() { return nfMesh_; }
+
+    const NeoFOAM::UnstructuredMesh& nfMesh() const { return nfMesh_; }
 };
 
 } // End namespace Foam

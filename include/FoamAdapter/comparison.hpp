@@ -2,6 +2,8 @@
 //
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 /* This file implements comparison operator to compare OpenFOAM and corresponding NeoFOAM fields
+ * TODO the comparison operator only make sense for testing purposes
+ * so this should be part of the tets
  */
 #pragma once
 
@@ -27,7 +29,7 @@ namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
         auto nfSpan = nfHost.span();                                                               \
         for (int i = 0; i < nfSpan.size(); i++)                                                    \
         {                                                                                          \
-            if (nfSpan[i] != Foam::convert(of[i]))                                                 \
+            if (nfSpan[i] != convert(of[i]))                                                       \
             {                                                                                      \
                 return false;                                                                      \
             }                                                                                      \
@@ -36,6 +38,7 @@ namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
     };
 
 
+FIELD_EQUALITY_OPERATOR(NeoFOAM::label, Foam::label)
 FIELD_EQUALITY_OPERATOR(NeoFOAM::scalar, Foam::scalar)
 FIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
 

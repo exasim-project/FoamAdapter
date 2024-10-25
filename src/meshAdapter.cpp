@@ -56,7 +56,7 @@ int32_t computeNBoundaryFaces(const fvMesh& mesh)
     return nBoundaryFaces;
 }
 
-NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, fvMesh& mesh)
+NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, const fvMesh& mesh)
 {
     const int32_t nCells = mesh.nCells();
     const int32_t nInternalFaces = mesh.nInternalFaces();

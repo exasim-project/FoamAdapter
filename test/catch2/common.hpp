@@ -23,31 +23,6 @@
 
 #include <catch2/catch_approx.hpp>
 
-template<typename ValueType>
-void checkField(const NeoFOAM::Field<ValueType>& field, ValueType value)
-{
-    auto fieldHost = field.copyToHost();
-    auto fieldSpan = fieldHost.span();
-
-    for (int i = 0; i < fieldSpan.size(); i++)
-    {
-        REQUIRE(fieldSpan[i] == value);
-    }
-}
-
-template<typename NF_FIELD, typename OF_FIELD>
-void checkField(const NF_FIELD& a, const OF_FIELD& b)
-{
-    auto aHost = a.copyToHost();
-    auto aSpan = aHost.span();
-
-    REQUIRE(a.size() == b.size());
-    for (int i = 0; i < aSpan.size(); i++)
-    {
-        REQUIRE(aSpan[i] == convert(b[i]));
-    }
-}
-
 
 struct ApproxScalar
 {
