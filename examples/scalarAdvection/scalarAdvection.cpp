@@ -8,7 +8,6 @@
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
 
-#define namespaceFoam // Suppress <using namespace Foam;>
 #include "fvCFD.H"
 
 #include "FoamAdapter/meshAdapter.hpp"
@@ -23,95 +22,62 @@ namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 int main(int argc, char* argv[])
 {
     Kokkos::initialize(argc, argv);
-
     {
-#include "addProfilingOption.H"
 #include "addCheckCaseOptions.H"
 #include "setRootCase.H"
 #include "createTime.H"
-        NeoFOAM::Executor exec = Foam::createExecutor(runTime.controlDict());
-
-        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
-        Foam::MeshAdapter& mesh = *meshPtr;
+#include "createNFTime.H"
 #include "createControl.H"
 #include "createFields.H"
 
-        auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
+        Info << "creating NeoFOAM mesh" << endl;
+        auto nfMesh = mesh.nfMesh();
 
-        Foam::Info << "creating NeoFOAM mesh" << Foam::endl;
-        NeoFOAM::UnstructuredMesh uMesh = Foam::readOpenFOAMMesh(exec, mesh);
+        Info << "creating NeoFOAM fields" << endl;
+        auto nfT = constructFrom(exec, nfMesh, T);
+        auto nfPhi = constructSurfaceField(exec, nfMesh, phi);
 
-        Foam::Info << "creating NeoFOAM fields" << Foam::endl;
-        auto neoT = Foam::constructFrom(exec, uMesh, T);
-        neoT.correctBoundaryConditions();
-        auto neoPhi = constructSurfaceField(exec, uMesh, phi);
-
-        Foam::Info << "writing neoT field" << Foam::endl;
-        write(neoT.internalField(), mesh, "neoT");
-
-        std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-        Foam::scalar coNum = Foam::calculateCoNum(phi);
-        if (adjustTimeStep)
-        {
-            Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
-        }
-
-        Foam::volScalarField ofDivT("ofDivT", Foam::fvc::div(phi, T));
-
-        auto neoDivT = constructFrom(exec, uMesh, ofDivT);
-        NeoFOAM::fill(neoDivT.internalField(), 0.0);
-        NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
+        volScalarField ofDivT("ofDivT", fvc::div(phi, T));
+        auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
 
         while (runTime.run())
         {
-            std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-            coNum = calculateCoNum(phi);
-
-            if (adjustTimeStep)
-            {
-                Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
-            }
-
             runTime++;
 
-            Foam::Info << "Time = " << runTime.timeName() << Foam::nl << max(phi) << Foam::nl
-                       << max(U) << Foam::endl;
+            Info << "Time = " << runTime.timeName() << nl << max(phi) << nl << max(U) << endl;
 
             // NeoFOAM Euler
             // NOTE for now hardcoded
             // this will soon be replaced by the NeoFOAM DSL
             {
-                NeoFOAM::fill(neoDivT.internalField(), 0.0);
-                NeoFOAM::fill(neoDivT.boundaryField().value(), 0.0);
-
                 fvcc::GaussGreenDiv(
                     exec,
-                    uMesh,
+                    nfMesh,
                     fvcc::SurfaceInterpolation(
                         exec,
-                        uMesh,
-                        fvcc::SurfaceInterpolationFactory::create("upwind", exec, uMesh)
+                        nfMesh,
+                        fvcc::SurfaceInterpolationFactory::create("upwind", exec, nfMesh)
                     )
                 )
-                    .div(neoDivT, neoPhi, neoT);
+                    .div(nfDivT, nfPhi, nfT);
 
-                neoT.internalField() =
-                    neoT.internalField() - neoDivT.internalField() * runTime.deltaT().value();
-                neoT.correctBoundaryConditions();
+                nfT.internalField() =
+                    nfT.internalField() - nfDivT.internalField() * runTime.deltaT().value();
+                nfT.correctBoundaryConditions();
                 Kokkos::fence();
             }
 
             if (runTime.outputTime())
             {
-                Foam::Info << "writing neoT field" << Foam::endl;
-                write(neoT.internalField(), mesh, "neoT");
+                Info << "writing nfT field" << endl;
+                write(nfT.internalField(), mesh, "nfT");
             }
 
             runTime.write();
-            runTime.printExecutionTime(Foam::Info);
+            runTime.printExecutionTime(Info);
         }
 
-        Foam::Info << "End\n" << Foam::endl;
+        Info << "End\n" << endl;
     }
     Kokkos::finalize();
 
