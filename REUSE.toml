@@ -15,6 +15,7 @@ SPDX-License-Identifier = "MIT"
 path = [
     "test/**",
      "benchmarks/**",
+     "tutorials/**",
      ".github/workflows/build.yaml",
      ".github/workflows/static_checks.yaml",
      ".github/workflows/pubkey.gpg",
