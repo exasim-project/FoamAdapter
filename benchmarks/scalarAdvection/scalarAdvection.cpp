@@ -131,7 +131,11 @@ int main(int argc, char* argv[])
 
             {
                 addProfiling(foamAdvection, "foamAdvection");
-                Foam::fvScalarMatrix TEqn(Foam::fvm::ddt(T) + Foam::fvc::div(phi, T));
+                Foam::fvScalarMatrix TEqn
+                (
+                    Foam::fvm::ddt(T)
+                  + Foam::fvc::div(phi, T)
+                );
 
                 TEqn.solve();
             }
@@ -141,7 +145,8 @@ int main(int argc, char* argv[])
                 addProfiling(neoFoamAdvection, "neoFoamAdvection");
 
                 dsl::EqnSystem<NeoFOAM::scalar> eqnSys(
-                    fvcc::expOp::ddt(neoT) + fvcc::expOp::div(neoPhi, neoT)
+                    fvcc::impOp::ddt(neoT)
+                  + fvcc::expOp::div(neoPhi, neoT)
                 );
                 eqnSys.dt = runTime.deltaT().value();
                 eqnSys.fvSchemesDict = fvSchemesDict;
