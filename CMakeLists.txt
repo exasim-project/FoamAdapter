@@ -12,7 +12,7 @@ project(
 if(NOT DEFINED ENV{FOAM_SRC})
   message(FATAL_ERROR "You must source OpenFOAM before building FOAM_ADAPTER")
 endif()
-if(NOT ENV{FOAM_API} STREQUAL "2406")
+if(NOT "$ENV{FOAM_API}" STREQUAL "2406")
   message(WARNING "OpenFOAM version != 2406")
 endif()
 
