@@ -16,7 +16,7 @@ FoamFile
 
 application     laplacianFoam;
 
-executor        CPU;
+executor        Serial;
 
 startFrom       startTime;
 

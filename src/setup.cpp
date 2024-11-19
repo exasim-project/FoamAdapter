@@ -65,24 +65,29 @@ std::unique_ptr<fvMesh> createMesh(const Time& runTime)
 
 NeoFOAM::Executor createExecutor(const dictionary& dict)
 {
-    auto execName = dict.get<word>("executor");
-    if (execName == "Serial")
+    auto exec_name = dict.get<Foam::word>("executor");
+    Foam::Info << "Creating Executor: " << exec_name << Foam::endl;
+    if (exec_name == "Serial")
     {
+        Foam::Info << "Serial Executor" << Foam::endl;
         return NeoFOAM::SerialExecutor();
     }
-    else if (execName == "CPU")
+    if (exec_name == "CPU")
     {
+        Foam::Info << "CPU Executor" << Foam::endl;
         return NeoFOAM::CPUExecutor();
     }
-    else if (execName == "GPU")
+    if (exec_name == "GPU")
     {
+        Foam::Info << "GPU Executor" << Foam::endl;
         return NeoFOAM::GPUExecutor();
     }
-    else
-    {
-        FatalError << "Executor not recognized" << endl;
-    }
+    Foam::FatalError << "unknown Executor: " << exec_name << Foam::nl
+                     << "Available executors: Serial, CPU, GPU" << Foam::nl
+                     << Foam::abort(Foam::FatalError);
+
     return NeoFOAM::SerialExecutor();
+
 }
 
 }
