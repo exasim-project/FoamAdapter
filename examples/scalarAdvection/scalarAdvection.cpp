@@ -3,9 +3,13 @@
 
 #include "FoamAdapter/FoamAdapter.hpp"
 
+#define namespaceFoam
 #include "fvCFD.H"
 
-using namespace Foam;
+using Foam::Info;
+using Foam::endl;
+using Foam::nl;
+namespace fvc = Foam::fvc;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
@@ -25,10 +29,10 @@ int main(int argc, char* argv[])
         auto nfMesh = mesh.nfMesh();
 
         Info << "creating NeoFOAM fields" << endl;
-        auto nfT = constructFrom(exec, nfMesh, T);
-        auto nfPhi = constructSurfaceField(exec, nfMesh, phi);
+        auto nfT = Foam::constructFrom(exec, nfMesh, T);
+        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 
-        volScalarField ofDivT("ofDivT", fvc::div(phi, T));
+        Foam::volScalarField ofDivT("ofDivT", fvc::div(phi, T));
         auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
 
         while (runTime.run())

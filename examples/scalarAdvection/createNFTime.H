@@ -2,5 +2,5 @@
 // SPDX-FileCopyrightText: 2024 NeoFOAM authors
 
 NeoFOAM::Executor exec = createExecutor(runTime.controlDict());
-std::unique_ptr<MeshAdapter> meshPtr = createMesh(exec, runTime);
-MeshAdapter& mesh = *meshPtr;
+std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
+Foam::MeshAdapter& mesh = *meshPtr;

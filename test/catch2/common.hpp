@@ -3,6 +3,9 @@
 
 #pragma once
 
+#define namespaceFoam
+#include "fvCFD.H"
+
 #include "FoamAdapter/conversion/convert.hpp"
 
 #include "NeoFOAM/fields/field.hpp"
@@ -18,8 +21,6 @@
 #include "NeoFOAM/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
 #include "NeoFOAM/mesh/unstructured.hpp"
-
-#include "fvCFD.H"
 
 #include <catch2/catch_approx.hpp>
 
