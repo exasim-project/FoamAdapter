@@ -18,16 +18,18 @@ endif()
 
 # Print C Compiler and version
 message("C Compiler: ${CMAKE_C_COMPILER}")
-execute_process(COMMAND ${CMAKE_C_COMPILER} --version
-                OUTPUT_VARIABLE C_COMPILER_VERSION
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(
+  COMMAND ${CMAKE_C_COMPILER} --version
+  OUTPUT_VARIABLE C_COMPILER_VERSION
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message("C Compiler Version: ${C_COMPILER_VERSION}")
 
 # Print C++ Compiler and version
 message("C++ Compiler: ${CMAKE_CXX_COMPILER}")
-execute_process(COMMAND ${CMAKE_CXX_COMPILER} --version
-                OUTPUT_VARIABLE CXX_COMPILER_VERSION
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(
+  COMMAND ${CMAKE_CXX_COMPILER} --version
+  OUTPUT_VARIABLE CXX_COMPILER_VERSION
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message("C++ Compiler Version: ${CXX_COMPILER_VERSION}")
 
 option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoFOAM examples" OFF)
