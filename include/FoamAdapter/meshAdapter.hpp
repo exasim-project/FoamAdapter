@@ -51,7 +51,9 @@ public:
 
     //- Construct from IOobject
     explicit MeshAdapter(
-        const NeoFOAM::Executor exec, const IOobject& io, const bool doInit = true
+        const NeoFOAM::Executor exec,
+        const IOobject& io,
+        const bool doInit = true
     );
 
     //- Construct from IOobject or as zero-sized mesh

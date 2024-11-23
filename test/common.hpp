@@ -24,7 +24,8 @@ template<typename FieldType, typename RandomFunc>
 FieldType createRandomField(const Time& runTime, const fvMesh& mesh, word name, RandomFunc rand)
 {
     FieldType t(
-        IOobject(name, runTime.timeName(), mesh, IOobject::MUST_READ, IOobject::AUTO_WRITE), mesh
+        IOobject(name, runTime.timeName(), mesh, IOobject::MUST_READ, IOobject::AUTO_WRITE),
+        mesh
     );
 
     forAll(t, celli)
@@ -55,9 +56,7 @@ auto randomVectorField(const Time& runTime, const MeshAdapter& mesh)
         runTime,
         mesh,
         "U",
-        [&]() {
-            return vector {dis(gen), dis(gen), dis(gen)};
-        }
+        [&]() { return vector {dis(gen), dis(gen), dis(gen)}; }
     );
 }
 

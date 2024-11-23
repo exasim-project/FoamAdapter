@@ -22,7 +22,9 @@ auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
     using type_container_t = typename type_map<FoamType>::container_type;
     using mapped_t = typename type_map<FoamType>::mapped_type;
     type_container_t nfField(
-        exec, reinterpret_cast<const mapped_t*>(field.cdata()), static_cast<size_t>(field.size())
+        exec,
+        reinterpret_cast<const mapped_t*>(field.cdata()),
+        static_cast<size_t>(field.size())
     );
 
     return nfField;
@@ -75,7 +77,9 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const Fo
 
 template<typename FoamType>
 auto constructFrom(
-    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& nfMesh, const FoamType& in
+    const NeoFOAM::Executor exec,
+    const NeoFOAM::UnstructuredMesh& nfMesh,
+    const FoamType& in
 )
 {
     using type_container_t = typename type_map<FoamType>::container_type;
@@ -91,7 +95,8 @@ auto constructFrom(
 
 template<typename FoamType>
 auto readSurfaceBoundaryConditions(
-    const NeoFOAM::UnstructuredMesh& uMesh, const FoamType& surfaceField
+    const NeoFOAM::UnstructuredMesh& uMesh,
+    const FoamType& surfaceField
 )
 {
     using type_container_t = typename type_map<FoamType>::container_type;
@@ -137,7 +142,9 @@ auto readSurfaceBoundaryConditions(
 
 template<typename FoamType>
 auto constructSurfaceField(
-    const NeoFOAM::Executor exec, const NeoFOAM::UnstructuredMesh& nfMesh, const FoamType& in
+    const NeoFOAM::Executor exec,
+    const NeoFOAM::UnstructuredMesh& nfMesh,
+    const FoamType& in
 )
 {
     using type_container_t = typename type_map<FoamType>::container_type;

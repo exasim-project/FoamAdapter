@@ -137,7 +137,11 @@ TEST_CASE("DivOperator")
 
         Foam::surfaceScalarField ofPhi(
             Foam::IOobject(
-                "phi", runTime.timeName(), mesh, Foam::IOobject::NO_READ, Foam::IOobject::AUTO_WRITE
+                "phi",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::NO_READ,
+                Foam::IOobject::AUTO_WRITE
             ),
             mesh,
             Foam::dimensionedScalar("phi", Foam::dimless, 0.0)

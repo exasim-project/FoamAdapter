@@ -43,29 +43,36 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
     Foam::scalarField magFaceAreas(mag(mesh.faceAreas()));
 
     Foam::labelList faceCells = flatBCField<Foam::labelList>(
-        mesh, [](const Foam::fvPatch& patch) { return patch.faceCells(); }
+        mesh,
+        [](const Foam::fvPatch& patch) { return patch.faceCells(); }
     );
     Foam::vectorField cf =
         flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch) { return patch.Cf(); });
     Foam::vectorField cn = flatBCField<Foam::vectorField>(
-        mesh, [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.Cn()); }
+        mesh,
+        [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.Cn()); }
     );
     Foam::vectorField sf =
         flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch) { return patch.Sf(); });
     Foam::scalarField magSf = flatBCField<Foam::scalarField>(
-        mesh, [](const Foam::fvPatch& patch) { return patch.magSf(); }
+        mesh,
+        [](const Foam::fvPatch& patch) { return patch.magSf(); }
     );
     Foam::vectorField nf = flatBCField<Foam::vectorField>(
-        mesh, [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.nf()); }
+        mesh,
+        [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.nf()); }
     );
     Foam::vectorField delta = flatBCField<Foam::vectorField>(
-        mesh, [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.delta()); }
+        mesh,
+        [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.delta()); }
     );
     Foam::scalarField weights = flatBCField<Foam::scalarField>(
-        mesh, [](const Foam::fvPatch& patch) { return patch.weights(); }
+        mesh,
+        [](const Foam::fvPatch& patch) { return patch.weights(); }
     );
     Foam::scalarField deltaCoeffs = flatBCField<Foam::scalarField>(
-        mesh, [](const Foam::fvPatch& patch) { return patch.deltaCoeffs(); }
+        mesh,
+        [](const Foam::fvPatch& patch) { return patch.deltaCoeffs(); }
     );
     std::vector<NeoFOAM::localIdx> offset = computeOffset(mesh);
 

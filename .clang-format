@@ -21,9 +21,9 @@ AlignEscapedNewlines: Right
 # Align operands after operators (+,*,<<) (see BreakBeforeBinaryOperators)
 AlignOperands: AlignAfterOperator
 AlignTrailingComments: true
-AllowAllArgumentsOnNextLine: true
-AllowAllConstructorInitializersOnNextLine: true
-AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortEnumsOnASingleLine: true
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
@@ -69,7 +69,7 @@ BreakInheritanceList: AfterColon # BeforeColon
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
 # Undocumented guideline (almost): Have the initializer : in a new line.
-BreakConstructorInitializers: BeforeColon
+BreakConstructorInitializers: BeforeComma
 BreakStringLiterals: true
 # Here we could set the 80 characters limit, but that would lead to more aggressive changes.
 ColumnLimit:    100
