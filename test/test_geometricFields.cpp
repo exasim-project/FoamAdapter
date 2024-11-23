@@ -8,8 +8,6 @@
 
 #include "common.hpp"
 
-#define namespaceFoam // Suppress <using namespace Foam;>
-
 extern Foam::Time* timePtr; // A single time object
 
 TEST_CASE("VolumeField")

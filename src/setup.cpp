@@ -87,7 +87,6 @@ NeoFOAM::Executor createExecutor(const dictionary& dict)
                      << Foam::abort(Foam::FatalError);
 
     return NeoFOAM::SerialExecutor();
-
 }
 
 }
