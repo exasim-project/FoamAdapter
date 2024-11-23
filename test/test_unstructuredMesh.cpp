@@ -258,7 +258,8 @@ TEST_CASE("fvccGeometryScheme")
 
         auto weightsHost = scheme.weights().internalField().copyToHost();
         std::span<Foam::scalar> sFoamWeights(
-            foamWeights.primitiveFieldRef().data(), foamWeights.size()
+            foamWeights.primitiveFieldRef().data(),
+            foamWeights.size()
         );
         REQUIRE_THAT(
             weightsHost.span({0, foamWeights.size()}),
@@ -275,7 +276,8 @@ TEST_CASE("fvccGeometryScheme")
 
         auto weightsHost = scheme.weights().internalField().copyToHost();
         std::span<Foam::scalar> sFoamWeights(
-            foamWeights.primitiveFieldRef().data(), foamWeights.size()
+            foamWeights.primitiveFieldRef().data(),
+            foamWeights.size()
         );
         REQUIRE_THAT(
             weightsHost.span({0, foamWeights.size()}),
