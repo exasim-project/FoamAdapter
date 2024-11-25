@@ -20,7 +20,7 @@ void copy_impl(DestField& dest, const SrcField src)
 {
     NF_ASSERT_EQUAL(dest.size(), src.size());
     auto src_host = src.copyToHost();
-    auto src_span = src.span();
+    auto src_span = src_host.span();
     for (int i = 0; i < dest.size(); i++)
     {
         dest[i] = convert(src_span[i]);
