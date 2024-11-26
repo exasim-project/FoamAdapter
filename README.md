@@ -5,6 +5,7 @@
 The purpose of this repository is to simplify and showcase how [NeoFOAM](https://github.com/exasim-project/NeoFOAM) can be used in combination with OpenFOAM.
 It provides converters between OpenFOAM and NeoFOAM datastructures, examples and tests.
 
+
 ## Requirements
 
 FoamAdapter has the following requirements
@@ -14,6 +15,11 @@ FoamAdapter has the following requirements
 * OpenFOAM _2406_
 
 ## Compilation
+
+This repository depends on NeoFOAM which is included as a Git submodule, you can clone this repository
+and execute the following command to initialise the submodule.
+
+    git submodule update --init --recursive
 
 We provide several Cmake presets to set commmonly required flags if you compile FoamAdapter
 
