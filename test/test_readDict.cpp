@@ -11,16 +11,16 @@
 #include "NeoFOAM/fields/field.hpp"
 
 #include "FoamAdapter/readers/foamDictionary.hpp"
-#include "FoamAdapter/writers/writers.hpp"
+#include "FoamAdapter/writers.hpp"
 
 extern Foam::Time* timePtr; // A single time object
 
 TEST_CASE("read dict")
 {
     Foam::Time& runTime = *timePtr;
-    Info << "\nReading testDict" << endl;
+    Foam::Info << "\nReading testDict" << Foam::endl;
 
-    dictionary testDict;
+    Foam::dictionary testDict;
     testDict.add("label", 1);
     testDict.add("scalar", 2.1);
     testDict.add("scalar2", 2.0);
@@ -29,7 +29,7 @@ TEST_CASE("read dict")
     // testDict.add("divScheme", "Gauss linear"); // will throw error in NeoFoam as conversion is
     // not implemented
 
-    dictionary subDict;
+    Foam::dictionary subDict;
     subDict.add("subScalar", 4.1);
     subDict.add("subVector", Foam::vector(5.0, 6.0, 7.0));
     subDict.add("subWord", "subWord");
