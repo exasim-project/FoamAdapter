@@ -3,6 +3,11 @@
 
 #pragma once
 
+#define namespaceFoam
+#include "fvCFD.H"
+
+#include "FoamAdapter/conversion/convert.hpp"
+
 #include "NeoFOAM/fields/field.hpp"
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
@@ -17,19 +22,8 @@
 #include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
 #include "NeoFOAM/mesh/unstructured.hpp"
 
-#include "fvCFD.H"
-
 #include <catch2/catch_approx.hpp>
 
-template<typename ValueType>
-void checkField(const NeoFOAM::Field<ValueType>& field, ValueType value)
-{
-    auto field_host = field.copyToHost().span();
-    for (int i = 0; i < field_host.size(); i++)
-    {
-        REQUIRE(field_host[i] == value);
-    }
-}
 
 struct ApproxScalar
 {

@@ -14,4 +14,4 @@ include(Catch)
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 
 add_library(foamadapter_catch_main test_main.cpp)
-target_link_libraries(foamadapter_catch_main PUBLIC Catch2::Catch2 NeoFOAM OpenFOAM FoamAdapter)
+target_link_libraries(foamadapter_catch_main PUBLIC Catch2::Catch2 OpenFOAM FoamAdapter)

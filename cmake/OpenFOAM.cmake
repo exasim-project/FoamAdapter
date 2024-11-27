@@ -44,3 +44,7 @@ target_link_libraries(
   PUBLIC
   INTERFACE OpenFOAM::api OpenFOAM::core OpenFOAM::finiteVolume OpenFOAM::Pstream
             OpenFOAM::meshtools)
+
+target_compile_definitions(
+  OpenFOAM INTERFACE WM_LABEL_SIZE=$ENV{WM_LABEL_SIZE} NoRepository WM_$ENV{WM_PRECISION_OPTION}
+                     OPENFOAM=$ENV{FOAM_API} OMPI_SKIP_MPICXX)

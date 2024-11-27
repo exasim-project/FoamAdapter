@@ -3,7 +3,6 @@
 
 #include "FoamAdapter/readers/foamMesh.hpp"
 
-
 namespace Foam
 {
 
@@ -46,12 +45,12 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
     Foam::labelList faceCells = flatBCField<Foam::labelList>(
         mesh, [](const Foam::fvPatch& patch) { return patch.faceCells(); }
     );
-    Foam::vectorField Cf =
+    Foam::vectorField cf =
         flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch) { return patch.Cf(); });
-    Foam::vectorField Cn = flatBCField<Foam::vectorField>(
+    Foam::vectorField cn = flatBCField<Foam::vectorField>(
         mesh, [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.Cn()); }
     );
-    Foam::vectorField Sf =
+    Foam::vectorField sf =
         flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch) { return patch.Sf(); });
     Foam::scalarField magSf = flatBCField<Foam::scalarField>(
         mesh, [](const Foam::fvPatch& patch) { return patch.magSf(); }
@@ -74,9 +73,9 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
     NeoFOAM::BoundaryMesh bMesh(
         exec,
         fromFoamField(exec, faceCells),
-        fromFoamField(exec, Cf),
-        fromFoamField(exec, Cn),
-        fromFoamField(exec, Sf),
+        fromFoamField(exec, cf),
+        fromFoamField(exec, cn),
+        fromFoamField(exec, sf),
         fromFoamField(exec, magSf),
         fromFoamField(exec, nf),
         fromFoamField(exec, delta),

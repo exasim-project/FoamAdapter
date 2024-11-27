@@ -1,26 +1,20 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
-#include "FoamAdapter/conversion/convert.hpp"
 
+#include "FoamAdapter/conversion/convert.hpp"
 
 namespace Foam
 {
 
-NeoFOAM::Vector convert(const Foam::vector& Type)
-{
-    return NeoFOAM::Vector(Type[0], Type[1], Type[2]);
-};
+NeoFOAM::Vector convert(const Foam::vector& in) { return NeoFOAM::Vector(in[0], in[1], in[2]); };
 
-NeoFOAM::scalar convert(const Foam::scalar& Type) { return Type; };
+NeoFOAM::scalar convert(const Foam::scalar& in) { return in; };
 
-NeoFOAM::label convert(const Foam::label& Type) { return Type; };
+NeoFOAM::label convert(const Foam::label& in) { return in; };
 
 std::string convert(const Foam::word& Type) { return Type; };
 
 // To Foam
-Foam::vector convert(const NeoFOAM::Vector& Type)
-{
-    return Foam::vector(Type(0), Type(1), Type(2));
-};
+Foam::vector convert(const NeoFOAM::Vector& in) { return Foam::vector(in(0), in(1), in(2)); };
 
 }; // namespace Foam

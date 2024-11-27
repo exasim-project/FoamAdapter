@@ -7,7 +7,7 @@ on:
 jobs:
   build-compilation-db:
     name: Build with IWYU
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -15,10 +15,8 @@ jobs:
 
     - name: Add repos
       run: |
-        sudo add-apt-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main'
-        wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | sudo bash
-        wget https://apt.llvm.org/llvm-snapshot.gpg.key
-        sudo apt-key add llvm-snapshot.gpg.key
+        sudo add-apt-repository 'deb https://dl.openfoam.com/repos/deb noble main'
+        sudo apt-key add .github/workflows/pubkey.gpg
 
     - name: Install dependencies
       run: |
@@ -48,7 +46,7 @@ jobs:
         path: build
   clang-tidy-check:
     name: Clang-tidy Check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build-compilation-db]
     steps:
     - uses: actions/checkout@v4
@@ -57,10 +55,8 @@ jobs:
 
     - name: Add repos
       run: |
-        sudo add-apt-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main'
-        wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | sudo bash
-        wget https://apt.llvm.org/llvm-snapshot.gpg.key
-        sudo apt-key add llvm-snapshot.gpg.key
+        sudo add-apt-repository 'deb https://dl.openfoam.com/repos/deb noble main'
+        sudo apt-key add .github/workflows/pubkey.gpg
 
     - name: Install dependencies
       run: |
@@ -69,7 +65,8 @@ jobs:
            clang-tidy-16 \
            libomp-16-dev \
            libopenmpi-dev \
-           openmpi-bin
+           openmpi-bin \
+           openfoam2406-dev
 
     - uses: actions/download-artifact@v4
       with:
@@ -100,7 +97,7 @@ jobs:
         exit 1
   pre-commit-run:
     name: Pre-commit run
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -109,8 +106,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt install \
-           pre-commit
-        pip install identify --upgrade
+           pre-commit python3-identify
         pre-commit install
     - name: Run pre-commit on all files
       run: pre-commit run --all --color always --verbose
@@ -121,7 +117,7 @@ jobs:
         ! grep -q -r "TODO DONT MERGE" --exclude-dir=.github
   changelog:
     name: Changelog check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: dangoslen/changelog-enforcer@v3
       with:
