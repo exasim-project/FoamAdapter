@@ -26,4 +26,5 @@ endfunction()
 
 foam_adapter_unit_test(geometricFields setup_operator)
 foam_adapter_unit_test(operators setup_operator)
+foam_adapter_unit_test(readDict setup_operator)
 foam_adapter_unit_test(unstructuredMesh setup_unstructuredMesh)

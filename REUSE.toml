@@ -5,11 +5,19 @@ SPDX-PackageDownloadLocation = "https://github.com/exasim-project/NeoFOAM"
 
 [[annotations]]
 path = [
-   "AUTHORS.md",  "doc/**"
+    ".github/**", "AUTHORS.md",  "doc/**"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2023 NeoFOAM authors"
 SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = [
+    "CMakePresets.json", ".clang-format", ".clang-tidy", ".pre-commit-config.yaml", "spack.yaml", "REUSE.toml",  ".vscode/**.json"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2023 - 2024 NeoFOAM authors"
+SPDX-License-Identifier = "Unlicense"
 
 [[annotations]]
 path = [
