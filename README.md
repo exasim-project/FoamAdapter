@@ -11,8 +11,9 @@ It provides converters between OpenFOAM and NeoFOAM datastructures, examples and
 FoamAdapter has the following requirements
 
 *  _cmake 3.22+_
-*  _gcc >= 10_ or  _clang >= 17+_
+*  _gcc >= 12_ or  _clang >= 18+_
 * OpenFOAM _2406_
+* CUDA  _12.1_ (for GPU support) 
 
 ## Compilation
 
