@@ -12,12 +12,12 @@ NeoFOAM::scalar convert(const Foam::scalar& in) { return in; };
 
 NeoFOAM::label convert(const Foam::label& in) { return in; };
 
-std::string convert(const Foam::word& Type) { return Type; };
+std::string convert(const Foam::word& type) { return type; };
 
-NeoFOAM::TokenList convert(const Foam::ITstream& Type)
+NeoFOAM::TokenList convert(const Foam::ITstream& stream)
 {
     NeoFOAM::TokenList tokens;
-    for (const auto& token : Type)
+    for (const auto& token : stream)
     {
         if (token.isBool())
         {

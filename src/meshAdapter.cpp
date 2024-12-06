@@ -149,13 +149,13 @@ MeshAdapter::MeshAdapter(
     const bool syncPar
 )
     : fvMesh(
-          io,
-          std::move(points),
-          std::move(faces),
-          std::move(allOwner),
-          std::move(allNeighbour),
-          syncPar
-      ),
+        io,
+        std::move(points),
+        std::move(faces),
+        std::move(allOwner),
+        std::move(allNeighbour),
+        syncPar
+    ),
       nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
