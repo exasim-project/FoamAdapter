@@ -52,7 +52,12 @@ auto randomVectorField(const Time& runTime, const MeshAdapter& mesh)
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
     std::uniform_real_distribution<> dis(1.0, 2.0);
     return createRandomField<volVectorField>(
-        runTime, mesh, "U", [&]() { return vector {dis(gen), dis(gen), dis(gen)}; }
+        runTime,
+        mesh,
+        "U",
+        [&]() {
+            return vector {dis(gen), dis(gen), dis(gen)};
+        }
     );
 }
 
