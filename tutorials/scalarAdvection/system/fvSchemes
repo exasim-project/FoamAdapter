@@ -22,6 +22,7 @@ ddtSchemes
     ddt(T)          Euler;
     ddt(rho,U)      Euler;
     ddt(rho,T)      Euler;
+    type            forwardEuler;
 }
 
 gradSchemes

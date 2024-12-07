@@ -9,11 +9,37 @@ Foam::volScalarField
       ),
       mesh);
 
+// initilize T
+Foam::scalar spread = 0.05;
+forAll(T, celli)
+{
+    T[celli] = std::exp(
+        -0.5
+        * (std::pow((mesh.C()[celli].x() - 0.5) / spread, 2.0)
+           + std::pow((mesh.C()[celli].y() - 0.75) / spread, 2.0))
+    );
+}
+T.correctBoundaryConditions();
+T.write();
+
 Foam::volVectorField
     U(Foam::IOobject(
           "U", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
       ),
       mesh);
+
+// initilize U
+Foam::scalar pi = Foam::constant::mathematical::pi;
+
+forAll(U, celli)
+{
+    Foam::scalar x = mesh.C()[celli].x();
+    Foam::scalar y = mesh.C()[celli].y();
+
+    U[celli].x() = -Foam::sin(2.0 * pi * y) * Foam::pow(Foam::sin(pi * x), 2.0);
+    U[celli].y() = Foam::sin(2.0 * pi * x) * Foam::pow(Foam::sin(pi * y), 2.0);
+    U[celli].z() = 0.0;
+}
 
 Foam::surfaceScalarField phi(
     Foam::IOobject(
@@ -25,4 +51,3 @@ Foam::surfaceScalarField phi(
 // Copies of initial U and phi for use when flow is periodic
 Foam::surfaceScalarField phi0 = phi;
 Foam::volVectorField U0 = U;
-

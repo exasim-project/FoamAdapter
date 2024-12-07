@@ -7,8 +7,8 @@
 #include "NeoFOAM/dsl/ddt.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
-// #include "NeoFOAM/dsl/implicit.hpp"
-// #include "NeoFOAM/dsl/explicit.hpp"
+#include "NeoFOAM/dsl/implicit.hpp"
+#include "NeoFOAM/dsl/explicit.hpp"
 
 
 #define namespaceFoam
@@ -31,9 +31,29 @@ int main(int argc, char* argv[])
 #include "addCheckCaseOptions.H"
 #include "setRootCase.H"
 #include "createTime.H"
-#include "createNFTime.H"
+
+        NeoFOAM::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
+        NeoFOAM::Executor exec = createExecutor(runTime.controlDict());
+
+        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
+        Foam::MeshAdapter& mesh = *meshPtr;
+
 #include "createControl.H"
+
+        auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
+
 #include "createFields.H"
+
+
+        std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
+
+        Foam::scalar CoNum = Foam::calculateCoNum(phi);
+        if (adjustTimeStep)
+        {
+            Foam::setDeltaT(runTime, maxCo, CoNum, maxDeltaT);
+        }
+
+
         NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
         NeoFOAM::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
 
@@ -42,31 +62,43 @@ int main(int argc, char* argv[])
 
         Info << "creating NeoFOAM fields" << endl;
         auto nfT = Foam::constructFrom(exec, nfMesh, T);
-        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
+        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi0);
 
-        Foam::volScalarField ofDivT("ofDivT", fvc::div(phi, T));
-        auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
+        Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
 
         while (runTime.run())
         {
+            std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
+            CoNum = calculateCoNum(phi);
+            Foam::Info << "max(phi) : " << max(phi) << Foam::endl;
+            Foam::Info << "max(U) : " << max(U) << Foam::endl;
+            if (adjustTimeStep)
+            {
+                Foam::setDeltaT(runTime, maxCo, CoNum, maxDeltaT);
+            }
             runTime++;
 
             Info << "Time = " << runTime.timeName() << nl << max(phi) << nl << max(U) << endl;
 
+            Foam::scalar t = runTime.time().value();
+            Foam::scalar dt = runTime.deltaT().value();
+            NeoFOAM::scalar scale = std::cos(pi * (t + 0.5 * dt) / endTime);
+
+            nfPhi.internalField() =
+                nfPhi.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
 
 
             {
-                // dsl::Expression eqnSys(
-                //     dsl::Implicit::ddt(nfT)
-                //   + dsl::Implicit::ddt(nfT)
-                // );
+                dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::exp::div(nfPhi, nfT));
 
-                // NeoFOAM::scalar dt = runTime.deltaT().value();
-                // dsl::solve(eqnSys, nfT, dt, fvSchemesDict, fvSolutionDict);
+                NeoFOAM::scalar dt = runTime.deltaT().value();
+                dsl::solve(eqnSys, nfT, runTime.deltaTValue(), fvSchemesDict, fvSolutionDict);
             }
 
             if (runTime.outputTime())
             {
+                U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+                phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
                 Info << "writing nfT field" << endl;
                 write(nfT.internalField(), mesh, "nfT");
             }

@@ -24,7 +24,7 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         3;
+endTime         3.0;
 
 deltaT          0.005;
 
@@ -42,7 +42,7 @@ writeCompression off;
 
 timeFormat      general;
 
-timePrecision   16;
+timePrecision   8;
 
 runTimeModifiable true;
 
