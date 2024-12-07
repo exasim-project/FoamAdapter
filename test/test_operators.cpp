@@ -9,6 +9,7 @@
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "gaussConvectionScheme.H"
+#include "NeoFOAM/core/input.hpp"
 
 #include "common.hpp"
 
@@ -52,7 +53,8 @@ TEST_CASE("Interpolation")
 
         SECTION("linear")
         {
-            auto linearKernel = fvcc::SurfaceInterpolationFactory::create("linear", exec, nfMesh);
+            NeoFOAM::Input interpolationScheme = NeoFOAM::TokenList({std::string("linear")});
+            auto linearKernel = fvcc::SurfaceInterpolationFactory::create(exec, nfMesh,interpolationScheme);
             fvcc::SurfaceInterpolation interp(exec, nfMesh, std::move(linearKernel));
             // TODO since it is constructed from ofField it is trivial
             // we should reset the field first

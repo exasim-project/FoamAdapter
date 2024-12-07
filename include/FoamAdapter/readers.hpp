@@ -78,7 +78,7 @@ auto constructFrom(
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
-    type_container_t out(exec, nfMesh, readVolBoundaryConditions(nfMesh, in));
+    type_container_t out(exec, in.name(), nfMesh, readVolBoundaryConditions(nfMesh, in));
 
     out.internalField() = fromFoamField(exec, in.primitiveField());
     out.correctBoundaryConditions();
@@ -141,7 +141,7 @@ auto constructSurfaceField(
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
     using foam_primitive_t = typename FoamType::cmptType;
 
-    type_container_t out(exec, nfMesh, std::move(readSurfaceBoundaryConditions(nfMesh, in)));
+    type_container_t out(exec, in.name(),nfMesh, std::move(readSurfaceBoundaryConditions(nfMesh, in)));
 
     Field<foam_primitive_t> flattenedField(out.internalField().size());
     size_t nInternal = nfMesh.nInternalFaces();

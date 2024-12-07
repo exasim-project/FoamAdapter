@@ -26,4 +26,3 @@ Foam::surfaceScalarField phi(
 Foam::surfaceScalarField phi0 = phi;
 Foam::volVectorField U0 = U;
 
-const Foam::dictionary& fvSolutionDict = mesh.solutionDict();

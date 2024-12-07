@@ -2,6 +2,14 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #include "FoamAdapter/FoamAdapter.hpp"
+#include "NeoFOAM/dsl/expression.hpp"
+#include "NeoFOAM/dsl/solver.hpp"
+#include "NeoFOAM/dsl/ddt.hpp"
+#include "FoamAdapter/readers/foamDictionary.hpp"
+
+// #include "NeoFOAM/dsl/implicit.hpp"
+// #include "NeoFOAM/dsl/explicit.hpp"
+
 
 #define namespaceFoam
 #include "fvCFD.H"
@@ -11,8 +19,10 @@ using Foam::endl;
 using Foam::nl;
 namespace fvc = Foam::fvc;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+namespace dsl = NeoFOAM::dsl;
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char* argv[])
 {
@@ -24,6 +34,8 @@ int main(int argc, char* argv[])
 #include "createNFTime.H"
 #include "createControl.H"
 #include "createFields.H"
+        NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+        NeoFOAM::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
 
         Info << "creating NeoFOAM mesh" << endl;
         auto nfMesh = mesh.nfMesh();
@@ -41,25 +53,16 @@ int main(int argc, char* argv[])
 
             Info << "Time = " << runTime.timeName() << nl << max(phi) << nl << max(U) << endl;
 
-            // NeoFOAM Euler
-            // NOTE for now hardcoded
-            // this will soon be replaced by the NeoFOAM DSL
-            {
-                fvcc::GaussGreenDiv(
-                    exec,
-                    nfMesh,
-                    fvcc::SurfaceInterpolation(
-                        exec,
-                        nfMesh,
-                        fvcc::SurfaceInterpolationFactory::create("upwind", exec, nfMesh)
-                    )
-                )
-                    .div(nfDivT, nfPhi, nfT);
 
-                nfT.internalField() =
-                    nfT.internalField() - nfDivT.internalField() * runTime.deltaT().value();
-                nfT.correctBoundaryConditions();
-                Kokkos::fence();
+
+            {
+                // dsl::Expression eqnSys(
+                //     dsl::Implicit::ddt(nfT)
+                //   + dsl::Implicit::ddt(nfT)
+                // );
+
+                // NeoFOAM::scalar dt = runTime.deltaT().value();
+                // dsl::solve(eqnSys, nfT, dt, fvSchemesDict, fvSolutionDict);
             }
 
             if (runTime.outputTime())
