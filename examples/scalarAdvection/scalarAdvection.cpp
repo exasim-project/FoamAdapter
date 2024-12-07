@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
         NeoFOAM::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
 
         Info << "creating NeoFOAM mesh" << endl;
-        auto nfMesh = mesh.nfMesh();
+        NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
         Info << "creating NeoFOAM fields" << endl;
         auto nfT = Foam::constructFrom(exec, nfMesh, T);
@@ -68,24 +68,23 @@ int main(int argc, char* argv[])
 
         while (runTime.run())
         {
+            Foam::scalar t = runTime.time().value();
+            Foam::scalar dt = runTime.deltaT().value();
+            nfPhi.internalField() =
+                nfPhi.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
+
+            U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+            phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
             CoNum = calculateCoNum(phi);
-            Foam::Info << "max(phi) : " << max(phi) << Foam::endl;
-            Foam::Info << "max(U) : " << max(U) << Foam::endl;
+            Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
+            Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (adjustTimeStep)
             {
                 Foam::setDeltaT(runTime, maxCo, CoNum, maxDeltaT);
             }
             runTime++;
-
-            Info << "Time = " << runTime.timeName() << nl << max(phi) << nl << max(U) << endl;
-
-            Foam::scalar t = runTime.time().value();
-            Foam::scalar dt = runTime.deltaT().value();
-            NeoFOAM::scalar scale = std::cos(pi * (t + 0.5 * dt) / endTime);
-
-            nfPhi.internalField() =
-                nfPhi.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
 
 
             {
@@ -97,8 +96,6 @@ int main(int argc, char* argv[])
 
             if (runTime.outputTime())
             {
-                U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
-                phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
                 Info << "writing nfT field" << endl;
                 write(nfT.internalField(), mesh, "nfT");
             }
