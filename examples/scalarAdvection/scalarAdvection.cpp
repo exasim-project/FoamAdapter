@@ -62,7 +62,8 @@ int main(int argc, char* argv[])
 
         Info << "creating NeoFOAM fields" << endl;
         auto nfT = Foam::constructFrom(exec, nfMesh, T);
-        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi0);
+        auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);
+        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 
         Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
 
@@ -70,11 +71,12 @@ int main(int argc, char* argv[])
         {
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
-            nfPhi.internalField() =
-                nfPhi.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
 
             U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
             phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+
+            nfPhi.internalField() =
+                nfPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
 
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
             CoNum = calculateCoNum(phi);
