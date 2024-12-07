@@ -23,7 +23,8 @@
       "displayName": "Production",
       "description": "Configuration for production use",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_BUILD_TYPE": "Release",
+        "FOAMADAPTER_BUILD_EXAMPLES": "ON"
       }
     },
     {
