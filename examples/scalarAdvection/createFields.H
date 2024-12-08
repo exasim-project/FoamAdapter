@@ -17,7 +17,7 @@ Foam::volVectorField
       mesh);
 
 
-if (controlDict.get<bool>("setFields"))
+if (controlDict.get<int>("setFields"))
 {
     Foam::scalar spread = 0.05;
     Foam::scalar pi = Foam::constant::mathematical::pi;

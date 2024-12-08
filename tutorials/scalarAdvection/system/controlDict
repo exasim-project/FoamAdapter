@@ -52,6 +52,8 @@ maxCo           0.1;
 
 maxDeltaT       1;
 
+setFields       1;
+
 profiling
 {
     active      true;

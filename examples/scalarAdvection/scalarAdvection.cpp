@@ -72,11 +72,16 @@ int main(int argc, char* argv[])
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
-            U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
-            phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+            if (controlDict.get<int>("setFields"))
+            {
+                Foam::scalar pi = Foam::constant::mathematical::pi;
+                U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+                phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
 
-            nfPhi.internalField() =
-                nfPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
+                nfPhi.internalField() =
+                    nfPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
+            }
+
 
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
             CoNum = calculateCoNum(phi);
