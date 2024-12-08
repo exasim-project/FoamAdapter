@@ -47,10 +47,10 @@ int main(int argc, char* argv[])
 
         std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
 
-        Foam::scalar CoNum = Foam::calculateCoNum(phi);
+        Foam::scalar coNum = Foam::calculateCoNum(phi);
         if (adjustTimeStep)
         {
-            Foam::setDeltaT(runTime, maxCo, CoNum, maxDeltaT);
+            Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
         }
 
 
@@ -84,12 +84,12 @@ int main(int argc, char* argv[])
 
 
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-            CoNum = calculateCoNum(phi);
+            coNum = calculateCoNum(phi);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
             Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (adjustTimeStep)
             {
-                Foam::setDeltaT(runTime, maxCo, CoNum, maxDeltaT);
+                Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
             }
             runTime++;
 
