@@ -9,10 +9,13 @@
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "gaussConvectionScheme.H"
+#include "NeoFOAM/core/input.hpp"
+#include "NeoFOAM/dsl/explicit.hpp"
 
 #include "common.hpp"
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace dsl = NeoFOAM::dsl;
 
 extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
@@ -52,7 +55,9 @@ TEST_CASE("Interpolation")
 
         SECTION("linear")
         {
-            auto linearKernel = fvcc::SurfaceInterpolationFactory::create("linear", exec, nfMesh);
+            NeoFOAM::Input interpolationScheme = NeoFOAM::TokenList({std::string("linear")});
+            auto linearKernel =
+                fvcc::SurfaceInterpolationFactory::create(exec, nfMesh, interpolationScheme);
             fvcc::SurfaceInterpolation interp(exec, nfMesh, std::move(linearKernel));
             // TODO since it is constructed from ofField it is trivial
             // we should reset the field first
@@ -110,8 +115,8 @@ TEST_CASE("DivOperator")
     Foam::argList& args = *argsPtr;
 
     NeoFOAM::Executor exec = GENERATE(
-        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
         NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
+        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
         NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
     std::string execName = std::visit([](auto e) { return e.print(); }, exec);
@@ -147,21 +152,34 @@ TEST_CASE("DivOperator")
 
         auto nfPhi = constructSurfaceField(exec, nfMesh, ofPhi);
 
-        SECTION("Computes correct divT")
+        SECTION("Gauss-Green")
         {
             auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
+            NeoFOAM::TokenList scheme({std::string("linear")});
             // Reset
             NeoFOAM::fill(nfDivT.internalField(), 0.0);
             NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
-            fvcc::GaussGreenDiv(
-                exec,
-                nfMesh,
-                fvcc::SurfaceInterpolation(
-                    exec, nfMesh, std::make_unique<fvcc::Linear>(exec, nfMesh)
-                )
-            )
-                .div(nfDivT, nfPhi, nfT);
+            fvcc::GaussGreenDiv(exec, nfMesh, scheme).div(nfDivT, nfPhi, nfT);
             nfDivT.correctBoundaryConditions();
+
+            compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
+        }
+
+        SECTION("compute div from dsl::exp")
+        {
+            NeoFOAM::TokenList scheme =
+                NeoFOAM::TokenList({std::string("Gauss"), std::string("linear")});
+
+            auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
+            NeoFOAM::fill(nfDivT.internalField(), 0.0);
+            NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
+            dsl::Operator divOp = dsl::exp::div(nfPhi, nfT);
+            divOp.build(scheme);
+            divOp.explicitOperation(nfDivT.internalField());
+
+            nfDivT.correctBoundaryConditions();
+
+            compare(nfT, ofT, ApproxScalar(1e-15), false);
 
             compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
         }
