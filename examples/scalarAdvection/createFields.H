@@ -9,18 +9,6 @@ Foam::volScalarField
       ),
       mesh);
 
-// initilize T
-Foam::scalar spread = 0.05;
-forAll(T, celli)
-{
-    T[celli] = std::exp(
-        -0.5
-        * (std::pow((mesh.C()[celli].x() - 0.5) / spread, 2.0)
-           + std::pow((mesh.C()[celli].y() - 0.75) / spread, 2.0))
-    );
-}
-T.correctBoundaryConditions();
-T.write();
 
 Foam::volVectorField
     U(Foam::IOobject(
@@ -28,17 +16,31 @@ Foam::volVectorField
       ),
       mesh);
 
-// initilize U
-Foam::scalar pi = Foam::constant::mathematical::pi;
 
-forAll(U, celli)
+if (controlDict.get<bool>("setFields"))
 {
-    Foam::scalar x = mesh.C()[celli].x();
-    Foam::scalar y = mesh.C()[celli].y();
+    Foam::scalar spread = 0.05;
+    Foam::scalar pi = Foam::constant::mathematical::pi;
+    forAll(U, celli)
+    {
+        // initialize U
+        Foam::scalar x = mesh.C()[celli].x();
+        Foam::scalar y = mesh.C()[celli].y();
 
-    U[celli].x() = -Foam::sin(2.0 * pi * y) * Foam::pow(Foam::sin(pi * x), 2.0);
-    U[celli].y() = Foam::sin(2.0 * pi * x) * Foam::pow(Foam::sin(pi * y), 2.0);
-    U[celli].z() = 0.0;
+        U[celli].x() = -Foam::sin(2.0 * pi * y) * Foam::pow(Foam::sin(pi * x), 2.0);
+        U[celli].y() = Foam::sin(2.0 * pi * x) * Foam::pow(Foam::sin(pi * y), 2.0);
+        U[celli].z() = 0.0;
+
+
+        // initialize T
+        T[celli] = std::exp(
+            -0.5
+            * (std::pow((mesh.C()[celli].x() - 0.5) / spread, 2.0)
+               + std::pow((mesh.C()[celli].y() - 0.75) / spread, 2.0))
+        );
+    }
+    T.correctBoundaryConditions();
+    T.write();
 }
 
 Foam::surfaceScalarField phi(
