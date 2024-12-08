@@ -88,6 +88,8 @@ int main(int argc, char* argv[])
             }
             runTime++;
 
+            Info << "Time = " << runTime.timeName() << endl;
+
 
             {
                 dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::exp::div(nfPhi, nfT));
