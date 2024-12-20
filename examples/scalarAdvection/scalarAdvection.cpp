@@ -99,8 +99,7 @@ int main(int argc, char* argv[])
             {
                 dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::exp::div(nfPhi, nfT));
 
-                NeoFOAM::scalar dt = runTime.deltaT().value();
-                dsl::solve(eqnSys, nfT, runTime.deltaTValue(), fvSchemesDict, fvSolutionDict);
+                dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
             }
 
             if (runTime.outputTime())
