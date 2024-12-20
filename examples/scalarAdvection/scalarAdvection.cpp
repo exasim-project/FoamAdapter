@@ -32,6 +32,12 @@ int main(int argc, char* argv[])
 #include "setRootCase.H"
 #include "createTime.H"
 
+        NeoFOAM::Database db;
+
+        fvcc::FieldCollection& fieldCollection =
+            fvcc::FieldCollection::instance(db, "fieldCollection");
+
+
         NeoFOAM::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
         NeoFOAM::Executor exec = createExecutor(runTime.controlDict());
 
@@ -61,7 +67,12 @@ int main(int argc, char* argv[])
         NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
         Info << "creating NeoFOAM fields" << endl;
-        auto nfT = Foam::constructFrom(exec, nfMesh, T);
+        fvcc::VolumeField<NeoFOAM::scalar>& nfT =
+            fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
+                Foam::CreateFromFoamField<Foam::volScalarField> {
+                    .exec = exec, .nfMesh = nfMesh, .foamField = T, .name = "nfT"
+                }
+            );
         auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);
         auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 
