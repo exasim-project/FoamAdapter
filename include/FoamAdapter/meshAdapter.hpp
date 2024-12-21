@@ -31,8 +31,6 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, const f
  */
 class MeshAdapter : public fvMesh
 {
-    // Private Data
-    const NeoFOAM::Executor exec;
 
     NeoFOAM::UnstructuredMesh nfMesh_;
 
@@ -89,6 +87,8 @@ public:
     NeoFOAM::UnstructuredMesh& nfMesh() { return nfMesh_; }
 
     const NeoFOAM::UnstructuredMesh& nfMesh() const { return nfMesh_; }
+
+    const NeoFOAM::Executor exec() const { return nfMesh().exec(); }
 };
 
 } // End namespace Foam

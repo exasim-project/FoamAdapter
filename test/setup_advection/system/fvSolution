@@ -10,53 +10,21 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSchemes;
+    object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-#include "simulationParameters"
 
-
-ddtSchemes
+solvers
 {
-    default         none;
-    ddt(T)          Euler;
-    ddt(rho,U)      Euler;
-    ddt(rho,T)      Euler;
-    //type            forwardEuler;
-    type            Runge-Kutta;
-    Runge-Kutta-Method Forward-Euler;
+    T
+    {
+        solver          diagonal;
+        /* preconditioner  DIC;
+        tolerance       1e-06;
+        relTol          0; */
+    }
 }
 
-gradSchemes
-{
-    //default         none;
-    grad(T)          Gauss linear; //  Gauss linear leastSquares pointCellsLeastSquares
-    grad(U)          Gauss linear;
-}
-
-divSchemes
-{
-    default         none;
-    div(phi,T)      Gauss upwind;
-    div(phi,nfT)    Gauss upwind;
-}
-
-laplacianSchemes
-{
-    default         none;
-}
-
-interpolationSchemes
-{
-    default         none;
-    // default         linear;
-}
-
-snGradSchemes
-{
-    default         none;
-    // default         corrected;
-}
 
 
 // ************************************************************************* //

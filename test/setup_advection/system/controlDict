@@ -10,53 +10,55 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSchemes;
+    object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-#include "simulationParameters"
 
+application     scalarAdvection;
 
-ddtSchemes
+executor        Serial;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         3.0;
+
+deltaT          0.005;
+
+writeControl    none; // adjustable
+
+writeInterval   3.0; // dont write
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  16;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   8;
+
+runTimeModifiable true;
+
+adjustTimeStep  yes;
+
+maxCo           0.1;
+
+maxDeltaT       1;
+
+setFields       1;
+
+profiling
 {
-    default         none;
-    ddt(T)          Euler;
-    ddt(rho,U)      Euler;
-    ddt(rho,T)      Euler;
-    //type            forwardEuler;
-    type            Runge-Kutta;
-    Runge-Kutta-Method Forward-Euler;
+    active      true;
+    cpuInfo     true;
+    memInfo     true;
+    sysInfo     true;
 }
-
-gradSchemes
-{
-    //default         none;
-    grad(T)          Gauss linear; //  Gauss linear leastSquares pointCellsLeastSquares
-    grad(U)          Gauss linear;
-}
-
-divSchemes
-{
-    default         none;
-    div(phi,T)      Gauss upwind;
-    div(phi,nfT)    Gauss upwind;
-}
-
-laplacianSchemes
-{
-    default         none;
-}
-
-interpolationSchemes
-{
-    default         none;
-    // default         linear;
-}
-
-snGradSchemes
-{
-    default         none;
-    // default         corrected;
-}
-
-
 // ************************************************************************* //
