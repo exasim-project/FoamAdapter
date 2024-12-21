@@ -81,7 +81,7 @@ TEST_CASE("Advection Equation")
 
     std::string timeIntegration = GENERATE(std::string("forwardEuler"), std::string("Runge-Kutta"));
 
-    SECTION("Scalar advection with " + execName " and " + timeIntegration)
+    SECTION("Scalar advection with " + execName + " and " + timeIntegration)
     {
         // create mesh
         Foam::scalar startTime = 0.0;
