@@ -6,9 +6,12 @@
 #include "NeoFOAM/core/dictionary.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
 #include "NeoFOAM/fields/field.hpp"
+#include "NeoFOAM/core/database/fieldCollection.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"
+
+namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 
 namespace Foam
 {
@@ -171,5 +174,57 @@ auto constructSurfaceField(
 
     return out;
 }
+
+/**
+ * @brief Creates a FieldDocument from an existing Foam Field.
+ *
+
+ * @return The created FieldDocument.
+ */
+template<typename FieldType>
+class CreateFromFoamField
+{
+public:
+
+    const NeoFOAM::Executor exec;
+    const NeoFOAM::UnstructuredMesh& nfMesh;
+    const FieldType& foamField;
+    std::string name = "";
+    std::int64_t iterationIndex = 0;
+    std::int64_t subCycleIndex = -1;
+
+    fvcc::FieldDocument operator()(NeoFOAM::Database& db)
+    {
+        using type_container_t = typename type_map<FieldType>::container_type;
+        type_container_t convertedField = Foam::constructFrom(exec, nfMesh, foamField);
+        if (name != "")
+        {
+            convertedField.name = name;
+        }
+        const Foam::fvMesh& mesh = foamField.mesh();
+        const Foam::Time& runTime = mesh.time();
+        std::int64_t timeIndex = runTime.timeIndex();
+
+        type_container_t registeredField(
+            convertedField.exec(),
+            convertedField.name,
+            convertedField.mesh(),
+            convertedField.internalField(),
+            convertedField.boundaryConditions(),
+            db,
+            "",
+            ""
+        );
+
+        return NeoFOAM::Document(
+            {{"name", convertedField.name},
+             {"timeIndex", timeIndex},
+             {"iterationIndex", iterationIndex},
+             {"subCycleIndex", subCycleIndex},
+             {"field", registeredField}},
+            fvcc::validateFieldDoc
+        );
+    }
+};
 
 }; // namespace Foam

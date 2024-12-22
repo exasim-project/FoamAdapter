@@ -28,9 +28,9 @@ endTime         3.0;
 
 deltaT          0.005;
 
-writeControl    adjustable;
+writeControl    none; // adjustable
 
-writeInterval   0.1;
+writeInterval   3.0; // dont write
 
 purgeWrite      0;
 
