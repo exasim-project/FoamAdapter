@@ -56,7 +56,9 @@ auto randomVectorField(const Time& runTime, const MeshAdapter& mesh)
         runTime,
         mesh,
         "U",
-        [&]() { return vector {dis(gen), dis(gen), dis(gen)}; }
+        [&]() {
+            return vector {dis(gen), dis(gen), dis(gen)};
+        }
     );
 }
 

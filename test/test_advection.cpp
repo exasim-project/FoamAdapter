@@ -102,14 +102,22 @@ TEST_CASE("Advection Equation")
 
         Foam::volScalarField T(
             Foam::IOobject(
-                "T", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
+                "T",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::MUST_READ,
+                Foam::IOobject::AUTO_WRITE
             ),
             mesh
         );
 
         Foam::volVectorField U(
             Foam::IOobject(
-                "U", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE
+                "U",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::MUST_READ,
+                Foam::IOobject::AUTO_WRITE
             ),
             mesh
         );
@@ -126,7 +134,10 @@ TEST_CASE("Advection Equation")
         fvcc::VolumeField<NeoFOAM::scalar>& nfT =
             fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
-                    .exec = exec, .nfMesh = nfMesh, .foamField = T, .name = "nfT"
+                    .exec = exec,
+                    .nfMesh = nfMesh,
+                    .foamField = T,
+                    .name = "nfT"
                 }
             );
         auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);

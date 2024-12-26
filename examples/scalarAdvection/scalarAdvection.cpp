@@ -70,7 +70,10 @@ int main(int argc, char* argv[])
         fvcc::VolumeField<NeoFOAM::scalar>& nfT =
             fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
-                    .exec = exec, .nfMesh = nfMesh, .foamField = T, .name = "nfT"
+                    .exec = exec,
+                    .nfMesh = nfMesh,
+                    .foamField = T,
+                    .name = "nfT"
                 }
             );
         auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);
