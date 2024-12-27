@@ -1,14 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-#include "FoamAdapter/FoamAdapter.hpp"
-#include "NeoFOAM/dsl/expression.hpp"
-#include "NeoFOAM/dsl/solver.hpp"
-#include "NeoFOAM/dsl/ddt.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
+#include "NeoFOAM/NeoFOAM.hpp"
 
-#include "NeoFOAM/dsl/implicit.hpp"
-#include "NeoFOAM/dsl/explicit.hpp"
+#include "FoamAdapter/FoamAdapter.hpp"
+#include "FoamAdapter/readers/foamDictionary.hpp"
 
 
 #define namespaceFoam
