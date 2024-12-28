@@ -71,17 +71,20 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, const f
     vectorField cf =
         flatBCField<vectorField>(mesh, [](const fvPatch& patch) { return patch.Cf(); });
     vectorField cn = flatBCField<vectorField>(
-        mesh, [](const fvPatch& patch) { return vectorField(patch.Cn()); }
+        mesh,
+        [](const fvPatch& patch) { return vectorField(patch.Cn()); }
     );
     vectorField sf =
         flatBCField<vectorField>(mesh, [](const fvPatch& patch) { return patch.Sf(); });
     scalarField magSf =
         flatBCField<scalarField>(mesh, [](const fvPatch& patch) { return patch.magSf(); });
     vectorField nf = flatBCField<vectorField>(
-        mesh, [](const fvPatch& patch) { return vectorField(patch.nf()); }
+        mesh,
+        [](const fvPatch& patch) { return vectorField(patch.nf()); }
     );
     vectorField delta = flatBCField<vectorField>(
-        mesh, [](const fvPatch& patch) { return vectorField(patch.delta()); }
+        mesh,
+        [](const fvPatch& patch) { return vectorField(patch.delta()); }
     );
     scalarField weights =
         flatBCField<scalarField>(mesh, [](const fvPatch& patch) { return patch.weights(); });
@@ -125,7 +128,8 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, const f
 }
 
 MeshAdapter::MeshAdapter(const NeoFOAM::Executor exec, const IOobject& io, const bool doInit)
-    : fvMesh(io, doInit), nfMesh_(readOpenFOAMMesh(exec, *this))
+    : fvMesh(io, doInit)
+    , nfMesh_(readOpenFOAMMesh(exec, *this))
 {
     if (doInit)
     {
@@ -135,7 +139,8 @@ MeshAdapter::MeshAdapter(const NeoFOAM::Executor exec, const IOobject& io, const
 
 
 MeshAdapter::MeshAdapter(const NeoFOAM::Executor exec, const IOobject& io, const zero, bool syncPar)
-    : fvMesh(io, zero {}, syncPar), nfMesh_(readOpenFOAMMesh(exec, *this))
+    : fvMesh(io, zero {}, syncPar)
+    , nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 
@@ -155,8 +160,8 @@ MeshAdapter::MeshAdapter(
         std::move(allOwner),
         std::move(allNeighbour),
         syncPar
-    ),
-      nfMesh_(readOpenFOAMMesh(exec, *this))
+    )
+    , nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 
@@ -168,8 +173,8 @@ MeshAdapter::MeshAdapter(
     cellList&& cells,
     const bool syncPar
 )
-    : fvMesh(io, std::move(points), std::move(faces), std::move(cells), syncPar),
-      nfMesh_(readOpenFOAMMesh(exec, *this))
+    : fvMesh(io, std::move(points), std::move(faces), std::move(cells), syncPar)
+    , nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 }
