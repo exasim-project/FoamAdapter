@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
 
         NeoFOAM::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
-        NeoFOAM::Executor exec = createExecutor(runTime.controlDict());
+        NeoFOAM::Executor exec = Foam::createExecutor(runTime.controlDict());
 
         std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
         Foam::MeshAdapter& mesh = *meshPtr;
