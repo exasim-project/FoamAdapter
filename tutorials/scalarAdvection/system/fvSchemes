@@ -22,9 +22,9 @@ ddtSchemes
     ddt(T)          Euler;
     ddt(rho,U)      Euler;
     ddt(rho,T)      Euler;
-    //type            forwardEuler;
-    type            Runge-Kutta;
-    Runge-Kutta-Method Forward-Euler;
+    type            forwardEuler;
+    //type            Runge-Kutta;
+    //Runge-Kutta-Method Forward-Euler;
 }
 
 gradSchemes

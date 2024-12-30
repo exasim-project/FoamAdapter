@@ -14,7 +14,7 @@ FoamFile
     object          simulationParameters;
 }
 
-NX              200;
+NX              500;
 
 
 

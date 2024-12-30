@@ -5,3 +5,11 @@
 add_executable(scalarAdvection scalarAdvection.cpp)
 
 target_link_libraries(scalarAdvection FoamAdapter)
+
+add_executable(scalarFoamAdvection scalarFoamAdvection.cpp)
+
+target_link_libraries(scalarFoamAdvection FoamAdapter)
+
+add_executable(scalarNeoFoamAdvection scalarNeoFoamAdvection.cpp)
+
+target_link_libraries(scalarNeoFoamAdvection FoamAdapter)

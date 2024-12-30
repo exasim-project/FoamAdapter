@@ -79,6 +79,8 @@ int main(int argc, char* argv[])
         auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);
         auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 
+        auto [sPhi, sPhi0] = NeoFOAM::spans(nfPhi.internalField(), nfPhi0.internalField());
+
         Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
 
         while (runTime.run())
@@ -86,29 +88,27 @@ int main(int argc, char* argv[])
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
-            if (controlDict.get<int>("setFields"))
-            {
-                Foam::scalar pi = Foam::constant::mathematical::pi;
-                U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
-                phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
 
-                nfPhi.internalField() =
-                    nfPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
-            }
-
+            Foam::scalar pi = Foam::constant::mathematical::pi;
+            NeoFOAM::scalar scale = std::cos(pi * (t + 0.5 * dt) / endTime);
+            NeoFOAM::map(
+                nfPhi.internalField(),
+                KOKKOS_LAMBDA(const int i) { return sPhi0[i] * scale; }
+            );
 
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-            coNum = calculateCoNum(phi);
-            Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
-            Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
+
+            // Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
+            // Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (adjustTimeStep)
             {
+                phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+                coNum = calculateCoNum(phi);
                 Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
             }
             runTime++;
 
             Info << "Time = " << runTime.timeName() << endl;
-
 
             {
                 dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::exp::div(nfPhi, nfT));
@@ -118,6 +118,8 @@ int main(int argc, char* argv[])
 
             if (runTime.outputTime())
             {
+                U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+                phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
                 Info << "writing nfT field" << endl;
                 write(nfT.internalField(), mesh, "nfT");
             }
