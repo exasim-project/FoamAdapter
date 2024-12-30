@@ -10,6 +10,7 @@ mesh=$2
 
 runApplication blockMesh
 
-runApplication ../../build/profiling/bin/scalarAdvection
+time ../../build/profiling/bin/scalarNeoFoamAdvection  > log.scalarNeoFoamAdvection
+time ../../build/profiling/bin/scalarFoamAdvection > log.scalarFoamAdvection
 
 #------------------------------------------------------------------------------

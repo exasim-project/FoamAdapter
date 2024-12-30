@@ -57,12 +57,7 @@ int main(int argc, char* argv[])
     while (runTime.run())
     {
         std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-        coNum = calculateCoNum(phi);
 
-        if (adjustTimeStep)
-        {
-            Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
-        }
 
         runTime++;
         Info << "Time = " << runTime.timeName() << endl;
@@ -71,16 +66,26 @@ int main(int argc, char* argv[])
         Foam::scalar dt = runTime.deltaT().value();
 
         Foam::scalar pi = Foam::constant::mathematical::pi;
-        U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
         phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
 
-        Info << "max(phi) : " << max(phi).value() << endl;
-        Info << "max(U) : " << max(U).value() << endl;
+        if (adjustTimeStep)
+        {
+            coNum = calculateCoNum(phi);
+            Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
+        }
+
+        // Info << "max(phi) : " << max(phi).value() << endl;
+        // Info << "max(U) : " << max(U).value() << endl;
 
         // advance Foam fields in time
         Foam::fvScalarMatrix TEqn(fvm::ddt(T) + fvc::div(phi, T));
 
         TEqn.solve();
+
+        if (runTime.outputTime())
+        {
+            U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+        }
 
 
         runTime.write();
