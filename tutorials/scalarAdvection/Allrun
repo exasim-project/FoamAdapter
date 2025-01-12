@@ -10,7 +10,18 @@ mesh=$2
 
 runApplication blockMesh
 
-time ../../build/profiling/bin/scalarNeoFoamAdvection  > log.scalarNeoFoamAdvection
-time ../../build/profiling/bin/scalarFoamAdvection > log.scalarFoamAdvection
+foamDictionary system/controlDict -entry executor -set GPU
+time ../../build/production/bin/scalarNeoFoamAdvection  > log.scalarNeoFoamAdvectionGPU
+
+foamDictionary system/controlDict -entry executor -set CPU
+time ../../build/production/bin/scalarNeoFoamAdvection  > log.scalarNeoFoamAdvectionCPU
+
+foamDictionary system/controlDict -entry executor -set Serial
+time ../../build/production/bin/scalarNeoFoamAdvection  > log.scalarNeoFoamAdvectionSerial
+
+time ../../build/production/bin/scalarFoamAdvection > log.scalarFoamAdvectionSerial
+
+runApplication decomposePar
+runParallel ../../build/production/bin/scalarFoamAdvection
 
 #------------------------------------------------------------------------------
