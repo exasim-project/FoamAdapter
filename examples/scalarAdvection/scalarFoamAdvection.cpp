@@ -78,9 +78,12 @@ int main(int argc, char* argv[])
         // Info << "max(U) : " << max(U).value() << endl;
 
         // advance Foam fields in time
-        Foam::fvScalarMatrix TEqn(fvm::ddt(T) + fvc::div(phi, T));
+        {
+            addProfiling(solveT, "solveT");
+            Foam::fvScalarMatrix TEqn(fvm::ddt(T) + fvc::div(phi, T));
 
-        TEqn.solve();
+            TEqn.solve();
+        }
 
         if (runTime.outputTime())
         {

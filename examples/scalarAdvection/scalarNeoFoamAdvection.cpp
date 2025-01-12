@@ -111,6 +111,7 @@ int main(int argc, char* argv[])
             Info << "Time = " << runTime.timeName() << endl;
 
             {
+                addProfiling(solveT, "solveT");
                 dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::exp::div(nfPhi, nfT));
 
                 dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
