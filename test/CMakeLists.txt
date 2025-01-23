@@ -26,6 +26,8 @@ endfunction()
 
 foam_adapter_unit_test(geometricFields setup_operator)
 foam_adapter_unit_test(operators setup_operator)
+foam_adapter_unit_test(stencils setup_stencil3D)
+foam_adapter_unit_test(sparsityPattern setup_stencil3D)
 foam_adapter_unit_test(readDict setup_operator)
 foam_adapter_unit_test(unstructuredMesh setup_unstructuredMesh)
 foam_adapter_unit_test(advection setup_advection)
