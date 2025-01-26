@@ -26,10 +26,12 @@ TEST_CASE("cell To Face Stencil")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoFOAM::Executor exec = GENERATE(NeoFOAM::Executor(NeoFOAM::SerialExecutor {})
-                                      // NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-                                      // NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
-    );
+    // NeoFOAM::Executor exec = GENERATE(
+    //     NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
+    //     NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
+    //     NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    // );
+    NeoFOAM::Executor exec = NeoFOAM::SerialExecutor {};
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
 
@@ -40,27 +42,7 @@ TEST_CASE("cell To Face Stencil")
     SECTION("sparsityPattern_" + execName)
     {
         fvcc::SparsityPattern pattern(nfMesh);
-        la::LinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx> sparsityPattern = pattern.compute();
-
-        // NeoFOAM::SegmentedField<NeoFOAM::localIdx, NeoFOAM::localIdx> stencil =
-        // cellToFaceStencil.computeStencil();
-
-        // auto stencilView = stencil.view();
-        // Foam::label nFaces = mesh.nFaces();
-
-        // forAll(mesh.cells(),celli)
-        // {
-        //     std::unordered_set<Foam::label> faceSet;
-        //     REQUIRE(stencilView.span(celli).size() == mesh.cells()[celli].size());
-        //     for (auto facei: mesh.cells()[celli])
-        //     {
-        //         faceSet.insert(facei);
-        //     }
-
-        //     for (auto facei: stencilView.span(celli))
-        //     {
-        //         REQUIRE(faceSet.contains(facei));
-        //     }
-        // }
+        const la::LinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx>& sparsityPattern =
+            pattern.linearSystem();
     }
 }
