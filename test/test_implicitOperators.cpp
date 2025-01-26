@@ -10,6 +10,7 @@
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/sourceTerm.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/fvccSparsityPattern.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "gaussConvectionScheme.H"
@@ -131,5 +132,63 @@ TEST_CASE("matrix multiplication")
     //     Foam::Info << "diff: \n" << diff << Foam::endl;
 
     // }
+
+    SECTION("div_" + execName)
+    {
+        auto ofT = randomScalarField(runTime, mesh);
+        forAll(ofT, celli)
+        {
+            ofT[celli] = celli;
+        }
+        ofT.correctBoundaryConditions();
+        auto nfT = constructFrom(exec, nfMesh, ofT);
+        nfT.correctBoundaryConditions();
+        REQUIRE(nfT == ofT);
+
+        Foam::surfaceScalarField ofPhi(
+            Foam::IOobject(
+                "phi",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::NO_READ,
+                Foam::IOobject::AUTO_WRITE
+            ),
+            mesh,
+            Foam::dimensionedScalar("phi", Foam::dimless, 0.0)
+        );
+        forAll(ofPhi, facei)
+        {
+            // ofPhi[facei] = facei;
+            ofPhi[facei] = 1;
+        }
+        // FIXME
+        // the boundary conditions ofPhi are zero
+
+        auto nfPhi = constructSurfaceField(exec, nfMesh, ofPhi);
+        // the boundary conditions nfPhi are not zero
+
+
+        Foam::fvScalarMatrix matrix(Foam::fvm::div(ofPhi, ofT));
+        Foam::volScalarField imp_div("imp_div", matrix & ofT);
+
+        NeoFOAM::TokenList scheme({std::string("linear")});
+        fvcc::SparsityPattern pattern(nfMesh);
+        la::LinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx> ls = pattern.linearSystem();
+        fvcc::GaussGreenDiv(exec, nfMesh, scheme).div(ls, nfPhi, nfT);
+        auto values = ls.matrix().values();
+        auto colIdx = ls.matrix().colIdxs();
+        auto rowPtrs = ls.matrix().rowPtrs();
+
+        auto implicitHost = NeoFOAM::la::SpMV(ls, nfT.internalField()).copyToHost();
+        const auto vol = nfMesh.cellVolumes().span();
+
+        for (size_t celli = 0; celli < implicitHost.size(); celli++)
+        {
+            REQUIRE(
+                -implicitHost[celli] / vol[celli] == Catch::Approx(imp_div[celli]).margin(1e-15)
+            ); // will fail no boundary conditions
+        }
+        REQUIRE(implicitHost[13] / vol[13] == imp_div[13]); // <-- only with no boundary conditions
+    }
     // REQUIRE(false);
 }
