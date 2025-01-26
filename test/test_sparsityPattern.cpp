@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
+#include <cstddef>
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 #include <unordered_set>
@@ -21,7 +22,7 @@ extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 extern Foam::fvMesh* meshPtr;  // A single mesh object
 
 
-TEST_CASE("cell To Face Stencil")
+TEST_CASE("sparsityPattern")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
@@ -42,7 +43,24 @@ TEST_CASE("cell To Face Stencil")
     SECTION("sparsityPattern_" + execName)
     {
         fvcc::SparsityPattern pattern(nfMesh);
-        const la::LinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx>& sparsityPattern =
-            pattern.linearSystem();
+        const la::LinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx>& ls = pattern.linearSystem();
+        const auto colIdxs = ls.matrix().colIdxs();
+        const auto rowPtrs = ls.matrix().rowPtrs();
+
+        forAll(mesh.cellCells(), celli)
+        {
+            std::set<Foam::label> stencilCells;
+            stencilCells.insert(celli);
+            for (auto neiCelli : mesh.cellCells()[celli])
+            {
+                stencilCells.insert(neiCelli);
+            }
+
+            for (std::size_t i = rowPtrs[celli]; i < rowPtrs[celli + 1]; i++)
+            {
+                auto colIdx = colIdxs[i];
+                REQUIRE(stencilCells.contains(colIdx));
+            }
+        }
     }
 }
