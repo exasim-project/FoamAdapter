@@ -40,7 +40,7 @@ divSchemes
 
 laplacianSchemes
 {
-    default         none;
+    default         Gauss linear corrected;
     laplacian(Gamma,T) $LAPSCHEME;
     laplacian(mu,U) $LAPSCHEME;
 }
