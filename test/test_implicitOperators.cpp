@@ -11,6 +11,7 @@
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/sourceTerm.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/fvccSparsityPattern.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/fvccLinearSystem.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "gaussConvectionScheme.H"
@@ -49,39 +50,39 @@ TEST_CASE("matrix multiplication")
     auto nfMesh = mesh.nfMesh();
     runTime.setDeltaT(1);
 
-    SECTION("ddt_" + execName)
-    {
+    // SECTION("ddt_" + execName)
+    // {
 
-        auto ofT = randomScalarField(runTime, mesh);
-        ofT.correctBoundaryConditions();
+    //     auto ofT = randomScalarField(runTime, mesh);
+    //     ofT.correctBoundaryConditions();
 
 
-        fvcc::VolumeField<NeoFOAM::scalar>& nfT =
-            fieldCol.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
-                Foam::CreateFromFoamField<Foam::volScalarField> {
-                    .exec = exec,
-                    .nfMesh = nfMesh,
-                    .foamField = ofT,
-                    .name = "nfT"
-                }
-            );
-        auto& nfTOld = fvcc::oldTime(nfT);
-        const auto nfTOldSpan = nfTOld.internalField().span();
-        NeoFOAM::map(
-            nfTOld.internalField(),
-            KOKKOS_LAMBDA(const std::size_t celli) { return nfTOldSpan[celli] - 1.0; }
-        );
+    //     fvcc::VolumeField<NeoFOAM::scalar>& nfT =
+    //         fieldCol.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
+    //             Foam::CreateFromFoamField<Foam::volScalarField> {
+    //                 .exec = exec,
+    //                 .nfMesh = nfMesh,
+    //                 .foamField = ofT,
+    //                 .name = "nfT"
+    //             }
+    //         );
+    //     auto& nfTOld = fvcc::oldTime(nfT);
+    //     const auto nfTOldSpan = nfTOld.internalField().span();
+    //     NeoFOAM::map(
+    //         nfTOld.internalField(),
+    //         KOKKOS_LAMBDA(const std::size_t celli) { return nfTOldSpan[celli] - 1.0; }
+    //     );
 
-        ofT.oldTime() -= Foam::dimensionedScalar("value", Foam::dimTemperature, 1);
-        ofT.oldTime().correctBoundaryConditions();
+    //     ofT.oldTime() -= Foam::dimensionedScalar("value", Foam::dimTemperature, 1);
+    //     ofT.oldTime().correctBoundaryConditions();
 
-        Foam::fvScalarMatrix matrix(Foam::fvm::ddt(ofT));
-        Foam::volScalarField ddt(
-            "ddt",
-            matrix & ofT
-        ); // we should get a uniform field with a value of 1
-        ddt.write();
-    }
+    //     Foam::fvScalarMatrix matrix(Foam::fvm::ddt(ofT));
+    //     Foam::volScalarField ddt(
+    //         "ddt",
+    //         matrix & ofT
+    //     ); // we should get a uniform field with a value of 1
+    //     ddt.write();
+    // }
 
     SECTION("sourceterm_" + execName)
     {
@@ -108,7 +109,22 @@ TEST_CASE("matrix multiplication")
 
         auto ls = sourceTerm.createEmptyLinearSystem();
         sourceTerm.implicitOperation(ls);
-        auto implicitHost = NeoFOAM::la::SpMV(ls, nfT.internalField()).copyToHost();
+        fvcc::LinearSystem<NeoFOAM::scalar> ls2(
+            nfT,
+            ls,
+            fvcc::SparsityPattern::readOrCreate(nfMesh)
+        );
+
+        // check diag
+        NeoFOAM::Field<NeoFOAM::scalar> diag(nfT.exec(), nfT.internalField().size(), 0.0);
+        ls2.diag(diag);
+        auto diagHost = diag.copyToHost();
+        for (size_t i = 0; i < diagHost.size(); i++)
+        {
+            REQUIRE(diagHost[i] == coeff);
+        }
+        auto result = ls2 & nfT;
+        auto implicitHost = result.internalField().copyToHost();
         for (size_t i = 0; i < implicitHost.size(); i++)
         {
             REQUIRE(implicitHost[i] == coeff * nftHost[i]);
@@ -121,6 +137,9 @@ TEST_CASE("matrix multiplication")
     //     ofT.correctBoundaryConditions();
 
     //     Foam::fvScalarMatrix matrix(Foam::fvm::laplacian(ofT));
+    //     Foam::Info << "matrix.diag() " << matrix.diag() << Foam::endl;
+    //     Foam::Info << "matrix.upper() " << matrix.upper() << Foam::endl;
+    //     Foam::Info << "matrix.lower() " << matrix.lower() << Foam::endl;
 
     //     Foam::volScalarField imp_laplacian("imp_laplacian", matrix & ofT);
     //     Foam::Info << "imp_laplacian: \n" << imp_laplacian.primitiveField() << Foam::endl;
@@ -175,20 +194,64 @@ TEST_CASE("matrix multiplication")
         fvcc::SparsityPattern pattern(nfMesh);
         la::LinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx> ls = pattern.linearSystem();
         fvcc::GaussGreenDiv(exec, nfMesh, scheme).div(ls, nfPhi, nfT);
+
+        fvcc::LinearSystem<NeoFOAM::scalar> fvLs(
+            nfT,
+            ls,
+            fvcc::SparsityPattern::readOrCreate(nfMesh)
+        );
+
         auto values = ls.matrix().values();
         auto colIdx = ls.matrix().colIdxs();
         auto rowPtrs = ls.matrix().rowPtrs();
 
-        auto implicitHost = NeoFOAM::la::SpMV(ls, nfT.internalField()).copyToHost();
+        auto result = fvLs & nfT;
+        auto implicitHost = result.internalField().copyToHost();
         const auto vol = nfMesh.cellVolumes().span();
+
+        Foam::Info << "matrix.lower() " << matrix.lower() << Foam::endl;
+
+        Foam::scalarField Diag = matrix.diag();
+        Diag *= 0;
+        std::span<Foam::scalar> ds(Diag.data(), Diag.size());
+
+        Foam::labelUList& l = const_cast<Foam::labelUList&>(matrix.lduAddr().lowerAddr());
+        Foam::labelUList& u = const_cast<Foam::labelUList&>(matrix.lduAddr().upperAddr());
+        std::span<Foam::label> ls2(l.data(), l.size());
+        std::span<Foam::label> us(u.data(), u.size());
+        auto ownerSpan = nfMesh.faceOwner().span();
+        auto neighbourSpan = nfMesh.faceNeighbour().span();
+        std::span<Foam::scalar> lowerSpan(matrix.lower().data(), matrix.lower().size());
+        std::span<Foam::scalar> upperSpan(matrix.upper().data(), matrix.upper().size());
+        std::span<Foam::scalar> diagSpan(matrix.diag().data(), matrix.diag().size());
+
+        for (Foam::label face = 0; face < l.size(); face++)
+        {
+            auto lower = matrix.lower()[face];
+            auto upper = matrix.upper()[face];
+            auto lf = l[face];
+            auto uf = u[face];
+            Diag[l[face]] -= matrix.lower()[face];
+            Diag[u[face]] -= matrix.upper()[face];
+            lf = 0;
+        }
 
         for (size_t celli = 0; celli < implicitHost.size(); celli++)
         {
-            REQUIRE(
-                -implicitHost[celli] / vol[celli] == Catch::Approx(imp_div[celli]).margin(1e-15)
-            ); // will fail no boundary conditions
+            // will fail no boundary conditions
+            std::cout << "celli: " << celli << " " << implicitHost[celli] << " "
+                      << imp_div[celli] * vol[celli] << std::endl;
+            Foam::Info << "   cellCells[celli]: " << mesh.cellCells()[celli] << Foam::endl;
+            Foam::Info << "   matrix.diag celli: " << matrix.diag()[celli] << Foam::endl;
+
+            for (size_t coli = rowPtrs[celli]; coli < rowPtrs[celli + 1]; coli++)
+            {
+                Foam::Info << "    colIdx: " << colIdx[coli] << " value: " << values[coli]
+                           << " x: " << Foam::endl;
+            }
         }
-        REQUIRE(implicitHost[13] / vol[13] == imp_div[13]); // <-- only with no boundary conditions
+        // REQUIRE(implicitHost[13] / vol[13] == imp_div[13]); // <-- only with no boundary
+        // conditions
     }
-    // REQUIRE(false);
+    REQUIRE(false);
 }
