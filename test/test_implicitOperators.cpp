@@ -79,7 +79,7 @@ TEST_CASE("matrix multiplication")
             matrix & ofT
         ); // we should get a uniform field with a value of 1
         // ddt.write();
-        fvcc::DdtOperator ddtOp(dsl::SpatialOperator::Type::Implicit, nfT);
+        fvcc::DdtOperator ddtOp(dsl::Operator::Type::Implicit, nfT);
 
         auto ls = ddtOp.createEmptyLinearSystem();
         ddtOp.implicitOperation(ls, runTime.value(), runTime.deltaTValue());
@@ -117,7 +117,7 @@ TEST_CASE("matrix multiplication")
         );
         auto coefficients = nfT;
         NeoFOAM::fill(coefficients.internalField(), coeff);
-        fvcc::SourceTerm sourceTerm(dsl::SpatialOperator::Type::Implicit, coefficients, nfT);
+        fvcc::SourceTerm sourceTerm(dsl::Operator::Type::Implicit, coefficients, nfT);
         NeoFOAM::Field<NeoFOAM::scalar> source(nfT.exec(), nfT.internalField().size(), 0.0);
         sourceTerm.explicitOperation(source);
 
