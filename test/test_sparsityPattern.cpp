@@ -5,6 +5,7 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 #include <unordered_set>
+#include <set>
 #include "NeoFOAM/finiteVolume/cellCentred/operators/fvccSparsityPattern.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
