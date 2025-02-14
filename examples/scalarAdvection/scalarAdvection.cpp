@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
 
 
             {
-                dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::exp::div(nfPhi, nfT));
+                dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::imp::div(nfPhi, nfT));
 
                 dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
             }

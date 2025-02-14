@@ -177,7 +177,7 @@ TEST_CASE("DivOperator")
             auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
             NeoFOAM::fill(nfDivT.internalField(), 0.0);
             NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
-            dsl::Operator divOp = dsl::exp::div(nfPhi, nfT);
+            dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
             divOp.build(scheme);
             divOp.explicitOperation(nfDivT.internalField());
 

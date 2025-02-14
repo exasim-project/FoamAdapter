@@ -19,6 +19,7 @@ NX              3;
 GRADSCHEME      Gauss linear;
 
 DIVSCHEME       Gauss linear;
+//DIVSCHEME       Gauss upwind;
 
 LAPSCHEME       Gauss linear uncorrected;
 
