@@ -9,8 +9,8 @@
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/ddtOperator.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/sourceTerm.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/fvccSparsityPattern.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/fvccLinearSystem.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/sparsityPattern.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/operators/linearSystem.hpp"
 
 #define namespaceFoam // Suppress <using namespace Foam;>
 #include "gaussConvectionScheme.H"
