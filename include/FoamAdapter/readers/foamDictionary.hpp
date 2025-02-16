@@ -32,17 +32,19 @@ bool checkEntryType(const Foam::entry& entry)
     }
     catch (const Foam::IOerror& ioErr)
     {
+        FatalError.throwExceptions(false);
+        FatalIOError.throwExceptions(false);
         return false;
     }
     catch (const Foam::error& err)
     {
+        FatalError.throwExceptions(false);
+        FatalIOError.throwExceptions(false);
         return false;
     }
-
-    return true;
-
     FatalError.throwExceptions(false);
     FatalIOError.throwExceptions(false);
+    return true;
 }
 
 NeoFOAM::Dictionary readFoamDictionary(const Foam::dictionary& dict);
