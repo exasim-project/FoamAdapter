@@ -5,7 +5,6 @@
 #include <tuple>
 #include <memory>
 
-
 #include "FoamAdapter/meshAdapter.hpp"
 
 #include "NeoFOAM/core/executor/executor.hpp"
