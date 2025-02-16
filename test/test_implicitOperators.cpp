@@ -11,10 +11,9 @@
 #include "NeoFOAM/finiteVolume/cellCentred/operators/sourceTerm.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/sparsityPattern.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/linearSystem.hpp"
-
-#define namespaceFoam // Suppress <using namespace Foam;>
-#include "gaussConvectionScheme.H"
 #include "NeoFOAM/dsl.hpp"
+
+#include "gaussConvectionScheme.H"
 
 #include "common.hpp"
 

@@ -3,7 +3,6 @@
 
 #pragma once
 
-#define namespaceFoam
 #include "fvCFD.H"
 
 #include "FoamAdapter/conversion/convert.hpp"
