@@ -7,7 +7,6 @@
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
 
-#define namespaceFoam
 #include "fvCFD.H"
 
 using Foam::Info;

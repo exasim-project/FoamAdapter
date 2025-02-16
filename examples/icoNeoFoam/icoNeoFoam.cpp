@@ -7,7 +7,6 @@
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
 
-#define namespaceFoam
 #include "fvCFD.H"
 #include "pisoControl.H"
 
@@ -65,7 +64,7 @@ int main(int argc, char* argv[])
         NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
         Info << "creating NeoFOAM fields" << endl;
-        fvcc::VolumeField<NeoFOAM::scalar>& nfT =
+        fvcc::VolumeField<NeoFOAM::scalar>& nfp =
             fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
@@ -74,7 +73,7 @@ int main(int argc, char* argv[])
                     .name = "nfp"
                 }
             );
-        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
+
 
         Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
 
@@ -131,8 +130,18 @@ int main(int argc, char* argv[])
                 while (piso.correctNonOrthogonal())
                 {
                     // Pressure corrector
+                    auto nfPhiHbyA = Foam::constructSurfaceField(exec, nfMesh, phiHbyA);
+                    Foam::surfaceScalarField rAUf("rAUf", fvc::interpolate(rAU));
+                    auto nfrAUf = Foam::constructSurfaceField(exec, nfMesh, rAUf);
+                    Foam::fvScalarMatrix pEqn(fvm::laplacian(rAUf, p) == fvc::div(phiHbyA));
 
-                    Foam::fvScalarMatrix pEqn(fvm::laplacian(rAU, p) == fvc::div(phiHbyA));
+                    // dsl::Expression pEqn2(dsl::imp::laplacian(nfrAUf,nfp) -
+                    // dsl::exp::div(nfPhiHbyA));
+                    dsl::Expression pEqn2(
+                        dsl::imp::laplacian(nfrAUf, nfp) - dsl::exp::div(nfPhiHbyA, nfp)
+                    );
+
+                    dsl::solve(pEqn2, nfp, t, dt, fvSchemesDict, fvSolutionDict);
 
                     pEqn.setReference(pRefCell, pRefValue);
 
