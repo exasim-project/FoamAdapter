@@ -1,11 +1,22 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 NeoFOAM authors
+// SPDX-FileCopyrightText: 2025 NeoFOAM authors
 
-Foam::Info << "Reading field T\n" << Foam::endl;
+Info << "Reading transportProperties\n" << endl;
 
+Foam::IOdictionary transportProperties(Foam::IOobject(
+    "transportProperties",
+    runTime.constant(),
+    mesh,
+    Foam::IOobject::MUST_READ_IF_MODIFIED,
+    Foam::IOobject::NO_WRITE
+));
+
+Foam::dimensionedScalar nu("nu", Foam::dimViscosity, transportProperties);
+
+Info << "Reading field p\n" << endl;
 Foam::volScalarField
-    T(Foam::IOobject(
-          "T",
+    p(Foam::IOobject(
+          "p",
           runTime.timeName(),
           mesh,
           Foam::IOobject::MUST_READ,
@@ -14,6 +25,7 @@ Foam::volScalarField
       mesh);
 
 
+Info << "Reading field U\n" << endl;
 Foam::volVectorField
     U(Foam::IOobject(
           "U",
@@ -25,31 +37,7 @@ Foam::volVectorField
       mesh);
 
 
-if (controlDict.get<int>("setFields"))
-{
-    Foam::scalar spread = 0.05;
-    Foam::scalar pi = Foam::constant::mathematical::pi;
-    forAll(U, celli)
-    {
-        // initialize U
-        Foam::scalar x = mesh.C()[celli].x();
-        Foam::scalar y = mesh.C()[celli].y();
-
-        U[celli].x() = -Foam::sin(2.0 * pi * y) * Foam::pow(Foam::sin(pi * x), 2.0);
-        U[celli].y() = Foam::sin(2.0 * pi * x) * Foam::pow(Foam::sin(pi * y), 2.0);
-        U[celli].z() = 0.0;
-
-
-        // initialize T
-        T[celli] = std::exp(
-            -0.5
-            * (std::pow((mesh.C()[celli].x() - 0.5) / spread, 2.0)
-               + std::pow((mesh.C()[celli].y() - 0.75) / spread, 2.0))
-        );
-    }
-    T.correctBoundaryConditions();
-    T.write();
-}
+Info << "Reading/calculating face flux field phi\n" << endl;
 
 Foam::surfaceScalarField
     phi(Foam::IOobject(
@@ -59,8 +47,10 @@ Foam::surfaceScalarField
             Foam::IOobject::READ_IF_PRESENT,
             Foam::IOobject::AUTO_WRITE
         ),
-        Foam::linearInterpolate(U) & mesh.Sf());
+        fvc::flux(U));
 
-// Copies of initial U and phi for use when flow is periodic
-Foam::surfaceScalarField phi0 = phi;
-Foam::volVectorField U0 = U;
+
+Foam::label pRefCell = 0;
+Foam::scalar pRefValue = 0.0;
+setRefCell(p, mesh.solutionDict().subDict("PISO"), pRefCell, pRefValue);
+mesh.setFluxRequired(p.name());

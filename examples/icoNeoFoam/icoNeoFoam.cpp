@@ -9,6 +9,7 @@
 
 #define namespaceFoam
 #include "fvCFD.H"
+#include "pisoControl.H"
 
 using Foam::Info;
 using Foam::endl;
@@ -42,7 +43,6 @@ int main(int argc, char* argv[])
         Foam::MeshAdapter& mesh = *meshPtr;
 
         Foam::pisoControl piso(mesh);
-#include "createControl.H"
 
         auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
 
@@ -70,11 +70,10 @@ int main(int argc, char* argv[])
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
-                    .foamField = T,
-                    .name = "nfT"
+                    .foamField = p,
+                    .name = "nfp"
                 }
             );
-        auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);
         auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 
         Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
@@ -86,6 +85,20 @@ int main(int argc, char* argv[])
 
         while (runTime.loop())
         {
+
+            std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
+            coNum = calculateCoNum(phi);
+            Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
+            Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
+            if (adjustTimeStep)
+            {
+                Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
+            }
+            runTime++;
+
+            Foam::scalar t = runTime.time().value();
+            Foam::scalar dt = runTime.deltaT().value();
+
             Info << "Time = " << runTime.timeName() << nl << endl;
 
             // #include "CourantNo.H"
