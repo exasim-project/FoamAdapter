@@ -7,7 +7,7 @@
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 
-#define namespaceFoam // Suppress <using namespace Foam;>
+#include "fv.H"
 #include "gaussConvectionScheme.H"
 #include "NeoFOAM/core/input.hpp"
 #include "NeoFOAM/dsl/explicit.hpp"

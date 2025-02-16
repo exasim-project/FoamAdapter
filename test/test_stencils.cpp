@@ -6,7 +6,7 @@
 #include <unordered_set>
 #include "NeoFOAM/finiteVolume/cellCentred/stencil/cellToFaceStencil.hpp"
 
-#define namespaceFoam // Suppress <using namespace Foam;>
+
 #include "gaussConvectionScheme.H"
 #include "NeoFOAM/core/input.hpp"
 #include "NeoFOAM/dsl/explicit.hpp"

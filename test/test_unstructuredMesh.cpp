@@ -13,7 +13,6 @@
 #include "FoamAdapter/comparison.hpp"
 #include "FoamAdapter/meshAdapter.hpp"
 
-#define namespaceFoam // Suppress <using namespace Foam;>
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 

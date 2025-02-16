@@ -12,11 +12,11 @@
 #include "NeoFOAM/finiteVolume/cellCentred/operators/sparsityPattern.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/linearSystem.hpp"
 
-#define namespaceFoam // Suppress <using namespace Foam;>
 #include "gaussConvectionScheme.H"
 #include "NeoFOAM/dsl.hpp"
 
 #include "common.hpp"
+
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 namespace dsl = NeoFOAM::dsl;

@@ -11,8 +11,6 @@
 
 #include "FoamAdapter/meshAdapter.hpp"
 
-#include "fvCFD.H" // include after NeoFOAM to avoid ambiguous sqrt error
-
 namespace Foam
 {
 
