@@ -16,6 +16,8 @@ FoamFile
 
 application     icoFoam;
 
+executor        Serial;
+
 startFrom       startTime;
 
 startTime       0;
