@@ -30,6 +30,12 @@ solvers
         relTol          0;
     }
 
+    nfP
+    {
+        maxIters        1000;
+        relTol          0.0;
+    }
+
     U
     {
         solver          smoothSolver;

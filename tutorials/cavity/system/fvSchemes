@@ -33,7 +33,10 @@ divSchemes
 
 laplacianSchemes
 {
-    default         Gauss linear orthogonal;
+    //default               Gauss linear uncorrected;
+    laplacian(nu,U)         Gauss linear uncorrected;
+    laplacian(rAUf,p)       Gauss linear uncorrected;
+    laplacian(rAUf,nfp)     Gauss linear uncorrected;
 }
 
 interpolationSchemes

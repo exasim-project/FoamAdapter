@@ -163,7 +163,7 @@ TEST_CASE("DivOperator")
             // Reset
             NeoFOAM::fill(nfDivT.internalField(), 0.0);
             NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
-            fvcc::GaussGreenDiv(exec, nfMesh, scheme).div(nfDivT, nfPhi, nfT);
+            fvcc::GaussGreenDiv(exec, nfMesh, scheme).div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
             nfDivT.correctBoundaryConditions();
 
             compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);

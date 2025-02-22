@@ -100,8 +100,6 @@ int main(int argc, char* argv[])
 
             Info << "Time = " << runTime.timeName() << nl << endl;
 
-            // #include "CourantNo.H"
-
             // Momentum predictor
 
             Foam::fvVectorMatrix UEqn(fvm::ddt(U) + fvm::div(phi, U) - fvm::laplacian(nu, U));
@@ -134,18 +132,35 @@ int main(int argc, char* argv[])
                     Foam::surfaceScalarField rAUf("rAUf", fvc::interpolate(rAU));
                     auto nfrAUf = Foam::constructSurfaceField(exec, nfMesh, rAUf);
                     Foam::fvScalarMatrix pEqn(fvm::laplacian(rAUf, p) == fvc::div(phiHbyA));
+                    auto coeff = nfp;
+                    NeoFOAM::fill(coeff.internalField(), 1.0);
 
-                    // dsl::Expression pEqn2(dsl::imp::laplacian(nfrAUf,nfp) -
-                    // dsl::exp::div(nfPhiHbyA));
+                    auto nfDivPhiHbyA = Foam::constructFrom(exec, nfMesh, fvc::div(phiHbyA)());
                     dsl::Expression pEqn2(
-                        dsl::imp::laplacian(nfrAUf, nfp) - dsl::exp::div(nfPhiHbyA, nfp)
+                        dsl::imp::laplacian(nfrAUf, nfp) - dsl::exp::Source(coeff, nfDivPhiHbyA)
                     );
 
-                    dsl::solve(pEqn2, nfp, t, dt, fvSchemesDict, fvSolutionDict);
+                    dsl::solve(
+                        pEqn2,
+                        nfp,
+                        t,
+                        dt,
+                        fvSchemesDict,
+                        fvSolutionDict.get<NeoFOAM::Dictionary>("solvers").get<NeoFOAM::Dictionary>(
+                            "nfP"
+                        )
+                    );
 
-                    pEqn.setReference(pRefCell, pRefValue);
+                    auto hostNfp = nfp.internalField().copyToHost();
+                    forAll(p, celli)
+                    {
+                        p[celli] = hostNfp[celli];
+                    }
+                    p.correctBoundaryConditions();
 
-                    pEqn.solve(p.select(piso.finalInnerIter()));
+                    // pEqn.setReference(pRefCell, pRefValue);
+
+                    // pEqn.solve(p.select(piso.finalInnerIter()));
 
                     if (piso.finalNonOrthogonalIter())
                     {
@@ -160,6 +175,11 @@ int main(int argc, char* argv[])
             }
 
             runTime.write();
+            if (runTime.outputTime())
+            {
+                Info << "writing nfp field" << endl;
+                write(nfp.internalField(), mesh, "nfp");
+            }
 
             runTime.printExecutionTime(Info);
         }
