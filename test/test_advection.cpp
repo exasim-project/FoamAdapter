@@ -16,9 +16,6 @@
 #include "FoamAdapter/FoamAdapter.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
-#define namespaceFoam
-#include "fvCFD.H"
-
 #include "common.hpp"
 
 

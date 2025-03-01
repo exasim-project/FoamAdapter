@@ -8,7 +8,7 @@
 #include <set>
 #include "NeoFOAM/finiteVolume/cellCentred/operators/sparsityPattern.hpp"
 
-#define namespaceFoam // Suppress <using namespace Foam;>
+
 #include "gaussConvectionScheme.H"
 #include "NeoFOAM/core/input.hpp"
 #include "NeoFOAM/dsl/explicit.hpp"
