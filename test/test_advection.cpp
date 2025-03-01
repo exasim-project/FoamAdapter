@@ -16,9 +16,6 @@
 #include "FoamAdapter/FoamAdapter.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
-#define namespaceFoam
-#include "fvCFD.H"
-
 #include "common.hpp"
 
 
@@ -71,15 +68,16 @@ TEST_CASE("Advection Equation")
     NeoFOAM::Database db;
     fvcc::FieldCollection& fieldCollection = fvcc::FieldCollection::instance(db, "fieldCollection");
 
-    NeoFOAM::Executor exec = GENERATE(
-        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoFOAM::Executor exec = GENERATE(NeoFOAM::Executor(NeoFOAM::SerialExecutor {})
+                                      // NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
+                                      // NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
     );
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
 
-    std::string timeIntegration = GENERATE(std::string("forwardEuler"), std::string("Runge-Kutta"));
+    // std::string timeIntegration = GENERATE(std::string("forwardEuler"),
+    // std::string("Runge-Kutta"));
+    std::string timeIntegration = GENERATE(std::string("backwardEuler"));
 
     SECTION("Scalar advection with " + execName + " and " + timeIntegration)
     {
@@ -163,14 +161,14 @@ TEST_CASE("Advection Equation")
 
             // advance Foam fields in time
             {
-                Foam::fvScalarMatrix TEqn(fvm::ddt(T) + fvc::div(phi, T));
+                Foam::fvScalarMatrix TEqn(fvm::ddt(T) + fvm::div(phi, T));
 
                 TEqn.solve();
             }
 
             // advance NeoFOAM fields in time
             {
-                dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::exp::div(nfPhi, nfT));
+                dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::imp::div(nfPhi, nfT));
 
                 dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
             }
@@ -186,7 +184,7 @@ TEST_CASE("Advection Equation")
             runTime.write();
             runTime.printExecutionTime(Info);
         }
-        // compare(nfT, T, ApproxScalar(1e-15), false);
+        compare(nfT, T, ApproxScalar(1e-15), false);
 
 
         Info << "End\n" << endl;

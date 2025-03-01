@@ -17,6 +17,10 @@
 #include "FoamAdapter/setup.hpp"
 #include "FoamAdapter/comparison.hpp"
 
+#include "fvm.H"
+#include "fvc.H"
+// #include "fvCFD.H"
+
 namespace Foam
 {
 

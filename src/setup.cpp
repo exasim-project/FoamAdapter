@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
 #include "FoamAdapter/setup.hpp"
+#include "fvc.H"
 
 namespace Foam
 {

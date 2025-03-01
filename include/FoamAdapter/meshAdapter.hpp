@@ -11,7 +11,6 @@
 #include "NeoFOAM/mesh/unstructured.hpp"
 #include "NeoFOAM/core/primitives/label.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
-#include "NeoFOAM/mesh/unstructured.hpp"
 
 #include "readers.hpp"
 
