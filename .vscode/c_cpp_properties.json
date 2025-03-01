@@ -5,21 +5,23 @@
       "includePath": [
         "${workspaceFolder}/**",
         "${workspaceFolder}/NeoFOAM/**",
+        "${FOAM_SRC}/**",
         "/usr/local/cuda/include/**"
       ],
       "defines": [],
-      "compilerPath": "/usr/bin/g++",
+      "compilerPath": "/usr/bin/clang++-18",
       "cStandard": "c17",
       "cppStandard": "c++20",
-      "intelliSenseMode": "linux-gcc-x64",
       "browse": {
         "path": [
           "${workspaceFolder}/**",
-          "${workspaceFolder}/NeoFOAM/**"
+          "${workspaceFolder}/NeoFOAM/**",
+          "${FOAM_SRC}/**"
         ],
         "limitSymbolsToIncludedHeaders": true,
         "databaseFilename": ""
-      }
+      },
+      "intelliSenseMode": "linux-clang-x64"
     }
   ],
   "version": 4
