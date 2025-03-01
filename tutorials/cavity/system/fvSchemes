@@ -46,7 +46,7 @@ interpolationSchemes
 
 snGradSchemes
 {
-    default         orthogonal;
+    default         uncorrected;
 }
 
 

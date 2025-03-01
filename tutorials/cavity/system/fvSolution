@@ -21,7 +21,7 @@ solvers
         solver          PCG;
         preconditioner  DIC;
         tolerance       1e-06;
-        relTol          0.05;
+        relTol          0.0;
     }
 
     pFinal
@@ -32,8 +32,8 @@ solvers
 
     nfP
     {
-        maxIters        1000;
-        relTol          0.0;
+        maxIters        5;
+        relTol          1e-06;
     }
 
     U
