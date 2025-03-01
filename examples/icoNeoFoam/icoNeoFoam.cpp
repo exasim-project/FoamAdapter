@@ -82,6 +82,7 @@ int main(int argc, char* argv[])
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
         Info << "\nStarting time loop\n" << endl;
+        Foam::surfaceScalarField flux("flux", phi);
 
         while (runTime.loop())
         {
@@ -132,7 +133,6 @@ int main(int argc, char* argv[])
                 while (piso.correctNonOrthogonal())
                 {
                     // Pressure corrector
-                    Foam::fvScalarMatrix pEqn(fvm::laplacian(rAUf, p) == fvc::div(phiHbyA));
 
                     fvcc::Expression<NeoFOAM::scalar> pEqn2(
                         dsl::imp::laplacian(nfrAUf, nfp) - dsl::exp::div(nfPhiHbyA),
@@ -145,23 +145,31 @@ int main(int argc, char* argv[])
                     {
                         pEqn2.setReference(pRefCell, pRefValue);
                     }
-
                     pEqn2.solve(t, dt);
 
-                    auto hostNfp = nfp.internalField().copyToHost();
-                    forAll(p, celli)
-                    {
-                        p[celli] = hostNfp[celli];
-                    }
-                    p.correctBoundaryConditions();
+                    // Foam::fvScalarMatrix pEqn(fvm::laplacian(rAUf, p) == fvc::div(phiHbyA));
 
                     // pEqn.setReference(pRefCell, pRefValue);
 
                     // pEqn.solve(p.select(piso.finalInnerIter()));
 
+                    auto fluxField = pEqn2.flux().copyToHost();
+                    auto nfpField = nfp.internalField().copyToHost();
+                    forAll(p, celli)
+                    {
+                        p[celli] = nfpField[celli];
+                    }
+                    p.correctBoundaryConditions();
+
+                    // auto foamFlux = pEqn.flux()();
+                    forAll(fluxField, facei)
+                    {
+                        flux[facei] = fluxField[facei];
+                    }
                     if (piso.finalNonOrthogonalIter())
                     {
-                        phi = phiHbyA - pEqn.flux();
+                        // phi = phiHbyA - pEqn.flux();
+                        phi = phiHbyA - flux;
                     }
                 }
 
