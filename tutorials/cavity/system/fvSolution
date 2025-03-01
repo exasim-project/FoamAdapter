@@ -32,7 +32,7 @@ solvers
 
     nfP
     {
-        maxIters        1000;
+        maxIters        5;
         relTol          1e-06;
     }
 
