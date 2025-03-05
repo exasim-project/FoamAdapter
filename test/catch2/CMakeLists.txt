@@ -9,7 +9,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 include(CTest)
-include(Catch)
+# include(Catch)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 
