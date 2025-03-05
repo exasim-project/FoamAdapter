@@ -2,6 +2,8 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
+#include <type_traits>
+
 #include "NeoFOAM/finiteVolume/cellCentred/fields/volumeField.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/fields/surfaceField.hpp"
 #include "NeoFOAM/core/dictionary.hpp"
@@ -64,8 +66,26 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const Fo
          {
              dict.insert("type", std::string("fixedValue"));
              NeoFOAM::TokenList tokenList = dict.template get<NeoFOAM::TokenList>("value");
-             type_primitive_t fixedValue = tokenList.get<type_primitive_t>(1);
-             dict.insert("fixedValue", fixedValue);
+             type_primitive_t fixedValue{};
+             if (std::is_same<type_primitive_t, NeoFOAM::Vector>::value)
+             {
+                NeoFOAM::Vector tmpFixedValue{};
+                tmpFixedValue[0] = tokenList.get<int>(1);
+                tmpFixedValue[1] = tokenList.get<int>(2);
+                tmpFixedValue[2] = tokenList.get<int>(3);
+                dict.insert("fixedValue", tmpFixedValue);
+             }
+             else
+             {
+                fixedValue = tokenList.get<type_primitive_t>(1);
+                dict.insert("fixedValue", fixedValue);
+             }
+         }},
+        {"noSlip", // TODO specialize for vector
+         [](auto& dict)
+         {
+             dict.insert("type", std::string("fixedValue"));
+             dict.insert("fixedValue", type_primitive_t {});
          }},
         {"calculated", [](auto& dict) { dict.insert("type", std::string("calculated")); }},
         {"extrapolatedCalculated",
