@@ -43,12 +43,18 @@ solvers
         tolerance       1e-05;
         relTol          0;
     }
+
+    nfU
+    {
+        maxIters        5;
+        relTol          1e-06;
+    }
 }
 
 PISO
 {
-    momentumPredictor   yes;
-    nCorrectors     2;
+    momentumPredictor   no;
+    nCorrectors     1;
     nNonOrthogonalCorrectors 0;
     pRefCell        0;
     pRefValue       0;

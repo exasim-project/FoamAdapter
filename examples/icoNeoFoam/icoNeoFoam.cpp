@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
         Info << "creating NeoFOAM mesh" << endl;
         NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
-        Info << "creating NeoFOAM fields" << endl;
+        Info << "creating NeoFOAM pressure fields" << endl;
         fvcc::VolumeField<NeoFOAM::scalar>& nfp =
             fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
@@ -75,18 +75,35 @@ int main(int argc, char* argv[])
                 }
             );
 
+        Info << "creating NeoFOAM velocity fields" << endl;
+        fvcc::VolumeField<NeoFOAM::Vector>& nfU =
+            fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::Vector>>(
+                Foam::CreateFromFoamField<Foam::volVectorField> {
+                    .exec = exec,
+                    .nfMesh = nfMesh,
+                    .foamField = U,
+                    .name = "nfU"
+                }
+            );
 
-        Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
+        auto nuBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<NeoFOAM::scalar>>(nfMesh);
+        fvcc::SurfaceField<NeoFOAM::scalar> nfNu(exec, "nfNu", nfMesh, nuBCs);
+        fill(nfNu.internalField(), nu.value());
+        fill(nfNu.boundaryField().value(), nu.value());
+
+        NeoFOAM::scalar endTime = controlDict.get<NeoFOAM::scalar>("endTime");
 
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
         Info << "\nStarting time loop\n" << endl;
         Foam::surfaceScalarField flux("flux", phi);
+        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 
         while (runTime.loop())
         {
-
+            auto& nfOldU = fvcc::oldTime(nfU);
+            nfOldU.internalField() = nfU.internalField(); 
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
             coNum = calculateCoNum(phi);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
@@ -111,13 +128,26 @@ int main(int argc, char* argv[])
                 solve(UEqn == -fvc::grad(p));
             }
 
+            fvcc::Expression<NeoFOAM::Vector> UEqn2(
+                dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
+                nfU,
+                fvSchemesDict,
+                solverDict.get<NeoFOAM::Dictionary>("nfU")
+            );
+
+            UEqn2.assemble(t, dt);
+
             // --- PISO loop
             while (piso.correct())
             {
-                Foam::volScalarField rAU(1.0 / UEqn.A());
+                Info << "PISO loop" << endl;
+                Foam::volScalarField rAU("rAU", 1.0 / UEqn.A());
                 Foam::surfaceScalarField rAUf("rAUf", fvc::interpolate(rAU));
+                auto [nfrAU, nfHbyA] = fvcc::discreteMomentumFields(UEqn2);
+
                 auto nfrAUf = Foam::constructSurfaceField(exec, nfMesh, rAUf);
-                Foam::volVectorField HbyA(constrainHbyA(rAU * UEqn.H(), U, p));
+                Foam::volVectorField HbyA("HbyA", constrainHbyA(rAU * UEqn.H(), U, p));
+                // Foam::volVectorField HbyA("HbyA", rAU * UEqn.H());
                 Foam::surfaceScalarField phiHbyA(
                     "phiHbyA",
                     fvc::flux(HbyA) + fvc::interpolate(rAU) * fvc::ddtCorr(U, phi)
@@ -146,6 +176,7 @@ int main(int argc, char* argv[])
                         pEqn2.setReference(pRefCell, pRefValue);
                     }
                     pEqn2.solve(t, dt);
+                    nfp.correctBoundaryConditions();
 
                     // Foam::fvScalarMatrix pEqn(fvm::laplacian(rAUf, p) == fvc::div(phiHbyA));
 
@@ -170,13 +201,29 @@ int main(int argc, char* argv[])
                     {
                         // phi = phiHbyA - pEqn.flux();
                         phi = phiHbyA - flux;
+                        fvcc::updateFaceVelocity(nfPhi, nfPhiHbyA, pEqn2);
                     }
                 }
 
                 // #include "continuityErrs.H"
+                fvcc::VolumeField<NeoFOAM::Vector> nfGradP = fvcc::GaussGreenGrad(nfp.exec(), nfp.mesh()).grad(nfp);
+                Foam::volVectorField gradP("gradP",fvc::grad(p));
 
                 U = HbyA - rAU * fvc::grad(p);
                 U.correctBoundaryConditions();
+                fvcc::updateVelocity(nfU, nfHbyA, nfrAU, nfp);
+                nfU.correctBoundaryConditions();
+                if (runTime.outputTime())
+                {
+                    Info << "writing nfp field" << endl;
+                    write(nfp.internalField(), mesh, "nfp");
+                    write(nfrAU.internalField(), mesh, "nfrAU");
+                    write(nfHbyA.internalField(), mesh, "nfHbyA");
+                    write(nfGradP.internalField(), mesh, "nfGradP");
+                    rAU.write();
+                    HbyA.write();
+                    gradP.write();
+                }
             }
 
             runTime.write();
@@ -184,6 +231,7 @@ int main(int argc, char* argv[])
             {
                 Info << "writing nfp field" << endl;
                 write(nfp.internalField(), mesh, "nfp");
+                write(nfU.internalField(), mesh, "nfU");
             }
 
             runTime.printExecutionTime(Info);
