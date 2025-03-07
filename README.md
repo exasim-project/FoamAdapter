@@ -1,5 +1,6 @@
 **[Requirements](#requirements)** |
 **[Compilation](#Compilation)** |
+**[Documentation](https://exasim-project.com/FoamAdapter/latest)** |
 # FoamAdapter
 
 The purpose of this repository is to simplify and showcase how [NeoFOAM](https://github.com/exasim-project/NeoFOAM) can be used in combination with OpenFOAM.
