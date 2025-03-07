@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>Foam::type_map&lt; List&lt; scalar &gt; &gt;</compoundname>
+    <includes refid="type__conversion_8hpp" local="no">type_conversion.hpp</includes>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_1a3db57b44a9e602b20c4eb94053680531" prot="public" static="no">
+        <type>NeoFOAM::Field&lt; NeoFOAM::scalar &gt;</type>
+        <definition>using Foam::type_map&lt; List&lt; scalar &gt; &gt;::container_type =  NeoFOAM::Field&lt;NeoFOAM::scalar&gt;</definition>
+        <argsstring></argsstring>
+        <name>container_type</name>
+        <qualifiedname>Foam::type_map&lt; List&lt; scalar &gt; &gt;::container_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="72" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_1acbf41fe533c0fb72230475acf32d6e97" prot="public" static="no">
+        <type>NeoFOAM::scalar</type>
+        <definition>using Foam::type_map&lt; List&lt; scalar &gt; &gt;::mapped_type =  NeoFOAM::scalar</definition>
+        <argsstring></argsstring>
+        <name>mapped_type</name>
+        <qualifiedname>Foam::type_map&lt; List&lt; scalar &gt; &gt;::mapped_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="73" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="73" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="70" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="71" bodyend="74"/>
+    <listofallmembers>
+      <member refid="structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_1a3db57b44a9e602b20c4eb94053680531" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; List&lt; scalar &gt; &gt;</scope><name>container_type</name></member>
+      <member refid="structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_1acbf41fe533c0fb72230475acf32d6e97" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; List&lt; scalar &gt; &gt;</scope><name>mapped_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
