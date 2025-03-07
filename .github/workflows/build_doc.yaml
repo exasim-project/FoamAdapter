@@ -1,0 +1,64 @@
+name: Build documentation
+
+env:
+  PR_NUMBER: ${{ github.event.number }}
+
+on:
+ pull_request:
+    types: [closed, synchronize, opened]
+ push:
+    tags:
+       - v*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Requirements
+      run: sudo apt install doxygen python3-sphinx texlive-font-utils
+        && pip3 install furo
+        && pip3 install breathe
+        && pip3 install sphinx-sitemap
+        && pip3 install sphinxcontrib-mermaid
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        cache: 'pip'
+    - run: pip install -r doc/requirements.txt
+
+    - name: Build docs
+      run: |
+        sphinx-build -b html ./doc ./docs_build/
+        cp -r doc/_build/ docs_build/doxygen
+        cd docs_build
+        ls doxygen
+        touch .nojekyll
+    - name: Deploy PR Build
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: docs_build
+        target-folder: Build_PR_${{ env.PR_NUMBER }}
+    - name: Deploy Versioned Build
+      if: ${{ github.ref_type == 'tag'}}
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: docs_build
+        target-folder: ${{ github.ref_name }}
+    - name: Deploy Latest Build
+      if: ${{ github.event.pull_request.merged }}
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: docs_build
+        target-folder: latest
+    - name: Comment PR
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        message: |
+          Deployed test documentation to https://exasim-project.com/FoamAdapter/Build_PR_${{ env.PR_NUMBER }}
+        comment_tag: build_url
+
+    - name: Echo Build PR URL
+      run: |
+        echo "Deploy to: https://exasim-project.com/FoamAdapter/Build_PR_${{ env.PR_NUMBER }}"
