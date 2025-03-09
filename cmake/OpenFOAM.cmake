@@ -34,8 +34,9 @@ else()
                                                        $ENV{FOAM_LIBBIN}/libmeshTools.so)
 endif()
 
-target_compile_definitions(OpenFOAM::api INTERFACE WM_LABEL_SIZE=32 NoRepository WM_DP
-                                                   OPENFOAM=2406)
+target_compile_definitions(
+  OpenFOAM::api INTERFACE WM_LABEL_SIZE=$ENV{WM_LABEL_SIZE} NoRepository
+                          WM_$ENV{WM_PRECISION_OPTION} OPENFOAM=$ENV{FOAM_API})
 
 add_library(OpenFOAM INTERFACE)
 
@@ -44,7 +45,3 @@ target_link_libraries(
   PUBLIC
   INTERFACE OpenFOAM::api OpenFOAM::core OpenFOAM::finiteVolume OpenFOAM::Pstream
             OpenFOAM::meshtools)
-
-target_compile_definitions(
-  OpenFOAM INTERFACE WM_LABEL_SIZE=$ENV{WM_LABEL_SIZE} NoRepository WM_$ENV{WM_PRECISION_OPTION}
-                     OPENFOAM=$ENV{FOAM_API} OMPI_SKIP_MPICXX)

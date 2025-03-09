@@ -7,7 +7,9 @@ on:
       - dev
       - main
   pull_request:
-    types: synchronize
+    types:
+      - synchronize
+      - open
   schedule:
     - cron: "* 0 * * 0"
 
