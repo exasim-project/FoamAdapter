@@ -22,15 +22,15 @@ startFrom       startTime;
 
 startTime       0;
 
-stopAt          nextWrite;
+stopAt          endTime;
 
 endTime         0.5;
 
 deltaT          1e-4;
 
-writeControl    timeStep;
+writeControl    adjustable;
 
-writeInterval   1;
+writeInterval   0.1;
 
 purgeWrite      0;
 
@@ -46,7 +46,7 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-adjustTimeStep  yes;
+adjustTimeStep  no;
 
 maxCo           0.2;
 
