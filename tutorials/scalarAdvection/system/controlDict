@@ -16,7 +16,7 @@ FoamFile
 
 application     scalarAdvection;
 
-executor        Serial;
+executor        GPU;
 
 startFrom       startTime;
 
