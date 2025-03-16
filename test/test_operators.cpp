@@ -57,7 +57,7 @@ TEST_CASE("Interpolation")
         {
             NeoFOAM::Input interpolationScheme = NeoFOAM::TokenList({std::string("linear")});
             auto linearKernel =
-                fvcc::SurfaceInterpolationFactory::create(exec, nfMesh, interpolationScheme);
+                fvcc::SurfaceInterpolationFactory<NeoFOAM::scalar>::create(exec, nfMesh, interpolationScheme);
             fvcc::SurfaceInterpolation interp(exec, nfMesh, std::move(linearKernel));
             // TODO since it is constructed from ofField it is trivial
             // we should reset the field first
@@ -163,7 +163,7 @@ TEST_CASE("DivOperator")
             // Reset
             NeoFOAM::fill(nfDivT.internalField(), 0.0);
             NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
-            fvcc::GaussGreenDiv(exec, nfMesh, scheme).div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
+            fvcc::GaussGreenDiv<NeoFOAM::scalar>(exec, nfMesh, scheme).div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
             nfDivT.correctBoundaryConditions();
 
             compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);

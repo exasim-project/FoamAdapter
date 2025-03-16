@@ -29,6 +29,7 @@ divSchemes
 {
     default         none;
     div(phi,U)      Gauss linear;
+    div(phi,nfU)    Gauss upwind;
 }
 
 laplacianSchemes
@@ -37,6 +38,7 @@ laplacianSchemes
     laplacian(nu,U)         Gauss linear uncorrected;
     laplacian(rAUf,p)       Gauss linear uncorrected;
     laplacian(rAUf,nfp)     Gauss linear uncorrected;
+    laplacian(nfNu,nfU)     Gauss linear uncorrected;
 }
 
 interpolationSchemes
