@@ -179,7 +179,7 @@ TEST_CASE("matrix multiplication")
         NeoFOAM::Dictionary fvSchemesDict {};
         NeoFOAM::Dictionary fvSolutionDict {};
         fvSolutionDict.insert("maxIters", 100);
-        fvSolutionDict.insert("relTol", float(1e-7));
+        fvSolutionDict.insert("relTol", NeoFOAM::scalar(1e-7));
 
 
         dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
@@ -260,7 +260,7 @@ TEST_CASE("matrix multiplication")
 
         NeoFOAM::Dictionary fvSolutionDict {};
         fvSolutionDict.insert("maxIters", 100);
-        fvSolutionDict.insert("relTol", float(1e-8));
+        fvSolutionDict.insert("relTol", NeoFOAM::scalar(1e-8));
 
         matrix.solve();
         dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
