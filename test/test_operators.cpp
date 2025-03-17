@@ -45,7 +45,7 @@ TEST_CASE("Interpolation")
         Foam::tmp<Foam::surfaceInterpolationScheme<Foam::scalar>> foamInterPol =
             Foam::surfaceInterpolationScheme<Foam::scalar>::New(mesh, is);
 
-        auto ofT = randomScalarField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh, "T");
         auto nfT = constructFrom(exec, nfMesh, ofT);
         nfT.correctBoundaryConditions();
         REQUIRE(nfT == ofT);
@@ -56,8 +56,11 @@ TEST_CASE("Interpolation")
         SECTION("linear")
         {
             NeoFOAM::Input interpolationScheme = NeoFOAM::TokenList({std::string("linear")});
-            auto linearKernel =
-                fvcc::SurfaceInterpolationFactory<NeoFOAM::scalar>::create(exec, nfMesh, interpolationScheme);
+            auto linearKernel = fvcc::SurfaceInterpolationFactory<NeoFOAM::scalar>::create(
+                exec,
+                nfMesh,
+                interpolationScheme
+            );
             fvcc::SurfaceInterpolation interp(exec, nfMesh, std::move(linearKernel));
             // TODO since it is constructed from ofField it is trivial
             // we should reset the field first
@@ -90,7 +93,7 @@ TEST_CASE("GradOperator")
         // linear interpolation hardcoded for now
         Foam::IStringStream is("linear");
 
-        auto ofT = randomScalarField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh, "T");
         auto nfT = constructFrom(exec, nfMesh, ofT);
         nfT.correctBoundaryConditions();
         REQUIRE(nfT == ofT);
@@ -130,7 +133,7 @@ TEST_CASE("DivOperator")
         // linear interpolation hardcoded for now
         Foam::IStringStream is("linear");
 
-        auto ofT = randomScalarField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh, "T");
         auto nfT = constructFrom(exec, nfMesh, ofT);
         nfT.correctBoundaryConditions();
         REQUIRE(nfT == ofT);
@@ -163,7 +166,8 @@ TEST_CASE("DivOperator")
             // Reset
             NeoFOAM::fill(nfDivT.internalField(), 0.0);
             NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
-            fvcc::GaussGreenDiv<NeoFOAM::scalar>(exec, nfMesh, scheme).div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
+            fvcc::GaussGreenDiv<NeoFOAM::scalar>(exec, nfMesh, scheme)
+                .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
             nfDivT.correctBoundaryConditions();
 
             compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);

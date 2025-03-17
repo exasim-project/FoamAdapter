@@ -24,8 +24,8 @@ TEST_CASE("VolumeField")
     Foam::MeshAdapter& mesh = *meshPtr;
     auto nfMesh = mesh.nfMesh();
 
-    auto ofT = randomScalarField(runTime, mesh);
-    auto ofU = randomVectorField(runTime, mesh);
+    auto ofT = randomScalarField(runTime, mesh, "T");
+    auto ofU = randomVectorField(runTime, mesh, "U");
 
     SECTION("volumeScalarField " + execName)
     {

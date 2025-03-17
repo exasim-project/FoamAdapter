@@ -51,7 +51,7 @@ TEST_CASE("matrix multiplication")
 
     SECTION("ddt_" + execName)
     {
-        auto ofT = randomScalarField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh, "T");
         ofT.correctBoundaryConditions();
 
         fvcc::VolumeField<NeoFOAM::scalar>& nfT =
@@ -108,7 +108,7 @@ TEST_CASE("matrix multiplication")
     SECTION("sourceterm_" + execName)
     {
         NeoFOAM::scalar coeff = 2.0;
-        auto ofT = randomScalarField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh, "T");
         fvcc::VolumeField<NeoFOAM::scalar> nfT = constructFrom(exec, nfMesh, ofT);
 
         NeoFOAM::map(
@@ -155,7 +155,7 @@ TEST_CASE("matrix multiplication")
 
     SECTION("solve sourceterm_" + execName)
     {
-        auto ofT = randomScalarField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh, "T");
         ofT.primitiveFieldRef() = 1.0;
         ofT.correctBoundaryConditions();
 
@@ -195,7 +195,7 @@ TEST_CASE("matrix multiplication")
 
     SECTION("solve div" + execName)
     {
-        auto ofT = randomScalarField(runTime, mesh);
+        auto ofT = randomScalarField(runTime, mesh, "T");
         forAll(ofT, celli)
         {
             ofT[celli] = celli;
