@@ -66,19 +66,19 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const Fo
          {
              dict.insert("type", std::string("fixedValue"));
              NeoFOAM::TokenList tokenList = dict.template get<NeoFOAM::TokenList>("value");
-             type_primitive_t fixedValue{};
+             type_primitive_t fixedValue {};
              if (std::is_same<type_primitive_t, NeoFOAM::Vector>::value)
              {
-                NeoFOAM::Vector tmpFixedValue{};
-                tmpFixedValue[0] = tokenList.get<int>(1);
-                tmpFixedValue[1] = tokenList.get<int>(2);
-                tmpFixedValue[2] = tokenList.get<int>(3);
-                dict.insert("fixedValue", tmpFixedValue);
+                 NeoFOAM::Vector tmpFixedValue {};
+                 tmpFixedValue[0] = tokenList.get<int>(1);
+                 tmpFixedValue[1] = tokenList.get<int>(2);
+                 tmpFixedValue[2] = tokenList.get<int>(3);
+                 dict.insert("fixedValue", tmpFixedValue);
              }
              else
              {
-                fixedValue = tokenList.get<type_primitive_t>(1);
-                dict.insert("fixedValue", fixedValue);
+                 fixedValue = tokenList.get<type_primitive_t>(1);
+                 dict.insert("fixedValue", fixedValue);
              }
          }},
         {"noSlip", // TODO specialize for vector
@@ -242,11 +242,17 @@ public:
         const Foam::Time& runTime = mesh.time();
         std::int64_t timeIndex = runTime.timeIndex();
 
+        NeoFOAM::DomainField<typename type_container_t::FieldValueType> domainField(
+            convertedField.exec(),
+            convertedField.internalField(),
+            convertedField.boundaryField()
+        );
+
         type_container_t registeredField(
             convertedField.exec(),
             convertedField.name,
             convertedField.mesh(),
-            convertedField.internalField(),
+            domainField,
             convertedField.boundaryConditions(),
             db,
             "",
