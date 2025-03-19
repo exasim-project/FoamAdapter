@@ -61,6 +61,9 @@ int main(int argc, char* argv[])
         Info << "creating NeoFOAM mesh" << endl;
         NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
+        Info << "Hallo0" << endl;
+
+
         Info << "creating NeoFOAM fields" << endl;
         fvcc::VolumeField<NeoFOAM::scalar>& nfT =
             fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
@@ -71,6 +74,9 @@ int main(int argc, char* argv[])
                     .name = "nfT"
                 }
             );
+
+        Info << "Hallo1" << endl;
+
         auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);
         auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 

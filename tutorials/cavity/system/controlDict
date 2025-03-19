@@ -16,7 +16,7 @@ FoamFile
 
 application     icoFoam;
 
-executor        Serial;
+executor        GPU;
 
 startFrom       startTime;
 
