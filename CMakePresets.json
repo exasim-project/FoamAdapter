@@ -39,7 +39,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "NEOFOAM_DEVEL_TOOLS": "ON",
         "FOAMADAPTER_BUILD_TESTS": "ON",
-        "NEOFOAM_BUILD_TESTS": "ON",
+        "NEOFOAM_BUILD_TESTS": "OFF",
         "FOAMADAPTER_BUILD_BENCHMARKS": "ON",
         "FOAMADAPTER_BUILD_EXAMPLES": "ON",
         "Kokkos_ENABLE_DEBUG": "OFF",
