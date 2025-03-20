@@ -93,6 +93,9 @@ TEST_CASE("Advection Equation")
         NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
         fvSchemesDict.get<NeoFOAM::Dictionary>("ddtSchemes").insert("type", timeIntegration);
         NeoFOAM::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+        NeoFOAM::Dictionary nfFvSolutionDict {
+            {{"type", "solver::Bicgstab"}, {"criteria", NeoFOAM::Dictionary {{{"iteration", 100}}}}}
+        };
 
         NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
@@ -170,7 +173,7 @@ TEST_CASE("Advection Equation")
             {
                 dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::imp::div(nfPhi, nfT));
 
-                dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
+                dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, nfFvSolutionDict);
             }
 
             // for debugging with paraview

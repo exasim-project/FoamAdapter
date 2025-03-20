@@ -18,10 +18,11 @@ solvers
 {
     T
     {
-        solver          diagonal;
-        /* preconditioner  DIC;
-        tolerance       1e-06;
-        relTol          0; */
+        solver          PBiCGStab;
+        preconditioner  none;
+        tolerance       0;
+        relTol          0;
+	maxIter         20;
     }
 }
 
