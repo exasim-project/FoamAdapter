@@ -4,12 +4,9 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 #include <unordered_set>
-#include "NeoFOAM/finiteVolume/cellCentred/stencil/cellToFaceStencil.hpp"
-
+#include "NeoFOAM/NeoFOAM.hpp"
 
 #include "gaussConvectionScheme.H"
-#include "NeoFOAM/core/input.hpp"
-#include "NeoFOAM/dsl/explicit.hpp"
 
 #include "common.hpp"
 

@@ -4,11 +4,12 @@
 
 #include <type_traits>
 
-#include "NeoFOAM/NeoFOAM.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
+
+#include "NeoFOAM/NeoFOAM.hpp"
 
 namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
 

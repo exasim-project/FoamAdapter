@@ -4,13 +4,10 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
+#include "NeoFOAM/NeoFOAM.hpp"
 
 #include "fv.H"
 #include "gaussConvectionScheme.H"
-#include "NeoFOAM/core/input.hpp"
-#include "NeoFOAM/dsl/explicit.hpp"
 
 #include "common.hpp"
 
@@ -56,8 +53,11 @@ TEST_CASE("Interpolation")
         SECTION("linear")
         {
             NeoFOAM::Input interpolationScheme = NeoFOAM::TokenList({std::string("linear")});
-            auto linearKernel =
-                fvcc::SurfaceInterpolationFactory<NeoFOAM::scalar>::create(exec, nfMesh, interpolationScheme);
+            auto linearKernel = fvcc::SurfaceInterpolationFactory<NeoFOAM::scalar>::create(
+                exec,
+                nfMesh,
+                interpolationScheme
+            );
             fvcc::SurfaceInterpolation interp(exec, nfMesh, std::move(linearKernel));
             // TODO since it is constructed from ofField it is trivial
             // we should reset the field first
@@ -163,7 +163,8 @@ TEST_CASE("DivOperator")
             // Reset
             NeoFOAM::fill(nfDivT.internalField(), 0.0);
             NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
-            fvcc::GaussGreenDiv<NeoFOAM::scalar>(exec, nfMesh, scheme).div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
+            fvcc::GaussGreenDiv<NeoFOAM::scalar>(exec, nfMesh, scheme)
+                .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
             nfDivT.correctBoundaryConditions();
 
             compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);

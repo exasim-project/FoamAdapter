@@ -6,12 +6,10 @@
                             // a custom main
 #include <unordered_set>
 #include <set>
-#include "NeoFOAM/finiteVolume/cellCentred/operators/sparsityPattern.hpp"
 
+#include "NeoFOAM/NeoFOAM.hpp"
 
 #include "gaussConvectionScheme.H"
-#include "NeoFOAM/core/input.hpp"
-#include "NeoFOAM/dsl/explicit.hpp"
 
 #include "common.hpp"
 
@@ -41,10 +39,11 @@ TEST_CASE("sparsityPattern")
     Foam::MeshAdapter& mesh = *meshPtr;
     auto& nfMesh = mesh.nfMesh();
 
-    SECTION("sparsityPattern_" + execName)
+    SECTION("Can create linear system and SparsityPattern from mesh" + execName)
     {
-        fvcc::SparsityPattern pattern(nfMesh);
-        const la::LinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx>& ls = pattern.linearSystem();
+        auto sp = fvcc::SparsityPattern(nfMesh);
+        auto ls = NeoFOAM::la::createEmptyLinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx>(sp);
+
         const auto colIdxs = ls.matrix().colIdxs();
         const auto rowPtrs = ls.matrix().rowPtrs();
 

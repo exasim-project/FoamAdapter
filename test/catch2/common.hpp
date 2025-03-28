@@ -3,23 +3,11 @@
 
 #pragma once
 
+#include "NeoFOAM/NeoFOAM.hpp"
+
 #include "FoamAdapter/conversion/convert.hpp"
 
-#include "NeoFOAM/fields/field.hpp"
-#include "NeoFOAM/fields/boundaryFields.hpp"
-#include "NeoFOAM/fields/domainField.hpp"
-
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/linear.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/upwind.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
-
-#include "NeoFOAM/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
-#include "NeoFOAM/mesh/unstructured.hpp"
-
 #include <catch2/catch_approx.hpp>
-
 
 struct ApproxScalar
 {
