@@ -1,0 +1,133 @@
+\doxysection{Foam\+::Create\+From\+Foam\+Field\texorpdfstring{$<$}{<} Field\+Type \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classFoam_1_1CreateFromFoamField}{}\label{classFoam_1_1CreateFromFoamField}\index{Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}}
+
+
+Creates a Field\+Document from an existing \doxylink{namespaceFoam}{Foam} Field.  
+
+
+
+
+{\ttfamily \#include $<$readers.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+fvcc\+::\+Field\+Document \mbox{\hyperlink{classFoam_1_1CreateFromFoamField_ab37ac5d88d5b9e58b8405b09e5dca4ac}{operator()}} (Neo\+FOAM\+::\+Database \&\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{db}})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} Neo\+FOAM\+::\+Executor \mbox{\hyperlink{classFoam_1_1CreateFromFoamField_ab22b73e82ee4b624dee992d16363b65b}{exec}}
+\item 
+\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} Neo\+FOAM\+::\+Unstructured\+Mesh \& \mbox{\hyperlink{classFoam_1_1CreateFromFoamField_ad7e890ee07c8d5d141ed5f312640f151}{nf\+Mesh}}
+\item 
+\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} \& \mbox{\hyperlink{classFoam_1_1CreateFromFoamField_aedea634561b807ccc483c30c30539af5}{foam\+Field}}
+\item 
+std\+::string \mbox{\hyperlink{classFoam_1_1CreateFromFoamField_a98e45a1b2ec7f830c0a2c5b7928f5cb5}{name}} = "{}"{}
+\item 
+std\+::int64\+\_\+t \mbox{\hyperlink{classFoam_1_1CreateFromFoamField_a50e8f7b7be795b3b6532273f05ca9716}{iteration\+Index}} = 0
+\item 
+std\+::int64\+\_\+t \mbox{\hyperlink{classFoam_1_1CreateFromFoamField_ab9007465a8f08f1945cf0c413730a196}{sub\+Cycle\+Index}} = -\/1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{typename}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}}$>$\newline
+class Foam\+::\+Create\+From\+Foam\+Field$<$ Field\+Type $>$}
+Creates a Field\+Document from an existing \doxylink{namespaceFoam}{Foam} Field. 
+
+\begin{DoxyReturn}{Returns}
+The created Field\+Document. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{readers_8hpp_source_l00218}{218}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classFoam_1_1CreateFromFoamField_ab37ac5d88d5b9e58b8405b09e5dca4ac}\label{classFoam_1_1CreateFromFoamField_ab37ac5d88d5b9e58b8405b09e5dca4ac} 
+\index{Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{typename}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$ \\
+fvcc\+::\+Field\+Document \mbox{\hyperlink{classFoam_1_1CreateFromFoamField}{Foam\+::\+Create\+From\+Foam\+Field}}$<$ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{\+::operator}}() (\begin{DoxyParamCaption}\item[{Neo\+FOAM\+::\+Database \&}]{db }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{readers_8hpp_source_l00229}{229}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classFoam_1_1CreateFromFoamField_ab22b73e82ee4b624dee992d16363b65b}\label{classFoam_1_1CreateFromFoamField_ab22b73e82ee4b624dee992d16363b65b} 
+\index{Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}!exec@{exec}}
+\index{exec@{exec}!Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}}
+\doxysubsubsection{\texorpdfstring{exec}{exec}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{typename}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$ \\
+\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} Neo\+FOAM\+::\+Executor \mbox{\hyperlink{classFoam_1_1CreateFromFoamField}{Foam\+::\+Create\+From\+Foam\+Field}}$<$ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$\+::exec}
+
+
+
+Definition at line \mbox{\hyperlink{readers_8hpp_source_l00222}{222}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
+
+\Hypertarget{classFoam_1_1CreateFromFoamField_aedea634561b807ccc483c30c30539af5}\label{classFoam_1_1CreateFromFoamField_aedea634561b807ccc483c30c30539af5} 
+\index{Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}!foamField@{foamField}}
+\index{foamField@{foamField}!Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}}
+\doxysubsubsection{\texorpdfstring{foamField}{foamField}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{typename}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$ \\
+\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}}\& \mbox{\hyperlink{classFoam_1_1CreateFromFoamField}{Foam\+::\+Create\+From\+Foam\+Field}}$<$ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$\+::foam\+Field}
+
+
+
+Definition at line \mbox{\hyperlink{readers_8hpp_source_l00224}{224}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
+
+\Hypertarget{classFoam_1_1CreateFromFoamField_a50e8f7b7be795b3b6532273f05ca9716}\label{classFoam_1_1CreateFromFoamField_a50e8f7b7be795b3b6532273f05ca9716} 
+\index{Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}!iterationIndex@{iterationIndex}}
+\index{iterationIndex@{iterationIndex}!Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}}
+\doxysubsubsection{\texorpdfstring{iterationIndex}{iterationIndex}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{typename}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$ \\
+std\+::int64\+\_\+t \mbox{\hyperlink{classFoam_1_1CreateFromFoamField}{Foam\+::\+Create\+From\+Foam\+Field}}$<$ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$\+::iteration\+Index = 0}
+
+
+
+Definition at line \mbox{\hyperlink{readers_8hpp_source_l00226}{226}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
+
+\Hypertarget{classFoam_1_1CreateFromFoamField_a98e45a1b2ec7f830c0a2c5b7928f5cb5}\label{classFoam_1_1CreateFromFoamField_a98e45a1b2ec7f830c0a2c5b7928f5cb5} 
+\index{Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}!name@{name}}
+\index{name@{name}!Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{typename}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$ \\
+std\+::string \mbox{\hyperlink{classFoam_1_1CreateFromFoamField}{Foam\+::\+Create\+From\+Foam\+Field}}$<$ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$\+::name = "{}"{}}
+
+
+
+Definition at line \mbox{\hyperlink{readers_8hpp_source_l00225}{225}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
+
+\Hypertarget{classFoam_1_1CreateFromFoamField_ad7e890ee07c8d5d141ed5f312640f151}\label{classFoam_1_1CreateFromFoamField_ad7e890ee07c8d5d141ed5f312640f151} 
+\index{Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}!nfMesh@{nfMesh}}
+\index{nfMesh@{nfMesh}!Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}}
+\doxysubsubsection{\texorpdfstring{nfMesh}{nfMesh}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{typename}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$ \\
+\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} Neo\+FOAM\+::\+Unstructured\+Mesh\& \mbox{\hyperlink{classFoam_1_1CreateFromFoamField}{Foam\+::\+Create\+From\+Foam\+Field}}$<$ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$\+::nf\+Mesh}
+
+
+
+Definition at line \mbox{\hyperlink{readers_8hpp_source_l00223}{223}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
+
+\Hypertarget{classFoam_1_1CreateFromFoamField_ab9007465a8f08f1945cf0c413730a196}\label{classFoam_1_1CreateFromFoamField_ab9007465a8f08f1945cf0c413730a196} 
+\index{Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}!subCycleIndex@{subCycleIndex}}
+\index{subCycleIndex@{subCycleIndex}!Foam::CreateFromFoamField$<$ FieldType $>$@{Foam::CreateFromFoamField$<$ FieldType $>$}}
+\doxysubsubsection{\texorpdfstring{subCycleIndex}{subCycleIndex}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{typename}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$ \\
+std\+::int64\+\_\+t \mbox{\hyperlink{classFoam_1_1CreateFromFoamField}{Foam\+::\+Create\+From\+Foam\+Field}}$<$ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Field\+Type}} $>$\+::sub\+Cycle\+Index = -\/1}
+
+
+
+Definition at line \mbox{\hyperlink{readers_8hpp_source_l00227}{227}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/\+Foam\+Adapter/\+Foam\+Adapter/include/\+Foam\+Adapter/\mbox{\hyperlink{readers_8hpp}{readers.\+hpp}}\end{DoxyCompactItemize}

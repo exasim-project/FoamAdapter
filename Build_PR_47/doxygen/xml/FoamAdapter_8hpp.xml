@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="FoamAdapter_8hpp" kind="file" language="C++">
+    <compoundname>FoamAdapter.hpp</compoundname>
+    <includes local="yes">NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp</includes>
+    <includes local="yes">NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp</includes>
+    <includes refid="meshAdapter_8hpp" local="yes">FoamAdapter/meshAdapter.hpp</includes>
+    <includes refid="readers_8hpp" local="yes">FoamAdapter/readers.hpp</includes>
+    <includes refid="writers_8hpp" local="yes">FoamAdapter/writers.hpp</includes>
+    <includes refid="setup_8hpp" local="yes">FoamAdapter/setup.hpp</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</label>
+        <link refid="FoamAdapter_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>FoamAdapter/conversion/convert.hpp</label>
+        <link refid="convert_8hpp"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>FoamAdapter/conversion/type_conversion.hpp</label>
+        <link refid="type__conversion_8hpp"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>FoamAdapter/meshAdapter.hpp</label>
+        <link refid="meshAdapter_8hpp"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>readers.hpp</label>
+        <link refid="readers_8hpp"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>FoamAdapter/readers/foamDictionary.hpp</label>
+        <link refid="foamDictionary_8hpp"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>FoamAdapter/setup.hpp</label>
+        <link refid="setup_8hpp"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>FoamAdapter/writers.hpp</label>
+        <link refid="writers_8hpp"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>NeoFOAM/NeoFOAM.hpp</label>
+      </node>
+      <node id="20">
+        <label>NeoFOAM/core/dictionary.hpp</label>
+      </node>
+      <node id="22">
+        <label>NeoFOAM/core/error.hpp</label>
+      </node>
+      <node id="16">
+        <label>NeoFOAM/core/executor/executor.hpp</label>
+      </node>
+      <node id="17">
+        <label>NeoFOAM/fields/field.hpp</label>
+      </node>
+      <node id="15">
+        <label>NeoFOAM/finiteVolume/cellCentred/fields/surfaceField.hpp</label>
+      </node>
+      <node id="14">
+        <label>NeoFOAM/finiteVolume/cellCentred/fields/volumeField.hpp</label>
+      </node>
+      <node id="2">
+        <label>NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp</label>
+      </node>
+      <node id="3">
+        <label>NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp</label>
+      </node>
+      <node id="19">
+        <label>dictionary.H</label>
+      </node>
+      <node id="5">
+        <label>functional</label>
+      </node>
+      <node id="7">
+        <label>fvMesh.H</label>
+      </node>
+      <node id="25">
+        <label>memory</label>
+      </node>
+      <node id="13">
+        <label>surfaceFields.H</label>
+      </node>
+      <node id="24">
+        <label>tuple</label>
+      </node>
+      <node id="9">
+        <label>type_traits</label>
+      </node>
+      <node id="11">
+        <label>volFields.H</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>SPDX-License-Identifier:<sp/>GPL-3.0-or-later</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>SPDX-FileCopyrightText:<sp/>2024<sp/>NeoFOAM<sp/>authors</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NeoFOAM/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meshAdapter_8hpp" kindref="compound">FoamAdapter/meshAdapter.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="readers_8hpp" kindref="compound">FoamAdapter/readers.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="writers_8hpp" kindref="compound">FoamAdapter/writers.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="setup_8hpp" kindref="compound">FoamAdapter/setup.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp"/>
+  </compounddef>
+</doxygen>
