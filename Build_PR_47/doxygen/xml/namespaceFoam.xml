@@ -376,7 +376,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" line="12" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" bodystart="12" bodyend="21"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" line="14" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" bodystart="14" bodyend="23"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -399,7 +399,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" line="25" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" bodystart="25" bodyend="48"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" line="27" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" bodystart="27" bodyend="50"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoam_1a19cd1e450383d7a47324776eff449905" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>NeoFOAM::Dictionary</type>
@@ -417,7 +417,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" line="50" column="21" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" declline="50" declcolumn="21"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" line="52" column="21" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers/foamDictionary.hpp" declline="52" declcolumn="21"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoam_1ab2ae77dfac22de0e7ebc7977cc1cf6a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">bool</ref>, <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">scalar</ref>, <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">scalar</ref> &gt;</type>
@@ -567,7 +567,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" line="31" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" bodystart="31" bodyend="55"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" line="30" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" bodystart="30" bodyend="54"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoam_1a03108e1e5a7bc01702aa2ce7e71234f6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">void</ref></type>
@@ -593,13 +593,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" line="57" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" bodystart="57" bodyend="82"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" line="56" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" bodystart="56" bodyend="81"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/comparison.hpp" line="20" column="1"/>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/comparison.hpp" line="19" column="1"/>
   </compounddef>
 </doxygen>
