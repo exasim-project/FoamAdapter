@@ -9,10 +9,9 @@
 
 #include <span>
 
-#include "Field.H"
+#include "NeoFOAM/NeoFOAM.hpp"
 
-#include "NeoFOAM/fields/field.hpp"
-#include "NeoFOAM/core/primitives/label.hpp"
+#include "Field.H"
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"

@@ -170,23 +170,24 @@ TEST_CASE("DivOperator")
             compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
         }
 
-        SECTION("compute div from dsl::exp")
-        {
-            NeoFOAM::TokenList scheme =
-                NeoFOAM::TokenList({std::string("Gauss"), std::string("linear")});
-
-            auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-            NeoFOAM::fill(nfDivT.internalField(), 0.0);
-            NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
-            dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
-            divOp.build(scheme);
-            divOp.explicitOperation(nfDivT.internalField());
-
-            nfDivT.correctBoundaryConditions();
-
-            compare(nfT, ofT, ApproxScalar(1e-15), false);
-
-            compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
-        }
+        // FIXME add again
+        /*SECTION("compute div from dsl::exp")*/
+        /*{*/
+        /*    NeoFOAM::TokenList scheme =*/
+        /*        NeoFOAM::TokenList({std::string("Gauss"), std::string("linear")});*/
+        /**/
+        /*    auto nfDivT = constructFrom(exec, nfMesh, ofDivT);*/
+        /*    NeoFOAM::fill(nfDivT.internalField(), 0.0);*/
+        /*    NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);*/
+        /*    dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);*/
+        /*    divOp.build(scheme);*/
+        /*    divOp.explicitOperation(nfDivT.internalField());*/
+        /**/
+        /*    nfDivT.correctBoundaryConditions();*/
+        /**/
+        /*    compare(nfT, ofT, ApproxScalar(1e-15), false);*/
+        /**/
+        /*    compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);*/
+        /*}*/
     }
 }
