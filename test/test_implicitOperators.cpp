@@ -9,10 +9,10 @@
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/ddtOperator.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/operators/sourceTerm.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/sparsityPattern.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/expression.hpp"
-#include "NeoFOAM/dsl.hpp"
-
+#include "NeoFOAM/finiteVolume/cellCentred/linearAlgebra/sparsityPattern.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/dsl/expression.hpp"
+#include "NeoFOAM/dsl/implicit.hpp"
+#include "NeoFOAM/dsl/explicit.hpp"
 #include "gaussConvectionScheme.H"
 
 #include "common.hpp"
@@ -81,8 +81,9 @@ TEST_CASE("matrix multiplication")
         // ddt.write();
         fvcc::DdtOperator ddtOp(dsl::Operator::Type::Implicit, nfT);
 
-        auto ls = ddtOp.createEmptyLinearSystem();
-        ddtOp.implicitOperation(ls, runTime.value(), runTime.deltaTValue());
+        // TODO finshied the ddt operator
+        // auto ls = ddtOp.createEmptyLinearSystem();
+        // ddtOp.implicitOperation(ls, runTime.value(), runTime.deltaTValue());
         // fvcc::Expression<NeoFOAM::scalar> ls2(
         //     nfT,
         //     ls,
@@ -128,8 +129,9 @@ TEST_CASE("matrix multiplication")
             REQUIRE(sourceHost[i] == coeff * nftHost[i]);
         }
 
-        auto ls = sourceTerm.createEmptyLinearSystem();
-        sourceTerm.implicitOperation(ls);
+        // TODO finish the sourceterm operator
+        // auto ls = sourceTerm.createEmptyLinearSystem();
+        // sourceTerm.implicitOperation(ls);
         // fvcc::Expression<NeoFOAM::scalar> ls2(
         //     nfT,
         //     ls,
@@ -173,7 +175,7 @@ TEST_CASE("matrix multiplication")
         Foam::fvScalarMatrix matrix(Foam::fvm::Sp(coeff1, ofT) - coeff2 * ofT);
 
 
-        dsl::Expression eqnSys(dsl::imp::Source(nfCoeff1, nfT) - dsl::exp::Source(nfCoeff2, nfT));
+        dsl::Expression eqnSys(dsl::imp::source(nfCoeff1, nfT) - dsl::exp::source(nfCoeff2, nfT));
         NeoFOAM::scalar t = 0;
         NeoFOAM::scalar dt = 1;
         NeoFOAM::Dictionary fvSchemesDict {};
@@ -244,8 +246,8 @@ TEST_CASE("matrix multiplication")
         Foam::fvScalarMatrix lap(Foam::fvm::laplacian(ofT));
 
         dsl::Expression eqnSys(
-            dsl::imp::Source(nfCoeff1, nfT) + dsl::imp::div(nfPhi, nfT)
-            - dsl::exp::Source(nfCoeff2, nfT)
+            dsl::imp::source(nfCoeff1, nfT) + dsl::imp::div(nfPhi, nfT)
+            - dsl::exp::source(nfCoeff2, nfT)
         );
 
         NeoFOAM::scalar t = 0;

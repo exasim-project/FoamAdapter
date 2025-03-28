@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
         while (runTime.loop())
         {
             auto& nfOldU = fvcc::oldTime(nfU);
-            nfOldU.internalField() = nfU.internalField(); 
+            nfOldU.internalField() = nfU.internalField();
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
             coNum = calculateCoNum(phi);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
@@ -206,8 +206,9 @@ int main(int argc, char* argv[])
                 }
 
                 // #include "continuityErrs.H"
-                fvcc::VolumeField<NeoFOAM::Vector> nfGradP = fvcc::GaussGreenGrad(nfp.exec(), nfp.mesh()).grad(nfp);
-                Foam::volVectorField gradP("gradP",fvc::grad(p));
+                fvcc::VolumeField<NeoFOAM::Vector> nfGradP =
+                    fvcc::GaussGreenGrad(nfp.exec(), nfp.mesh()).grad(nfp);
+                Foam::volVectorField gradP("gradP", fvc::grad(p));
 
                 U = HbyA - rAU * fvc::grad(p);
                 U.correctBoundaryConditions();

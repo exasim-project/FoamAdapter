@@ -6,7 +6,7 @@
                             // a custom main
 #include <unordered_set>
 #include <set>
-#include "NeoFOAM/finiteVolume/cellCentred/operators/sparsityPattern.hpp"
+#include "NeoFOAM/finiteVolume/cellCentred/linearAlgebra/sparsityPattern.hpp"
 
 
 #include "gaussConvectionScheme.H"
@@ -44,9 +44,8 @@ TEST_CASE("sparsityPattern")
     SECTION("sparsityPattern_" + execName)
     {
         fvcc::SparsityPattern pattern(nfMesh);
-        const la::LinearSystem<NeoFOAM::scalar, NeoFOAM::localIdx>& ls = pattern.linearSystem();
-        const auto colIdxs = ls.matrix().colIdxs();
-        const auto rowPtrs = ls.matrix().rowPtrs();
+        const auto colIdxs = pattern.columnIndex();
+        const auto rowPtrs = pattern.rowPtrs();
 
         forAll(mesh.cellCells(), celli)
         {

@@ -16,7 +16,7 @@
 
 #include "NeoFOAM/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
-#include "NeoFOAM/mesh/unstructured.hpp"
+#include "NeoFOAM/mesh/unstructured/unstructuredMesh.hpp"
 
 #include <catch2/catch_approx.hpp>
 

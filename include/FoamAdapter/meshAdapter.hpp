@@ -8,7 +8,7 @@
 
 #include "fvMesh.H"
 
-#include "NeoFOAM/mesh/unstructured.hpp"
+#include "NeoFOAM/mesh/unstructured/unstructuredMesh.hpp"
 #include "NeoFOAM/core/primitives/label.hpp"
 #include "NeoFOAM/core/executor/executor.hpp"
 
