@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     icoFoam;
+application     icoNeoFoam;
 
 executor        Serial;
 
@@ -22,15 +22,19 @@ startFrom       startTime;
 
 startTime       0;
 
-stopAt          nextWrite;
+stopAt          endTime; // nextWrite endTime
 
 endTime         0.5;
 
 deltaT          1e-4;
 
-writeControl    timeStep;
+writeControl    adjustable;
 
-writeInterval   1;
+writeInterval   0.1;
+
+// writeControl    timeStep;
+
+// writeInterval   1;
 
 purgeWrite      0;
 
