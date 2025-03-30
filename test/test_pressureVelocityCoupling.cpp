@@ -112,7 +112,7 @@ TEST_CASE("PressureVelocityCoupling")
         fvcc::Expression<NeoFOAM::Vector> nfUEqn(
             dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
             // dsl::imp::ddt(nfU) + dsl::imp::laplacian(nfNu, nfU),
-            // dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU),
+            // dsl::imp::ddt(nfU) - dsl::imp::div(nfPhi, nfU),
             nfU,
             fvSchemesDict,
             solverDict.get<NeoFOAM::Dictionary>("nfU")
@@ -120,22 +120,87 @@ TEST_CASE("PressureVelocityCoupling")
 
         nfUEqn.assemble(t, dt);
 
-        auto [nfrAU, nfHbyA] = fvcc::discreteMomentumFields(nfUEqn);
 
         Foam::fvVectorMatrix ofUEqn(
             fvm::ddt(ofU) + fvm::div(ofPhi, ofU) - fvm::laplacian(ofNu, ofU)
         );
         // Foam::fvVectorMatrix ofUEqn(fvm::ddt(ofU) + fvm::laplacian(ofNu, ofU));
-        // Foam::fvVectorMatrix ofUEqn(fvm::ddt(ofU) + fvm::div(ofPhi, ofU));
+        // Foam::fvVectorMatrix ofUEqn(fvm::ddt(ofU) - fvm::div(ofPhi, ofU));
 
-        Foam::volScalarField forAU("forAU", 1.0 / ofUEqn.A());
-        forAU.write();
-        auto hostnfRAU = nfrAU.internalField().copyToHost();
-        write(nfrAU.internalField(), mesh, "nfrAU");
 
-        for (size_t celli = 0; celli < hostnfRAU.size(); celli++)
+        SECTION("rAU")
         {
-            REQUIRE(hostnfRAU[celli] == Catch::Approx(forAU[celli]).margin(1e-16));
+
+            auto [nfrAU, nfHbyA] = fvcc::discreteMomentumFields(nfUEqn);
+            Foam::volScalarField forAU("forAU", 1.0 / ofUEqn.A());
+            forAU.write();
+
+            auto hostnfRAU = nfrAU.internalField().copyToHost();
+            write(nfrAU.internalField(), mesh, "nfrAU");
+
+            for (size_t celli = 0; celli < hostnfRAU.size(); celli++)
+            {
+                REQUIRE(hostnfRAU[celli] == Catch::Approx(forAU[celli]).margin(1e-16));
+            }
+        }
+
+        SECTION("rAU modified U")
+        {
+            ofU.primitiveFieldRef() *= 2.5;
+            ofU.correctBoundaryConditions();
+            nfU.internalField() *= 2.5;
+            nfU.correctBoundaryConditions();
+            auto [nfrAU, nfHbyA] = fvcc::discreteMomentumFields(nfUEqn);
+            Foam::volScalarField forAU("forAU", 1.0 / ofUEqn.A());
+            forAU.write();
+
+            auto hostnfRAU = nfrAU.internalField().copyToHost();
+            write(nfrAU.internalField(), mesh, "nfrAU");
+
+            for (size_t celli = 0; celli < hostnfRAU.size(); celli++)
+            {
+                REQUIRE(hostnfRAU[celli] == Catch::Approx(forAU[celli]).margin(1e-16));
+            }
+        }
+
+        SECTION("HbyA")
+        {
+            auto [nfrAU, nfHbyA] = fvcc::discreteMomentumFields(nfUEqn);
+            Foam::volScalarField forAU("forAU", 1.0 / ofUEqn.A());
+            Foam::volVectorField HbyA("HbyA", forAU * ofUEqn.H());
+            HbyA.write();
+
+            auto hostnfHbyA = nfHbyA.internalField().copyToHost();
+            write(nfHbyA.internalField(), mesh, "nfHbyA");
+
+            for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
+            {
+                REQUIRE(hostnfHbyA[celli][0] == Catch::Approx(HbyA[celli][0]).margin(1e-14));
+                REQUIRE(hostnfHbyA[celli][1] == Catch::Approx(HbyA[celli][1]).margin(1e-14));
+                REQUIRE(hostnfHbyA[celli][2] == Catch::Approx(HbyA[celli][2]).margin(1e-14));
+            }
+        }
+
+        SECTION("HbyA modified U")
+        {
+            ofU.primitiveFieldRef() *= 2.5;
+            ofU.correctBoundaryConditions();
+            nfU.internalField() *= 2.5;
+            nfU.correctBoundaryConditions();
+            auto [nfrAU, nfHbyA] = fvcc::discreteMomentumFields(nfUEqn);
+            Foam::volScalarField forAU("forAU", 1.0 / ofUEqn.A());
+            Foam::volVectorField HbyA("HbyA", forAU * ofUEqn.H());
+            HbyA.write();
+
+            auto hostnfHbyA = nfHbyA.internalField().copyToHost();
+            write(nfHbyA.internalField(), mesh, "nfHbyA");
+
+            for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
+            {
+                REQUIRE(hostnfHbyA[celli][0] == Catch::Approx(HbyA[celli][0]).margin(1e-14));
+                REQUIRE(hostnfHbyA[celli][1] == Catch::Approx(HbyA[celli][1]).margin(1e-14));
+                REQUIRE(hostnfHbyA[celli][2] == Catch::Approx(HbyA[celli][2]).margin(1e-14));
+            }
         }
     }
 }

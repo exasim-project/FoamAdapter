@@ -12,12 +12,18 @@
 namespace NeoFOAM::finiteVolume::cellCentred
 {
 
+void constrainHbyA(
+    VolumeField<Vector>& HbyA,
+    const VolumeField<Vector>& U,
+    const VolumeField<scalar>& p
+);
+
 std::tuple<VolumeField<scalar>, VolumeField<Vector>>
 discreteMomentumFields(const Expression<Vector>& expr);
 
 void updateFaceVelocity(
     SurfaceField<scalar> phi,
-    const SurfaceField<scalar> predictedPhi,
+    const SurfaceField<scalar>& predictedPhi,
     const Expression<scalar>& expr
 );
 
@@ -27,5 +33,8 @@ void updateVelocity(
     VolumeField<scalar>& rAU,
     VolumeField<scalar>& p
 );
+
+
+SurfaceField<scalar> flux(const VolumeField<Vector>& volField);
 
 }

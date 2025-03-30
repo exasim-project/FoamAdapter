@@ -10,6 +10,29 @@
 namespace NeoFOAM::finiteVolume::cellCentred
 {
 
+void constrainHbyA(
+    VolumeField<Vector>& HbyA,
+    const VolumeField<Vector>& U,
+    const VolumeField<scalar>& p
+)
+{
+    // const UnstructuredMesh& mesh = HbyA.mesh();
+    const auto pIn = p.internalField().span();
+    auto HbyAin = HbyA.internalField().span();
+    auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryField().value(), U.boundaryField().value());
+
+    const std::vector<VolumeBoundary<Vector>>& HbyABCs = HbyA.boundaryConditions();
+
+    for (std::size_t patchi = 0; patchi < HbyABCs.size(); ++patchi)
+    {
+        parallelFor(
+            HbyA.exec(),
+            HbyA.boundaryField().range(patchi),
+            KOKKOS_LAMBDA(const size_t bfacei) { HbyABcValue[bfacei] = UBcValue[bfacei]; }
+        );
+    }
+}
+
 std::tuple<VolumeField<scalar>, VolumeField<Vector>>
 discreteMomentumFields(const Expression<Vector>& expr)
 {
@@ -23,7 +46,7 @@ discreteMomentumFields(const Expression<Vector>& expr)
     const auto diagOffset = sparsityPattern.diagOffset().span();
     const auto rowPtrs = ls.matrix().rowPtrs();
 
-    auto rABCs = createCalculatedBCs<VolumeBoundary<scalar>>(mesh);
+    auto rABCs = createExtrapolatedBCs<VolumeBoundary<scalar>>(mesh);
     VolumeField<scalar> rAU = VolumeField<scalar>(expr.exec(), "rAU", mesh, rABCs);
 
     rAU.internalField().apply(KOKKOS_LAMBDA(const size_t celli) {
@@ -32,7 +55,7 @@ discreteMomentumFields(const Expression<Vector>& expr)
         return vol[celli] / (values[rowPtrs[celli] + diagOffsetCelli][0]);
     });
 
-    auto OffDiagonalSourceBCs = createCalculatedBCs<VolumeBoundary<Vector>>(mesh);
+    auto OffDiagonalSourceBCs = createExtrapolatedBCs<VolumeBoundary<Vector>>(mesh);
     VolumeField<Vector> HbyA = VolumeField<Vector>(expr.exec(), "HbyA", mesh, OffDiagonalSourceBCs);
     fill(HbyA.internalField(), zero<Vector>());
     const std::size_t nInternalFaces = mesh.nInternalFaces();
@@ -60,10 +83,11 @@ discreteMomentumFields(const Expression<Vector>& expr)
             std::size_t rowNeiStart = rowPtrs[nei];
             std::size_t rowOwnStart = rowPtrs[own];
 
-            auto Upper = values[rowNeiStart + neiOffs[facei]];
-            auto Lower = values[rowOwnStart + ownOffs[facei]];
-            Kokkos::atomic_add(&internalHbyA[nei], Lower[0] * internalU[own]);
-            Kokkos::atomic_add(&internalHbyA[own], Upper[0] * internalU[nei]);
+            auto Lower = values[rowNeiStart + neiOffs[facei]];
+            auto Upper = values[rowOwnStart + ownOffs[facei]];
+
+            Kokkos::atomic_sub(&internalHbyA[nei], Lower[0] * internalU[own]);
+            Kokkos::atomic_sub(&internalHbyA[own], Upper[0] * internalU[nei]);
         }
     );
 
@@ -76,13 +100,16 @@ discreteMomentumFields(const Expression<Vector>& expr)
         }
     );
 
+    HbyA.correctBoundaryConditions();
+    rAU.correctBoundaryConditions();
+
     return {rAU, HbyA};
 }
 
 
 void updateFaceVelocity(
     SurfaceField<scalar> phi,
-    const SurfaceField<scalar> predictedPhi,
+    const SurfaceField<scalar>& predictedPhi,
     const Expression<scalar>& expr
 )
 {
@@ -141,6 +168,60 @@ void updateVelocity(
     U.internalField().apply(KOKKOS_LAMBDA(const std::size_t celli) {
         return iHbyA[celli] - iRAU[celli] * iGradP[celli];
     });
+}
+
+SurfaceField<scalar> flux(const VolumeField<Vector>& volField)
+{
+    const auto exec = volField.exec();
+
+    const UnstructuredMesh& mesh = volField.mesh();
+    const std::size_t nInternalFaces = mesh.nInternalFaces();
+    Input input = TokenList({std::string("linear")});
+    auto linear = SurfaceInterpolation<Vector>(exec, mesh, input);
+    const SurfaceField<scalar> weight = linear.weight(volField);
+
+    auto surfaceBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<scalar>>(mesh);
+    auto faceFlux = SurfaceField<scalar>(exec, "out", mesh, surfaceBCs);
+
+    fill(faceFlux.internalField(), zero<scalar>());
+    fill(faceFlux.boundaryField().value(), zero<scalar>());
+    const auto [owner, neighbour, weightIn, faceAreas, volFieldIn, volFieldBc, bSf] = spans(
+        mesh.faceOwner(),
+        mesh.faceNeighbour(),
+        weight.internalField(),
+        mesh.faceAreas(),
+        volField.internalField(),
+        volField.boundaryField().value(),
+        mesh.boundaryMesh().sf()
+    );
+
+    auto [faceFluxIn, bvalue] = spans(faceFlux.internalField(), faceFlux.boundaryField().value());
+
+    parallelFor(
+        exec,
+        {0, nInternalFaces},
+        KOKKOS_LAMBDA(const size_t facei) {
+            std::size_t own = static_cast<std::size_t>(owner[facei]);
+            std::size_t nei = static_cast<std::size_t>(neighbour[facei]);
+
+            faceFluxIn[facei] =
+                faceAreas[facei]
+                & (weightIn[facei] * (volFieldIn[own] - volFieldIn[nei]) + volFieldIn[nei]);
+        }
+    );
+
+    parallelFor(
+        exec,
+        {nInternalFaces, faceFluxIn.size()},
+        KOKKOS_LAMBDA(const size_t facei) {
+            auto faceBCI = facei - nInternalFaces;
+
+            faceFluxIn[facei] = bSf[faceBCI] & volFieldBc[faceBCI];
+            bvalue[faceBCI] = bSf[faceBCI] & volFieldBc[faceBCI];
+        }
+    );
+
+    return faceFlux;
 }
 
 }
