@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="pressureVelocityCoupling_8hpp" kind="file" language="C++">
+    <compoundname>pressureVelocityCoupling.hpp</compoundname>
+    <includes local="yes">NeoFOAM/finiteVolume/cellCentred/fields/volumeField.hpp</includes>
+    <includes local="yes">NeoFOAM/finiteVolume/cellCentred/fields/surfaceField.hpp</includes>
+    <includes local="yes">NeoFOAM/finiteVolume/cellCentred/dsl/expression.hpp</includes>
+    <includedby refid="FoamAdapter_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp</label>
+        <link refid="pressureVelocityCoupling_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>NeoFOAM/finiteVolume/cellCentred/dsl/expression.hpp</label>
+      </node>
+      <node id="3">
+        <label>NeoFOAM/finiteVolume/cellCentred/fields/surfaceField.hpp</label>
+      </node>
+      <node id="2">
+        <label>NeoFOAM/finiteVolume/cellCentred/fields/volumeField.hpp</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</label>
+        <link refid="FoamAdapter_8hpp"/>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp</label>
+        <link refid="pressureVelocityCoupling_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespaceNeoFOAM">NeoFOAM</innernamespace>
+    <innernamespace refid="namespaceNeoFOAM_1_1finiteVolume">NeoFOAM::finiteVolume</innernamespace>
+    <innernamespace refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred">NeoFOAM::finiteVolume::cellCentred</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>SPDX-License-Identifier:<sp/>GPL-3.0-or-later</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>SPDX-FileCopyrightText:<sp/>2023<sp/>NeoFOAM<sp/>authors</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NeoFOAM/finiteVolume/cellCentred/fields/volumeField.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NeoFOAM/finiteVolume/cellCentred/fields/surfaceField.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NeoFOAM/finiteVolume/cellCentred/dsl/expression.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="namespaceNeoFOAM" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred" kindref="compound">NeoFOAM::finiteVolume::cellCentred</ref></highlight></codeline>
+<codeline lineno="13"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1afdec6774647202996761e9f4d01a8031" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1afdec6774647202996761e9f4d01a8031" kindref="member">constrainHbyA</ref>(</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>VolumeField&lt;Vector&gt;&amp;<sp/>HbyA,</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>VolumeField&lt;Vector&gt;&amp;<sp/>U,</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>VolumeField&lt;scalar&gt;&amp;<sp/>p</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal">std::tuple&lt;VolumeField&lt;scalar&gt;,<sp/>VolumeField&lt;Vector&gt;&gt;</highlight></codeline>
+<codeline lineno="22" refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1ae4bc26dce4246ca723228af9e0b6fa8a" refkind="member"><highlight class="normal"><ref refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1ae4bc26dce4246ca723228af9e0b6fa8a" kindref="member">discreteMomentumFields</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Expression&lt;Vector&gt;&amp;<sp/>expr);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1ab9251a598eb2705aef47fd9a0c42b04e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1ab9251a598eb2705aef47fd9a0c42b04e" kindref="member">updateFaceVelocity</ref>(</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>SurfaceField&lt;scalar&gt;&amp;<sp/>phi,</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SurfaceField&lt;scalar&gt;&amp;<sp/>predictedPhi,</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Expression&lt;scalar&gt;&amp;<sp/>expr</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1af5074343b72a74284fbf32873d854394" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1af5074343b72a74284fbf32873d854394" kindref="member">updateVelocity</ref>(</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>VolumeField&lt;Vector&gt;&amp;<sp/>U,</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>VolumeField&lt;Vector&gt;&amp;<sp/>HbyA,</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>VolumeField&lt;scalar&gt;&amp;<sp/>rAU,</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>VolumeField&lt;scalar&gt;&amp;<sp/>p</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1a03b1b787f67fd1ffb6ebcc8d338a7df5" refkind="member"><highlight class="normal">SurfaceField&lt;scalar&gt;<sp/><ref refid="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1a03b1b787f67fd1ffb6ebcc8d338a7df5" kindref="member">flux</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>VolumeField&lt;Vector&gt;&amp;<sp/>volField);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp"/>
+  </compounddef>
+</doxygen>
