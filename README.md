@@ -1,5 +1,6 @@
 **[Requirements](#requirements)** |
 **[Compilation](#Compilation)** |
+**[Documentation](https://exasim-project.com/FoamAdapter/latest)** |
 # FoamAdapter
 
 The purpose of this repository is to simplify and showcase how [NeoFOAM](https://github.com/exasim-project/NeoFOAM) can be used in combination with OpenFOAM.
@@ -32,4 +33,5 @@ We provide several Cmake presets to set commmonly required flags if you compile 
 The repository is structured in the following way:
 - src and include implement common functionality to copy data between OpenFOAM and NeoFOAM
 - tests demonstrating that NeoFOAM and OpenFOAM deliver identical results are provided by this repository in the test folder.
-- examples provides examples which can be run like typical OpenFOAM cases
+- examples provides examples of how FoamAdapter and NeoFOAM can be used for writing applications
+- tutorials provides tutorial cases which can be run like typical OpenFOAM cases
