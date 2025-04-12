@@ -108,7 +108,7 @@ discreteMomentumFields(const Expression<Vector>& expr)
 
 
 void updateFaceVelocity(
-    SurfaceField<scalar> phi,
+    SurfaceField<scalar>& phi,
     const SurfaceField<scalar>& predictedPhi,
     const Expression<scalar>& expr
 )
@@ -118,16 +118,16 @@ void updateFaceVelocity(
     const SparsityPattern sparsityPattern = expr.sparsityPattern();
     const std::size_t nInternalFaces = mesh.nInternalFaces();
     const auto exec = phi.exec();
-    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalPsi] = spans(
+    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalP] = spans(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
         mesh.boundaryMesh().faceCells(),
         sparsityPattern.ownerOffset(),
         sparsityPattern.neighbourOffset(),
-        phi.internalField()
+        p.internalField()
     );
 
-    const auto ls = expr.linearSystem();
+    const auto& ls = expr.linearSystem();
 
     const auto rowPtrs = ls.matrix().rowPtrs();
     const auto colIdxs = ls.matrix().colIdxs();
@@ -148,8 +148,8 @@ void updateFaceVelocity(
 
             auto Upper = values[rowNeiStart + neiOffs[facei]];
             auto Lower = values[rowOwnStart + ownOffs[facei]];
-            iPhi[facei] = iPredPhi[facei];
-            Kokkos::atomic_add(&iPhi[facei], Upper * internalPsi[nei] - Lower * internalPsi[own]);
+
+            iPhi[facei] = iPredPhi[facei] - (Upper * internalP[nei] - Lower * internalP[own]);
         }
     );
 }

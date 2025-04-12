@@ -22,7 +22,7 @@ std::tuple<VolumeField<scalar>, VolumeField<Vector>>
 discreteMomentumFields(const Expression<Vector>& expr);
 
 void updateFaceVelocity(
-    SurfaceField<scalar> phi,
+    SurfaceField<scalar>& phi,
     const SurfaceField<scalar>& predictedPhi,
     const Expression<scalar>& expr
 );

@@ -93,12 +93,12 @@ int main(int argc, char* argv[])
 
         NeoFOAM::scalar endTime = controlDict.get<NeoFOAM::scalar>("endTime");
 
+        Foam::surfaceScalarField flux("flux", phi);
+        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
         Info << "\nStarting time loop\n" << endl;
-        Foam::surfaceScalarField flux("flux", phi);
-        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
 
         while (runTime.loop())
         {
@@ -112,7 +112,6 @@ int main(int argc, char* argv[])
             {
                 Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
             }
-            runTime++;
 
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
@@ -185,12 +184,6 @@ int main(int argc, char* argv[])
 
                 fvcc::updateVelocity(nfU, nfHbyA, nfrAU, nfp);
                 nfU.correctBoundaryConditions();
-                if (runTime.outputTime())
-                {
-                    Info << "writing nfp field" << endl;
-                    write(nfrAU.internalField(), mesh, "nfrAU");
-                    write(nfHbyA.internalField(), mesh, "nfHbyA");
-                }
             }
 
             runTime.write();
