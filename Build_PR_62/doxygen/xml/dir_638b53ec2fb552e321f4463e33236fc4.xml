@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="dir_638b53ec2fb552e321f4463e33236fc4" kind="dir">
+    <compoundname>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion</compoundname>
+    <innerfile refid="convert_8hpp">convert.hpp</innerfile>
+    <innerfile refid="type__conversion_8hpp">type_conversion.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/"/>
+  </compounddef>
+</doxygen>

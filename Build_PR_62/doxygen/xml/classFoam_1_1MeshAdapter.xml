@@ -1,0 +1,315 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classFoam_1_1MeshAdapter" kind="class" language="C++" prot="public">
+    <compoundname>Foam::MeshAdapter</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">fvMesh</basecompoundref>
+    <includes refid="meshAdapter_8hpp" local="no">meshAdapter.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classFoam_1_1MeshAdapter_1aa929b206c2554d0368affbee33ba783f" prot="private" static="no" mutable="no">
+        <type>NeoN::UnstructuredMesh</type>
+        <definition>NeoN::UnstructuredMesh Foam::MeshAdapter::nfMesh_</definition>
+        <argsstring></argsstring>
+        <name>nfMesh_</name>
+        <qualifiedname>Foam::MeshAdapter::nfMesh_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="34" column="28" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1acc22f2887e3b57f9b55eddd528384766" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Foam::MeshAdapter::MeshAdapter</definition>
+        <argsstring>(const MeshAdapter &amp;)=delete</argsstring>
+        <name>MeshAdapter</name>
+        <qualifiedname>Foam::MeshAdapter::MeshAdapter</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="classFoam_1_1MeshAdapter" kindref="compound">MeshAdapter</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="39" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a1d5b36d0d73f466258366b77e6d43de3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">void</ref></type>
+        <definition>void Foam::MeshAdapter::operator=</definition>
+        <argsstring>(const MeshAdapter &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Foam::MeshAdapter::operator=</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="classFoam_1_1MeshAdapter" kindref="compound">MeshAdapter</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="42" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a9c71a9dd8dd990fede69ae5238dc1b21" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Foam::MeshAdapter::TypeName</definition>
+        <argsstring>(&quot;MeshAdapter&quot;)</argsstring>
+        <name>TypeName</name>
+        <qualifiedname>Foam::MeshAdapter::TypeName</qualifiedname>
+        <param>
+          <type>&quot;MeshAdapter&quot;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="47" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a392b168bbbeec0e4cbd11f39881aab43" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Foam::MeshAdapter::MeshAdapter</definition>
+        <argsstring>(const NeoN::Executor exec, const IOobject &amp;io, const bool doInit=true)</argsstring>
+        <name>MeshAdapter</name>
+        <qualifiedname>Foam::MeshAdapter::MeshAdapter</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::Executor</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">IOobject</ref> &amp;</type>
+          <declname>io</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">bool</ref></type>
+          <declname>doInit</declname>
+          <defval><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">true</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="52" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a2bf38b7f492529601c3aa7614e3189f6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Foam::MeshAdapter::MeshAdapter</definition>
+        <argsstring>(const NeoN::Executor exec, const IOobject &amp;io, const zero, bool syncPar=true)</argsstring>
+        <name>MeshAdapter</name>
+        <qualifiedname>Foam::MeshAdapter::MeshAdapter</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::Executor</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">IOobject</ref> &amp;</type>
+          <declname>io</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">zero</ref></type>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">bool</ref></type>
+          <declname>syncPar</declname>
+          <defval><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">true</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="56" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a67dcde59a0cbec54c2ced79efb85e254" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Foam::MeshAdapter::MeshAdapter</definition>
+        <argsstring>(const NeoN::Executor exec, const IOobject &amp;io, pointField &amp;&amp;points, faceList &amp;&amp;faces, labelList &amp;&amp;allOwner, labelList &amp;&amp;allNeighbour, const bool syncPar=true)</argsstring>
+        <name>MeshAdapter</name>
+        <qualifiedname>Foam::MeshAdapter::MeshAdapter</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::Executor</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">IOobject</ref> &amp;</type>
+          <declname>io</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">pointField</ref> &amp;&amp;</type>
+          <declname>points</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">faceList</ref> &amp;&amp;</type>
+          <declname>faces</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">labelList</ref> &amp;&amp;</type>
+          <declname>allOwner</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">labelList</ref> &amp;&amp;</type>
+          <declname>allNeighbour</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">bool</ref></type>
+          <declname>syncPar</declname>
+          <defval><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">true</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="60" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a24dc9da4a2eb7efc0cd49c62bee93a0a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Foam::MeshAdapter::MeshAdapter</definition>
+        <argsstring>(const NeoN::Executor exec, const IOobject &amp;io, pointField &amp;&amp;points, faceList &amp;&amp;faces, cellList &amp;&amp;cells, const bool syncPar=true)</argsstring>
+        <name>MeshAdapter</name>
+        <qualifiedname>Foam::MeshAdapter::MeshAdapter</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::Executor</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">IOobject</ref> &amp;</type>
+          <declname>io</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">pointField</ref> &amp;&amp;</type>
+          <declname>points</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">faceList</ref> &amp;&amp;</type>
+          <declname>faces</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">cellList</ref> &amp;&amp;</type>
+          <declname>cells</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">bool</ref></type>
+          <declname>syncPar</declname>
+          <defval><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">true</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="72" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a7f164ef5b5feab2c4b8127746dfb1374" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Foam::MeshAdapter::~MeshAdapter</definition>
+        <argsstring>()=default</argsstring>
+        <name>~MeshAdapter</name>
+        <qualifiedname>Foam::MeshAdapter::~MeshAdapter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="82" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a46f3491199f4244328e10ec018deb70a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>NeoN::UnstructuredMesh &amp;</type>
+        <definition>NeoN::UnstructuredMesh &amp; Foam::MeshAdapter::nfMesh</definition>
+        <argsstring>()</argsstring>
+        <name>nfMesh</name>
+        <qualifiedname>Foam::MeshAdapter::nfMesh</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="84" column="28" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" bodystart="84" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a62eca87ae28273f42712c05841b2b748" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::UnstructuredMesh &amp;</type>
+        <definition>const NeoN::UnstructuredMesh &amp; Foam::MeshAdapter::nfMesh</definition>
+        <argsstring>() const</argsstring>
+        <name>nfMesh</name>
+        <qualifiedname>Foam::MeshAdapter::nfMesh</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="86" column="34" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" bodystart="86" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="classFoam_1_1MeshAdapter_1a287ae77f86e6d1061d97d13505ebf2f4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::Executor</type>
+        <definition>const NeoN::Executor Foam::MeshAdapter::exec</definition>
+        <argsstring>() const</argsstring>
+        <name>exec</name>
+        <qualifiedname>Foam::MeshAdapter::exec</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="88" column="26" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" bodystart="88" bodyend="88"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Foam::MeshAdapter</label>
+        <link refid="classFoam_1_1MeshAdapter"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>fvMesh</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Foam::MeshAdapter</label>
+        <link refid="classFoam_1_1MeshAdapter"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>fvMesh</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" line="31" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp" bodystart="32" bodyend="89"/>
+    <listofallmembers>
+      <member refid="classFoam_1_1MeshAdapter_1a287ae77f86e6d1061d97d13505ebf2f4" prot="public" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>exec</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1acc22f2887e3b57f9b55eddd528384766" prot="private" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>MeshAdapter</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a392b168bbbeec0e4cbd11f39881aab43" prot="public" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>MeshAdapter</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a2bf38b7f492529601c3aa7614e3189f6" prot="public" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>MeshAdapter</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a67dcde59a0cbec54c2ced79efb85e254" prot="public" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>MeshAdapter</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a24dc9da4a2eb7efc0cd49c62bee93a0a" prot="public" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>MeshAdapter</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a46f3491199f4244328e10ec018deb70a" prot="public" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>nfMesh</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a62eca87ae28273f42712c05841b2b748" prot="public" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>nfMesh</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1aa929b206c2554d0368affbee33ba783f" prot="private" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>nfMesh_</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a1d5b36d0d73f466258366b77e6d43de3" prot="private" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>operator=</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a9c71a9dd8dd990fede69ae5238dc1b21" prot="public" virt="non-virtual"><scope>Foam::MeshAdapter</scope><name>TypeName</name></member>
+      <member refid="classFoam_1_1MeshAdapter_1a7f164ef5b5feab2c4b8127746dfb1374" prot="public" virt="virtual"><scope>Foam::MeshAdapter</scope><name>~MeshAdapter</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

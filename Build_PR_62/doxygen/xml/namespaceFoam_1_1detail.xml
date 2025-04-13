@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespaceFoam_1_1detail" kind="namespace" language="C++">
+    <compoundname>Foam::detail</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceFoam_1_1detail_1a2be03afc1ace009438265b3beb3a48f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class DestField</type>
+          </param>
+          <param>
+            <type>class SrcField</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">void</ref></type>
+        <definition>void Foam::detail::copy_impl</definition>
+        <argsstring>(DestField &amp;dest, const SrcField src)</argsstring>
+        <name>copy_impl</name>
+        <qualifiedname>Foam::detail::copy_impl</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">DestField</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">SrcField</ref></type>
+          <declname>src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" line="19" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" bodystart="19" bodyend="28"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" line="16" column="1"/>
+  </compounddef>
+</doxygen>
