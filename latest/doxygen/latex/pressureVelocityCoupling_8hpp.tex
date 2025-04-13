@@ -1,0 +1,27 @@
+\doxysection{/home/runner/work/\+Foam\+Adapter/\+Foam\+Adapter/include/\+Foam\+Adapter/finite\+Volume/cell\+Centred/pressure\+Velocity\+Coupling/pressure\+Velocity\+Coupling.hpp File Reference}
+\hypertarget{pressureVelocityCoupling_8hpp}{}\label{pressureVelocityCoupling_8hpp}\index{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp@{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp}}
+{\ttfamily \#include "{}Neo\+FOAM/finite\+Volume/cell\+Centred/fields/volume\+Field.\+hpp"{}}\newline
+{\ttfamily \#include "{}Neo\+FOAM/finite\+Volume/cell\+Centred/fields/surface\+Field.\+hpp"{}}\newline
+{\ttfamily \#include "{}Neo\+FOAM/finite\+Volume/cell\+Centred/dsl/expression.\+hpp"{}}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceNeoFOAM}{Neo\+FOAM}}
+\item 
+namespace \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume}{Neo\+FOAM\+::finite\+Volume}}
+\item 
+namespace \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred}{Neo\+FOAM\+::finite\+Volume\+::cell\+Centred}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_afdec6774647202996761e9f4d01a8031}{Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::constrain\+HbyA}} (Volume\+Field$<$ Vector $>$ \&HbyA, const Volume\+Field$<$ Vector $>$ \&U, const Volume\+Field$<$ scalar $>$ \&p)
+\item 
+std\+::tuple$<$ Volume\+Field$<$ scalar $>$, Volume\+Field$<$ Vector $>$ $>$ \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_ae4bc26dce4246ca723228af9e0b6fa8a}{Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::discrete\+Momentum\+Fields}} (const Expression$<$ Vector $>$ \&expr)
+\item 
+void \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_ab9251a598eb2705aef47fd9a0c42b04e}{Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::update\+Face\+Velocity}} (Surface\+Field$<$ scalar $>$ \&phi, const Surface\+Field$<$ scalar $>$ \&predicted\+Phi, const Expression$<$ scalar $>$ \&expr)
+\item 
+void \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_af5074343b72a74284fbf32873d854394}{Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::update\+Velocity}} (Volume\+Field$<$ Vector $>$ \&U, const Volume\+Field$<$ Vector $>$ \&HbyA, Volume\+Field$<$ scalar $>$ \&r\+AU, Volume\+Field$<$ scalar $>$ \&p)
+\item 
+Surface\+Field$<$ scalar $>$ \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_a03b1b787f67fd1ffb6ebcc8d338a7df5}{Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::flux}} (const Volume\+Field$<$ Vector $>$ \&vol\+Field)
+\end{DoxyCompactItemize}

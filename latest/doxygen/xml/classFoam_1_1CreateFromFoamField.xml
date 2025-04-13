@@ -21,7 +21,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="195" column="29" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="195" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="226" column="29" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="226" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classFoam_1_1CreateFromFoamField_1ad7e890ee07c8d5d141ed5f312640f151" prot="public" static="no" mutable="no">
         <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoFOAM::UnstructuredMesh &amp;</type>
@@ -35,7 +35,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="196" column="37" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="196" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="227" column="37" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="227" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classFoam_1_1CreateFromFoamField_1aedea634561b807ccc483c30c30539af5" prot="public" static="no" mutable="no">
         <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">FieldType</ref> &amp;</type>
@@ -49,7 +49,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="197" column="21" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="197" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="228" column="21" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="228" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classFoam_1_1CreateFromFoamField_1a98e45a1b2ec7f830c0a2c5b7928f5cb5" prot="public" static="no" mutable="no">
         <type>std::string</type>
@@ -64,7 +64,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="198" column="17" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="198" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="229" column="17" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="229" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classFoam_1_1CreateFromFoamField_1a50e8f7b7be795b3b6532273f05ca9716" prot="public" static="no" mutable="no">
         <type>std::int64_t</type>
@@ -79,7 +79,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="199" column="18" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="199" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="230" column="18" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="230" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classFoam_1_1CreateFromFoamField_1ab9007465a8f08f1945cf0c413730a196" prot="public" static="no" mutable="no">
         <type>std::int64_t</type>
@@ -94,7 +94,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="200" column="18" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="200" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="231" column="18" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="231" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -114,7 +114,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="202" column="25" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="202" bodyend="233"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="233" column="25" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="233" bodyend="270"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -125,7 +125,7 @@
 </simplesect>
 </para>
     </detaileddescription>
-    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="191" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="192" bodyend="234"/>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="222" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="223" bodyend="271"/>
     <listofallmembers>
       <member refid="classFoam_1_1CreateFromFoamField_1ab22b73e82ee4b624dee992d16363b65b" prot="public" virt="non-virtual"><scope>Foam::CreateFromFoamField</scope><name>exec</name></member>
       <member refid="classFoam_1_1CreateFromFoamField_1aedea634561b807ccc483c30c30539af5" prot="public" virt="non-virtual"><scope>Foam::CreateFromFoamField</scope><name>foamField</name></member>

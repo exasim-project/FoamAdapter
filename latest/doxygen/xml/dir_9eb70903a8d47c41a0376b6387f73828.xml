@@ -3,8 +3,8 @@
   <compounddef id="dir_9eb70903a8d47c41a0376b6387f73828" kind="dir">
     <compoundname>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter</compoundname>
     <innerdir refid="dir_638b53ec2fb552e321f4463e33236fc4">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion</innerdir>
+    <innerdir refid="dir_4c04ba3d9c03c846cdadce21404939a8">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume</innerdir>
     <innerdir refid="dir_79cb95f04b0bddd726ce1e4e4487e202">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers</innerdir>
-    <innerdir refid="dir_4e003cc3e998dd8f1bc3920bff7a1be9">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup</innerdir>
     <innerfile refid="comparison_8hpp">comparison.hpp</innerfile>
     <innerfile refid="FoamAdapter_8hpp">FoamAdapter.hpp</innerfile>
     <innerfile refid="meshAdapter_8hpp">meshAdapter.hpp</innerfile>

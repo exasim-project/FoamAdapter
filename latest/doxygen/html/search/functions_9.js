@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['write_0',['write',['../namespaceFoam.html#a483f0076a54ed729c2f6155d6d6db3f1',1,'Foam::write(NeoFOAM::scalarField &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)'],['../namespaceFoam.html#a03108e1e5a7bc01702aa2ce7e71234f6',1,'Foam::write(NeoFOAM::vectorField &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)']]]
+  ['timecontrols_0',['timeControls',['../namespaceFoam.html#ab2ae77dfac22de0e7ebc7977cc1cf6a5',1,'Foam']]],
+  ['typename_1',['TypeName',['../classFoam_1_1MeshAdapter.html#a9c71a9dd8dd990fede69ae5238dc1b21',1,'Foam::MeshAdapter']]]
 ];

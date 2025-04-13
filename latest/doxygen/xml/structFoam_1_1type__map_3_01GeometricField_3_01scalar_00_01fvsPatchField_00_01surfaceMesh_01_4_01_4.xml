@@ -18,7 +18,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="41" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="41" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="42" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="42" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_1a58def5f31790cbf10a8980ee528692e9" prot="public" static="no">
         <type>NeoFOAM::scalar</type>
@@ -32,14 +32,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="42" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="42" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="43" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="43" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="39" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="40" bodyend="43"/>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="40" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="41" bodyend="44"/>
     <listofallmembers>
       <member refid="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_1a4d9cdcef8e5c610ef68bafc4e939f5ff" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; GeometricField&lt; scalar, fvsPatchField, surfaceMesh &gt; &gt;</scope><name>container_type</name></member>
       <member refid="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_1a58def5f31790cbf10a8980ee528692e9" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; GeometricField&lt; scalar, fvsPatchField, surfaceMesh &gt; &gt;</scope><name>mapped_type</name></member>

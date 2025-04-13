@@ -1,0 +1,48 @@
+\doxysection{Neo\+FOAM\+::finite\+Volume\+::cell\+Centred Namespace Reference}
+\hypertarget{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred}{}\label{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred}\index{NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_afdec6774647202996761e9f4d01a8031}{constrain\+HbyA}} (Volume\+Field$<$ Vector $>$ \&HbyA, const Volume\+Field$<$ Vector $>$ \&U, const Volume\+Field$<$ scalar $>$ \&p)
+\item 
+std\+::tuple$<$ Volume\+Field$<$ scalar $>$, Volume\+Field$<$ Vector $>$ $>$ \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_ae4bc26dce4246ca723228af9e0b6fa8a}{discrete\+Momentum\+Fields}} (const Expression$<$ Vector $>$ \&expr)
+\item 
+void \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_ab9251a598eb2705aef47fd9a0c42b04e}{update\+Face\+Velocity}} (Surface\+Field$<$ scalar $>$ \&phi, const Surface\+Field$<$ scalar $>$ \&predicted\+Phi, const Expression$<$ scalar $>$ \&expr)
+\item 
+void \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_af5074343b72a74284fbf32873d854394}{update\+Velocity}} (Volume\+Field$<$ Vector $>$ \&U, const Volume\+Field$<$ Vector $>$ \&HbyA, Volume\+Field$<$ scalar $>$ \&r\+AU, Volume\+Field$<$ scalar $>$ \&p)
+\item 
+Surface\+Field$<$ scalar $>$ \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_a03b1b787f67fd1ffb6ebcc8d338a7df5}{flux}} (const Volume\+Field$<$ Vector $>$ \&vol\+Field)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_afdec6774647202996761e9f4d01a8031}\label{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_afdec6774647202996761e9f4d01a8031} 
+\index{NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}!constrainHbyA@{constrainHbyA}}
+\index{constrainHbyA@{constrainHbyA}!NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}}
+\doxysubsubsection{\texorpdfstring{constrainHbyA()}{constrainHbyA()}}
+{\footnotesize\ttfamily void Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::constrain\+HbyA (\begin{DoxyParamCaption}\item[{Volume\+Field$<$ Vector $>$ \&}]{HbyA,  }\item[{const Volume\+Field$<$ Vector $>$ \&}]{U,  }\item[{const Volume\+Field$<$ scalar $>$ \&}]{p }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_ae4bc26dce4246ca723228af9e0b6fa8a}\label{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_ae4bc26dce4246ca723228af9e0b6fa8a} 
+\index{NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}!discreteMomentumFields@{discreteMomentumFields}}
+\index{discreteMomentumFields@{discreteMomentumFields}!NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}}
+\doxysubsubsection{\texorpdfstring{discreteMomentumFields()}{discreteMomentumFields()}}
+{\footnotesize\ttfamily std\+::tuple$<$ Volume\+Field$<$ scalar $>$, Volume\+Field$<$ Vector $>$ $>$ Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::discrete\+Momentum\+Fields (\begin{DoxyParamCaption}\item[{const Expression$<$ Vector $>$ \&}]{expr }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_a03b1b787f67fd1ffb6ebcc8d338a7df5}\label{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_a03b1b787f67fd1ffb6ebcc8d338a7df5} 
+\index{NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}!flux@{flux}}
+\index{flux@{flux}!NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}}
+\doxysubsubsection{\texorpdfstring{flux()}{flux()}}
+{\footnotesize\ttfamily Surface\+Field$<$ scalar $>$ Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::flux (\begin{DoxyParamCaption}\item[{const Volume\+Field$<$ Vector $>$ \&}]{vol\+Field }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_ab9251a598eb2705aef47fd9a0c42b04e}\label{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_ab9251a598eb2705aef47fd9a0c42b04e} 
+\index{NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}!updateFaceVelocity@{updateFaceVelocity}}
+\index{updateFaceVelocity@{updateFaceVelocity}!NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}}
+\doxysubsubsection{\texorpdfstring{updateFaceVelocity()}{updateFaceVelocity()}}
+{\footnotesize\ttfamily void Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::update\+Face\+Velocity (\begin{DoxyParamCaption}\item[{Surface\+Field$<$ scalar $>$ \&}]{phi,  }\item[{const Surface\+Field$<$ scalar $>$ \&}]{predicted\+Phi,  }\item[{const Expression$<$ scalar $>$ \&}]{expr }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_af5074343b72a74284fbf32873d854394}\label{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_af5074343b72a74284fbf32873d854394} 
+\index{NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}!updateVelocity@{updateVelocity}}
+\index{updateVelocity@{updateVelocity}!NeoFOAM::finiteVolume::cellCentred@{NeoFOAM::finiteVolume::cellCentred}}
+\doxysubsubsection{\texorpdfstring{updateVelocity()}{updateVelocity()}}
+{\footnotesize\ttfamily void Neo\+FOAM\+::finite\+Volume\+::cell\+Centred\+::update\+Velocity (\begin{DoxyParamCaption}\item[{Volume\+Field$<$ Vector $>$ \&}]{U,  }\item[{const Volume\+Field$<$ Vector $>$ \&}]{HbyA,  }\item[{Volume\+Field$<$ scalar $>$ \&}]{r\+AU,  }\item[{Volume\+Field$<$ scalar $>$ \&}]{p }\end{DoxyParamCaption})}
+

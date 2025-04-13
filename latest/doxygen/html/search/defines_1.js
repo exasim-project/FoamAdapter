@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['namespacefoam_0',['namespacefoam',['../setup_8hpp.html#ab793f86758534ddf38d2048b36717f7a',1,'namespaceFoam:&#160;setup.hpp'],['../setup_2setup_8hpp.html#ab793f86758534ddf38d2048b36717f7a',1,'namespaceFoam:&#160;setup.hpp']]]
+  ['surfgeofield_5fequality_5foperator_0',['SURFGEOFIELD_EQUALITY_OPERATOR',['../comparison_8hpp.html#aecccc7805fe3f80ddade77cf81ec9a74',1,'comparison.hpp']]]
 ];

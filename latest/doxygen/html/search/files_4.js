@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['setup_2ehpp_0',['setup.hpp',['../setup_8hpp.html',1,'(Global Namespace)'],['../setup_2setup_8hpp.html',1,'(Global Namespace)']]]
+  ['readers_2ehpp_0',['readers.hpp',['../readers_8hpp.html',1,'']]]
 ];

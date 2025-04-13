@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred" kind="namespace" language="C++">
+    <compoundname>NeoFOAM::finiteVolume::cellCentred</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1afdec6774647202996761e9f4d01a8031" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void NeoFOAM::finiteVolume::cellCentred::constrainHbyA</definition>
+        <argsstring>(VolumeField&lt; Vector &gt; &amp;HbyA, const VolumeField&lt; Vector &gt; &amp;U, const VolumeField&lt; scalar &gt; &amp;p)</argsstring>
+        <name>constrainHbyA</name>
+        <qualifiedname>NeoFOAM::finiteVolume::cellCentred::constrainHbyA</qualifiedname>
+        <param>
+          <type>VolumeField&lt; Vector &gt; &amp;</type>
+          <declname>HbyA</declname>
+        </param>
+        <param>
+          <type>const VolumeField&lt; Vector &gt; &amp;</type>
+          <declname>U</declname>
+        </param>
+        <param>
+          <type>const VolumeField&lt; scalar &gt; &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" line="15" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" declline="15" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1ae4bc26dce4246ca723228af9e0b6fa8a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; VolumeField&lt; scalar &gt;, VolumeField&lt; Vector &gt; &gt;</type>
+        <definition>std::tuple&lt; VolumeField&lt; scalar &gt;, VolumeField&lt; Vector &gt; &gt; NeoFOAM::finiteVolume::cellCentred::discreteMomentumFields</definition>
+        <argsstring>(const Expression&lt; Vector &gt; &amp;expr)</argsstring>
+        <name>discreteMomentumFields</name>
+        <qualifiedname>NeoFOAM::finiteVolume::cellCentred::discreteMomentumFields</qualifiedname>
+        <param>
+          <type>const Expression&lt; Vector &gt; &amp;</type>
+          <declname>expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" line="22" column="1" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" declline="22" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1ab9251a598eb2705aef47fd9a0c42b04e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void NeoFOAM::finiteVolume::cellCentred::updateFaceVelocity</definition>
+        <argsstring>(SurfaceField&lt; scalar &gt; &amp;phi, const SurfaceField&lt; scalar &gt; &amp;predictedPhi, const Expression&lt; scalar &gt; &amp;expr)</argsstring>
+        <name>updateFaceVelocity</name>
+        <qualifiedname>NeoFOAM::finiteVolume::cellCentred::updateFaceVelocity</qualifiedname>
+        <param>
+          <type>SurfaceField&lt; scalar &gt; &amp;</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>const SurfaceField&lt; scalar &gt; &amp;</type>
+          <declname>predictedPhi</declname>
+        </param>
+        <param>
+          <type>const Expression&lt; scalar &gt; &amp;</type>
+          <declname>expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" line="24" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" declline="24" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1af5074343b72a74284fbf32873d854394" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void NeoFOAM::finiteVolume::cellCentred::updateVelocity</definition>
+        <argsstring>(VolumeField&lt; Vector &gt; &amp;U, const VolumeField&lt; Vector &gt; &amp;HbyA, VolumeField&lt; scalar &gt; &amp;rAU, VolumeField&lt; scalar &gt; &amp;p)</argsstring>
+        <name>updateVelocity</name>
+        <qualifiedname>NeoFOAM::finiteVolume::cellCentred::updateVelocity</qualifiedname>
+        <param>
+          <type>VolumeField&lt; Vector &gt; &amp;</type>
+          <declname>U</declname>
+        </param>
+        <param>
+          <type>const VolumeField&lt; Vector &gt; &amp;</type>
+          <declname>HbyA</declname>
+        </param>
+        <param>
+          <type>VolumeField&lt; scalar &gt; &amp;</type>
+          <declname>rAU</declname>
+        </param>
+        <param>
+          <type>VolumeField&lt; scalar &gt; &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" line="30" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" declline="30" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred_1a03b1b787f67fd1ffb6ebcc8d338a7df5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SurfaceField&lt; scalar &gt;</type>
+        <definition>SurfaceField&lt; scalar &gt; NeoFOAM::finiteVolume::cellCentred::flux</definition>
+        <argsstring>(const VolumeField&lt; Vector &gt; &amp;volField)</argsstring>
+        <name>flux</name>
+        <qualifiedname>NeoFOAM::finiteVolume::cellCentred::flux</qualifiedname>
+        <param>
+          <type>const VolumeField&lt; Vector &gt; &amp;</type>
+          <declname>volField</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" line="38" column="14" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" declline="38" declcolumn="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" line="12" column="1"/>
+  </compounddef>
+</doxygen>
