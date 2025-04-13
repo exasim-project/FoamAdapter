@@ -20,16 +20,16 @@
 namespace Foam
 {
 
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 #define FIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                                  \
-    bool operator==(const NeoFOAM::Field<NF_TYPE>& nf, const Foam::Field<OF_TYPE>& of)             \
+    bool operator==(const NeoN::Field<NF_TYPE>& nf, const Foam::Field<OF_TYPE>& of)                \
     {                                                                                              \
         auto nfHost = nf.copyToHost();                                                             \
-        auto nfSpan = nfHost.span();                                                               \
-        for (int i = 0; i < nfSpan.size(); i++)                                                    \
+        auto nfView = nfHost.view();                                                               \
+        for (int i = 0; i < nfView.size(); i++)                                                    \
         {                                                                                          \
-            if (nfSpan[i] != convert(of[i]))                                                       \
+            if (nfView[i] != convert(of[i]))                                                       \
             {                                                                                      \
                 return false;                                                                      \
             }                                                                                      \
@@ -38,9 +38,9 @@ namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
     };
 
 
-FIELD_EQUALITY_OPERATOR(NeoFOAM::label, Foam::label)
-FIELD_EQUALITY_OPERATOR(NeoFOAM::scalar, Foam::scalar)
-FIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
+FIELD_EQUALITY_OPERATOR(NeoN::label, Foam::label)
+FIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
+FIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
 
 #define VOLGEOFIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                            \
     bool operator==(                                                                               \
@@ -57,14 +57,14 @@ FIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
         auto nfBoundaryHost = nf.boundaryField().value().copyToHost();                             \
-        auto nfBoundarySpan = nfBoundaryHost.span();                                               \
-        NeoFOAM::label pFacei = 0;                                                                 \
+        auto nfBoundaryView = nfBoundaryHost.view();                                               \
+        NeoN::label pFacei = 0;                                                                    \
         for (const auto& patch : of.boundaryField())                                               \
         {                                                                                          \
             int patchSize = patch.size();                                                          \
             for (const auto& patchValue : patch)                                                   \
             {                                                                                      \
-                if (nfBoundarySpan[pFacei] != Foam::convert(patchValue))                           \
+                if (nfBoundaryView[pFacei] != Foam::convert(patchValue))                           \
                 {                                                                                  \
                     return false;                                                                  \
                 }                                                                                  \
@@ -75,8 +75,8 @@ FIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
         return true;                                                                               \
     }
 
-VOLGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::scalar, Foam::scalar)
-VOLGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
+VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
+VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
 
 /*
  *
@@ -96,15 +96,15 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
         auto nfHost = nf.internalField().copyToHost();                                             \
-        auto nfSpan = nfHost.span();                                                               \
-        NeoFOAM::label nInternalFaces = nf.internalField().size();                                 \
-        NeoFOAM::label pFacei = nInternalFaces;                                                    \
+        auto nfView = nfHost.view();                                                               \
+        NeoN::label nInternalFaces = nf.internalField().size();                                    \
+        NeoN::label pFacei = nInternalFaces;                                                       \
         for (const auto& patch : of.boundaryField())                                               \
         {                                                                                          \
             int patchSize = patch.size();                                                          \
             for (const auto& patchValue : patch)                                                   \
             {                                                                                      \
-                if (nfSpan[pFacei] != Foam::convert(patchValue))                                   \
+                if (nfView[pFacei] != Foam::convert(patchValue))                                   \
                 {                                                                                  \
                     return false;                                                                  \
                 }                                                                                  \
@@ -115,7 +115,7 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
         return true;                                                                               \
     }
 
-SURFGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::scalar, Foam::scalar)
-SURFGEOFIELD_EQUALITY_OPERATOR(NeoFOAM::Vector, Foam::vector)
+SURFGEOFIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
+SURFGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
 
 } // namespace Foam

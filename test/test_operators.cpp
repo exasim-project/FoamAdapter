@@ -14,8 +14,8 @@
 
 #include "common.hpp"
 
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
-namespace dsl = NeoFOAM::dsl;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
+namespace dsl = NeoN::dsl;
 
 extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
@@ -27,10 +27,10 @@ TEST_CASE("Interpolation")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoFOAM::Executor exec = GENERATE(
-        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(
+        NeoN::Executor(NeoN::SerialExecutor {}),
+        NeoN::Executor(NeoN::CPUExecutor {}),
+        NeoN::Executor(NeoN::GPUExecutor {})
     );
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
@@ -55,8 +55,8 @@ TEST_CASE("Interpolation")
 
         SECTION("linear")
         {
-            NeoFOAM::Input interpolationScheme = NeoFOAM::TokenList({std::string("linear")});
-            auto linearKernel = fvcc::SurfaceInterpolationFactory<NeoFOAM::scalar>::create(
+            NeoN::Input interpolationScheme = NeoN::TokenList({std::string("linear")});
+            auto linearKernel = fvcc::SurfaceInterpolationFactory<NeoN::scalar>::create(
                 exec,
                 nfMesh,
                 interpolationScheme
@@ -76,17 +76,17 @@ TEST_CASE("GradOperator")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoFOAM::Executor exec = GENERATE(
-        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(
+        NeoN::Executor(NeoN::CPUExecutor {}),
+        NeoN::Executor(NeoN::SerialExecutor {}),
+        NeoN::Executor(NeoN::GPUExecutor {})
     );
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
 
     std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
     Foam::MeshAdapter& mesh = *meshPtr;
-    NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
+    NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
     SECTION("GaussGrad on " + execName)
     {
@@ -102,8 +102,8 @@ TEST_CASE("GradOperator")
         Foam::volVectorField ofGradT("ofGradT", foamGradScalar.calcGrad(ofT, "test"));
 
         auto nfGradT = constructFrom(exec, nfMesh, ofGradT);
-        NeoFOAM::fill(nfGradT.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
-        NeoFOAM::fill(nfGradT.boundaryField().value(), NeoFOAM::Vector(0.0, 0.0, 0.0));
+        NeoN::fill(nfGradT.internalField(), NeoN::Vector(0.0, 0.0, 0.0));
+        NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vector(0.0, 0.0, 0.0));
         fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
         nfGradT.correctBoundaryConditions();
 
@@ -117,10 +117,10 @@ TEST_CASE("DivOperator")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoFOAM::Executor exec = GENERATE(
-        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(
+        NeoN::Executor(NeoN::SerialExecutor {}),
+        NeoN::Executor(NeoN::CPUExecutor {}),
+        NeoN::Executor(NeoN::GPUExecutor {})
     );
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
 
@@ -162,11 +162,11 @@ TEST_CASE("DivOperator")
         SECTION("Gauss-Green")
         {
             auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-            NeoFOAM::TokenList scheme({std::string("linear")});
+            NeoN::TokenList scheme({std::string("linear")});
             // Reset
-            NeoFOAM::fill(nfDivT.internalField(), 0.0);
-            NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
-            fvcc::GaussGreenDiv<NeoFOAM::scalar>(exec, nfMesh, scheme)
+            NeoN::fill(nfDivT.internalField(), 0.0);
+            NeoN::fill(nfDivT.boundaryField().value(), 0.0);
+            fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
                 .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
             nfDivT.correctBoundaryConditions();
 
@@ -175,12 +175,11 @@ TEST_CASE("DivOperator")
 
         SECTION("compute div from dsl::exp")
         {
-            NeoFOAM::TokenList scheme =
-                NeoFOAM::TokenList({std::string("Gauss"), std::string("linear")});
+            NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"), std::string("linear")});
 
             auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-            NeoFOAM::fill(nfDivT.internalField(), 0.0);
-            NeoFOAM::fill(nfDivT.boundaryField().value(), 0.0);
+            NeoN::fill(nfDivT.internalField(), 0.0);
+            NeoN::fill(nfDivT.boundaryField().value(), 0.0);
             dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
             divOp.build(scheme);
             divOp.explicitOperation(nfDivT.internalField());

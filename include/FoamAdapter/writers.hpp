@@ -19,16 +19,16 @@ template<class DestField, class SrcField>
 void copy_impl(DestField& dest, const SrcField src)
 {
     NF_ASSERT_EQUAL(dest.size(), src.size());
-    auto src_host = src.copyToHost();
-    auto src_span = src_host.span();
+    auto srcHost = src.copyToHost();
+    auto srcView = srcHost.view();
     for (int i = 0; i < dest.size(); i++)
     {
-        dest[i] = convert(src_span[i]);
+        dest[i] = convert(srcView[i]);
     }
 }
 }
 
-void write(NeoFOAM::scalarField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
+void write(NeoN::scalarField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
 {
     Foam::volScalarField* field = mesh.getObjectPtr<Foam::volScalarField>(fieldName);
     if (field)
@@ -54,7 +54,7 @@ void write(NeoFOAM::scalarField& sf, const Foam::fvMesh& mesh, const std::string
     }
 }
 
-void write(NeoFOAM::vectorField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
+void write(NeoN::vectorField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
 {
     Foam::volVectorField* field = mesh.getObjectPtr<Foam::volVectorField>(fieldName);
     if (field)

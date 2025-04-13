@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2025 NeoFOAM authors
 
-#include "NeoN/NeoFOAM.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/FoamAdapter.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
@@ -16,8 +16,8 @@ using Foam::nl;
 namespace fvc = Foam::fvc;
 namespace fvm = Foam::fvm;
 
-namespace dsl = NeoFOAM::dsl;
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace dsl = NeoN::dsl;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -29,14 +29,14 @@ int main(int argc, char* argv[])
 #include "setRootCase.H"
 #include "createTime.H"
 
-        NeoFOAM::Database db;
+        NeoN::Database db;
 
         fvcc::FieldCollection& fieldCollection =
             fvcc::FieldCollection::instance(db, "fieldCollection");
 
 
-        NeoFOAM::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
-        NeoFOAM::Executor exec = createExecutor(runTime.controlDict());
+        NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
+        NeoN::Executor exec = createExecutor(runTime.controlDict());
 
         std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
         Foam::MeshAdapter& mesh = *meshPtr;
@@ -57,16 +57,16 @@ int main(int argc, char* argv[])
         }
 
 
-        NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
-        NeoFOAM::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
-        auto& solverDict = fvSolutionDict.get<NeoFOAM::Dictionary>("solvers");
+        NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+        NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+        auto& solverDict = fvSolutionDict.get<NeoN::Dictionary>("solvers");
 
         Info << "creating NeoFOAM mesh" << endl;
-        NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
+        NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
         Info << "creating NeoFOAM pressure fields" << endl;
-        fvcc::VolumeField<NeoFOAM::scalar>& nfp =
-            fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
+        fvcc::VolumeField<NeoN::scalar>& nfp =
+            fieldCollection.registerField<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
             );
 
         Info << "creating NeoFOAM velocity fields" << endl;
-        fvcc::VolumeField<NeoFOAM::Vector>& nfU =
-            fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::Vector>>(
+        fvcc::VolumeField<NeoN::Vector>& nfU =
+            fieldCollection.registerField<fvcc::VolumeField<NeoN::Vector>>(
                 Foam::CreateFromFoamField<Foam::volVectorField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
@@ -86,12 +86,12 @@ int main(int argc, char* argv[])
                 }
             );
 
-        auto nuBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<NeoFOAM::scalar>>(nfMesh);
-        fvcc::SurfaceField<NeoFOAM::scalar> nfNu(exec, "nfNu", nfMesh, nuBCs);
+        auto nuBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<NeoN::scalar>>(nfMesh);
+        fvcc::SurfaceField<NeoN::scalar> nfNu(exec, "nfNu", nfMesh, nuBCs);
         fill(nfNu.internalField(), nu.value());
         fill(nfNu.boundaryField().value(), nu.value());
 
-        NeoFOAM::scalar endTime = controlDict.get<NeoFOAM::scalar>("endTime");
+        NeoN::scalar endTime = controlDict.get<NeoN::scalar>("endTime");
 
         Foam::surfaceScalarField flux("flux", phi);
         auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
@@ -119,11 +119,11 @@ int main(int argc, char* argv[])
             Info << "Time = " << runTime.timeName() << nl << endl;
 
             // Momentum predictor
-            fvcc::Expression<NeoFOAM::Vector> UEqn2(
+            fvcc::Expression<NeoN::Vector> UEqn2(
                 dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
                 nfU,
                 fvSchemesDict,
-                solverDict.get<NeoFOAM::Dictionary>("nfU")
+                solverDict.get<NeoN::Dictionary>("nfU")
             );
 
             UEqn2.assemble(t, dt);
@@ -135,11 +135,11 @@ int main(int argc, char* argv[])
                 auto [nfrAU, nfHbyA] = fvcc::discreteMomentumFields(UEqn2);
                 fvcc::constrainHbyA(nfHbyA, nfU, nfp);
 
-                fvcc::SurfaceField<NeoFOAM::scalar> nfrAUf =
-                    fvcc::SurfaceInterpolation<NeoFOAM::scalar>(
+                fvcc::SurfaceField<NeoN::scalar> nfrAUf =
+                    fvcc::SurfaceInterpolation<NeoN::scalar>(
                         exec,
                         nfMesh,
-                        NeoFOAM::TokenList({std::string("linear")})
+                        NeoN::TokenList({std::string("linear")})
                     )
                         .interpolate(nfrAU);
                 nfrAUf.name = "nfrAUf";
@@ -158,11 +158,11 @@ int main(int argc, char* argv[])
                 {
                     // Pressure corrector
 
-                    fvcc::Expression<NeoFOAM::scalar> pEqn2(
+                    fvcc::Expression<NeoN::scalar> pEqn2(
                         dsl::imp::laplacian(nfrAUf, nfp) - dsl::exp::div(nfPhiHbyA),
                         nfp,
                         fvSchemesDict,
-                        solverDict.get<NeoFOAM::Dictionary>("nfP")
+                        solverDict.get<NeoN::Dictionary>("nfP")
                     );
 
                     pEqn2.assemble(t, dt);

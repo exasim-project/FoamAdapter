@@ -15,8 +15,8 @@
 
 #include "common.hpp"
 
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
-namespace dsl = NeoFOAM::dsl;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
+namespace dsl = NeoN::dsl;
 
 extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
@@ -28,12 +28,12 @@ TEST_CASE("sparsityPattern")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    // NeoFOAM::Executor exec = GENERATE(
-    //     NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
-    //     NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-    //     NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    // NeoN::Executor exec = GENERATE(
+    //     NeoN::Executor(NeoN::SerialExecutor {}),
+    //     NeoN::Executor(NeoN::CPUExecutor {}),
+    //     NeoN::Executor(NeoN::GPUExecutor {})
     // );
-    NeoFOAM::Executor exec = NeoFOAM::SerialExecutor {};
+    NeoN::Executor exec = NeoN::SerialExecutor {};
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
 
@@ -44,8 +44,8 @@ TEST_CASE("sparsityPattern")
     SECTION("sparsityPattern_" + execName)
     {
         fvcc::SparsityPattern pattern(nfMesh);
-        const auto colIdxs = pattern.columnIndex();
-        const auto rowPtrs = pattern.rowPtrs();
+        const auto colIdxs = pattern.colIdxs().view();
+        const auto rowPtrs = pattern.rowPtrs().view();
 
         forAll(mesh.cellCells(), celli)
         {

@@ -33,9 +33,9 @@ struct ApproxScalar
 struct ApproxVector
 {
     Foam::scalar margin;
-    bool operator()(NeoFOAM::Vector rhs, Foam::vector lhs) const
+    bool operator()(NeoN::Vector rhs, Foam::vector lhs) const
     {
-        NeoFOAM::Vector diff(rhs[0] - lhs[0], rhs[1] - lhs[1], rhs[2] - lhs[2]);
+        NeoN::Vector diff(rhs[0] - lhs[0], rhs[1] - lhs[1], rhs[2] - lhs[2]);
 
         return Catch::Approx(0).margin(margin) == mag(diff);
     }

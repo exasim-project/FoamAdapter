@@ -12,10 +12,10 @@ extern Foam::Time* timePtr; // A single time object
 
 TEST_CASE("VolumeField")
 {
-    NeoFOAM::Executor exec = GENERATE(
-        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(
+        NeoN::Executor(NeoN::CPUExecutor {}),
+        NeoN::Executor(NeoN::SerialExecutor {}),
+        NeoN::Executor(NeoN::GPUExecutor {})
     );
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
 

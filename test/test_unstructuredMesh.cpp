@@ -14,7 +14,7 @@
 #include "FoamAdapter/meshAdapter.hpp"
 
 
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 extern Foam::Time* timePtr;   // A single time object
 extern Foam::fvMesh* meshPtr; // A single mesh object
@@ -22,17 +22,17 @@ extern Foam::fvMesh* meshPtr; // A single mesh object
 
 TEST_CASE("unstructuredMesh")
 {
-    NeoFOAM::Executor exec = GENERATE(
-        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(
+        NeoN::Executor(NeoN::CPUExecutor {}),
+        NeoN::Executor(NeoN::SerialExecutor {}),
+        NeoN::Executor(NeoN::GPUExecutor {})
     );
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
 
     std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, *timePtr);
     const Foam::fvMesh& ofMesh = *meshPtr;
-    const NeoFOAM::UnstructuredMesh& nfMesh = meshPtr->nfMesh();
+    const NeoN::UnstructuredMesh& nfMesh = meshPtr->nfMesh();
 
     SECTION("Internal mesh" + execName)
     {
@@ -64,7 +64,7 @@ TEST_CASE("unstructuredMesh")
     SECTION("boundaryMesh " + execName)
     {
         const Foam::fvBoundaryMesh& ofBoundaryMesh = ofMesh.boundary();
-        const NeoFOAM::BoundaryMesh& bMesh = nfMesh.boundaryMesh();
+        const NeoN::BoundaryMesh& bMesh = nfMesh.boundaryMesh();
         const auto& offset = bMesh.offset();
 
         SECTION("offset")
@@ -82,9 +82,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pFaceCells = faceCellsHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pFaceCells = faceCellsHost.view({start, end});
                 forAll(patchOF.faceCells(), i)
                 {
                     REQUIRE(pFaceCells[i] == patchOF.faceCells()[i]);
@@ -98,9 +98,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pCf = cfHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pCf = cfHost.view({start, end});
                 forAll(patchOF.Cf(), i)
                 {
                     REQUIRE(pCf[i][0] == patchOF.Cf()[i][0]);
@@ -116,9 +116,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pCn = cnHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pCn = cnHost.view({start, end});
                 forAll(patchOF.Cn()(), i)
                 {
                     REQUIRE(pCn[i][0] == patchOF.Cn()()[i][0]);
@@ -134,9 +134,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pSf = sFHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pSf = sFHost.view({start, end});
                 forAll(patchOF.Sf(), i)
                 {
                     REQUIRE(pSf[i][0] == patchOF.Sf()[i][0]);
@@ -152,9 +152,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pMagSf = magSfHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pMagSf = magSfHost.view({start, end});
                 forAll(patchOF.magSf(), i)
                 {
                     REQUIRE(pMagSf[i] == patchOF.magSf()[i]);
@@ -168,9 +168,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pNf = nfHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pNf = nfHost.view({start, end});
                 forAll(patchOF.nf()(), i)
                 {
                     REQUIRE(pNf[i][0] == patchOF.nf()()[i][0]);
@@ -186,9 +186,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pDelta = deltaHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pDelta = deltaHost.view({start, end});
                 forAll(patchOF.delta()(), i)
                 {
                     REQUIRE(pDelta[i][0] == patchOF.delta()()[i][0]);
@@ -204,9 +204,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pWeights = weightsHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pWeights = weightsHost.view({start, end});
                 forAll(patchOF.weights(), i)
                 {
                     REQUIRE(pWeights[i] == patchOF.weights()[i]);
@@ -220,9 +220,9 @@ TEST_CASE("unstructuredMesh")
             forAll(ofBoundaryMesh, patchi)
             {
                 const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoFOAM::label start = bMesh.offset()[patchi];
-                NeoFOAM::label end = bMesh.offset()[patchi + 1];
-                auto pDeltaCoeffs = deltaCoeffsHost.span({start, end});
+                NeoN::label start = bMesh.offset()[patchi];
+                NeoN::label end = bMesh.offset()[patchi + 1];
+                auto pDeltaCoeffs = deltaCoeffsHost.view({start, end});
                 forAll(patchOF.deltaCoeffs(), i)
                 {
                     REQUIRE(pDeltaCoeffs[i] == patchOF.deltaCoeffs()[i]);
@@ -235,17 +235,17 @@ TEST_CASE("unstructuredMesh")
 
 TEST_CASE("fvccGeometryScheme")
 {
-    NeoFOAM::Executor exec = GENERATE(
-        NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::SerialExecutor {}),
-        NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(
+        NeoN::Executor(NeoN::CPUExecutor {}),
+        NeoN::Executor(NeoN::SerialExecutor {}),
+        NeoN::Executor(NeoN::GPUExecutor {})
     );
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
 
     std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, *timePtr);
     Foam::MeshAdapter& mesh = *meshPtr;
-    const NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
+    const NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
     SECTION("BasicFvccGeometryScheme" + execName)
     {
@@ -261,7 +261,7 @@ TEST_CASE("fvccGeometryScheme")
             foamWeights.size()
         );
         REQUIRE_THAT(
-            weightsHost.span({0, foamWeights.size()}),
+            weightsHost.view({0, foamWeights.size()}),
             Catch::Matchers::RangeEquals(sFoamWeights, ApproxScalar(1e-16))
         );
     }
@@ -279,7 +279,7 @@ TEST_CASE("fvccGeometryScheme")
             foamWeights.size()
         );
         REQUIRE_THAT(
-            weightsHost.span({0, foamWeights.size()}),
+            weightsHost.view({0, foamWeights.size()}),
             Catch::Matchers::RangeEquals(sFoamWeights, ApproxScalar(1e-16))
         );
     }

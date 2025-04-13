@@ -25,8 +25,8 @@ using Foam::nl;
 namespace fvc = Foam::fvc;
 namespace fvm = Foam::fvm;
 
-namespace dsl = NeoFOAM::dsl;
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace dsl = NeoN::dsl;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 extern Foam::Time* timePtr; // A single time object
 
@@ -65,12 +65,12 @@ TEST_CASE("Advection Equation")
 {
     Foam::Time& runTime = *timePtr;
 
-    NeoFOAM::Database db;
+    NeoN::Database db;
     fvcc::FieldCollection& fieldCollection = fvcc::FieldCollection::instance(db, "fieldCollection");
 
-    NeoFOAM::Executor exec = GENERATE(NeoFOAM::Executor(NeoFOAM::SerialExecutor {})
-                                      // NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-                                      // NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(NeoN::Executor(NeoN::SerialExecutor {})
+                                   // NeoN::Executor(NeoN::CPUExecutor {}),
+                                   // NeoN::Executor(NeoN::GPUExecutor {})
     );
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
@@ -89,12 +89,12 @@ TEST_CASE("Advection Equation")
         std::unique_ptr<Foam::MeshAdapter> meshAdapterPtr = Foam::createMesh(exec, runTime);
         Foam::MeshAdapter& mesh = *meshAdapterPtr;
 
-        NeoFOAM::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
-        NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
-        fvSchemesDict.get<NeoFOAM::Dictionary>("ddtSchemes").insert("type", timeIntegration);
-        NeoFOAM::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+        NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
+        NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+        fvSchemesDict.get<NeoN::Dictionary>("ddtSchemes").insert("type", timeIntegration);
+        NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
 
-        NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
+        NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
         Info << "Reading fields " << endl;
 
@@ -129,8 +129,8 @@ TEST_CASE("Advection Equation")
         Foam::volVectorField U0 = U;
 
         Info << "creating NeoFOAM fields" << endl;
-        fvcc::VolumeField<NeoFOAM::scalar>& nfT =
-            fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
+        fvcc::VolumeField<NeoN::scalar>& nfT =
+            fieldCollection.registerField<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,

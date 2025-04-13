@@ -6,17 +6,17 @@
 namespace Foam
 {
 
-NeoFOAM::Vector convert(const Foam::vector& in) { return NeoFOAM::Vector(in[0], in[1], in[2]); };
+NeoN::Vector convert(const Foam::vector& in) { return NeoN::Vector(in[0], in[1], in[2]); };
 
-NeoFOAM::scalar convert(const Foam::scalar& in) { return in; };
+NeoN::scalar convert(const Foam::scalar& in) { return in; };
 
-NeoFOAM::label convert(const Foam::label& in) { return in; };
+NeoN::label convert(const Foam::label& in) { return in; };
 
 std::string convert(const Foam::word& type) { return type; };
 
-NeoFOAM::TokenList convert(const Foam::ITstream& stream)
+NeoN::TokenList convert(const Foam::ITstream& stream)
 {
-    NeoFOAM::TokenList tokens {};
+    NeoN::TokenList tokens {};
     for (const auto& token : stream)
     {
         if (token.isBool())
@@ -45,6 +45,6 @@ NeoFOAM::TokenList convert(const Foam::ITstream& stream)
 };
 
 // To Foam
-Foam::vector convert(const NeoFOAM::Vector& in) { return Foam::vector(in(0), in(1), in(2)); };
+Foam::vector convert(const NeoN::Vector& in) { return Foam::vector(in(0), in(1), in(2)); };
 
 }; // namespace Foam

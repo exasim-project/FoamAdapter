@@ -6,14 +6,14 @@
 namespace Foam
 {
 
-std::vector<NeoFOAM::localIdx> computeOffset(const Foam::fvMesh& mesh)
+std::vector<NeoN::localIdx> computeOffset(const Foam::fvMesh& mesh)
 {
-    std::vector<NeoFOAM::localIdx> result;
+    std::vector<NeoN::localIdx> result;
     const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
     result.push_back(0);
     forAll(bMesh, patchI)
     {
-        NeoFOAM::localIdx curOffset = result.back();
+        NeoN::localIdx curOffset = result.back();
         const Foam::fvPatch& patch = bMesh[patchI];
         result.push_back(curOffset + patch.size());
     }
@@ -32,7 +32,7 @@ int32_t computeNBoundaryFaces(const Foam::fvMesh& mesh)
     return nBoundaryFaces;
 }
 
-NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::fvMesh& mesh)
+NeoN::UnstructuredMesh readOpenFOAMMesh(const NeoN::Executor exec, Foam::fvMesh& mesh)
 {
     const int32_t nCells = mesh.nCells();
     const int32_t nInternalFaces = mesh.nInternalFaces();
@@ -74,10 +74,10 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
         mesh,
         [](const Foam::fvPatch& patch) { return patch.deltaCoeffs(); }
     );
-    std::vector<NeoFOAM::localIdx> offset = computeOffset(mesh);
+    std::vector<NeoN::localIdx> offset = computeOffset(mesh);
 
 
-    NeoFOAM::BoundaryMesh bMesh(
+    NeoN::BoundaryMesh bMesh(
         exec,
         fromFoamField(exec, faceCells),
         fromFoamField(exec, cf),
@@ -91,7 +91,7 @@ NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, Foam::f
         offset
     );
 
-    NeoFOAM::UnstructuredMesh uMesh(
+    NeoN::UnstructuredMesh uMesh(
         fromFoamField(exec, mesh.points()),
         fromFoamField(exec, mesh.cellVolumes()),
         fromFoamField(exec, mesh.cellCentres()),

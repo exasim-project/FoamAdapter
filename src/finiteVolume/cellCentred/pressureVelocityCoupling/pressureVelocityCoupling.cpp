@@ -7,7 +7,7 @@
 #include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "Kokkos_Core.hpp"
 
-namespace NeoFOAM::finiteVolume::cellCentred
+namespace NeoN::finiteVolume::cellCentred
 {
 
 void constrainHbyA(
@@ -17,8 +17,8 @@ void constrainHbyA(
 )
 {
     // const UnstructuredMesh& mesh = HbyA.mesh();
-    const auto pIn = p.internalField().span();
-    auto HbyAin = HbyA.internalField().span();
+    const auto pIn = p.internalField().view();
+    auto HbyAin = HbyA.internalField().view();
     auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryField().value(), U.boundaryField().value());
 
     const std::vector<VolumeBoundary<Vector>>& HbyABCs = HbyA.boundaryConditions();
@@ -40,11 +40,11 @@ discreteMomentumFields(const Expression<Vector>& expr)
     const UnstructuredMesh& mesh = U.mesh();
     const SparsityPattern& sparsityPattern = expr.sparsityPattern();
     const auto& ls = expr.linearSystem();
-    const auto vol = mesh.cellVolumes().span();
-    const auto values = ls.matrix().values();
-    const auto rhs = ls.rhs().span();
-    const auto diagOffset = sparsityPattern.diagOffset().span();
-    const auto rowPtrs = ls.matrix().rowPtrs();
+    const auto vol = mesh.cellVolumes().view();
+    const auto values = ls.matrix().values().view();
+    const auto rhs = ls.rhs().view();
+    const auto diagOffset = sparsityPattern.diagOffset().view();
+    const auto rowPtrs = ls.matrix().rowPtrs().view();
 
     auto rABCs = createExtrapolatedBCs<VolumeBoundary<scalar>>(mesh);
     VolumeField<scalar> rAU = VolumeField<scalar>(expr.exec(), "rAU", mesh, rABCs);
@@ -71,7 +71,7 @@ discreteMomentumFields(const Expression<Vector>& expr)
         rAU.internalField()
     );
 
-    auto internalHbyA = HbyA.internalField().span();
+    auto internalHbyA = HbyA.internalField().view();
 
     parallelFor(
         exec,
@@ -129,10 +129,10 @@ void updateFaceVelocity(
 
     const auto& ls = expr.linearSystem();
 
-    const auto rowPtrs = ls.matrix().rowPtrs();
-    const auto colIdxs = ls.matrix().colIdxs();
-    auto values = ls.matrix().values();
-    auto rhs = ls.rhs().span();
+    const auto rowPtrs = ls.matrix().rowPtrs().view();
+    const auto colIdxs = ls.matrix().colIdxs().view();
+    auto values = ls.matrix().values().view();
+    auto rhs = ls.rhs().view();
 
     auto [iPhi, iPredPhi] = spans(phi.internalField(), predictedPhi.internalField());
 

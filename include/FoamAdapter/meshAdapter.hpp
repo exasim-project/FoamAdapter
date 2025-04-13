@@ -17,21 +17,21 @@
 namespace Foam
 {
 
-std::vector<NeoFOAM::localIdx> computeOffset(const fvMesh& mesh);
+std::vector<NeoN::localIdx> computeOffset(const fvMesh& mesh);
 
 int32_t computeNBoundaryFaces(const fvMesh& mesh);
 
 template<typename FieldT>
 FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f);
 
-NeoFOAM::UnstructuredMesh readOpenFOAMMesh(const NeoFOAM::Executor exec, const fvMesh& mesh);
+NeoN::UnstructuredMesh readOpenFOAMMesh(const NeoN::Executor exec, const fvMesh& mesh);
 
 /** @class MeshAdapter
  */
 class MeshAdapter : public fvMesh
 {
 
-    NeoFOAM::UnstructuredMesh nfMesh_;
+    NeoN::UnstructuredMesh nfMesh_;
 
     // Private Member Functions
 
@@ -49,20 +49,16 @@ public:
     // Constructors
 
     //- Construct from IOobject
-    explicit MeshAdapter(
-        const NeoFOAM::Executor exec,
-        const IOobject& io,
-        const bool doInit = true
-    );
+    explicit MeshAdapter(const NeoN::Executor exec, const IOobject& io, const bool doInit = true);
 
     //- Construct from IOobject or as zero-sized mesh
     //  Boundary is added using addFvPatches() member function
-    MeshAdapter(const NeoFOAM::Executor exec, const IOobject& io, const zero, bool syncPar = true);
+    MeshAdapter(const NeoN::Executor exec, const IOobject& io, const zero, bool syncPar = true);
 
     //- Construct from components without boundary.
     //  Boundary is added using addFvPatches() member function
     MeshAdapter(
-        const NeoFOAM::Executor exec,
+        const NeoN::Executor exec,
         const IOobject& io,
         pointField&& points,
         faceList&& faces,
@@ -74,7 +70,7 @@ public:
     //- Construct without boundary from cells rather than owner/neighbour.
     //  Boundary is added using addPatches() member function
     MeshAdapter(
-        const NeoFOAM::Executor exec,
+        const NeoN::Executor exec,
         const IOobject& io,
         pointField&& points,
         faceList&& faces,
@@ -85,11 +81,11 @@ public:
     //- Destructor
     virtual ~MeshAdapter() = default;
 
-    NeoFOAM::UnstructuredMesh& nfMesh() { return nfMesh_; }
+    NeoN::UnstructuredMesh& nfMesh() { return nfMesh_; }
 
-    const NeoFOAM::UnstructuredMesh& nfMesh() const { return nfMesh_; }
+    const NeoN::UnstructuredMesh& nfMesh() const { return nfMesh_; }
 
-    const NeoFOAM::Executor exec() const { return nfMesh().exec(); }
+    const NeoN::Executor exec() const { return nfMesh().exec(); }
 };
 
 } // End namespace Foam

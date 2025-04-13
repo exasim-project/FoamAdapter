@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2025 NeoFOAM authors
 
-#include "NeoN/NeoFOAM.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/FoamAdapter.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
@@ -16,8 +16,8 @@ using Foam::nl;
 namespace fvc = Foam::fvc;
 namespace fvm = Foam::fvm;
 
-namespace dsl = NeoFOAM::dsl;
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace dsl = NeoN::dsl;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -29,14 +29,14 @@ int main(int argc, char* argv[])
 #include "setRootCase.H"
 #include "createTime.H"
 
-        NeoFOAM::Database db;
+        NeoN::Database db;
 
         fvcc::FieldCollection& fieldCollection =
             fvcc::FieldCollection::instance(db, "fieldCollection");
 
 
-        NeoFOAM::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
-        NeoFOAM::Executor exec = createExecutor(runTime.controlDict());
+        NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
+        NeoN::Executor exec = createExecutor(runTime.controlDict());
 
         std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
         Foam::MeshAdapter& mesh = *meshPtr;
@@ -48,15 +48,15 @@ int main(int argc, char* argv[])
 #include "createFields.H"
 
 
-        NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
-        NeoFOAM::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+        NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+        NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
 
         Info << "creating NeoFOAM mesh" << endl;
-        NeoFOAM::UnstructuredMesh& nfMesh = mesh.nfMesh();
+        NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
         Info << "creating NeoFOAM fields" << endl;
-        fvcc::VolumeField<NeoFOAM::scalar>& nfT =
-            fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::scalar>>(
+        fvcc::VolumeField<NeoN::scalar>& nfT =
+            fieldCollection.registerField<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
                 t,
                 dt,
                 fvSchemesDict,
-                fvSolutionDict.get<NeoFOAM::Dictionary>("solvers").get<NeoFOAM::Dictionary>("nfT")
+                fvSolutionDict.get<NeoN::Dictionary>("solvers").get<NeoN::Dictionary>("nfT")
             );
 
             runTime.write();

@@ -9,7 +9,7 @@ namespace Foam
 
 
 template<typename T>
-bool convertEntry(NeoFOAM::Dictionary& neoDict, const Foam::entry& entry)
+bool convertEntry(NeoN::Dictionary& neoDict, const Foam::entry& entry)
 {
     if (checkEntryType<T>(entry))
     {
@@ -47,6 +47,6 @@ bool checkEntryType(const Foam::entry& entry)
     return true;
 }
 
-NeoFOAM::Dictionary readFoamDictionary(const Foam::dictionary& dict);
+NeoN::Dictionary readFoamDictionary(const Foam::dictionary& dict);
 
 } // namespace Foam

@@ -9,8 +9,8 @@ namespace Foam
 {
 
 
-static std::vector<std::function<bool(NeoFOAM::Dictionary&, const Foam::entry&)>> mapEntries = {
-    [](NeoFOAM::Dictionary& neoDict, const Foam::entry& entry)
+static std::vector<std::function<bool(NeoN::Dictionary&, const Foam::entry&)>> mapEntries = {
+    [](NeoN::Dictionary& neoDict, const Foam::entry& entry)
     {
         if (checkEntryType<Foam::label>(entry))
         {
@@ -30,7 +30,7 @@ static std::vector<std::function<bool(NeoFOAM::Dictionary&, const Foam::entry&)>
     &convertEntry<Foam::scalar>,
     &convertEntry<Foam::vector>,
     &convertEntry<Foam::word>,
-    {[](NeoFOAM::Dictionary& neoDict, const Foam::entry& entry)
+    {[](NeoN::Dictionary& neoDict, const Foam::entry& entry)
      {
          if (entry.isStream())
          {
@@ -42,7 +42,7 @@ static std::vector<std::function<bool(NeoFOAM::Dictionary&, const Foam::entry&)>
 };
 
 
-void insertEntry(NeoFOAM::Dictionary& neoDict, const Foam::entry& entry)
+void insertEntry(NeoN::Dictionary& neoDict, const Foam::entry& entry)
 {
     std::string keyword = entry.keyword();
     for (auto& mapEntry : mapEntries)
@@ -65,14 +65,14 @@ void insertEntry(NeoFOAM::Dictionary& neoDict, const Foam::entry& entry)
     );
 }
 
-void readFoamDictionary(const Foam::dictionary& dict, NeoFOAM::Dictionary& neoDict)
+void readFoamDictionary(const Foam::dictionary& dict, NeoN::Dictionary& neoDict)
 {
     for (auto& entry : dict)
     {
         std::string keyword = entry.keyword();
         if (entry.isDict())
         {
-            NeoFOAM::Dictionary subDict;
+            NeoN::Dictionary subDict;
             readFoamDictionary(entry.dict(), subDict);
             neoDict.insert(entry.keyword(), subDict);
         }
@@ -83,9 +83,9 @@ void readFoamDictionary(const Foam::dictionary& dict, NeoFOAM::Dictionary& neoDi
     }
 }
 
-NeoFOAM::Dictionary readFoamDictionary(const Foam::dictionary& dict)
+NeoN::Dictionary readFoamDictionary(const Foam::dictionary& dict)
 {
-    NeoFOAM::Dictionary neoDict;
+    NeoN::Dictionary neoDict;
     readFoamDictionary(dict, neoDict);
     return neoDict;
 }

@@ -9,7 +9,7 @@
 #include "NeoN/finiteVolume/cellCentred/dsl/expression.hpp"
 
 
-namespace NeoFOAM::finiteVolume::cellCentred
+namespace NeoN::finiteVolume::cellCentred
 {
 
 void constrainHbyA(

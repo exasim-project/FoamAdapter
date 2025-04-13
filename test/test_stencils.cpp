@@ -13,8 +13,8 @@
 
 #include "common.hpp"
 
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
-namespace dsl = NeoFOAM::dsl;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
+namespace dsl = NeoN::dsl;
 
 extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
@@ -26,9 +26,9 @@ TEST_CASE("cell To Face Stencil")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoFOAM::Executor exec = GENERATE(NeoFOAM::Executor(NeoFOAM::SerialExecutor {})
-                                      // NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-                                      // NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(NeoN::Executor(NeoN::SerialExecutor {})
+                                   // NeoN::Executor(NeoN::CPUExecutor {}),
+                                   // NeoN::Executor(NeoN::GPUExecutor {})
     );
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
@@ -40,7 +40,7 @@ TEST_CASE("cell To Face Stencil")
     SECTION("cellToFaceStencil_" + execName)
     {
         fvcc::CellToFaceStencil cellToFaceStencil(nfMesh);
-        NeoFOAM::SegmentedField<NeoFOAM::localIdx, NeoFOAM::localIdx> stencil =
+        NeoN::SegmentedField<NeoN::localIdx, NeoN::localIdx> stencil =
             cellToFaceStencil.computeStencil();
 
         auto stencilView = stencil.view();

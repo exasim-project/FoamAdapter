@@ -25,8 +25,8 @@ using Foam::nl;
 namespace fvc = Foam::fvc;
 namespace fvm = Foam::fvm;
 
-namespace dsl = NeoFOAM::dsl;
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace dsl = NeoN::dsl;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 extern Foam::Time* timePtr; // A single time object
 
@@ -35,12 +35,12 @@ TEST_CASE("PressureVelocityCoupling")
 {
     Foam::Time& runTime = *timePtr;
 
-    NeoFOAM::Database db;
+    NeoN::Database db;
     fvcc::FieldCollection& fieldCollection = fvcc::FieldCollection::instance(db, "fieldCollection");
 
-    NeoFOAM::Executor exec = GENERATE(NeoFOAM::Executor(NeoFOAM::SerialExecutor {})
-                                      // NeoFOAM::Executor(NeoFOAM::CPUExecutor {}),
-                                      // NeoFOAM::Executor(NeoFOAM::GPUExecutor {})
+    NeoN::Executor exec = GENERATE(NeoN::Executor(NeoN::SerialExecutor {})
+                                   // NeoN::Executor(NeoN::CPUExecutor {}),
+                                   // NeoN::Executor(NeoN::GPUExecutor {})
     );
 
     std::string execName = std::visit([](auto e) { return e.name(); }, exec);
@@ -55,8 +55,8 @@ TEST_CASE("PressureVelocityCoupling")
     oldOfU.correctBoundaryConditions();
 
     Info << "creating NeoFOAM velocity fields" << endl;
-    fvcc::VolumeField<NeoFOAM::Vector>& nfU =
-        fieldCollection.registerField<fvcc::VolumeField<NeoFOAM::Vector>>(
+    fvcc::VolumeField<NeoN::Vector>& nfU =
+        fieldCollection.registerField<fvcc::VolumeField<NeoN::Vector>>(
             Foam::CreateFromFoamField<Foam::volVectorField> {
                 .exec = exec,
                 .nfMesh = nfMesh,
@@ -66,7 +66,7 @@ TEST_CASE("PressureVelocityCoupling")
         );
 
     auto& nfOldU = fvcc::oldTime(nfU);
-    NeoFOAM::fill(nfOldU.internalField(), NeoFOAM::Vector(0.0, 0.0, 0.0));
+    NeoN::fill(nfOldU.internalField(), NeoN::Vector(0.0, 0.0, 0.0));
     nfOldU.correctBoundaryConditions();
 
     Foam::surfaceScalarField ofPhi(
@@ -98,24 +98,24 @@ TEST_CASE("PressureVelocityCoupling")
     Info << "ofNu: " << ofNu << endl;
     auto nfNu = constructSurfaceField(exec, nfMesh, ofNu);
     nfNu.name = "nfNu";
-    NeoFOAM::fill(nfNu.boundaryField().value(), 0.01);
+    NeoN::fill(nfNu.boundaryField().value(), 0.01);
 
     Foam::scalar t = runTime.time().value();
     Foam::scalar dt = runTime.deltaT().value();
 
-    NeoFOAM::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
-    NeoFOAM::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
-    auto& solverDict = fvSolutionDict.get<NeoFOAM::Dictionary>("solvers");
+    NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+    NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+    auto& solverDict = fvSolutionDict.get<NeoN::Dictionary>("solvers");
 
     SECTION("discreteMomentumFields " + execName)
     {
-        fvcc::Expression<NeoFOAM::Vector> nfUEqn(
+        fvcc::Expression<NeoN::Vector> nfUEqn(
             dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
             // dsl::imp::ddt(nfU) + dsl::imp::laplacian(nfNu, nfU),
             // dsl::imp::ddt(nfU) - dsl::imp::div(nfPhi, nfU),
             nfU,
             fvSchemesDict,
-            solverDict.get<NeoFOAM::Dictionary>("nfU")
+            solverDict.get<NeoN::Dictionary>("nfU")
         );
 
         nfUEqn.assemble(t, dt);
@@ -140,7 +140,7 @@ TEST_CASE("PressureVelocityCoupling")
 
             for (size_t celli = 0; celli < hostnfRAU.size(); celli++)
             {
-                REQUIRE(hostnfRAU[celli] == Catch::Approx(forAU[celli]).margin(1e-16));
+                REQUIRE(hostnfRAU.view()[celli] == Catch::Approx(forAU[celli]).margin(1e-16));
             }
         }
 
@@ -159,7 +159,7 @@ TEST_CASE("PressureVelocityCoupling")
 
             for (size_t celli = 0; celli < hostnfRAU.size(); celli++)
             {
-                REQUIRE(hostnfRAU[celli] == Catch::Approx(forAU[celli]).margin(1e-16));
+                REQUIRE(hostnfRAU.view()[celli] == Catch::Approx(forAU[celli]).margin(1e-16));
             }
         }
 
@@ -175,9 +175,9 @@ TEST_CASE("PressureVelocityCoupling")
 
             for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
             {
-                REQUIRE(hostnfHbyA[celli][0] == Catch::Approx(HbyA[celli][0]).margin(1e-14));
-                REQUIRE(hostnfHbyA[celli][1] == Catch::Approx(HbyA[celli][1]).margin(1e-14));
-                REQUIRE(hostnfHbyA[celli][2] == Catch::Approx(HbyA[celli][2]).margin(1e-14));
+                REQUIRE(hostnfHbyA.view()[celli][0] == Catch::Approx(HbyA[celli][0]).margin(1e-14));
+                REQUIRE(hostnfHbyA.view()[celli][1] == Catch::Approx(HbyA[celli][1]).margin(1e-14));
+                REQUIRE(hostnfHbyA.view()[celli][2] == Catch::Approx(HbyA[celli][2]).margin(1e-14));
             }
         }
 
@@ -197,9 +197,9 @@ TEST_CASE("PressureVelocityCoupling")
 
             for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
             {
-                REQUIRE(hostnfHbyA[celli][0] == Catch::Approx(HbyA[celli][0]).margin(1e-14));
-                REQUIRE(hostnfHbyA[celli][1] == Catch::Approx(HbyA[celli][1]).margin(1e-14));
-                REQUIRE(hostnfHbyA[celli][2] == Catch::Approx(HbyA[celli][2]).margin(1e-14));
+                REQUIRE(hostnfHbyA.view()[celli][0] == Catch::Approx(HbyA[celli][0]).margin(1e-14));
+                REQUIRE(hostnfHbyA.view()[celli][1] == Catch::Approx(HbyA[celli][1]).margin(1e-14));
+                REQUIRE(hostnfHbyA.view()[celli][2] == Catch::Approx(HbyA[celli][2]).margin(1e-14));
             }
         }
     }

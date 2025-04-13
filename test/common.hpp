@@ -73,7 +73,7 @@ void compare(NFFIELD& a, OFFIELD& b, Compare comp, bool withBoundaries = true)
     auto aHost = a.internalField().copyToHost();
     auto bSpan = std::span(b.primitiveFieldRef().data(), b.size());
     // nf a span might be shorter than bSpan for surface fields
-    REQUIRE_THAT(aHost.span({0, bSpan.size()}), Catch::Matchers::RangeEquals(bSpan, comp));
+    REQUIRE_THAT(aHost.view({0, bSpan.size()}), Catch::Matchers::RangeEquals(bSpan, comp));
 
     if (withBoundaries)
     {
@@ -83,7 +83,7 @@ void compare(NFFIELD& a, OFFIELD& b, Compare comp, bool withBoundaries = true)
         {
             auto bBoundarySpan = std::span(patch.cdata(), patch.size());
             REQUIRE_THAT(
-                aBoundaryHost.span({start, start + patch.size()}),
+                aBoundaryHost.view({start, start + patch.size()}),
                 Catch::Matchers::RangeEquals(bBoundarySpan, comp)
             );
             start += patch.size();

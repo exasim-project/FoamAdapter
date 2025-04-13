@@ -42,7 +42,7 @@ void setDeltaT(Time& runTime, scalar maxCo, scalar coNum, scalar maxDeltaT)
 }
 
 
-std::unique_ptr<MeshAdapter> createMesh(const NeoFOAM::Executor& exec, const Time& runTime)
+std::unique_ptr<MeshAdapter> createMesh(const NeoN::Executor& exec, const Time& runTime)
 {
     word regionName(polyMesh::defaultRegion);
     IOobject io(regionName, runTime.timeName(), runTime, IOobject::MUST_READ);
@@ -64,30 +64,30 @@ std::unique_ptr<fvMesh> createMesh(const Time& runTime)
     return meshPtr;
 }
 
-NeoFOAM::Executor createExecutor(const dictionary& dict)
+NeoN::Executor createExecutor(const dictionary& dict)
 {
     auto execName = dict.get<Foam::word>("executor");
     Foam::Info << "Creating Executor: " << execName << Foam::endl;
     if (execName == "Serial")
     {
         Foam::Info << "Serial Executor" << Foam::endl;
-        return NeoFOAM::SerialExecutor();
+        return NeoN::SerialExecutor();
     }
     if (execName == "CPU")
     {
         Foam::Info << "CPU Executor" << Foam::endl;
-        return NeoFOAM::CPUExecutor();
+        return NeoN::CPUExecutor();
     }
     if (execName == "GPU")
     {
         Foam::Info << "GPU Executor" << Foam::endl;
-        return NeoFOAM::GPUExecutor();
+        return NeoN::GPUExecutor();
     }
     Foam::FatalError << "unknown Executor: " << execName << Foam::nl
                      << "Available executors: Serial, CPU, GPU" << Foam::nl
                      << Foam::abort(Foam::FatalError);
 
-    return NeoFOAM::SerialExecutor();
+    return NeoN::SerialExecutor();
 }
 
 }

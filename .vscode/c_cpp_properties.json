@@ -4,7 +4,7 @@
       "name": "Linux-GCC",
       "includePath": [
         "${workspaceFolder}/**",
-        "${workspaceFolder}/NeoFOAM/**",
+        "${workspaceFolder}/NeoN/**",
         "${FOAM_SRC}/**",
         "/usr/local/cuda/include/**"
       ],
@@ -15,7 +15,7 @@
       "browse": {
         "path": [
           "${workspaceFolder}/**",
-          "${workspaceFolder}/NeoFOAM/**",
+          "${workspaceFolder}/NeoN/**",
           "${FOAM_SRC}/**"
         ],
         "limitSymbolsToIncludedHeaders": true,

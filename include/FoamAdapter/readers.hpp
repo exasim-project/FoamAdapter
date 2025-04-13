@@ -15,13 +15,13 @@
 #include "FoamAdapter/conversion/type_conversion.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 namespace Foam
 {
-namespace fvcc = NeoFOAM::finiteVolume::cellCentred;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 template<typename FoamType>
-auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
+auto fromFoamField(const NeoN::Executor& exec, const FoamType& field)
 {
     using type_container_t = typename type_map<FoamType>::container_type;
     using mapped_t = typename type_map<FoamType>::mapped_type;
@@ -35,7 +35,7 @@ auto fromFoamField(const NeoFOAM::Executor& exec, const FoamType& field)
 };
 
 template<typename FoamType>
-auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const FoamType& ofVolField)
+auto readVolBoundaryConditions(const NeoN::UnstructuredMesh& nfMesh, const FoamType& ofVolField)
 {
     using type_container_t = typename type_map<FoamType>::container_type;
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
@@ -46,12 +46,12 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const Fo
     IStringStream is(os.str());
     dictionary bDict(is);
 
-    std::map<std::string, std::function<void(NeoFOAM::Dictionary&)>> patchInserter {
+    std::map<std::string, std::function<void(NeoN::Dictionary&)>> patchInserter {
         {"fixedGradient",
          [](auto& dict)
          {
              dict.insert("type", std::string("fixedGradient"));
-             NeoFOAM::TokenList tokenList = dict.template get<NeoFOAM::TokenList>("value");
+             NeoN::TokenList tokenList = dict.template get<NeoN::TokenList>("value");
              type_primitive_t fixedGradient = tokenList.get<type_primitive_t>(1);
              dict.insert("fixedGradient", fixedGradient);
          }},
@@ -65,11 +65,11 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const Fo
          [](auto& dict)
          {
              dict.insert("type", std::string("fixedValue"));
-             NeoFOAM::TokenList tokenList = dict.template get<NeoFOAM::TokenList>("value");
+             NeoN::TokenList tokenList = dict.template get<NeoN::TokenList>("value");
              type_primitive_t fixedValue {};
-             if (std::is_same<type_primitive_t, NeoFOAM::Vector>::value)
+             if (std::is_same<type_primitive_t, NeoN::Vector>::value)
              {
-                 NeoFOAM::Vector tmpFixedValue {};
+                 NeoN::Vector tmpFixedValue {};
                  tmpFixedValue[0] = tokenList.get<int>(1);
                  tmpFixedValue[1] = tokenList.get<int>(2);
                  tmpFixedValue[2] = tokenList.get<int>(3);
@@ -98,7 +98,7 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const Fo
     for (const auto& bName : bDict.toc())
     {
         dictionary patchDict = bDict.subDict(bName);
-        NeoFOAM::Dictionary neoPatchDict = Foam::readFoamDictionary(patchDict);
+        NeoN::Dictionary neoPatchDict = Foam::readFoamDictionary(patchDict);
         patchInserter[patchDict.get<word>("type")](neoPatchDict);
         bcs.emplace_back(nfMesh, neoPatchDict, patchi);
         patchi++;
@@ -108,8 +108,8 @@ auto readVolBoundaryConditions(const NeoFOAM::UnstructuredMesh& nfMesh, const Fo
 
 template<typename FoamType>
 auto constructFrom(
-    const NeoFOAM::Executor exec,
-    const NeoFOAM::UnstructuredMesh& nfMesh,
+    const NeoN::Executor exec,
+    const NeoN::UnstructuredMesh& nfMesh,
     const FoamType& in
 )
 {
@@ -126,7 +126,7 @@ auto constructFrom(
 
 template<typename FoamType>
 auto readSurfaceBoundaryConditions(
-    const NeoFOAM::UnstructuredMesh& uMesh,
+    const NeoN::UnstructuredMesh& uMesh,
     const FoamType& surfaceField
 )
 {
@@ -142,7 +142,7 @@ auto readSurfaceBoundaryConditions(
     dictionary bDict(is);
     int patchi = 0;
 
-    std::map<std::string, std::function<void(NeoFOAM::Dictionary&)>> patchInserter {
+    std::map<std::string, std::function<void(NeoN::Dictionary&)>> patchInserter {
         {"fixedGradient", [](auto& dict) { dict.insert("type", std::string("fixedGradient")); }},
         {"zeroGradient",
          [&](auto& dict)
@@ -163,7 +163,7 @@ auto readSurfaceBoundaryConditions(
     for (const auto& bName : bDict.toc())
     {
         dictionary patchDict = bDict.subDict(bName);
-        NeoFOAM::Dictionary neoPatchDict;
+        NeoN::Dictionary neoPatchDict;
         patchInserter[patchDict.get<word>("type")](neoPatchDict);
         bcs.push_back(fvcc::SurfaceBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
         patchi++;
@@ -173,8 +173,8 @@ auto readSurfaceBoundaryConditions(
 
 template<typename FoamType>
 auto constructSurfaceField(
-    const NeoFOAM::Executor exec,
-    const NeoFOAM::UnstructuredMesh& nfMesh,
+    const NeoN::Executor exec,
+    const NeoN::UnstructuredMesh& nfMesh,
     const FoamType& in
 )
 {
@@ -223,14 +223,14 @@ class CreateFromFoamField
 {
 public:
 
-    const NeoFOAM::Executor exec;
-    const NeoFOAM::UnstructuredMesh& nfMesh;
+    const NeoN::Executor exec;
+    const NeoN::UnstructuredMesh& nfMesh;
     const FieldType& foamField;
     std::string name = "";
     std::int64_t iterationIndex = 0;
     std::int64_t subCycleIndex = -1;
 
-    fvcc::FieldDocument operator()(NeoFOAM::Database& db)
+    fvcc::FieldDocument operator()(NeoN::Database& db)
     {
         using type_container_t = typename type_map<FieldType>::container_type;
         type_container_t convertedField = Foam::constructFrom(exec, nfMesh, foamField);
@@ -242,7 +242,7 @@ public:
         const Foam::Time& runTime = mesh.time();
         std::int64_t timeIndex = runTime.timeIndex();
 
-        NeoFOAM::DomainField<typename type_container_t::FieldValueType> domainField(
+        NeoN::DomainField<typename type_container_t::FieldValueType> domainField(
             convertedField.exec(),
             convertedField.internalField(),
             convertedField.boundaryField()
@@ -259,7 +259,7 @@ public:
             ""
         );
 
-        return NeoFOAM::Document(
+        return NeoN::Document(
             {{"name", convertedField.name},
              {"timeIndex", timeIndex},
              {"iterationIndex", iterationIndex},
