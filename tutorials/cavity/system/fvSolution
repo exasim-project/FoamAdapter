@@ -32,8 +32,13 @@ solvers
 
     nfP
     {
-        maxIters        5;
-        relTol          1e-06;
+        solver          Ginkgo;
+        type            "solver::Cg";
+        criteria
+        {
+            iteration 1000;
+            relative_residual_norm 1e-07;
+        }
     }
 
     U
@@ -46,6 +51,8 @@ solvers
 
     nfU
     {
+        solver          Ginkgo;
+        type            "solver::Cg";
         maxIters        5;
         relTol          1e-06;
     }
