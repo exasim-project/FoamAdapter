@@ -12,7 +12,7 @@ function(foam_adapter_unit_test TEST SETUP_DIRECTORY)
 
   target_compile_definitions(adapter_${TEST} PUBLIC OMPI_SKIP_MPICXX)
 
-  target_link_libraries(adapter_${TEST} foamadapter_catch_main OpenFOAM NeoFOAM)
+  target_link_libraries(adapter_${TEST} foamadapter_catch_main OpenFOAM NeoN)
 
   set_target_properties(adapter_${TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                                    ${adapter_WORKING_DIRECTORY})

@@ -5,14 +5,14 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/ddtOperator.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/sourceTerm.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/linearAlgebra/sparsityPattern.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/dsl/expression.hpp"
-#include "NeoFOAM/dsl/implicit.hpp"
-#include "NeoFOAM/dsl/explicit.hpp"
+#include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
+#include "NeoN/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
+#include "NeoN/finiteVolume/cellCentred/operators/ddtOperator.hpp"
+#include "NeoN/finiteVolume/cellCentred/operators/sourceTerm.hpp"
+#include "NeoN/finiteVolume/cellCentred/linearAlgebra/sparsityPattern.hpp"
+#include "NeoN/finiteVolume/cellCentred/dsl/expression.hpp"
+#include "NeoN/dsl/implicit.hpp"
+#include "NeoN/dsl/explicit.hpp"
 #include "gaussConvectionScheme.H"
 
 #include "common.hpp"

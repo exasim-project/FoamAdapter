@@ -32,7 +32,7 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 message("C++ Compiler Version: ${CXX_COMPILER_VERSION}")
 
-option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoFOAM examples" OFF)
+option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoN examples" OFF)
 option(FOAMADAPTER_BUILD_TESTS "Build the unit tests" OFF)
 option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" OFF)
 
@@ -50,7 +50,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 include(cmake/OpenFOAM.cmake)
 
 add_subdirectory(include)
-add_subdirectory(NeoFOAM)
+add_subdirectory(NeoN)
 add_subdirectory(src)
 
 if(FOAMADAPTER_BUILD_EXAMPLES)

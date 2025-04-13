@@ -4,10 +4,10 @@
 
 #include "volFields.H"
 
-#include "NeoFOAM/core/primitives/label.hpp"
-#include "NeoFOAM/core//primitives/scalar.hpp"
-#include "NeoFOAM/core/primitives/vector.hpp"
-#include "NeoFOAM/core/tokenList.hpp"
+#include "NeoN/core/primitives/label.hpp"
+#include "NeoN/core//primitives/scalar.hpp"
+#include "NeoN/core/primitives/vector.hpp"
+#include "NeoN/core/tokenList.hpp"
 #include "volFields.H"
 // #include "ITstream.H"
 

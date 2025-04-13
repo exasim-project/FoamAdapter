@@ -6,12 +6,12 @@
                             // a custom main
 #include <unordered_set>
 #include <set>
-#include "NeoFOAM/finiteVolume/cellCentred/linearAlgebra/sparsityPattern.hpp"
+#include "NeoN/finiteVolume/cellCentred/linearAlgebra/sparsityPattern.hpp"
 
 
 #include "gaussConvectionScheme.H"
-#include "NeoFOAM/core/input.hpp"
-#include "NeoFOAM/dsl/explicit.hpp"
+#include "NeoN/core/input.hpp"
+#include "NeoN/dsl/explicit.hpp"
 
 #include "common.hpp"
 

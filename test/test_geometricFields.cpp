@@ -4,7 +4,7 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoFOAM/fields/field.hpp"
+#include "NeoN/fields/field.hpp"
 
 #include "common.hpp"
 

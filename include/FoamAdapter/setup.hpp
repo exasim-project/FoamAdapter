@@ -7,7 +7,7 @@
 
 #include "FoamAdapter/meshAdapter.hpp"
 
-#include "NeoFOAM/core/executor/executor.hpp"
+#include "NeoN/core/executor/executor.hpp"
 
 
 namespace Foam

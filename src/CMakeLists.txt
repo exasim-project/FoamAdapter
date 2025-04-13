@@ -5,7 +5,7 @@
 add_library(FoamAdapter SHARED)
 
 target_compile_definitions(FoamAdapter INTERFACE namespaceFoam=1)
-target_link_libraries(FoamAdapter PUBLIC FoamAdapter_public_api OpenFOAM NeoFOAM)
+target_link_libraries(FoamAdapter PUBLIC FoamAdapter_public_api OpenFOAM NeoN)
 
 target_sources(
   FoamAdapter

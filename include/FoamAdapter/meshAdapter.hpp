@@ -8,9 +8,9 @@
 
 #include "fvMesh.H"
 
-#include "NeoFOAM/mesh/unstructured/unstructuredMesh.hpp"
-#include "NeoFOAM/core/primitives/label.hpp"
-#include "NeoFOAM/core/executor/executor.hpp"
+#include "NeoN/mesh/unstructured/unstructuredMesh.hpp"
+#include "NeoN/core/primitives/label.hpp"
+#include "NeoN/core/executor/executor.hpp"
 
 #include "readers.hpp"
 

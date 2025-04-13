@@ -8,8 +8,8 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include "catch2/common.hpp"
 
-#include "NeoFOAM/fields/field.hpp"
-#include "NeoFOAM/core/tokenList.hpp"
+#include "NeoN/fields/field.hpp"
+#include "NeoN/core/tokenList.hpp"
 
 #include "FoamAdapter/readers/foamDictionary.hpp"
 #include "FoamAdapter/writers.hpp"

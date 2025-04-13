@@ -4,13 +4,13 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoFOAM/dsl/expression.hpp"
-#include "NeoFOAM/dsl/solver.hpp"
-#include "NeoFOAM/dsl/ddt.hpp"
+#include "NeoN/dsl/expression.hpp"
+#include "NeoN/dsl/solver.hpp"
+#include "NeoN/dsl/ddt.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
-#include "NeoFOAM/dsl/implicit.hpp"
-#include "NeoFOAM/dsl/explicit.hpp"
+#include "NeoN/dsl/implicit.hpp"
+#include "NeoN/dsl/explicit.hpp"
 
 
 #include "FoamAdapter/FoamAdapter.hpp"

@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 #include "dictionary.H"
-#include "NeoFOAM/core/dictionary.hpp"
+#include "NeoN/core/dictionary.hpp"
 
 namespace Foam
 {

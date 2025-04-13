@@ -3,8 +3,8 @@
 
 
 #include "FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/boundary.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
+#include "NeoN/finiteVolume/cellCentred/boundary.hpp"
+#include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "Kokkos_Core.hpp"
 
 namespace NeoFOAM::finiteVolume::cellCentred
