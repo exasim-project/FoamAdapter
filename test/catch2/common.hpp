@@ -3,15 +3,11 @@
 
 #pragma once
 
-#define namespaceFoam
-#include "fvCFD.H"
-
 #include "FoamAdapter/conversion/convert.hpp"
 
 #include "NeoFOAM/fields/field.hpp"
 #include "NeoFOAM/fields/boundaryFields.hpp"
 #include "NeoFOAM/fields/domainField.hpp"
-#include "NeoFOAM/finiteVolume/cellCentred.hpp"
 
 #include "NeoFOAM/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/interpolation/linear.hpp"
@@ -20,7 +16,7 @@
 
 #include "NeoFOAM/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
 #include "NeoFOAM/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
-#include "NeoFOAM/mesh/unstructured.hpp"
+#include "NeoFOAM/mesh/unstructured/unstructuredMesh.hpp"
 
 #include <catch2/catch_approx.hpp>
 

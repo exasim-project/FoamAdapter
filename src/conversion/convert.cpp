@@ -16,7 +16,7 @@ std::string convert(const Foam::word& type) { return type; };
 
 NeoFOAM::TokenList convert(const Foam::ITstream& stream)
 {
-    NeoFOAM::TokenList tokens;
+    NeoFOAM::TokenList tokens {};
     for (const auto& token : stream)
     {
         if (token.isBool())

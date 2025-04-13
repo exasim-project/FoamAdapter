@@ -17,6 +17,10 @@
 #include "FoamAdapter/setup.hpp"
 #include "FoamAdapter/comparison.hpp"
 
+#include "fvm.H"
+#include "fvc.H"
+// #include "fvCFD.H"
+
 namespace Foam
 {
 
@@ -39,15 +43,15 @@ FieldType createRandomField(const Time& runTime, const fvMesh& mesh, word name, 
 
 
 /* function to create a volScalarField filled with random values for test purposes */
-auto randomScalarField(const Time& runTime, const fvMesh& mesh)
+auto randomScalarField(const Time& runTime, const fvMesh& mesh, word name)
 {
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
     std::uniform_real_distribution<> dis(1.0, 2.0);
-    return createRandomField<volScalarField>(runTime, mesh, "T", [&]() { return dis(gen); });
+    return createRandomField<volScalarField>(runTime, mesh, name, [&]() { return dis(gen); });
 }
 
-auto randomVectorField(const Time& runTime, const MeshAdapter& mesh)
+auto randomVectorField(const Time& runTime, const MeshAdapter& mesh, word name)
 {
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
@@ -55,7 +59,7 @@ auto randomVectorField(const Time& runTime, const MeshAdapter& mesh)
     return createRandomField<volVectorField>(
         runTime,
         mesh,
-        "U",
+        name,
         [&]() {
             return vector {dis(gen), dis(gen), dis(gen)};
         }
