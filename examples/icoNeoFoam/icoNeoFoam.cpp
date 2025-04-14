@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
             auto& nfOldU = fvcc::oldTime(nfU);
             nfOldU.internalField() = nfU.internalField();
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-            coNum = calculateCoNum(phi);
+            coNum = computeCoNum(phi);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
             Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (adjustTimeStep)

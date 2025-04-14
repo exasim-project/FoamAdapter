@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 
 
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-            coNum = calculateCoNum(phi);
+            coNum = computeCoNum(nfPhi, dt);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
             Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (adjustTimeStep)
