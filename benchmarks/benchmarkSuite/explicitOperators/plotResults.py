@@ -21,10 +21,10 @@ def normalize_all_by_openfoam(group):
 
 
 # Apply corrected normalization across Geometry + Resolution
-df_fixed_normalization = df.groupby(["Geometry", "Resolution"], group_keys=False).apply(
+df_fixed_normalization = df.groupby(["TestCase","Geometry", "Resolution"], group_keys=False).apply(
     normalize_all_by_openfoam
 )
-
+#%%
 # Plot using seaborn
 df_fixed_normalization["Label"] = (
     df_fixed_normalization["Geometry"]
@@ -42,48 +42,53 @@ df_fixed_normalization["Speed up"] = 1 / df_fixed_normalization["Normalized_Mean
 # )
 # %%
 # Plot 3D cube
-df_fixed_normalization_3dCube = df_fixed_normalization[df_fixed_normalization["Geometry"] == "3DCube"]
-resolution_order = ["N10", "N20", "N50", "N100", "N200"]
-df_fixed_normalization_3dCube["Resolution"] = pd.Categorical(
-    df_fixed_normalization_3dCube["Resolution"],
-    categories=resolution_order,
-    ordered=True
-)
+def plot(df_fixed_normalization, testcase):
+    # Filter the DataFrame for the specific test case
+    df = df_fixed_normalization[df_fixed_normalization["TestCase"] == testcase]
+    df_fixed_normalization_3dCube = df[df["Geometry"] == "3DCube"]
+    resolution_order = ["N10", "N20", "N50", "N100", "N200"]
+    df_fixed_normalization_3dCube["Resolution"] = pd.Categorical(
+        df_fixed_normalization_3dCube["Resolution"],
+        categories=resolution_order,
+        ordered=True
+    )
 
-plt.figure(figsize=(14, 6))
-sns.barplot(
-    data=df_fixed_normalization_3dCube,
-    x="Resolution",
-    y="Speed up",
-    hue="Executor"
-)
-# plt.xticks(rotation=90)
-plt.axhline(1, color='black', linestyle='--', linewidth=1)  # Add baseline
-plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
-plt.title("Speed up for the explicit div operator")
-plt.tight_layout()
-plt.savefig("results/3DCube.png")
-plt.show()
+    plt.figure(figsize=(14, 6))
+    sns.barplot(
+        data=df_fixed_normalization_3dCube,
+        x="Resolution",
+        y="Speed up",
+        hue="Executor"
+    )
+    # plt.xticks(rotation=90)
+    plt.axhline(1, color='black', linestyle='--', linewidth=1)  # Add baseline
+    plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
+    plt.title(f"3DCube: Speed up for the explicit {testcase}")
+    plt.tight_layout()
+    plt.savefig("results/{testcase}_3DCube.png")
+
+    df_fixed_normalization_2DSquare = df[df["Geometry"] == "2DSquare"]
+    resolution_order = ["N20", "N50", "N100", "N200", "N500", "N1000", "N2000"]
+    df_fixed_normalization_2DSquare["Resolution"] = pd.Categorical(
+        df_fixed_normalization_2DSquare["Resolution"],
+        categories=resolution_order,
+        ordered=True
+    )
+    plt.figure(figsize=(14, 6))
+    sns.barplot(
+        data=df_fixed_normalization_2DSquare,
+        x="Resolution",
+        y="Speed up",
+        hue="Executor"
+    )
+    # plt.xticks(rotation=90)
+    plt.axhline(1, color='black', linestyle='--', linewidth=1)  # Add baseline
+    plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
+    plt.title(f"2DSquare: Speed up for the explicit {testcase}")
+    plt.tight_layout()
+    plt.savefig(f"results/{testcase}_2DSquare.png")
+    plt.show()
 # %%
-df_fixed_normalization_2DSquare = df_fixed_normalization[df_fixed_normalization["Geometry"] == "2DSquare"]
-resolution_order = ["N20", "N50", "N100", "N200", "N500", "N1000", "N2000"]
-df_fixed_normalization_2DSquare["Resolution"] = pd.Categorical(
-    df_fixed_normalization_2DSquare["Resolution"],
-    categories=resolution_order,
-    ordered=True
-)
-plt.figure(figsize=(14, 6))
-sns.barplot(
-    data=df_fixed_normalization_2DSquare,
-    x="Resolution",
-    y="Speed up",
-    hue="Executor"
-)
-# plt.xticks(rotation=90)
-plt.axhline(1, color='black', linestyle='--', linewidth=1)  # Add baseline
-plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
-plt.title("Speed up for the explicit div operator")
-plt.tight_layout()
-plt.savefig("results/2DSquare.png")
-plt.show()
+plot(df_fixed_normalization, "GradOperator")
+plot(df_fixed_normalization, "DivOperator")
 # %%
