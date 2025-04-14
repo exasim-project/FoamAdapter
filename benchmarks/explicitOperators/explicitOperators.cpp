@@ -12,6 +12,7 @@ namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;
 
 #include "fv.H"
+#include "gaussGrad.H"
 #include "gaussConvectionScheme.H"
 #include "NeoN/core/input.hpp"
 #include "NeoN/dsl/explicit.hpp"
@@ -175,48 +176,88 @@ TEST_CASE("DivOperator")
     }
 }
 
-// TEST_CASE("Field<scalar>::addition no copy", "[bench]")
-// {
-//     auto size = GENERATE(1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20);
-//     auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-//     DYNAMIC_SECTION("" << size)
-//     {
-//         NeoN::Field<NeoN::scalar> cpuA(exec, size);
-//         const auto viewA = cpuA.view();
-//         NeoN::fill(cpuA, 1.0);
-//         NeoN::Field<NeoN::scalar> cpuB(exec, size);
-//         NeoN::fill(cpuB, 2.0);
-//         const auto viewB = cpuB.view();
-//         NeoN::Field<NeoN::scalar> cpuC(exec, size);
-//         NeoN::fill(cpuC, 0.0);
+TEST_CASE("GradOperator")
+{
+    Foam::Time& runTime = *timePtr;
+    Foam::argList& args = *argsPtr;
 
-//         BENCHMARK(std::string(execName)) {
-//             NeoN::parallelFor(cpuC, KOKKOS_LAMBDA(const int i) {
-//                 return viewB[i] + viewB[i];
-//             });
-//             Kokkos::fence();
-//             return;
-//             // return (cpuC = cpuA + cpuB);
-//         };
-//     }
-// }
+    SECTION("OpenFOAM")
+    {
+        std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+        Foam::fvMesh& mesh = *meshPtr;
 
-// TEST_CASE("Field<scalar>::multiplication", "[bench]")
-// {
-//     auto size = GENERATE(1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20);
+        auto ofT = randomScalarField(runTime, mesh, "T");
 
-//     auto [execName, exec] = GENERATE(allAvailableExecutor());
+        SECTION("with Allocation")
+        {
+            BENCHMARK(std::string("OpenFOAM"))
+            {
+                Foam::IStringStream is("linear");
+                Foam::fv::gaussGrad<Foam::scalar> foamGrad(mesh, is);
+                Foam::volVectorField ofGradT("ofGradT", foamGrad.calcGrad(ofT, "ofGradT"));
+                return;
+            };
+        }
+    }
 
-//     DYNAMIC_SECTION("" << size)
-//     {
-//         NeoN::Field<NeoN::scalar> cpuA(exec, size);
-//         NeoN::fill(cpuA, 1.0);
-//         NeoN::Field<NeoN::scalar> cpuB(exec, size);
-//         NeoN::fill(cpuB, 2.0);
-//         NeoN::Field<NeoN::scalar> cpuC(exec, size);
-//         NeoN::fill(cpuC, 0.0);
 
-//         BENCHMARK(std::string(execName)) { return (cpuC = cpuA * cpuB); };
-//     }
-// }
+    SECTION("NeoN")
+    {
+        auto [execName, exec] = GENERATE(allAvailableExecutor());
+
+        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
+        Foam::MeshAdapter& mesh = *meshPtr;
+        const auto& nfMesh = mesh.nfMesh();
+        // linear interpolation hardcoded for now
+
+
+        auto ofT = randomScalarField(runTime, mesh, "T");
+        auto nfT = constructFrom(exec, nfMesh, ofT);
+
+        SECTION("with Allocation")
+        {
+            NeoN::TokenList scheme({std::string("linear")});
+
+            BENCHMARK(std::string(execName))
+            {
+                fvcc::VolumeField<NeoN::Vector> nfGradT =
+                    fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT);
+                return;
+            };
+        }
+
+        SECTION("No allocation")
+        {
+            fvcc::VolumeField<NeoN::Vector> nfGradT = fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT);
+
+            BENCHMARK(std::string(execName))
+            {
+                NeoN::fill(nfGradT.internalField(), NeoN::Vector(0, 0, 0));
+                NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vector(0, 0, 0));
+                fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
+                Kokkos::fence();
+                return;
+            };
+        }
+
+        // SECTION("compute grad from dsl::exp")
+        // {
+        //     NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"),
+        //     std::string("linear")});
+
+        //     auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
+        //     NeoN::fill(nfDivT.internalField(), 0.0);
+        //     NeoN::fill(nfDivT.boundaryField().value(), 0.0);
+        //     dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
+        //     divOp.build(scheme);
+        //     divOp.explicitOperation(nfDivT.internalField());
+
+        //     nfDivT.correctBoundaryConditions();
+
+        //     compare(nfT, ofT, ApproxScalar(1e-15), false);
+
+        //     compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
+        // }
+    }
+}
