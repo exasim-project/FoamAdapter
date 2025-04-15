@@ -102,19 +102,19 @@ int main(int argc, char* argv[])
 
         while (runTime.loop())
         {
+            Foam::scalar t = runTime.time().value();
+            Foam::scalar dt = runTime.deltaT().value();
+
             auto& nfOldU = fvcc::oldTime(nfU);
             nfOldU.internalField() = nfU.internalField();
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-            coNum = calculateCoNum(phi);
+            coNum = fvcc::computeCoNum(nfPhi, dt);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
             Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (adjustTimeStep)
             {
                 Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
             }
-
-            Foam::scalar t = runTime.time().value();
-            Foam::scalar dt = runTime.deltaT().value();
 
             Info << "Time = " << runTime.timeName() << nl << endl;
 
