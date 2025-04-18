@@ -36,7 +36,7 @@ void constrainHbyA(
 std::tuple<VolumeField<scalar>, VolumeField<Vec3>>
 discreteMomentumFields(const Expression<Vec3>& expr)
 {
-    const VolumeField<Vec3>& U = expr.getField();
+    const VolumeField<Vec3>& U = expr.getVector();
     const UnstructuredMesh& mesh = U.mesh();
     const SparsityPattern& sparsityPattern = expr.sparsityPattern();
     const auto& ls = expr.linearSystem();
@@ -114,7 +114,7 @@ void updateFaceVelocity(
 )
 {
     const UnstructuredMesh& mesh = phi.mesh();
-    const VolumeField<scalar>& p = expr.getField();
+    const VolumeField<scalar>& p = expr.getVector();
     const SparsityPattern sparsityPattern = expr.sparsityPattern();
     const std::size_t nInternalFaces = mesh.nInternalFaces();
     const auto exec = phi.exec();
