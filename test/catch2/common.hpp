@@ -6,8 +6,7 @@
 #include "FoamAdapter/conversion/convert.hpp"
 
 #include "NeoN/fields/field.hpp"
-#include "NeoN/fields/boundaryVectors.hpp"
-#include "NeoN/fields/domainField.hpp"
+#include "NeoN/fields/boundaryData.hpp"
 
 #include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoN/finiteVolume/cellCentred/interpolation/linear.hpp"

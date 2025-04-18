@@ -48,7 +48,7 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
         const Foam::GeometricField<OF_TYPE, Foam::fvPatchField, Foam::volMesh>& of                 \
     )                                                                                              \
     {                                                                                              \
-        if (nf.internalVector() != of.internalVector())                                            \
+        if (nf.internalVector() != of.internalField())                                             \
         {                                                                                          \
             return false;                                                                          \
         }                                                                                          \
@@ -59,7 +59,7 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
         auto nfBoundaryHost = nf.boundaryVector().value().copyToHost();                            \
         auto nfBoundaryView = nfBoundaryHost.view();                                               \
         NeoN::label pFacei = 0;                                                                    \
-        for (const auto& patch : of.boundaryVector())                                              \
+        for (const auto& patch : of.boundaryField())                                               \
         {                                                                                          \
             int patchSize = patch.size();                                                          \
             for (const auto& patchValue : patch)                                                   \
@@ -87,7 +87,7 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
         const Foam::GeometricField<OF_TYPE, Foam::fvsPatchField, Foam::surfaceMesh>& of            \
     )                                                                                              \
     {                                                                                              \
-        if (nf.internalVector() != of.internalVector())                                            \
+        if (nf.internalVector() != of.internalField())                                             \
         {                                                                                          \
             return false;                                                                          \
         }                                                                                          \
@@ -99,7 +99,7 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
         auto nfView = nfHost.view();                                                               \
         NeoN::label nInternalFaces = nf.internalVector().size();                                   \
         NeoN::label pFacei = nInternalFaces;                                                       \
-        for (const auto& patch : of.boundaryVector())                                              \
+        for (const auto& patch : of.boundaryField())                                               \
         {                                                                                          \
             int patchSize = patch.size();                                                          \
             for (const auto& patchValue : patch)                                                   \

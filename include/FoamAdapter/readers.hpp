@@ -42,7 +42,7 @@ auto readVolBoundaryConditions(const NeoN::UnstructuredMesh& nfMesh, const FoamT
 
     // get boundary as dictionary
     OStringStream os;
-    ofVolField.boundaryVector().writeEntries(os);
+    ofVolField.boundaryField().writeEntries(os);
     IStringStream is(os.str());
     dictionary bDict(is);
 
@@ -137,7 +137,7 @@ auto readSurfaceBoundaryConditions(
 
     // get boundary as dictionary
     OStringStream os;
-    surfaceField.boundaryVector().writeEntries(os);
+    surfaceField.boundaryField().writeEntries(os);
     IStringStream is(os.str());
     dictionary bDict(is);
     int patchi = 0;
@@ -185,7 +185,7 @@ auto constructSurfaceField(
     type_container_t
         out(exec, in.name(), nfMesh, std::move(readSurfaceBoundaryConditions(nfMesh, in)));
 
-    Vector<foam_primitive_t> flattenedField(out.internalField().size());
+    Field<foam_primitive_t> flattenedField(out.internalVector().size());
     size_t nInternal = nfMesh.nInternalFaces();
 
     forAll(in, facei)
@@ -194,9 +194,9 @@ auto constructSurfaceField(
     }
 
     label idx = nInternal;
-    forAll(in.boundaryVector(), patchi)
+    forAll(in.boundaryField(), patchi)
     {
-        const fvsPatchField<foam_primitive_t>& pin = in.boundaryVector()[patchi];
+        const fvsPatchField<foam_primitive_t>& pin = in.boundaryField()[patchi];
 
         forAll(pin, facei)
         {
@@ -242,7 +242,7 @@ public:
         const Foam::Time& runTime = mesh.time();
         std::int64_t timeIndex = runTime.timeIndex();
 
-        NeoN::DomainField<typename type_container_t::FieldValueType> domainField(
+        NeoN::Field<typename type_container_t::FieldValueType> field(
             convertedField.exec(),
             convertedField.internalVector(),
             convertedField.boundaryVector()
@@ -252,7 +252,7 @@ public:
             convertedField.exec(),
             convertedField.name,
             convertedField.mesh(),
-            domainField,
+            field,
             convertedField.boundaryConditions(),
             db,
             "",

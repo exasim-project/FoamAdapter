@@ -79,7 +79,7 @@ void compare(NFFIELD& a, OFFIELD& b, Compare comp, bool withBoundaries = true)
     {
         size_t start = 0;
         auto aBoundaryHost = a.boundaryVector().value().copyToHost();
-        for (const auto& patch : b.boundaryVector())
+        for (const auto& patch : b.boundaryField())
         {
             auto bBoundarySpan = std::span(patch.cdata(), patch.size());
             REQUIRE_THAT(
