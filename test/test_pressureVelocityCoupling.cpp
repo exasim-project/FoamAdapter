@@ -98,7 +98,7 @@ TEST_CASE("PressureVelocityCoupling")
     Info << "ofNu: " << ofNu << endl;
     auto nfNu = constructSurfaceField(exec, nfMesh, ofNu);
     nfNu.name = "nfNu";
-    NeoN::fill(nfNu.boundaryField().value(), 0.01);
+    NeoN::fill(nfNu.boundaryVector().value(), 0.01);
 
     Foam::scalar t = runTime.time().value();
     Foam::scalar dt = runTime.deltaT().value();

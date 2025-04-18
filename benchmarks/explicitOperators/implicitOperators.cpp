@@ -148,7 +148,7 @@ TEST_CASE("DivOperator")
             BENCHMARK(std::string(execName))
             {
                 NeoN::fill(nfDivT.internalVector(), 0.0);
-                NeoN::fill(nfDivT.boundaryField().value(), 0.0);
+                NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
                 fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
                     .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
                 Kokkos::fence();
@@ -163,7 +163,7 @@ TEST_CASE("DivOperator")
 
         //     auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
         //     NeoN::fill(nfDivT.internalVector(), 0.0);
-        //     NeoN::fill(nfDivT.boundaryField().value(), 0.0);
+        //     NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
         //     dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
         //     divOp.build(scheme);
         //     divOp.explicitOperation(nfDivT.internalVector());
@@ -235,7 +235,7 @@ TEST_CASE("GradOperator")
             BENCHMARK(std::string(execName))
             {
                 NeoN::fill(nfGradT.internalVector(), NeoN::Vec3(0, 0, 0));
-                NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vec3(0, 0, 0));
+                NeoN::fill(nfGradT.boundaryVector().value(), NeoN::Vec3(0, 0, 0));
                 fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
                 Kokkos::fence();
                 return;
@@ -249,7 +249,7 @@ TEST_CASE("GradOperator")
 
         //     auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
         //     NeoN::fill(nfDivT.internalVector(), 0.0);
-        //     NeoN::fill(nfDivT.boundaryField().value(), 0.0);
+        //     NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
         //     dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
         //     divOp.build(scheme);
         //     divOp.explicitOperation(nfDivT.internalVector());

@@ -53,13 +53,13 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
             return false;                                                                          \
         }                                                                                          \
                                                                                                    \
-        /* compare boundaryField */                                                                \
+        /* compare boundaryVector */                                                               \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
-        auto nfBoundaryHost = nf.boundaryField().value().copyToHost();                             \
+        auto nfBoundaryHost = nf.boundaryVector().value().copyToHost();                            \
         auto nfBoundaryView = nfBoundaryHost.view();                                               \
         NeoN::label pFacei = 0;                                                                    \
-        for (const auto& patch : of.boundaryField())                                               \
+        for (const auto& patch : of.boundaryVector())                                              \
         {                                                                                          \
             int patchSize = patch.size();                                                          \
             for (const auto& patchValue : patch)                                                   \
@@ -92,14 +92,14 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
             return false;                                                                          \
         }                                                                                          \
                                                                                                    \
-        /* compare boundaryField */                                                                \
+        /* compare boundaryVector */                                                               \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
         auto nfHost = nf.internalVector().copyToHost();                                            \
         auto nfView = nfHost.view();                                                               \
         NeoN::label nInternalFaces = nf.internalVector().size();                                   \
         NeoN::label pFacei = nInternalFaces;                                                       \
-        for (const auto& patch : of.boundaryField())                                               \
+        for (const auto& patch : of.boundaryVector())                                              \
         {                                                                                          \
             int patchSize = patch.size();                                                          \
             for (const auto& patchValue : patch)                                                   \

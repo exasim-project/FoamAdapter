@@ -19,7 +19,7 @@ void constrainHbyA(
     // const UnstructuredMesh& mesh = HbyA.mesh();
     const auto pIn = p.internalVector().view();
     auto HbyAin = HbyA.internalVector().view();
-    auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryField().value(), U.boundaryField().value());
+    auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryVector().value(), U.boundaryVector().value());
 
     const std::vector<VolumeBoundary<Vec3>>& HbyABCs = HbyA.boundaryConditions();
 
@@ -27,7 +27,7 @@ void constrainHbyA(
     {
         parallelFor(
             HbyA.exec(),
-            HbyA.boundaryField().range(patchi),
+            HbyA.boundaryVector().range(patchi),
             KOKKOS_LAMBDA(const size_t bfacei) { HbyABcValue[bfacei] = UBcValue[bfacei]; }
         );
     }
@@ -184,18 +184,18 @@ SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
     auto faceFlux = SurfaceField<scalar>(exec, "out", mesh, surfaceBCs);
 
     fill(faceFlux.internalVector(), zero<scalar>());
-    fill(faceFlux.boundaryField().value(), zero<scalar>());
+    fill(faceFlux.boundaryVector().value(), zero<scalar>());
     const auto [owner, neighbour, weightIn, faceAreas, volFieldIn, volFieldBc, bSf] = spans(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
         weight.internalVector(),
         mesh.faceAreas(),
         volField.internalVector(),
-        volField.boundaryField().value(),
+        volField.boundaryVector().value(),
         mesh.boundaryMesh().sf()
     );
 
-    auto [faceFluxIn, bvalue] = spans(faceFlux.internalVector(), faceFlux.boundaryField().value());
+    auto [faceFluxIn, bvalue] = spans(faceFlux.internalVector(), faceFlux.boundaryVector().value());
 
     parallelFor(
         exec,

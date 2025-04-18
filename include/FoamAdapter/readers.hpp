@@ -42,7 +42,7 @@ auto readVolBoundaryConditions(const NeoN::UnstructuredMesh& nfMesh, const FoamT
 
     // get boundary as dictionary
     OStringStream os;
-    ofVolField.boundaryField().writeEntries(os);
+    ofVolField.boundaryVector().writeEntries(os);
     IStringStream is(os.str());
     dictionary bDict(is);
 
@@ -137,7 +137,7 @@ auto readSurfaceBoundaryConditions(
 
     // get boundary as dictionary
     OStringStream os;
-    surfaceField.boundaryField().writeEntries(os);
+    surfaceField.boundaryVector().writeEntries(os);
     IStringStream is(os.str());
     dictionary bDict(is);
     int patchi = 0;
@@ -194,9 +194,9 @@ auto constructSurfaceField(
     }
 
     label idx = nInternal;
-    forAll(in.boundaryField(), patchi)
+    forAll(in.boundaryVector(), patchi)
     {
-        const fvsPatchField<foam_primitive_t>& pin = in.boundaryField()[patchi];
+        const fvsPatchField<foam_primitive_t>& pin = in.boundaryVector()[patchi];
 
         forAll(pin, facei)
         {
@@ -245,7 +245,7 @@ public:
         NeoN::DomainField<typename type_container_t::FieldValueType> domainField(
             convertedField.exec(),
             convertedField.internalVector(),
-            convertedField.boundaryField()
+            convertedField.boundaryVector()
         );
 
         type_container_t registeredField(
