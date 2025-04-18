@@ -1,0 +1,98 @@
+import subprocess
+from pathlib import Path
+import json
+import itertools
+import shutil
+import pandas as pd
+
+import yaml
+
+def get_mesh_property(geometry, mesh_name, key):
+    for entry in config["meshes"]:
+        if geometry in entry:
+            return entry[geometry][mesh_name][key]
+    raise KeyError(f"Could not find key '{key}' for {geometry}/{mesh_name}")
+
+with open("config.yaml") as f:
+    config = yaml.safe_load(f)
+
+# Flatten the mesh entries
+cases = []
+for entry in config["meshes"]:
+    for geom, mesh_names in entry.items():
+        for mesh_name in mesh_names:
+            path = f"cases/dsl/{geom}_{mesh_name}/dsl.xml"
+            cases.append(path)
+
+rule all:
+    input:
+        "results/advection–diffusion-equation_scalar_3DCube.png",
+        "results/advection–diffusion-equation_scalar_2DSquare.png"
+
+rule plotResults:
+    input:
+        "results/benchmark_results.csv"
+    output:
+        "results/advection–diffusion-equation_scalar_3DCube.png",
+        "results/advection–diffusion-equation_scalar_2DSquare.png"
+    script:
+        "plotResults.py"
+
+rule getResults:
+    input:
+        cases
+    output:
+        "results/benchmark_results.csv"
+    script:
+        "getResults.py"
+
+rule runCases:
+    input:
+        "cases/dsl/{geometry,[^/]+}_{mesh_name,[^/]+}/Allrun"
+    output:
+        "cases/dsl/{geometry,[^/]+}_{mesh_name,[^/]+}/dsl.xml"
+    shell:
+        """
+            cd $(dirname {input})
+            ./Allrun
+        """
+
+rule createCases:
+    input:
+        mesh="meshes/{geometry,[^/]+}/{mesh_name,[^/]+}/constant/polyMesh/boundary"
+    params:
+        src="templates"
+    output:
+        "cases/dsl/{geometry,[^/]+}_{mesh_name,[^/]+}/Allrun"
+    run:
+        base_dir = f"cases/dsl/{wildcards.geometry}_{wildcards.mesh_name}/"
+        shutil.copytree(f"{params.src}/dsl", base_dir, dirs_exist_ok=True)
+        shutil.copytree(Path(input.mesh).parent, f"{base_dir}/constant/polyMesh")
+
+
+rule runMeshes:
+    input:
+        "meshes/{geometry,[^/]+}/{mesh_name,[^/]+}/Allrun"
+    output:
+        "meshes/{geometry,[^/]+}/{mesh_name,[^/]+}/constant/polyMesh/boundary"
+    shell:
+        """
+            cd $(dirname {input})
+           ./Allrun
+        """
+
+rule createMesh:
+    output:
+        "meshes/{geometry,[^/]+}/{mesh_name,[^/]+}/Allrun"
+    params:
+        src="templates"
+    run:
+        # Extract resolution from the config
+        Res = get_mesh_property(wildcards.geometry, wildcards.mesh_name, "Res")
+
+        print(f"Creating case for {wildcards.geometry} {wildcards.mesh_name} with resolution {Res}")
+
+        dst = f"meshes/{wildcards.geometry}/{wildcards.mesh_name}"
+        shutil.copytree(f"{params.src}/{wildcards.geometry}", dst, dirs_exist_ok=True)
+
+        subprocess.run(["foamDictionary", f"{dst}/system/simulationParameters ", "-entry", "Res", "-set", f"{Res}"])

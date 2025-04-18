@@ -13,13 +13,13 @@ namespace NeoN::finiteVolume::cellCentred
 {
 
 void constrainHbyA(
-    VolumeField<Vector>& HbyA,
-    const VolumeField<Vector>& U,
+    VolumeField<Vec3>& HbyA,
+    const VolumeField<Vec3>& U,
     const VolumeField<scalar>& p
 );
 
-std::tuple<VolumeField<scalar>, VolumeField<Vector>>
-discreteMomentumFields(const Expression<Vector>& expr);
+std::tuple<VolumeField<scalar>, VolumeField<Vec3>>
+discreteMomentumFields(const Expression<Vec3>& expr);
 
 void updateFaceVelocity(
     SurfaceField<scalar>& phi,
@@ -28,13 +28,13 @@ void updateFaceVelocity(
 );
 
 void updateVelocity(
-    VolumeField<Vector>& U,
-    const VolumeField<Vector>& HbyA,
+    VolumeField<Vec3>& U,
+    const VolumeField<Vec3>& HbyA,
     VolumeField<scalar>& rAU,
     VolumeField<scalar>& p
 );
 
 
-SurfaceField<scalar> flux(const VolumeField<Vector>& volField);
+SurfaceField<scalar> flux(const VolumeField<Vec3>& volField);
 
 }

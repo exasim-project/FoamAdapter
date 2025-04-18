@@ -29,8 +29,8 @@ int main(int argc, char* argv[])
 
         NeoN::Database db;
 
-        fvcc::FieldCollection& fieldCollection =
-            fvcc::FieldCollection::instance(db, "fieldCollection");
+        fvcc::VectorCollection& VectorCollection =
+            fvcc::VectorCollection::instance(db, "VectorCollection");
 
 
         NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 
         Info << "creating NeoFOAM fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfT =
-            fieldCollection.registerField<fvcc::VolumeField<NeoN::scalar>>(
+            VectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
@@ -87,8 +87,8 @@ int main(int argc, char* argv[])
                 U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
                 phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
 
-                nfPhi.internalField() =
-                    nfPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
+                nfPhi.internalVector() =
+                    nfPhi0.internalVector() * std::cos(pi * (t + 0.5 * dt) / endTime);
             }
 
 
@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
             if (runTime.outputTime())
             {
                 Info << "writing nfT field" << endl;
-                write(nfT.internalField(), mesh, "nfT");
+                write(nfT.internalVector(), mesh, "nfT");
             }
 
             runTime.write();

@@ -17,6 +17,7 @@
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;
 
+
 extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 extern Foam::fvMesh* meshPtr;  // A single mesh object
@@ -102,8 +103,8 @@ TEST_CASE("GradOperator")
         Foam::volVectorField ofGradT("ofGradT", foamGradScalar.calcGrad(ofT, "test"));
 
         auto nfGradT = constructFrom(exec, nfMesh, ofGradT);
-        NeoN::fill(nfGradT.internalField(), NeoN::Vector(0.0, 0.0, 0.0));
-        NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vector(0.0, 0.0, 0.0));
+        NeoN::fill(nfGradT.internalVector(), NeoN::Vec3(0.0, 0.0, 0.0));
+        NeoN::fill(nfGradT.boundaryVector().value(), NeoN::Vec3(0.0, 0.0, 0.0));
         fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
         nfGradT.correctBoundaryConditions();
 
@@ -164,8 +165,8 @@ TEST_CASE("DivOperator")
             auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
             NeoN::TokenList scheme({std::string("linear")});
             // Reset
-            NeoN::fill(nfDivT.internalField(), 0.0);
-            NeoN::fill(nfDivT.boundaryField().value(), 0.0);
+            NeoN::fill(nfDivT.internalVector(), 0.0);
+            NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
             fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
                 .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
             nfDivT.correctBoundaryConditions();
@@ -178,11 +179,11 @@ TEST_CASE("DivOperator")
             NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"), std::string("linear")});
 
             auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-            NeoN::fill(nfDivT.internalField(), 0.0);
-            NeoN::fill(nfDivT.boundaryField().value(), 0.0);
+            NeoN::fill(nfDivT.internalVector(), 0.0);
+            NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
             dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
             divOp.build(scheme);
-            divOp.explicitOperation(nfDivT.internalField());
+            divOp.explicitOperation(nfDivT.internalVector());
 
             nfDivT.correctBoundaryConditions();
 

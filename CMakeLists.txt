@@ -53,6 +53,8 @@ add_subdirectory(include)
 add_subdirectory(NeoN)
 add_subdirectory(src)
 
+add_subdirectory(benchmarks)
+
 if(FOAMADAPTER_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
