@@ -543,14 +543,14 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup.hpp" line="26" column="16" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup.hpp" declline="26" declcolumn="16"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoam_1a175199b88e4554e975577f7a060e53a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoam_1a77eb355d2b8d0e1d5e5673c6eb3e4bbe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">void</ref></type>
         <definition>void Foam::write</definition>
-        <argsstring>(NeoN::scalarField &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <argsstring>(NeoN::scalarVector &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
         <name>write</name>
         <qualifiedname>Foam::write</qualifiedname>
         <param>
-          <type>NeoN::scalarField &amp;</type>
+          <type>NeoN::scalarVector &amp;</type>
           <declname>sf</declname>
         </param>
         <param>
@@ -569,14 +569,14 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" line="31" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" bodystart="31" bodyend="55"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoam_1a4cef1509b2311466bc8fe9ddf827e932" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoam_1a71c83b601f8dc7bda83de4e5e031c09c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">void</ref></type>
         <definition>void Foam::write</definition>
-        <argsstring>(NeoN::Vec3Field &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <argsstring>(NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
         <name>write</name>
         <qualifiedname>Foam::write</qualifiedname>
         <param>
-          <type>NeoN::Vec3Field &amp;</type>
+          <type>NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;</type>
           <declname>sf</declname>
         </param>
         <param>

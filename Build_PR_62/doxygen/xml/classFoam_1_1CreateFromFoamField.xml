@@ -98,9 +98,9 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
-      <memberdef kind="function" id="classFoam_1_1CreateFromFoamField_1a1c22929f37c50c285b849ef8d8ec1e68" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>fvcc::FieldDocument</type>
-        <definition>fvcc::FieldDocument Foam::CreateFromFoamField&lt; FieldType &gt;::operator()</definition>
+      <memberdef kind="function" id="classFoam_1_1CreateFromFoamField_1a8d4706c636d4ccaff4f6005f01a601ee" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>fvcc::VectorDocument</type>
+        <definition>fvcc::VectorDocument Foam::CreateFromFoamField&lt; FieldType &gt;::operator()</definition>
         <argsstring>(NeoN::Database &amp;db)</argsstring>
         <name>operator()</name>
         <qualifiedname>Foam::CreateFromFoamField::operator()</qualifiedname>
@@ -114,14 +114,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="233" column="25" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="233" bodyend="270"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="233" column="26" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="233" bodyend="270"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Creates a FieldDocument from an existing <ref refid="namespaceFoam" kindref="compound">Foam</ref> Field. </para>
+<para>Creates a VectorDocument from an existing <ref refid="namespaceFoam" kindref="compound">Foam</ref> Field. </para>
     </briefdescription>
     <detaileddescription>
-<para><simplesect kind="return"><para>The created FieldDocument. </para>
+<para><simplesect kind="return"><para>The created VectorDocument. </para>
 </simplesect>
 </para>
     </detaileddescription>
@@ -132,7 +132,7 @@
       <member refid="classFoam_1_1CreateFromFoamField_1a50e8f7b7be795b3b6532273f05ca9716" prot="public" virt="non-virtual"><scope>Foam::CreateFromFoamField</scope><name>iterationIndex</name></member>
       <member refid="classFoam_1_1CreateFromFoamField_1a98e45a1b2ec7f830c0a2c5b7928f5cb5" prot="public" virt="non-virtual"><scope>Foam::CreateFromFoamField</scope><name>name</name></member>
       <member refid="classFoam_1_1CreateFromFoamField_1a4e60f2d56250d10bcebadb7eccb05a69" prot="public" virt="non-virtual"><scope>Foam::CreateFromFoamField</scope><name>nfMesh</name></member>
-      <member refid="classFoam_1_1CreateFromFoamField_1a1c22929f37c50c285b849ef8d8ec1e68" prot="public" virt="non-virtual"><scope>Foam::CreateFromFoamField</scope><name>operator()</name></member>
+      <member refid="classFoam_1_1CreateFromFoamField_1a8d4706c636d4ccaff4f6005f01a601ee" prot="public" virt="non-virtual"><scope>Foam::CreateFromFoamField</scope><name>operator()</name></member>
       <member refid="classFoam_1_1CreateFromFoamField_1ab9007465a8f08f1945cf0c413730a196" prot="public" virt="non-virtual"><scope>Foam::CreateFromFoamField</scope><name>subCycleIndex</name></member>
     </listofallmembers>
   </compounddef>
