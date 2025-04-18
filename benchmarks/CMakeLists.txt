@@ -27,4 +27,4 @@ function(NeoN_benchmark BENCH)
     WORKING_DIRECTORY ${NeoN_WORKING_DIRECTORY})
 endfunction()
 
-add_subdirectory(explicitOperators)
+add_subdirectory(benchmarks)

@@ -56,9 +56,9 @@ def plot(df_fixed_normalization, testcase):
     # plt.xticks(rotation=90)
     plt.axhline(1, color='black', linestyle='--', linewidth=1)  # Add baseline
     plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
-    plt.title(f"3DCube: Speed up for the explicit {testcase}")
+    plt.title(f"3DCube: Speed up for the implicit {testcase}")
     plt.tight_layout()
-    plt.yscale("log")
+    # plt.yscale("log")
     plt.savefig(f"results/{testcase}_3DCube.png")
 
     df_fixed_normalization_2DSquare = slice_dataframe(df_fixed_normalization, "2DSquare", testcase)
@@ -78,16 +78,12 @@ def plot(df_fixed_normalization, testcase):
     # plt.xticks(rotation=90)
     plt.axhline(1, color='black', linestyle='--', linewidth=1)  # Add baseline
     plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
-    plt.title(f"2DSquare: Speed up for the explicit {testcase}")
+    plt.title(f"2DSquare: Speed up for the implicit {testcase}")
     plt.tight_layout()
-    plt.yscale("log")
+    # plt.yscale("log")
     plt.savefig(f"results/{testcase}_2DSquare.png")
 
 # %%
-plot(df_fixed_normalization, "DivOperator")
-plot(df_fixed_normalization, "LaplacianOperator")
-plot(df_fixed_normalization, "GradOperator")
-plot(df_fixed_normalization, "FaceInterpolation")
-plot(df_fixed_normalization, "FaceNormalGradient")
+plot(df_fixed_normalization, "advection–diffusion-equation_scalar")
 plt.show()
 # %%

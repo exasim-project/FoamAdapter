@@ -58,6 +58,7 @@ def plot(df_fixed_normalization, testcase):
     plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
     plt.title(f"3DCube: Speed up for the implicit {testcase}")
     plt.tight_layout()
+    plt.yscale("log")
     plt.savefig(f"results/{testcase}_3DCube.png")
 
     df_fixed_normalization_2DSquare = slice_dataframe(df_fixed_normalization, "2DSquare", testcase)
@@ -79,10 +80,11 @@ def plot(df_fixed_normalization, testcase):
     plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
     plt.title(f"2DSquare: Speed up for the implicit {testcase}")
     plt.tight_layout()
+    plt.yscale("log")
     plt.savefig(f"results/{testcase}_2DSquare.png")
 
 # %%
 plot(df_fixed_normalization, "DivOperator")
 plot(df_fixed_normalization, "LaplacianOperator")
-# plt.show()
+plt.show()
 # %%
