@@ -109,3 +109,6 @@ benchmarks/benchmarkSuite/explicitOperators/cases
 
 benchmarks/benchmarkSuite/implicitOperators/meshes
 benchmarks/benchmarkSuite/implicitOperators/cases
+
+benchmarks/benchmarkSuite/dsl/meshes
+benchmarks/benchmarkSuite/dsl/cases
