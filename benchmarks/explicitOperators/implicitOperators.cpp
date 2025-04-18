@@ -15,8 +15,10 @@ namespace dsl = NeoN::dsl;
 #include "fvc.H"
 #include "gaussGrad.H"
 #include "gaussConvectionScheme.H"
+#include "gaussLaplacianScheme.H"
 #include "NeoN/core/input.hpp"
 #include "NeoN/dsl/explicit.hpp"
+#include "NeoN/include/NeoN/linearAlgebra/linearSystem.hpp"
 
 template<typename FieldType, typename RandomFunc>
 FieldType createRandomField(
@@ -88,7 +90,7 @@ TEST_CASE("DivOperator")
             {
                 Foam::IStringStream is("linear");
                 Foam::fv::gaussConvectionScheme<Foam::scalar> foamDivScalar(mesh, ofPhi, is);
-                Foam::volScalarField ofDivT("ofDivT", foamDivScalar.fvcDiv(ofPhi, ofT));
+                auto fvmDivT = foamDivScalar.fvmDiv(ofPhi, ofT);
                 return;
             };
         }
@@ -133,52 +135,45 @@ TEST_CASE("DivOperator")
 
             BENCHMARK(std::string(execName))
             {
-                fvcc::VolumeField<NeoN::scalar> divPhiT =
-                    fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
-                        .div(nfPhi, nfT, dsl::Coeff(1.0));
+                NeoN::la::LinearSystem<NeoN::scalar, NeoN::localIdx> ls(
+                    la::createEmptyLinearSystem<
+                        NeoN::scalar,
+                        NeoN::localIdx,
+                        fvcc::SparsityPattern>(*fvcc::SparsityPattern::readOrCreate(nfMesh).get())
+                );
+                fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
+                    .div(ls, nfPhi, nfT, dsl::Coeff(1.0));
+                Kokkos::fence();
                 return;
             };
         }
 
         SECTION("No allocation")
         {
-            auto nfDivT = constructFrom(exec, nfMesh, ofT);
+            NeoN::la::LinearSystem<NeoN::scalar, NeoN::localIdx> ls(
+                la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx, fvcc::SparsityPattern>(
+                    *fvcc::SparsityPattern::readOrCreate(nfMesh).get()
+                )
+            );
             NeoN::TokenList scheme({std::string("linear")});
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(nfDivT.internalVector(), 0.0);
-                NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
+                NeoN::fill(ls.matrix().values(), 0.0);
+                NeoN::fill(ls.rhs(), 0.0);
                 fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
-                    .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
+                    .div(ls, nfPhi, nfT, dsl::Coeff(1.0));
                 Kokkos::fence();
                 return;
             };
         }
 
-        // SECTION("compute div from dsl::exp")
-        // {
-        //     NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"),
-        //     std::string("linear")});
-
-        //     auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-        //     NeoN::fill(nfDivT.internalVector(), 0.0);
-        //     NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
-        //     dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
-        //     divOp.build(scheme);
-        //     divOp.explicitOperation(nfDivT.internalVector());
-
-        //     nfDivT.correctBoundaryConditions();
-
-        //     compare(nfT, ofT, ApproxScalar(1e-15), false);
-
-        //     compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
-        // }
+        // TODO dsl
     }
 }
 
 
-TEST_CASE("GradOperator")
+TEST_CASE("LaplacianOperator")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
@@ -189,14 +184,25 @@ TEST_CASE("GradOperator")
         Foam::fvMesh& mesh = *meshPtr;
 
         auto ofT = randomScalarField(runTime, mesh, "T");
+        Foam::surfaceScalarField ofGamma(
+            Foam::IOobject(
+                "Gamma",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::NO_READ,
+                Foam::IOobject::AUTO_WRITE
+            ),
+            mesh,
+            Foam::dimensionedScalar("Gamma", Foam::dimless, 1.0)
+        );
 
         SECTION("with Allocation")
         {
             BENCHMARK(std::string("OpenFOAM"))
             {
-                Foam::IStringStream is("linear");
-                Foam::fv::gaussGrad<Foam::scalar> foamGrad(mesh, is);
-                Foam::volVectorField ofGradT("ofGradT", foamGrad.calcGrad(ofT, "ofGradT"));
+                Foam::IStringStream is("linear uncorrected");
+                Foam::fv::gaussLaplacianScheme<Foam::scalar, Foam::scalar> foamLapScalar(mesh, is);
+                auto fvmLapT = foamLapScalar.fvmLaplacian(ofGamma, ofT);
                 return;
             };
         }
@@ -215,50 +221,61 @@ TEST_CASE("GradOperator")
 
         auto ofT = randomScalarField(runTime, mesh, "T");
         auto nfT = constructFrom(exec, nfMesh, ofT);
+        nfT.correctBoundaryConditions();
+
+        Foam::surfaceScalarField ofGamma(
+            Foam::IOobject(
+                "Gamma",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::NO_READ,
+                Foam::IOobject::AUTO_WRITE
+            ),
+            mesh,
+            Foam::dimensionedScalar("Gamma", Foam::dimless, 1.0)
+        );
+
+        auto nfGamma = constructSurfaceField(exec, nfMesh, ofGamma);
 
         SECTION("with Allocation")
         {
-            NeoN::TokenList scheme({std::string("linear")});
+            NeoN::TokenList scheme({std::string("linear"), std::string("uncorrected")});
 
             BENCHMARK(std::string(execName))
             {
-                fvcc::VolumeField<NeoN::Vec3> nfGradT =
-                    fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT);
+                NeoN::la::LinearSystem<NeoN::scalar, NeoN::localIdx> ls(
+                    la::createEmptyLinearSystem<
+                        NeoN::scalar,
+                        NeoN::localIdx,
+                        fvcc::SparsityPattern>(*fvcc::SparsityPattern::readOrCreate(nfMesh).get())
+                );
+                fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
+                    .laplacian(ls, nfGamma, nfT, dsl::Coeff(1.0));
+                Kokkos::fence();
                 return;
             };
         }
 
         SECTION("No allocation")
         {
-            fvcc::VolumeField<NeoN::Vec3> nfGradT = fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT);
+            NeoN::la::LinearSystem<NeoN::scalar, NeoN::localIdx> ls(
+                la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx, fvcc::SparsityPattern>(
+                    *fvcc::SparsityPattern::readOrCreate(nfMesh).get()
+                )
+            );
+            NeoN::TokenList scheme({std::string("linear"), std::string("uncorrected")});
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(nfGradT.internalVector(), NeoN::Vec3(0, 0, 0));
-                NeoN::fill(nfGradT.boundaryVector().value(), NeoN::Vec3(0, 0, 0));
-                fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
+                NeoN::fill(ls.matrix().values(), 0.0);
+                NeoN::fill(ls.rhs(), 0.0);
+                fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
+                    .laplacian(ls, nfGamma, nfT, dsl::Coeff(1.0));
                 Kokkos::fence();
                 return;
             };
         }
 
-        // SECTION("compute grad from dsl::exp")
-        // {
-        //     NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"),
-        //     std::string("linear")});
-
-        //     auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-        //     NeoN::fill(nfDivT.internalVector(), 0.0);
-        //     NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
-        //     dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
-        //     divOp.build(scheme);
-        //     divOp.explicitOperation(nfDivT.internalVector());
-
-        //     nfDivT.correctBoundaryConditions();
-
-        //     compare(nfT, ofT, ApproxScalar(1e-15), false);
-
-        //     compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
-        // }
+        // TODO dsl
     }
 }
