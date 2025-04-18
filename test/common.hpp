@@ -70,7 +70,7 @@ auto randomVectorField(const Time& runTime, const MeshAdapter& mesh, word name)
 template<typename NFFIELD, typename OFFIELD, typename Compare>
 void compare(NFFIELD& a, OFFIELD& b, Compare comp, bool withBoundaries = true)
 {
-    auto aHost = a.internalField().copyToHost();
+    auto aHost = a.internalVector().copyToHost();
     auto bSpan = std::span(b.primitiveFieldRef().data(), b.size());
     // nf a span might be shorter than bSpan for surface fields
     REQUIRE_THAT(aHost.view({0, bSpan.size()}), Catch::Matchers::RangeEquals(bSpan, comp));

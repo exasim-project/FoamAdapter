@@ -87,8 +87,8 @@ int main(int argc, char* argv[])
                 U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
                 phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
 
-                nfPhi.internalField() =
-                    nfPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
+                nfPhi.internalVector() =
+                    nfPhi0.internalVector() * std::cos(pi * (t + 0.5 * dt) / endTime);
             }
 
 
@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
             if (runTime.outputTime())
             {
                 Info << "writing nfT field" << endl;
-                write(nfT.internalField(), mesh, "nfT");
+                write(nfT.internalVector(), mesh, "nfT");
             }
 
             runTime.write();

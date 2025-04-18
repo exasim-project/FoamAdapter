@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 
         auto nuBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<NeoN::scalar>>(nfMesh);
         fvcc::SurfaceField<NeoN::scalar> nfNu(exec, "nfNu", nfMesh, nuBCs);
-        fill(nfNu.internalField(), nu.value());
+        fill(nfNu.internalVector(), nu.value());
         fill(nfNu.boundaryField().value(), nu.value());
 
         NeoN::scalar endTime = controlDict.get<NeoN::scalar>("endTime");
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
         while (runTime.loop())
         {
             auto& nfOldU = fvcc::oldTime(nfU);
-            nfOldU.internalField() = nfU.internalField();
+            nfOldU.internalVector() = nfU.internalVector();
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
             coNum = calculateCoNum(phi);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
@@ -190,8 +190,8 @@ int main(int argc, char* argv[])
             if (runTime.outputTime())
             {
                 Info << "writing nfp field" << endl;
-                write(nfp.internalField(), mesh, "nfp");
-                write(nfU.internalField(), mesh, "nfU");
+                write(nfp.internalVector(), mesh, "nfp");
+                write(nfU.internalVector(), mesh, "nfU");
             }
 
             runTime.printExecutionTime(Info);

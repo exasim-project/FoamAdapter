@@ -54,15 +54,15 @@ struct type_map<GeometricField<vector, fvsPatchField, surfaceMesh>>
 template<>
 struct type_map<Field<scalar>>
 {
-    using container_type = NeoN::Field<NeoN::scalar>;
+    using container_type = NeoN::Vector<NeoN::scalar>;
     using mapped_type = NeoN::scalar;
 };
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Field<Vec3>>
+struct type_map<Field<vector>>
 {
-    using container_type = NeoN::Field<NeoN::Vec3>;
+    using container_type = NeoN::Vector<NeoN::Vec3>;
     using mapped_type = NeoN::Vec3;
 };
 
@@ -70,7 +70,7 @@ struct type_map<Field<Vec3>>
 template<>
 struct type_map<List<scalar>>
 {
-    using container_type = NeoN::Field<NeoN::scalar>;
+    using container_type = NeoN::Vector<NeoN::scalar>;
     using mapped_type = NeoN::scalar;
 };
 
@@ -78,7 +78,7 @@ struct type_map<List<scalar>>
 template<>
 struct type_map<List<label>>
 {
-    using container_type = NeoN::Field<NeoN::label>;
+    using container_type = NeoN::Vector<NeoN::label>;
     using mapped_type = NeoN::label;
 };
 

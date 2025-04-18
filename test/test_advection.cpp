@@ -152,8 +152,8 @@ TEST_CASE("Advection Equation")
             U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
             phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
 
-            nfPhi.internalField() =
-                nfPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
+            nfPhi.internalVector() =
+                nfPhi0.internalVector() * std::cos(pi * (t + 0.5 * dt) / endTime);
 
             runTime++;
 
@@ -177,7 +177,7 @@ TEST_CASE("Advection Equation")
             if (runTime.outputTime())
             {
                 Info << "writing nfT fields" << endl;
-                write(nfT.internalField(), mesh, "nfT_" + execName);
+                write(nfT.internalVector(), mesh, "nfT_" + execName);
                 T.write(); // for some reason T was not written
             }
 

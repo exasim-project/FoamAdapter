@@ -255,7 +255,7 @@ TEST_CASE("fvccGeometryScheme")
         scheme.update(); // make sure it uptodate
         auto foamWeights = mesh.weights();
 
-        auto weightsHost = scheme.weights().internalField().copyToHost();
+        auto weightsHost = scheme.weights().internalVector().copyToHost();
         std::span<Foam::scalar> sFoamWeights(
             foamWeights.primitiveFieldRef().data(),
             foamWeights.size()
@@ -273,7 +273,7 @@ TEST_CASE("fvccGeometryScheme")
         scheme.update(); // make sure it uptodate
         auto foamWeights = mesh.weights();
 
-        auto weightsHost = scheme.weights().internalField().copyToHost();
+        auto weightsHost = scheme.weights().internalVector().copyToHost();
         std::span<Foam::scalar> sFoamWeights(
             foamWeights.primitiveFieldRef().data(),
             foamWeights.size()

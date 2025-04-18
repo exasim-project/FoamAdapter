@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
                 }
             );
         auto& nfTOld = oldTime(nfT);
-        nfTOld.internalField() = nfT.internalField();
+        nfTOld.internalVector() = nfT.internalVector();
         nfT.correctBoundaryConditions();
 
         auto nfKappa = Foam::constructSurfaceField(exec, nfMesh, kappa);
@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
             if (runTime.outputTime())
             {
                 Info << "writing nfT field" << endl;
-                write(nfT.internalField(), mesh, "nfT");
+                write(nfT.internalVector(), mesh, "nfT");
             }
 
             runTime.printExecutionTime(Info);

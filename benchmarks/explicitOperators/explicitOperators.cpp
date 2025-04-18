@@ -148,7 +148,7 @@ TEST_CASE("DivOperator")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(nfDivT.internalField(), 0.0);
+                NeoN::fill(nfDivT.internalVector(), 0.0);
                 NeoN::fill(nfDivT.boundaryField().value(), 0.0);
                 fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
                     .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
@@ -247,7 +247,7 @@ TEST_CASE("LaplacianOperator")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(nfLapT.internalField(), 0.0);
+                NeoN::fill(nfLapT.internalVector(), 0.0);
                 NeoN::fill(nfLapT.boundaryField().value(), 0.0);
                 fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
                     .laplacian(nfLapT, nfGamma, nfT, dsl::Coeff(1.0));
@@ -316,7 +316,7 @@ TEST_CASE("GradOperator")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(nfGradT.internalField(), NeoN::Vec3(0, 0, 0));
+                NeoN::fill(nfGradT.internalVector(), NeoN::Vec3(0, 0, 0));
                 NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vec3(0, 0, 0));
                 fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
                 Kokkos::fence();
@@ -421,7 +421,7 @@ TEST_CASE("FaceInterpolation")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(nfTf.internalField(), 0.0);
+                NeoN::fill(nfTf.internalVector(), 0.0);
                 NeoN::fill(nfTf.boundaryField().value(), 0.0);
                 fvcc::SurfaceInterpolation<NeoN::scalar>(exec, nfMesh, scheme)
                     .interpolate(nfPhi, nfT, nfTf);
@@ -501,7 +501,7 @@ TEST_CASE("FaceNormalGradient")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(faceGradT.internalField(), 0.0);
+                NeoN::fill(faceGradT.internalVector(), 0.0);
                 NeoN::fill(faceGradT.boundaryField().value(), 0.0);
                 fvcc::FaceNormalGradient<NeoN::scalar>(exec, nfMesh, scheme)
                     .faceNormalGrad(nfT, faceGradT);

@@ -64,9 +64,9 @@ TEST_CASE("matrix multiplication")
                 }
             );
         auto& nfTOld = fvcc::oldTime(nfT);
-        const auto nfTOldView = nfTOld.internalField().view();
+        const auto nfTOldView = nfTOld.internalVector().view();
         NeoN::map(
-            nfTOld.internalField(),
+            nfTOld.internalVector(),
             KOKKOS_LAMBDA(const std::size_t celli) { return nfTOldView[celli] - 1.0; }
         );
 
@@ -91,7 +91,7 @@ TEST_CASE("matrix multiplication")
         // );
 
         // // check diag
-        // NeoN::Field<NeoN::scalar> diag(nfT.exec(), nfT.internalField().size(), 0.0);
+        // NeoN::Vector<NeoN::scalar> diag(nfT.exec(), nfT.internalVector().size(), 0.0);
         // ls2.diag(diag);
         // auto diagHost = diag.copyToHost();
         // for (size_t i = 0; i < diagHost.size(); i++)
@@ -99,7 +99,7 @@ TEST_CASE("matrix multiplication")
         //     REQUIRE(diagHost[i] == 1.0);
         // }
         // auto result = ls2 & nfT;
-        // auto implicitHost = result.internalField().copyToHost();
+        // auto implicitHost = result.internalVector().copyToHost();
         // for (size_t i = 0; i < implicitHost.size(); i++)
         // {
         //     REQUIRE(implicitHost[i] == Catch::Approx(ddt[i]).margin(1e-16));
@@ -113,18 +113,18 @@ TEST_CASE("matrix multiplication")
         fvcc::VolumeField<NeoN::scalar> nfT = constructFrom(exec, nfMesh, ofT);
 
         NeoN::map(
-            nfT.internalField(),
+            nfT.internalVector(),
             KOKKOS_LAMBDA(const std::size_t celli) { return celli; }
         );
         auto coefficients = nfT;
-        NeoN::fill(coefficients.internalField(), coeff);
+        NeoN::fill(coefficients.internalVector(), coeff);
         fvcc::SourceTerm sourceTerm(dsl::Operator::Type::Implicit, coefficients, nfT);
-        NeoN::Field<NeoN::scalar> source(nfT.exec(), nfT.internalField().size(), 0.0);
+        NeoN::Vector<NeoN::scalar> source(nfT.exec(), nfT.internalVector().size(), 0.0);
         sourceTerm.explicitOperation(source);
 
         auto sourceHost = source.copyToHost();
         const auto sourceView = sourceHost.view();
-        auto nftHost = nfT.internalField().copyToHost();
+        auto nftHost = nfT.internalVector().copyToHost();
         const auto hostnfTView = nftHost.view();
         for (size_t i = 0; i < sourceHost.size(); i++)
         {
@@ -141,7 +141,7 @@ TEST_CASE("matrix multiplication")
         // );
 
         // // check diag
-        // NeoN::Field<NeoN::scalar> diag(nfT.exec(), nfT.internalField().size(), 0.0);
+        // NeoN::Vector<NeoN::scalar> diag(nfT.exec(), nfT.internalVector().size(), 0.0);
         // ls2.diag(diag);
         // auto diagHost = diag.copyToHost();
         // auto cellVolumes = nfMesh.cellVolumes().copyToHost();
@@ -150,7 +150,7 @@ TEST_CASE("matrix multiplication")
         //     REQUIRE(diagHost[i] == coeff * cellVolumes[i]);
         // }
         // auto result = ls2 & nfT;
-        // auto implicitHost = result.internalField().copyToHost();
+        // auto implicitHost = result.internalVector().copyToHost();
         // for (size_t i = 0; i < implicitHost.size(); i++)
         // {
         //     REQUIRE(implicitHost[i] == coeff * nftHost[i] * cellVolumes[i]);
@@ -164,13 +164,13 @@ TEST_CASE("matrix multiplication")
         ofT.correctBoundaryConditions();
 
         fvcc::VolumeField<NeoN::scalar> nfT = constructFrom(exec, nfMesh, ofT);
-        NeoN::fill(nfT.internalField(), 1.0);
+        NeoN::fill(nfT.internalVector(), 1.0);
 
         auto nfCoeff1 = nfT;
-        NeoN::fill(nfCoeff1.internalField(), 1.0);
+        NeoN::fill(nfCoeff1.internalVector(), 1.0);
 
         auto nfCoeff2 = nfT;
-        NeoN::fill(nfCoeff2.internalField(), 2.0);
+        NeoN::fill(nfCoeff2.internalVector(), 2.0);
 
         Foam::dimensionedScalar coeff1("coeff", Foam::dimless, 1.0);
         Foam::dimensionedScalar coeff2("coeff", Foam::dimless, 2.0);
@@ -189,7 +189,7 @@ TEST_CASE("matrix multiplication")
         dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
         matrix.solve();
 
-        auto nfTHost = nfT.internalField().copyToHost();
+        auto nfTHost = nfT.internalVector().copyToHost();
         const auto nfTHostView = nfTHost.view();
         for (size_t celli = 0; celli < nfTHost.size(); celli++)
         {
@@ -231,10 +231,10 @@ TEST_CASE("matrix multiplication")
         NeoN::scalar coeff = 1000;
         Foam::dimensionedScalar coeff1("coeff", Foam::dimensionSet(0, -3, 0, 0, 0), coeff);
         Foam::dimensionedScalar coeff2("coeff", Foam::dimensionSet(0, -3, 0, 0, 0), coeff);
-        NeoN::fill(nfCoeff1.internalField(), coeff);
+        NeoN::fill(nfCoeff1.internalVector(), coeff);
 
         auto nfCoeff2 = nfT;
-        NeoN::fill(nfCoeff2.internalField(), coeff);
+        NeoN::fill(nfCoeff2.internalVector(), coeff);
 
         Foam::volScalarField testfvcDiv(Foam::fvc::div(ofPhi, ofT));
         std::span<Foam::scalar> testfvcDivSpan(
@@ -271,7 +271,7 @@ TEST_CASE("matrix multiplication")
         dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
 
         std::span<Foam::scalar> ofTSpan(ofT.data(), ofT.size());
-        auto nfTHost = nfT.internalField().copyToHost();
+        auto nfTHost = nfT.internalVector().copyToHost();
         std::span<NeoN::scalar> nfTHostSpan(nfTHost.data(), nfTHost.size());
         for (size_t celli = 0; celli < nfTHost.size(); celli++)
         {

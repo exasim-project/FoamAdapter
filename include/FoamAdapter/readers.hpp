@@ -118,7 +118,7 @@ auto constructFrom(
 
     type_container_t out(exec, in.name(), nfMesh, readVolBoundaryConditions(nfMesh, in));
 
-    out.internalField() = fromFoamField(exec, in.primitiveField());
+    out.internalVector() = fromFoamField(exec, in.primitiveField());
     out.correctBoundaryConditions();
 
     return out;
@@ -185,7 +185,7 @@ auto constructSurfaceField(
     type_container_t
         out(exec, in.name(), nfMesh, std::move(readSurfaceBoundaryConditions(nfMesh, in)));
 
-    Field<foam_primitive_t> flattenedField(out.internalField().size());
+    Vector<foam_primitive_t> flattenedField(out.internalField().size());
     size_t nInternal = nfMesh.nInternalFaces();
 
     forAll(in, facei)
@@ -206,7 +206,7 @@ auto constructSurfaceField(
     }
     assert(idx == flattenedField.size());
 
-    out.internalField() = fromFoamField(exec, flattenedField);
+    out.internalVector() = fromFoamField(exec, flattenedField);
     out.correctBoundaryConditions();
 
     return out;
@@ -244,7 +244,7 @@ public:
 
         NeoN::DomainField<typename type_container_t::FieldValueType> domainField(
             convertedField.exec(),
-            convertedField.internalField(),
+            convertedField.internalVector(),
             convertedField.boundaryField()
         );
 

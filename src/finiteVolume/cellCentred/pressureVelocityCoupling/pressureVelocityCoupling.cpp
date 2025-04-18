@@ -17,8 +17,8 @@ void constrainHbyA(
 )
 {
     // const UnstructuredMesh& mesh = HbyA.mesh();
-    const auto pIn = p.internalField().view();
-    auto HbyAin = HbyA.internalField().view();
+    const auto pIn = p.internalVector().view();
+    auto HbyAin = HbyA.internalVector().view();
     auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryField().value(), U.boundaryField().value());
 
     const std::vector<VolumeBoundary<Vec3>>& HbyABCs = HbyA.boundaryConditions();
@@ -49,7 +49,7 @@ discreteMomentumFields(const Expression<Vec3>& expr)
     auto rABCs = createExtrapolatedBCs<VolumeBoundary<scalar>>(mesh);
     VolumeField<scalar> rAU = VolumeField<scalar>(expr.exec(), "rAU", mesh, rABCs);
 
-    rAU.internalField().apply(KOKKOS_LAMBDA(const size_t celli) {
+    rAU.internalVector().apply(KOKKOS_LAMBDA(const size_t celli) {
         auto diagOffsetCelli = diagOffset[celli];
         // all the diagonal coefficients are the same
         return vol[celli] / (values[rowPtrs[celli] + diagOffsetCelli][0]);
@@ -57,7 +57,7 @@ discreteMomentumFields(const Expression<Vec3>& expr)
 
     auto OffDiagonalSourceBCs = createExtrapolatedBCs<VolumeBoundary<Vec3>>(mesh);
     VolumeField<Vec3> HbyA = VolumeField<Vec3>(expr.exec(), "HbyA", mesh, OffDiagonalSourceBCs);
-    fill(HbyA.internalField(), zero<Vec3>());
+    fill(HbyA.internalVector(), zero<Vec3>());
     const std::size_t nInternalFaces = mesh.nInternalFaces();
 
     const auto exec = U.exec();
@@ -67,11 +67,11 @@ discreteMomentumFields(const Expression<Vec3>& expr)
         mesh.boundaryMesh().faceCells(),
         sparsityPattern.ownerOffset(),
         sparsityPattern.neighbourOffset(),
-        U.internalField(),
-        rAU.internalField()
+        U.internalVector(),
+        rAU.internalVector()
     );
 
-    auto internalHbyA = HbyA.internalField().view();
+    auto internalHbyA = HbyA.internalVector().view();
 
     parallelFor(
         exec,
@@ -124,7 +124,7 @@ void updateFaceVelocity(
         mesh.boundaryMesh().faceCells(),
         sparsityPattern.ownerOffset(),
         sparsityPattern.neighbourOffset(),
-        p.internalField()
+        p.internalVector()
     );
 
     const auto& ls = expr.linearSystem();
@@ -134,7 +134,7 @@ void updateFaceVelocity(
     auto values = ls.matrix().values().view();
     auto rhs = ls.rhs().view();
 
-    auto [iPhi, iPredPhi] = spans(phi.internalField(), predictedPhi.internalField());
+    auto [iPhi, iPredPhi] = spans(phi.internalVector(), predictedPhi.internalVector());
 
     parallelFor(
         exec,
@@ -163,9 +163,9 @@ void updateVelocity(
 {
     VolumeField<Vec3> gradP = GaussGreenGrad(p.exec(), p.mesh()).grad(p);
     auto [iHbyA, iRAU, iGradP] =
-        spans(HbyA.internalField(), rAU.internalField(), gradP.internalField());
+        spans(HbyA.internalVector(), rAU.internalVector(), gradP.internalVector());
 
-    U.internalField().apply(KOKKOS_LAMBDA(const std::size_t celli) {
+    U.internalVector().apply(KOKKOS_LAMBDA(const std::size_t celli) {
         return iHbyA[celli] - iRAU[celli] * iGradP[celli];
     });
 }
@@ -183,19 +183,19 @@ SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
     auto surfaceBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<scalar>>(mesh);
     auto faceFlux = SurfaceField<scalar>(exec, "out", mesh, surfaceBCs);
 
-    fill(faceFlux.internalField(), zero<scalar>());
+    fill(faceFlux.internalVector(), zero<scalar>());
     fill(faceFlux.boundaryField().value(), zero<scalar>());
     const auto [owner, neighbour, weightIn, faceAreas, volFieldIn, volFieldBc, bSf] = spans(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
-        weight.internalField(),
+        weight.internalVector(),
         mesh.faceAreas(),
-        volField.internalField(),
+        volField.internalVector(),
         volField.boundaryField().value(),
         mesh.boundaryMesh().sf()
     );
 
-    auto [faceFluxIn, bvalue] = spans(faceFlux.internalField(), faceFlux.boundaryField().value());
+    auto [faceFluxIn, bvalue] = spans(faceFlux.internalVector(), faceFlux.boundaryField().value());
 
     parallelFor(
         exec,
