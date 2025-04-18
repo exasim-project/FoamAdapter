@@ -129,7 +129,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> NeoN::Field&lt;NF_TYPE&gt;&amp; nf, <span class="keyword">const</span> <a class="code hl_function" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">Foam::Field&lt;OF_TYPE&gt;</a>&amp; of)                \</div>
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> NeoN::Vector&lt;NF_TYPE&gt;&amp; nf, <span class="keyword">const</span> <a class="code hl_function" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">Foam::Field&lt;OF_TYPE&gt;</a>&amp; of)               \</div>
 <div class="line">    {                                                                                              \</div>
 <div class="line">        <span class="keyword">auto</span> nfHost = nf.copyToHost();                                                             \</div>
 <div class="line">        <span class="keyword">auto</span> nfView = nfHost.view();                                                               \</div>

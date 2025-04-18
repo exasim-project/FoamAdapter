@@ -15,9 +15,9 @@
     <innerclass refid="structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4" prot="public">Foam::type_map&lt; List&lt; scalar &gt; &gt;</innerclass>
     <innernamespace refid="namespaceFoam_1_1detail">Foam::detail</innernamespace>
     <sectiondef kind="func">
-      <memberdef kind="function" id="namespaceFoam_1af3092baaab0236f1d1aff95ead60e002" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>NeoN::Vector</type>
-        <definition>NeoN::Vector Foam::convert</definition>
+      <memberdef kind="function" id="namespaceFoam_1ab7ff1bf203b851bfdca31a3a5fefd161" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::Vec3</type>
+        <definition>NeoN::Vec3 Foam::convert</definition>
         <argsstring>(const Foam::vector &amp;Type)</argsstring>
         <name>convert</name>
         <qualifiedname>Foam::convert</qualifiedname>
@@ -31,7 +31,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/convert.hpp" line="17" column="14" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/convert.hpp" declline="17" declcolumn="14"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/convert.hpp" line="17" column="12" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/convert.hpp" declline="17" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoam_1aa3dcd9ccdefe855c8a678ced8cb926c5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>NeoN::scalar</type>
@@ -105,14 +105,14 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/convert.hpp" line="23" column="13" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/convert.hpp" declline="23" declcolumn="13"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoam_1ad3924b5eb39b0e79cac806c4aa485109" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoam_1af8ae50c69c4441ccd3aed072488b1da4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::vector</ref></type>
         <definition>Foam::vector Foam::convert</definition>
-        <argsstring>(const NeoN::Vector &amp;Type)</argsstring>
+        <argsstring>(const NeoN::Vec3 &amp;Type)</argsstring>
         <name>convert</name>
         <qualifiedname>Foam::convert</qualifiedname>
         <param>
-          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::Vector &amp;</type>
+          <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::Vec3 &amp;</type>
           <declname>Type</declname>
         </param>
         <briefdescription>
@@ -569,14 +569,14 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" line="31" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp" bodystart="31" bodyend="55"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoam_1a029a9d2abece636b84c48e906487e006" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoam_1a4cef1509b2311466bc8fe9ddf827e932" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">void</ref></type>
         <definition>void Foam::write</definition>
-        <argsstring>(NeoN::vectorField &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <argsstring>(NeoN::Vec3Field &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
         <name>write</name>
         <qualifiedname>Foam::write</qualifiedname>
         <param>
-          <type>NeoN::vectorField &amp;</type>
+          <type>NeoN::Vec3Field &amp;</type>
           <declname>sf</declname>
         </param>
         <param>

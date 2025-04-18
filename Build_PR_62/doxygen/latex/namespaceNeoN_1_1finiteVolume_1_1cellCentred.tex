@@ -3,36 +3,36 @@
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_aba67fa5a61c64d90b900d2445c7ec049}{constrain\+HbyA}} (Volume\+Field$<$ Vector $>$ \&HbyA, const Volume\+Field$<$ Vector $>$ \&U, const Volume\+Field$<$ scalar $>$ \&p)
+void \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a71e09fbd041a24363d9b1dabc37a0516}{constrain\+HbyA}} (Volume\+Field$<$ Vec3 $>$ \&HbyA, const Volume\+Field$<$ Vec3 $>$ \&U, const Volume\+Field$<$ scalar $>$ \&p)
 \item 
-std\+::tuple$<$ Volume\+Field$<$ scalar $>$, Volume\+Field$<$ Vector $>$ $>$ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a12e1197c7a4f813b49cc58b4b6eac9f7}{discrete\+Momentum\+Fields}} (const Expression$<$ Vector $>$ \&expr)
+std\+::tuple$<$ Volume\+Field$<$ scalar $>$, Volume\+Field$<$ Vec3 $>$ $>$ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_ab31255fd8af75de282a91b8951c858ba}{discrete\+Momentum\+Fields}} (const Expression$<$ Vec3 $>$ \&expr)
 \item 
 void \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a252cdfa0bfb7e2a40da5c5508dc6af45}{update\+Face\+Velocity}} (Surface\+Field$<$ scalar $>$ \&phi, const Surface\+Field$<$ scalar $>$ \&predicted\+Phi, const Expression$<$ scalar $>$ \&expr)
 \item 
-void \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_aa965a71a7920447b0140cd161367e02d}{update\+Velocity}} (Volume\+Field$<$ Vector $>$ \&U, const Volume\+Field$<$ Vector $>$ \&HbyA, Volume\+Field$<$ scalar $>$ \&r\+AU, Volume\+Field$<$ scalar $>$ \&p)
+void \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a7a7304a04b3e9b46dc7ca12bd2a27cf7}{update\+Velocity}} (Volume\+Field$<$ Vec3 $>$ \&U, const Volume\+Field$<$ Vec3 $>$ \&HbyA, Volume\+Field$<$ scalar $>$ \&r\+AU, Volume\+Field$<$ scalar $>$ \&p)
 \item 
-Surface\+Field$<$ scalar $>$ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_abdda08c7312f9f16cc417873c6329df7}{flux}} (const Volume\+Field$<$ Vector $>$ \&vol\+Field)
+Surface\+Field$<$ scalar $>$ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a4ff7acb5abc20807253f06a3bd4e2304}{flux}} (const Volume\+Field$<$ Vec3 $>$ \&vol\+Field)
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_aba67fa5a61c64d90b900d2445c7ec049}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_aba67fa5a61c64d90b900d2445c7ec049} 
+\Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a71e09fbd041a24363d9b1dabc37a0516}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a71e09fbd041a24363d9b1dabc37a0516} 
 \index{NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}!constrainHbyA@{constrainHbyA}}
 \index{constrainHbyA@{constrainHbyA}!NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}}
 \doxysubsubsection{\texorpdfstring{constrainHbyA()}{constrainHbyA()}}
-{\footnotesize\ttfamily void Neo\+N\+::finite\+Volume\+::cell\+Centred\+::constrain\+HbyA (\begin{DoxyParamCaption}\item[{Volume\+Field$<$ Vector $>$ \&}]{HbyA,  }\item[{const Volume\+Field$<$ Vector $>$ \&}]{U,  }\item[{const Volume\+Field$<$ scalar $>$ \&}]{p }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Neo\+N\+::finite\+Volume\+::cell\+Centred\+::constrain\+HbyA (\begin{DoxyParamCaption}\item[{Volume\+Field$<$ Vec3 $>$ \&}]{HbyA,  }\item[{const Volume\+Field$<$ Vec3 $>$ \&}]{U,  }\item[{const Volume\+Field$<$ scalar $>$ \&}]{p }\end{DoxyParamCaption})}
 
-\Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a12e1197c7a4f813b49cc58b4b6eac9f7}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a12e1197c7a4f813b49cc58b4b6eac9f7} 
+\Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_ab31255fd8af75de282a91b8951c858ba}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_ab31255fd8af75de282a91b8951c858ba} 
 \index{NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}!discreteMomentumFields@{discreteMomentumFields}}
 \index{discreteMomentumFields@{discreteMomentumFields}!NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}}
 \doxysubsubsection{\texorpdfstring{discreteMomentumFields()}{discreteMomentumFields()}}
-{\footnotesize\ttfamily std\+::tuple$<$ Volume\+Field$<$ scalar $>$, Volume\+Field$<$ Vector $>$ $>$ Neo\+N\+::finite\+Volume\+::cell\+Centred\+::discrete\+Momentum\+Fields (\begin{DoxyParamCaption}\item[{const Expression$<$ Vector $>$ \&}]{expr }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily std\+::tuple$<$ Volume\+Field$<$ scalar $>$, Volume\+Field$<$ Vec3 $>$ $>$ Neo\+N\+::finite\+Volume\+::cell\+Centred\+::discrete\+Momentum\+Fields (\begin{DoxyParamCaption}\item[{const Expression$<$ Vec3 $>$ \&}]{expr }\end{DoxyParamCaption})}
 
-\Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_abdda08c7312f9f16cc417873c6329df7}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_abdda08c7312f9f16cc417873c6329df7} 
+\Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a4ff7acb5abc20807253f06a3bd4e2304}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a4ff7acb5abc20807253f06a3bd4e2304} 
 \index{NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}!flux@{flux}}
 \index{flux@{flux}!NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}}
 \doxysubsubsection{\texorpdfstring{flux()}{flux()}}
-{\footnotesize\ttfamily Surface\+Field$<$ scalar $>$ Neo\+N\+::finite\+Volume\+::cell\+Centred\+::flux (\begin{DoxyParamCaption}\item[{const Volume\+Field$<$ Vector $>$ \&}]{vol\+Field }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Surface\+Field$<$ scalar $>$ Neo\+N\+::finite\+Volume\+::cell\+Centred\+::flux (\begin{DoxyParamCaption}\item[{const Volume\+Field$<$ Vec3 $>$ \&}]{vol\+Field }\end{DoxyParamCaption})}
 
 \Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a252cdfa0bfb7e2a40da5c5508dc6af45}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a252cdfa0bfb7e2a40da5c5508dc6af45} 
 \index{NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}!updateFaceVelocity@{updateFaceVelocity}}
@@ -40,9 +40,9 @@ Surface\+Field$<$ scalar $>$ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1c
 \doxysubsubsection{\texorpdfstring{updateFaceVelocity()}{updateFaceVelocity()}}
 {\footnotesize\ttfamily void Neo\+N\+::finite\+Volume\+::cell\+Centred\+::update\+Face\+Velocity (\begin{DoxyParamCaption}\item[{Surface\+Field$<$ scalar $>$ \&}]{phi,  }\item[{const Surface\+Field$<$ scalar $>$ \&}]{predicted\+Phi,  }\item[{const Expression$<$ scalar $>$ \&}]{expr }\end{DoxyParamCaption})}
 
-\Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_aa965a71a7920447b0140cd161367e02d}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_aa965a71a7920447b0140cd161367e02d} 
+\Hypertarget{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a7a7304a04b3e9b46dc7ca12bd2a27cf7}\label{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a7a7304a04b3e9b46dc7ca12bd2a27cf7} 
 \index{NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}!updateVelocity@{updateVelocity}}
 \index{updateVelocity@{updateVelocity}!NeoN::finiteVolume::cellCentred@{NeoN::finiteVolume::cellCentred}}
 \doxysubsubsection{\texorpdfstring{updateVelocity()}{updateVelocity()}}
-{\footnotesize\ttfamily void Neo\+N\+::finite\+Volume\+::cell\+Centred\+::update\+Velocity (\begin{DoxyParamCaption}\item[{Volume\+Field$<$ Vector $>$ \&}]{U,  }\item[{const Volume\+Field$<$ Vector $>$ \&}]{HbyA,  }\item[{Volume\+Field$<$ scalar $>$ \&}]{r\+AU,  }\item[{Volume\+Field$<$ scalar $>$ \&}]{p }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Neo\+N\+::finite\+Volume\+::cell\+Centred\+::update\+Velocity (\begin{DoxyParamCaption}\item[{Volume\+Field$<$ Vec3 $>$ \&}]{U,  }\item[{const Volume\+Field$<$ Vec3 $>$ \&}]{HbyA,  }\item[{Volume\+Field$<$ scalar $>$ \&}]{r\+AU,  }\item[{Volume\+Field$<$ scalar $>$ \&}]{p }\end{DoxyParamCaption})}
 

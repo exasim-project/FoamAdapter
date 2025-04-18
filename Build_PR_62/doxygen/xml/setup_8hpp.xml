@@ -116,7 +116,7 @@
         <label>NeoN/core/primitives/label.hpp</label>
       </node>
       <node id="20">
-        <label>NeoN/core/primitives/vector.hpp</label>
+        <label>NeoN/core/primitives/vec3.hpp</label>
       </node>
       <node id="21">
         <label>NeoN/core/tokenList.hpp</label>
