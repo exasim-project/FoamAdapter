@@ -229,7 +229,7 @@ TEST_CASE("LaplacianOperator")
 
         SECTION("with Allocation")
         {
-            NeoN::TokenList scheme({std::string("linear")});
+            NeoN::TokenList scheme({std::string("linear"), std::string("uncorrected")});
 
             BENCHMARK(std::string(execName))
             {
