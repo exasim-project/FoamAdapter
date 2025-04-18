@@ -5,6 +5,7 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
+#include "NeoN/core/database/oldTimeCollection.hpp"
 #include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoN/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
 #include "NeoN/finiteVolume/cellCentred/operators/ddtOperator.hpp"
@@ -32,7 +33,7 @@ TEST_CASE("matrix multiplication")
     Foam::argList& args = *argsPtr;
 
     NeoN::Database db;
-    fvcc::FieldCollection& fieldCol = fvcc::FieldCollection::instance(db, "fieldCollection");
+    fvcc::VectorCollection& fieldCol = fvcc::VectorCollection::instance(db, "VectorCollection");
 
     // NeoN::Executor exec = GENERATE(
     //     NeoN::Executor(NeoN::SerialExecutor {}),
@@ -55,7 +56,7 @@ TEST_CASE("matrix multiplication")
         ofT.correctBoundaryConditions();
 
         fvcc::VolumeField<NeoN::scalar>& nfT =
-            fieldCol.registerField<fvcc::VolumeField<NeoN::scalar>>(
+            fieldCol.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,

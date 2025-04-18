@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 
-#include <Vec3>
+#include <vector>
 
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>

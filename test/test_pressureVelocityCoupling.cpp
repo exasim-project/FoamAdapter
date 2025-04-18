@@ -4,6 +4,7 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
+#include "NeoN/core/database/oldTimeCollection.hpp"
 #include "NeoN/dsl/expression.hpp"
 #include "NeoN/dsl/solver.hpp"
 #include "NeoN/dsl/ddt.hpp"
@@ -36,7 +37,8 @@ TEST_CASE("PressureVelocityCoupling")
     Foam::Time& runTime = *timePtr;
 
     NeoN::Database db;
-    fvcc::FieldCollection& fieldCollection = fvcc::FieldCollection::instance(db, "fieldCollection");
+    fvcc::VectorCollection& VectorCollection =
+        fvcc::VectorCollection::instance(db, "VectorCollection");
 
     NeoN::Executor exec = GENERATE(NeoN::Executor(NeoN::SerialExecutor {})
                                    // NeoN::Executor(NeoN::CPUExecutor {}),
@@ -56,7 +58,7 @@ TEST_CASE("PressureVelocityCoupling")
 
     Info << "creating NeoFOAM velocity fields" << endl;
     fvcc::VolumeField<NeoN::Vec3>& nfU =
-        fieldCollection.registerField<fvcc::VolumeField<NeoN::Vec3>>(
+        VectorCollection.registerVector<fvcc::VolumeField<NeoN::Vec3>>(
             Foam::CreateFromFoamField<Foam::volVectorField> {
                 .exec = exec,
                 .nfMesh = nfMesh,

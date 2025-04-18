@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
 
         NeoN::Database db;
 
-        fvcc::FieldCollection& fieldCollection =
-            fvcc::FieldCollection::instance(db, "fieldCollection");
+        fvcc::VectorCollection& vectorCollection =
+            fvcc::VectorCollection::instance(db, "VectorCollection");
 
 
         NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
         Info << "creating NeoFOAM fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfT =
-            fieldCollection.registerField<fvcc::VolumeField<NeoN::scalar>>(
+            vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,

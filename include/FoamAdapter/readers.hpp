@@ -242,7 +242,7 @@ public:
         const Foam::Time& runTime = mesh.time();
         std::int64_t timeIndex = runTime.timeIndex();
 
-        NeoN::Field<typename type_container_t::FieldValueType> field(
+        NeoN::Field<typename type_container_t::VectorValueType> field(
             convertedField.exec(),
             convertedField.internalVector(),
             convertedField.boundaryVector()
