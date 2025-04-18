@@ -26,7 +26,17 @@ for entry in config["meshes"]:
 
 rule all:
     input:
+        "results/DivOperator_3DCube.png",
+        "results/DivOperator_2DSquare.png"
+
+rule plotResults:
+    input:
         "results/benchmark_results.csv"
+    output:
+        "results/DivOperator_3DCube.png",
+        "results/DivOperator_2DSquare.png"
+    script:
+        "plotResults.py"
 
 rule getResults:
     input:

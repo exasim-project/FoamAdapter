@@ -80,7 +80,7 @@ def plot(df_fixed_normalization, testcase):
     plt.title(f"2DSquare: Speed up for the explicit {testcase}")
     plt.tight_layout()
     plt.savefig(f"results/{testcase}_2DSquare.png")
-    plt.show()
+
 # %%
 plot(df_fixed_normalization, "DivOperator")
 plot(df_fixed_normalization, "LaplacianOperator")
