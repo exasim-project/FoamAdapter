@@ -40,7 +40,7 @@ TEST_CASE("cell To Face Stencil")
     SECTION("cellToFaceStencil_" + execName)
     {
         fvcc::CellToFaceStencil cellToFaceStencil(nfMesh);
-        NeoN::SegmentedField<NeoN::localIdx, NeoN::localIdx> stencil =
+        NeoN::SegmentedVector<NeoN::localIdx, NeoN::localIdx> stencil =
             cellToFaceStencil.computeStencil();
 
         auto stencilView = stencil.view();
