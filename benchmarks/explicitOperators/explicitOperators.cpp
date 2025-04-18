@@ -15,6 +15,7 @@ namespace dsl = NeoN::dsl;
 #include "fvc.H"
 #include "gaussGrad.H"
 #include "gaussConvectionScheme.H"
+#include "gaussLaplacianScheme.H"
 #include "NeoN/core/input.hpp"
 #include "NeoN/dsl/explicit.hpp"
 
@@ -156,27 +157,108 @@ TEST_CASE("DivOperator")
             };
         }
 
-        // SECTION("compute div from dsl::exp")
-        // {
-        //     NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"),
-        //     std::string("linear")});
-
-        //     auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-        //     NeoN::fill(nfDivT.internalField(), 0.0);
-        //     NeoN::fill(nfDivT.boundaryField().value(), 0.0);
-        //     dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
-        //     divOp.build(scheme);
-        //     divOp.explicitOperation(nfDivT.internalField());
-
-        //     nfDivT.correctBoundaryConditions();
-
-        //     compare(nfT, ofT, ApproxScalar(1e-15), false);
-
-        //     compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
-        // }
+        // TODO: dsl
     }
 }
 
+
+TEST_CASE("LaplacianOperator")
+{
+    Foam::Time& runTime = *timePtr;
+    Foam::argList& args = *argsPtr;
+
+    SECTION("OpenFOAM")
+    {
+        std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+        Foam::fvMesh& mesh = *meshPtr;
+
+        auto ofT = randomScalarField(runTime, mesh, "T");
+        Foam::surfaceScalarField ofGamma(
+            Foam::IOobject(
+                "Gamma",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::NO_READ,
+                Foam::IOobject::AUTO_WRITE
+            ),
+            mesh,
+            Foam::dimensionedScalar("Gamma", Foam::dimless, 1.0)
+        );
+
+        SECTION("with Allocation")
+        {
+            BENCHMARK(std::string("OpenFOAM"))
+            {
+                Foam::IStringStream is("linear uncorrected");
+                Foam::fv::gaussLaplacianScheme<Foam::scalar, Foam::scalar> foamLapScalar(mesh, is);
+                Foam::volScalarField ofLapT("ofLapT", foamLapScalar.fvcLaplacian(ofGamma, ofT));
+                return;
+            };
+        }
+    }
+
+
+    SECTION("NeoN")
+    {
+        auto [execName, exec] = GENERATE(allAvailableExecutor());
+
+        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
+        Foam::MeshAdapter& mesh = *meshPtr;
+        const auto& nfMesh = mesh.nfMesh();
+        // linear interpolation hardcoded for now
+
+
+        auto ofT = randomScalarField(runTime, mesh, "T");
+        auto nfT = constructFrom(exec, nfMesh, ofT);
+        nfT.correctBoundaryConditions();
+
+        Foam::surfaceScalarField ofGamma(
+            Foam::IOobject(
+                "Gamma",
+                runTime.timeName(),
+                mesh,
+                Foam::IOobject::NO_READ,
+                Foam::IOobject::AUTO_WRITE
+            ),
+            mesh,
+            Foam::dimensionedScalar("Gamma", Foam::dimless, 1.0)
+        );
+
+
+        auto nfGamma = constructSurfaceField(exec, nfMesh, ofGamma);
+
+        SECTION("with Allocation")
+        {
+            NeoN::TokenList scheme({std::string("linear")});
+
+            BENCHMARK(std::string(execName))
+            {
+                fvcc::VolumeField<NeoN::scalar> lapT =
+                    fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
+                        .laplacian(nfGamma, nfT, dsl::Coeff(1.0));
+                return;
+            };
+        }
+
+        SECTION("No allocation")
+        {
+            auto nfLapT = constructFrom(exec, nfMesh, ofT);
+            NeoN::TokenList scheme({std::string("linear"), std::string("uncorrected")});
+
+            BENCHMARK(std::string(execName))
+            {
+                NeoN::fill(nfLapT.internalField(), 0.0);
+                NeoN::fill(nfLapT.boundaryField().value(), 0.0);
+                fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
+                    .laplacian(nfLapT, nfGamma, nfT, dsl::Coeff(1.0));
+                Kokkos::fence();
+                return;
+            };
+        }
+
+        // TODO: dsl
+    }
+}
 
 TEST_CASE("GradOperator")
 {
@@ -242,24 +324,7 @@ TEST_CASE("GradOperator")
             };
         }
 
-        // SECTION("compute grad from dsl::exp")
-        // {
-        //     NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"),
-        //     std::string("linear")});
-
-        //     auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-        //     NeoN::fill(nfDivT.internalField(), 0.0);
-        //     NeoN::fill(nfDivT.boundaryField().value(), 0.0);
-        //     dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
-        //     divOp.build(scheme);
-        //     divOp.explicitOperation(nfDivT.internalField());
-
-        //     nfDivT.correctBoundaryConditions();
-
-        //     compare(nfT, ofT, ApproxScalar(1e-15), false);
-
-        //     compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
-        // }
+        // TODO: dsl
     }
 }
 
@@ -365,23 +430,86 @@ TEST_CASE("FaceInterpolation")
             };
         }
 
-        // SECTION("compute grad from dsl::exp")
-        // {
-        //     NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"),
-        //     std::string("linear")});
+        // TODO: dsl
+    }
+}
 
-        //     auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
-        //     NeoN::fill(nfDivT.internalField(), 0.0);
-        //     NeoN::fill(nfDivT.boundaryField().value(), 0.0);
-        //     dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
-        //     divOp.build(scheme);
-        //     divOp.explicitOperation(nfDivT.internalField());
 
-        //     nfDivT.correctBoundaryConditions();
+TEST_CASE("FaceNormalGradient")
+{
+    Foam::Time& runTime = *timePtr;
+    Foam::argList& args = *argsPtr;
 
-        //     compare(nfT, ofT, ApproxScalar(1e-15), false);
+    SECTION("OpenFOAM")
+    {
+        std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+        Foam::fvMesh& mesh = *meshPtr;
 
-        //     compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
-        // }
+        auto ofT = randomScalarField(runTime, mesh, "T");
+
+
+        SECTION("with Allocation")
+        {
+            BENCHMARK(std::string("OpenFOAM"))
+            {
+                Foam::IStringStream is("uncorrected");
+                auto snGradScheme = Foam::fv::snGradScheme<Foam::scalar>::New(mesh, is);
+                snGradScheme->snGrad(ofT);
+                return;
+            };
+        }
+    }
+
+
+    SECTION("NeoN")
+    {
+        auto [execName, exec] = GENERATE(allAvailableExecutor());
+
+        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
+        Foam::MeshAdapter& mesh = *meshPtr;
+        const auto& nfMesh = mesh.nfMesh();
+        // linear interpolation hardcoded for now
+
+
+        auto ofT = randomScalarField(runTime, mesh, "T");
+        auto nfT = constructFrom(exec, nfMesh, ofT);
+        nfT.correctBoundaryConditions();
+
+
+        SECTION("with Allocation")
+        {
+            NeoN::TokenList scheme({std::string("uncorrected")});
+
+            BENCHMARK(std::string(execName))
+            {
+                // fvcc::SurfaceField<NeoN::scalar> Tf =
+                fvcc::FaceNormalGradient<NeoN::scalar>(exec, nfMesh, scheme).faceNormalGrad(nfT);
+                return;
+            };
+        }
+        SECTION("No allocation")
+        {
+            NeoN::TokenList scheme({std::string("uncorrected")});
+
+            std::string nameFaceGrad = "faceGrad_" + nfT.name;
+            fvcc::SurfaceField<NeoN::scalar> faceGradT(
+                exec,
+                nameFaceGrad,
+                nfMesh,
+                fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<NeoN::scalar>>(nfMesh)
+            );
+
+            BENCHMARK(std::string(execName))
+            {
+                NeoN::fill(faceGradT.internalField(), 0.0);
+                NeoN::fill(faceGradT.boundaryField().value(), 0.0);
+                fvcc::FaceNormalGradient<NeoN::scalar>(exec, nfMesh, scheme)
+                    .faceNormalGrad(nfT, faceGradT);
+                Kokkos::fence();
+                return;
+            };
+        }
+
+        // TODO: dsl
     }
 }
