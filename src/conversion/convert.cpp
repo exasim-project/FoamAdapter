@@ -6,7 +6,7 @@
 namespace Foam
 {
 
-NeoN::Vector convert(const Foam::vector& in) { return NeoN::Vector(in[0], in[1], in[2]); };
+NeoN::Vec3 convert(const Foam::vector& in) { return NeoN::Vec3(in[0], in[1], in[2]); };
 
 NeoN::scalar convert(const Foam::scalar& in) { return in; };
 
@@ -45,6 +45,6 @@ NeoN::TokenList convert(const Foam::ITstream& stream)
 };
 
 // To Foam
-Foam::vector convert(const NeoN::Vector& in) { return Foam::vector(in(0), in(1), in(2)); };
+Foam::vector convert(const NeoN::Vec3& in) { return Foam::vector(in(0), in(1), in(2)); };
 
 }; // namespace Foam

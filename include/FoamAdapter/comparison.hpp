@@ -40,7 +40,7 @@ namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 FIELD_EQUALITY_OPERATOR(NeoN::label, Foam::label)
 FIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
-FIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
+FIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
 
 #define VOLGEOFIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                            \
     bool operator==(                                                                               \
@@ -76,7 +76,7 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
     }
 
 VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
-VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
+VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
 
 /*
  *
@@ -116,6 +116,6 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
     }
 
 SURFGEOFIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
-SURFGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
+SURFGEOFIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
 
 } // namespace Foam

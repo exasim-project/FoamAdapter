@@ -11,8 +11,8 @@ namespace NeoN::finiteVolume::cellCentred
 {
 
 void constrainHbyA(
-    VolumeField<Vector>& HbyA,
-    const VolumeField<Vector>& U,
+    VolumeField<Vec3>& HbyA,
+    const VolumeField<Vec3>& U,
     const VolumeField<scalar>& p
 )
 {
@@ -21,7 +21,7 @@ void constrainHbyA(
     auto HbyAin = HbyA.internalField().view();
     auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryField().value(), U.boundaryField().value());
 
-    const std::vector<VolumeBoundary<Vector>>& HbyABCs = HbyA.boundaryConditions();
+    const std::vector<VolumeBoundary<Vec3>>& HbyABCs = HbyA.boundaryConditions();
 
     for (std::size_t patchi = 0; patchi < HbyABCs.size(); ++patchi)
     {
@@ -33,10 +33,10 @@ void constrainHbyA(
     }
 }
 
-std::tuple<VolumeField<scalar>, VolumeField<Vector>>
-discreteMomentumFields(const Expression<Vector>& expr)
+std::tuple<VolumeField<scalar>, VolumeField<Vec3>>
+discreteMomentumFields(const Expression<Vec3>& expr)
 {
-    const VolumeField<Vector>& U = expr.getField();
+    const VolumeField<Vec3>& U = expr.getField();
     const UnstructuredMesh& mesh = U.mesh();
     const SparsityPattern& sparsityPattern = expr.sparsityPattern();
     const auto& ls = expr.linearSystem();
@@ -55,9 +55,9 @@ discreteMomentumFields(const Expression<Vector>& expr)
         return vol[celli] / (values[rowPtrs[celli] + diagOffsetCelli][0]);
     });
 
-    auto OffDiagonalSourceBCs = createExtrapolatedBCs<VolumeBoundary<Vector>>(mesh);
-    VolumeField<Vector> HbyA = VolumeField<Vector>(expr.exec(), "HbyA", mesh, OffDiagonalSourceBCs);
-    fill(HbyA.internalField(), zero<Vector>());
+    auto OffDiagonalSourceBCs = createExtrapolatedBCs<VolumeBoundary<Vec3>>(mesh);
+    VolumeField<Vec3> HbyA = VolumeField<Vec3>(expr.exec(), "HbyA", mesh, OffDiagonalSourceBCs);
+    fill(HbyA.internalField(), zero<Vec3>());
     const std::size_t nInternalFaces = mesh.nInternalFaces();
 
     const auto exec = U.exec();
@@ -155,13 +155,13 @@ void updateFaceVelocity(
 }
 
 void updateVelocity(
-    VolumeField<Vector>& U,
-    const VolumeField<Vector>& HbyA,
+    VolumeField<Vec3>& U,
+    const VolumeField<Vec3>& HbyA,
     VolumeField<scalar>& rAU,
     VolumeField<scalar>& p
 )
 {
-    VolumeField<Vector> gradP = GaussGreenGrad(p.exec(), p.mesh()).grad(p);
+    VolumeField<Vec3> gradP = GaussGreenGrad(p.exec(), p.mesh()).grad(p);
     auto [iHbyA, iRAU, iGradP] =
         spans(HbyA.internalField(), rAU.internalField(), gradP.internalField());
 
@@ -170,14 +170,14 @@ void updateVelocity(
     });
 }
 
-SurfaceField<scalar> flux(const VolumeField<Vector>& volField)
+SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
 {
     const auto exec = volField.exec();
 
     const UnstructuredMesh& mesh = volField.mesh();
     const std::size_t nInternalFaces = mesh.nInternalFaces();
     Input input = TokenList({std::string("linear")});
-    auto linear = SurfaceInterpolation<Vector>(exec, mesh, input);
+    auto linear = SurfaceInterpolation<Vec3>(exec, mesh, input);
     const SurfaceField<scalar> weight = linear.weight(volField);
 
     auto surfaceBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<scalar>>(mesh);

@@ -17,6 +17,7 @@
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;
 
+
 extern Foam::Time* timePtr;    // A single time object
 extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 extern Foam::fvMesh* meshPtr;  // A single mesh object
@@ -102,8 +103,8 @@ TEST_CASE("GradOperator")
         Foam::volVectorField ofGradT("ofGradT", foamGradScalar.calcGrad(ofT, "test"));
 
         auto nfGradT = constructFrom(exec, nfMesh, ofGradT);
-        NeoN::fill(nfGradT.internalField(), NeoN::Vector(0.0, 0.0, 0.0));
-        NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vector(0.0, 0.0, 0.0));
+        NeoN::fill(nfGradT.internalField(), NeoN::Vec3(0.0, 0.0, 0.0));
+        NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vec3(0.0, 0.0, 0.0));
         fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
         nfGradT.correctBoundaryConditions();
 

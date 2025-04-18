@@ -55,8 +55,8 @@ TEST_CASE("PressureVelocityCoupling")
     oldOfU.correctBoundaryConditions();
 
     Info << "creating NeoFOAM velocity fields" << endl;
-    fvcc::VolumeField<NeoN::Vector>& nfU =
-        fieldCollection.registerField<fvcc::VolumeField<NeoN::Vector>>(
+    fvcc::VolumeField<NeoN::Vec3>& nfU =
+        fieldCollection.registerField<fvcc::VolumeField<NeoN::Vec3>>(
             Foam::CreateFromFoamField<Foam::volVectorField> {
                 .exec = exec,
                 .nfMesh = nfMesh,
@@ -66,7 +66,7 @@ TEST_CASE("PressureVelocityCoupling")
         );
 
     auto& nfOldU = fvcc::oldTime(nfU);
-    NeoN::fill(nfOldU.internalField(), NeoN::Vector(0.0, 0.0, 0.0));
+    NeoN::fill(nfOldU.internalField(), NeoN::Vec3(0.0, 0.0, 0.0));
     nfOldU.correctBoundaryConditions();
 
     Foam::surfaceScalarField ofPhi(
@@ -109,7 +109,7 @@ TEST_CASE("PressureVelocityCoupling")
 
     SECTION("discreteMomentumFields " + execName)
     {
-        fvcc::Expression<NeoN::Vector> nfUEqn(
+        fvcc::Expression<NeoN::Vec3> nfUEqn(
             dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
             // dsl::imp::ddt(nfU) + dsl::imp::laplacian(nfNu, nfU),
             // dsl::imp::ddt(nfU) - dsl::imp::div(nfPhi, nfU),

@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
             );
 
         Info << "creating NeoFOAM velocity fields" << endl;
-        fvcc::VolumeField<NeoN::Vector>& nfU =
-            fieldCollection.registerField<fvcc::VolumeField<NeoN::Vector>>(
+        fvcc::VolumeField<NeoN::Vec3>& nfU =
+            fieldCollection.registerField<fvcc::VolumeField<NeoN::Vec3>>(
                 Foam::CreateFromFoamField<Foam::volVectorField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
             Info << "Time = " << runTime.timeName() << nl << endl;
 
             // Momentum predictor
-            fvcc::Expression<NeoN::Vector> UEqn2(
+            fvcc::Expression<NeoN::Vec3> UEqn2(
                 dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
                 nfU,
                 fvSchemesDict,

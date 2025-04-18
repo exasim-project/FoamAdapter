@@ -32,8 +32,8 @@ struct type_map<GeometricField<scalar, fvPatchField, volMesh>>
 template<>
 struct type_map<GeometricField<vector, fvPatchField, volMesh>>
 {
-    using container_type = fvcc::VolumeField<NeoN::Vector>;
-    using mapped_type = NeoN::Vector;
+    using container_type = fvcc::VolumeField<NeoN::Vec3>;
+    using mapped_type = NeoN::Vec3;
 };
 
 template<>
@@ -46,8 +46,8 @@ struct type_map<GeometricField<scalar, fvsPatchField, surfaceMesh>>
 template<>
 struct type_map<GeometricField<vector, fvsPatchField, surfaceMesh>>
 {
-    using container_type = fvcc::SurfaceField<NeoN::Vector>;
-    using mapped_type = NeoN::Vector;
+    using container_type = fvcc::SurfaceField<NeoN::Vec3>;
+    using mapped_type = NeoN::Vec3;
 };
 
 // Specializations of type_map for specific type mappings.
@@ -60,10 +60,10 @@ struct type_map<Field<scalar>>
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Field<vector>>
+struct type_map<Field<Vec3>>
 {
-    using container_type = NeoN::Field<NeoN::Vector>;
-    using mapped_type = NeoN::Vector;
+    using container_type = NeoN::Field<NeoN::Vec3>;
+    using mapped_type = NeoN::Vec3;
 };
 
 // Specializations of type_map for specific type mappings.

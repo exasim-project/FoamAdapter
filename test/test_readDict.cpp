@@ -40,13 +40,13 @@ TEST_CASE("read dict")
     REQUIRE(neoDict.get<NeoN::label>("label") == 1);
     REQUIRE(neoDict.get<NeoN::scalar>("scalar") == 2.1);
     REQUIRE(neoDict.get<NeoN::scalar>("scalar2") == 2.0);
-    REQUIRE(neoDict.get<NeoN::Vector>("vector") == NeoN::Vector(1.0, 2.0, 3.0));
+    REQUIRE(neoDict.get<NeoN::Vec3>("vector") == NeoN::Vec3(1.0, 2.0, 3.0));
     REQUIRE(neoDict.get<std::string>("word") == "word");
 
 
     NeoN::Dictionary& subNeoDict = neoDict.subDict("subDict");
     REQUIRE(subNeoDict.get<NeoN::scalar>("subScalar") == 4.1);
-    REQUIRE(subNeoDict.get<NeoN::Vector>("subVector") == NeoN::Vector(5.0, 6.0, 7.0));
+    REQUIRE(subNeoDict.get<NeoN::Vec3>("subVector") == NeoN::Vec3(5.0, 6.0, 7.0));
 }
 
 

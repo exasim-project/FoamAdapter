@@ -54,7 +54,7 @@ void write(NeoN::scalarField& sf, const Foam::fvMesh& mesh, const std::string fi
     }
 }
 
-void write(NeoN::vectorField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
+void write(NeoN::Vec3Field& sf, const Foam::fvMesh& mesh, const std::string fieldName)
 {
     Foam::volVectorField* field = mesh.getObjectPtr<Foam::volVectorField>(fieldName);
     if (field)

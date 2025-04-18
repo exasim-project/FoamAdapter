@@ -304,7 +304,7 @@ TEST_CASE("GradOperator")
 
             BENCHMARK(std::string(execName))
             {
-                fvcc::VolumeField<NeoN::Vector> nfGradT =
+                fvcc::VolumeField<NeoN::Vec3> nfGradT =
                     fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT);
                 return;
             };
@@ -312,12 +312,12 @@ TEST_CASE("GradOperator")
 
         SECTION("No allocation")
         {
-            fvcc::VolumeField<NeoN::Vector> nfGradT = fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT);
+            fvcc::VolumeField<NeoN::Vec3> nfGradT = fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT);
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(nfGradT.internalField(), NeoN::Vector(0, 0, 0));
-                NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vector(0, 0, 0));
+                NeoN::fill(nfGradT.internalField(), NeoN::Vec3(0, 0, 0));
+                NeoN::fill(nfGradT.boundaryField().value(), NeoN::Vec3(0, 0, 0));
                 fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
                 Kokkos::fence();
                 return;
