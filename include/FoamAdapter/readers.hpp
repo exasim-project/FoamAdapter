@@ -213,10 +213,10 @@ auto constructSurfaceField(
 }
 
 /**
- * @brief Creates a FieldDocument from an existing Foam Field.
+ * @brief Creates a VectorDocument from an existing Foam Field.
  *
 
- * @return The created FieldDocument.
+ * @return The created VectorDocument.
  */
 template<typename FieldType>
 class CreateFromFoamField
@@ -230,7 +230,7 @@ public:
     std::int64_t iterationIndex = 0;
     std::int64_t subCycleIndex = -1;
 
-    fvcc::FieldDocument operator()(NeoN::Database& db)
+    fvcc::VectorDocument operator()(NeoN::Database& db)
     {
         using type_container_t = typename type_map<FieldType>::container_type;
         type_container_t convertedField = Foam::constructFrom(exec, nfMesh, foamField);
@@ -265,7 +265,7 @@ public:
              {"iterationIndex", iterationIndex},
              {"subCycleIndex", subCycleIndex},
              {"field", registeredField}},
-            fvcc::validateFieldDoc
+            fvcc::validateVectorDoc
         );
     }
 };
