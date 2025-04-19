@@ -49,10 +49,15 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 include(cmake/OpenFOAM.cmake)
 
-add_subdirectory(include)
-add_subdirectory(NeoN)
-add_subdirectory(src)
+if(EXISTS NeoN/CMakeLists.txt)
+  add_subdirectory(NeoN)
+else()
+  set(NEOFOAM_NEON_VIA_CPM ON)
+endif()
+include(cmake/CxxThirdParty.cmake)
 
+add_subdirectory(include)
+add_subdirectory(src)
 add_subdirectory(benchmarks)
 
 if(FOAMADAPTER_BUILD_EXAMPLES)
