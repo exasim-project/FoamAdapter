@@ -8,9 +8,7 @@
 
 #include "fvMesh.H"
 
-#include "NeoN/mesh/unstructured/unstructuredMesh.hpp"
-#include "NeoN/core/primitives/label.hpp"
-#include "NeoN/core/executor/executor.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "readers.hpp"
 

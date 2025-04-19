@@ -3,15 +3,14 @@
 
 #pragma once
 
-
-#include "NeoN/finiteVolume/cellCentred/fields/volumeField.hpp"
-#include "NeoN/finiteVolume/cellCentred/fields/surfaceField.hpp"
-#include "NeoN/finiteVolume/cellCentred/dsl/expression.hpp"
-
+#include "NeoN/NeoN.hpp"
 
 namespace NeoN::finiteVolume::cellCentred
 {
 
+/* @brief
+ *
+ */
 void constrainHbyA(
     VolumeField<Vec3>& HbyA,
     const VolumeField<Vec3>& U,
@@ -35,6 +34,9 @@ void updateVelocity(
 );
 
 
+/* @brief Reimplementation of OpenFOAMs fvMatrix.flux()
+ * @return flux surface field
+ */
 SurfaceField<scalar> flux(const VolumeField<Vec3>& volField);
 
 }

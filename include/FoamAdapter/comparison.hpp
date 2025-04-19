@@ -11,8 +11,7 @@
 
 #include "Field.H"
 
-#include "NeoN/fields/field.hpp"
-#include "NeoN/core/primitives/label.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"
