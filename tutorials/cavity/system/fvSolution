@@ -32,7 +32,7 @@ solvers
 
     nfP
     {
-        solver          Ginkgo;
+        solver          Petsc;
         type            "solver::Cg";
         criteria
         {
@@ -51,7 +51,7 @@ solvers
 
     nfU
     {
-        solver          Ginkgo;
+        solver          Petsc;
         type            "solver::Cg";
         maxIters        5;
         relTol          1e-06;
