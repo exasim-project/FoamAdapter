@@ -10,27 +10,11 @@ project(
   DESCRIPTION "An implementation of FOAM")
 
 if(NOT DEFINED ENV{FOAM_SRC})
-  message(FATAL_ERROR "You must source OpenFOAM before building FOAM_ADAPTER")
+  message(FATAL_ERROR "You must source OpenFOAM before building NeoFOAM")
 endif()
 if(NOT $ENV{FOAM_API} GREATER_EQUAL 2406)
   message(WARNING "OpenFOAM version < 2406")
 endif()
-
-# Print C Compiler and version
-message("C Compiler: ${CMAKE_C_COMPILER}")
-execute_process(
-  COMMAND ${CMAKE_C_COMPILER} --version
-  OUTPUT_VARIABLE C_COMPILER_VERSION
-  OUTPUT_STRIP_TRAILING_WHITESPACE)
-message("C Compiler Version: ${C_COMPILER_VERSION}")
-
-# Print C++ Compiler and version
-message("C++ Compiler: ${CMAKE_CXX_COMPILER}")
-execute_process(
-  COMMAND ${CMAKE_CXX_COMPILER} --version
-  OUTPUT_VARIABLE CXX_COMPILER_VERSION
-  OUTPUT_STRIP_TRAILING_WHITESPACE)
-message("C++ Compiler Version: ${CXX_COMPILER_VERSION}")
 
 option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoN examples" OFF)
 option(FOAMADAPTER_BUILD_TESTS "Build the unit tests" OFF)
@@ -68,3 +52,5 @@ if(FOAMADAPTER_BUILD_TESTS)
   enable_testing()
   add_subdirectory(test)
 endif()
+
+include(cmake/banner.cmake)
