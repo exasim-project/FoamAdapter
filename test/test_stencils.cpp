@@ -4,12 +4,10 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 #include <unordered_set>
-#include "NeoN/finiteVolume/cellCentred/stencil/cellToFaceStencil.hpp"
 
+#include "NeoN/NeoN.hpp"
 
 #include "gaussConvectionScheme.H"
-#include "NeoN/core/input.hpp"
-#include "NeoN/dsl/explicit.hpp"
 
 #include "common.hpp"
 

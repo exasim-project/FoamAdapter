@@ -2,9 +2,10 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
+#include "NeoN/NeoN.hpp"
+
 #include "volFields.H"
 
-#include "NeoN/NeoN.hpp"
 // #include "ITstream.H"
 
 namespace Foam

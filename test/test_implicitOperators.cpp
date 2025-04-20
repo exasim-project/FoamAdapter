@@ -1,19 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 NeoFOAM authors
+// SPDX-FileCopyrightText: 2023-2025 NeoFOAM authors
 
 #include <cstddef>
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoN/core/database/oldTimeCollection.hpp"
-#include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
-#include "NeoN/finiteVolume/cellCentred/operators/gaussGreenDiv.hpp"
-#include "NeoN/finiteVolume/cellCentred/operators/ddtOperator.hpp"
-#include "NeoN/finiteVolume/cellCentred/operators/sourceTerm.hpp"
-#include "NeoN/finiteVolume/cellCentred/linearAlgebra/sparsityPattern.hpp"
-#include "NeoN/finiteVolume/cellCentred/dsl/expression.hpp"
-#include "NeoN/dsl/implicit.hpp"
-#include "NeoN/dsl/explicit.hpp"
+#include "NeoN/NeoN.hpp"
+
 #include "gaussConvectionScheme.H"
 
 #include "common.hpp"

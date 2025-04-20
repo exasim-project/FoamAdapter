@@ -240,7 +240,7 @@ public:
         NeoN::Field<typename type_container_t::VectorValueType> field(
             convertedField.exec(),
             convertedField.internalVector(),
-            convertedField.boundaryVector()
+            convertedField.boundaryData()
         );
 
         type_container_t registeredField(

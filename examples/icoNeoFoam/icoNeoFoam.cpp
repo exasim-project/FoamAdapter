@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
         auto nuBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<NeoN::scalar>>(nfMesh);
         fvcc::SurfaceField<NeoN::scalar> nfNu(exec, "nfNu", nfMesh, nuBCs);
         fill(nfNu.internalVector(), nu.value());
-        fill(nfNu.boundaryVector().value(), nu.value());
+        fill(nfNu.boundaryData().value(), nu.value());
 
         NeoN::scalar endTime = controlDict.get<NeoN::scalar>("endTime");
 

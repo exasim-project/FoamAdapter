@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 NeoFOAM authors
+// SPDX-FileCopyrightText: 2025 NeoFOAM authors
 
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp"
-#include "NeoN/finiteVolume/cellCentred/boundary.hpp"
-#include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "Kokkos_Core.hpp"
 
 namespace NeoN::finiteVolume::cellCentred
@@ -19,7 +18,7 @@ void constrainHbyA(
     // const UnstructuredMesh& mesh = HbyA.mesh();
     const auto pIn = p.internalVector().view();
     auto HbyAin = HbyA.internalVector().view();
-    auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryVector().value(), U.boundaryVector().value());
+    auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryData().value(), U.boundaryData().value());
 
     const std::vector<VolumeBoundary<Vec3>>& HbyABCs = HbyA.boundaryConditions();
 
@@ -27,7 +26,7 @@ void constrainHbyA(
     {
         parallelFor(
             HbyA.exec(),
-            HbyA.boundaryVector().range(patchi),
+            HbyA.boundaryData().range(patchi),
             KOKKOS_LAMBDA(const size_t bfacei) { HbyABcValue[bfacei] = UBcValue[bfacei]; }
         );
     }
@@ -184,18 +183,18 @@ SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
     auto faceFlux = SurfaceField<scalar>(exec, "out", mesh, surfaceBCs);
 
     fill(faceFlux.internalVector(), zero<scalar>());
-    fill(faceFlux.boundaryVector().value(), zero<scalar>());
+    fill(faceFlux.boundaryData().value(), zero<scalar>());
     const auto [owner, neighbour, weightIn, faceAreas, volFieldIn, volFieldBc, bSf] = spans(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
         weight.internalVector(),
         mesh.faceAreas(),
         volField.internalVector(),
-        volField.boundaryVector().value(),
+        volField.boundaryData().value(),
         mesh.boundaryMesh().sf()
     );
 
-    auto [faceFluxIn, bvalue] = spans(faceFlux.internalVector(), faceFlux.boundaryVector().value());
+    auto [faceFluxIn, bvalue] = spans(faceFlux.internalVector(), faceFlux.boundaryData().value());
 
     parallelFor(
         exec,

@@ -6,7 +6,7 @@
 
 #include "NeoN/NeoN.hpp"
 #include "benchmarks/catch_main.hpp"
-#include "NeoN/test/catch2/executorGenerator.hpp"
+#include "test/catch2/executorGenerator.hpp"
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;
@@ -16,9 +16,6 @@ namespace dsl = NeoN::dsl;
 #include "gaussGrad.H"
 #include "gaussConvectionScheme.H"
 #include "gaussLaplacianScheme.H"
-#include "NeoN/core/input.hpp"
-#include "NeoN/dsl/explicit.hpp"
-#include "NeoN/include/NeoN/linearAlgebra/linearSystem.hpp"
 
 template<typename FieldType, typename RandomFunc>
 FieldType createRandomField(

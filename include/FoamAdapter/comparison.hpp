@@ -55,7 +55,7 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
         /* compare boundaryVector */                                                               \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
-        auto nfBoundaryHost = nf.boundaryVector().value().copyToHost();                            \
+        auto nfBoundaryHost = nf.boundaryData().value().copyToHost();                              \
         auto nfBoundaryView = nfBoundaryHost.view();                                               \
         NeoN::label pFacei = 0;                                                                    \
         for (const auto& patch : of.boundaryField())                                               \
