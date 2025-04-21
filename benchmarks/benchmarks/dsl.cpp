@@ -7,6 +7,7 @@
 #include "NeoN/NeoN.hpp"
 #include "benchmarks/catch_main.hpp"
 #include "test/catch2/executorGenerator.hpp"
+#include "common.hpp"
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;
@@ -14,38 +15,6 @@ namespace dsl = NeoN::dsl;
 #include "fvc.H"
 #include "fvm.H"
 #include "fvMatrices.H"
-
-template<typename FieldType, typename RandomFunc>
-FieldType createRandomField(
-    const Foam::Time& runTime,
-    const Foam::fvMesh& mesh,
-    Foam::word name,
-    RandomFunc rand
-)
-{
-    FieldType t(
-        Foam::IOobject(name, "0", mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE),
-        mesh
-    );
-
-    forAll(t, celli)
-    {
-        t[celli] = rand();
-    }
-
-    t.correctBoundaryConditions();
-    return t;
-}
-
-
-/* function to create a volScalarField filled with random values for test purposes */
-auto randomScalarField(const Foam::Time& runTime, const Foam::fvMesh& mesh, Foam::word name)
-{
-    std::random_device rd;  // Will be used to obtain a seed for the random number engine
-    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-    std::uniform_real_distribution<> dis(1.0, 2.0);
-    return createRandomField<Foam::volScalarField>(runTime, mesh, name, [&]() { return dis(gen); });
-}
 
 TEST_CASE("advection–diffusion-equation_scalar")
 {
