@@ -21,7 +21,8 @@ NeoFOAM has the following requirements
 We provide several Cmake presets to set commmonly required flags for building NeoFOAM
 
     cmake --list-presets # To list existing presets
-    cmake --preset production # To build for production use
+    cmake --preset production # Config for production
+    cmake --build --preset production # Build for production
 
 ### NeoN as a submodule
 
