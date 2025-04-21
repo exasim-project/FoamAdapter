@@ -4,11 +4,6 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoN/NeoN.hpp"
-
-#include "FoamAdapter/FoamAdapter.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
-
 #include "common.hpp"
 
 

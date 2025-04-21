@@ -3,16 +3,6 @@
 
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
-#include <catch2/catch_session.hpp>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators_all.hpp>
-#include "catch2/common.hpp"
-
-#include "NeoN/fields/field.hpp"
-#include "NeoN/core/tokenList.hpp"
-
-#include "FoamAdapter/readers/foamDictionary.hpp"
-#include "FoamAdapter/writers.hpp"
 
 #include "common.hpp"
 

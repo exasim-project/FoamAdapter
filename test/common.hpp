@@ -13,9 +13,8 @@
 #include <catch2/catch_approx.hpp>
 #include "catch2/common.hpp"
 
-#include "FoamAdapter/meshAdapter.hpp"
-#include "FoamAdapter/setup.hpp"
-#include "FoamAdapter/comparison.hpp"
+#include "NeoN/NeoN.hpp"
+#include "FoamAdapter/NeoFoam.hpp"
 
 #include "fvm.H"
 #include "fvc.H"

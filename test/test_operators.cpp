@@ -4,12 +4,11 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoN/NeoN.hpp"
+#include "common.hpp"
 
 #include "fv.H"
 #include "gaussConvectionScheme.H"
 
-#include "common.hpp"
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;

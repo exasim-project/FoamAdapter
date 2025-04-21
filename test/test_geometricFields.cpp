@@ -4,8 +4,6 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoN/fields/field.hpp"
-
 #include "common.hpp"
 
 extern Foam::Time* timePtr; // A single time object

@@ -3,15 +3,8 @@
 
 #include <vector>
 
-#include <catch2/catch_session.hpp>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators_all.hpp>
-#include <catch2/matchers/catch_matchers_all.hpp>
-#include "catch2/common.hpp"
 
-#include "FoamAdapter/setup.hpp"
-#include "FoamAdapter/comparison.hpp"
-#include "FoamAdapter/meshAdapter.hpp"
+#include "common.hpp"
 
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;

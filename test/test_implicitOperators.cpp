@@ -5,11 +5,9 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoN/NeoN.hpp"
+#include "common.hpp"
 
 #include "gaussConvectionScheme.H"
-
-#include "common.hpp"
 
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;

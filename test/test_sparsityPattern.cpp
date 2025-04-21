@@ -7,11 +7,10 @@
 #include <unordered_set>
 #include <set>
 
-#include "NeoN/NeoN.hpp"
+#include "common.hpp"
 
 #include "gaussConvectionScheme.H"
 
-#include "common.hpp"
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;
