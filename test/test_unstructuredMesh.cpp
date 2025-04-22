@@ -15,13 +15,7 @@ extern Foam::fvMesh* meshPtr; // A single mesh object
 
 TEST_CASE("unstructuredMesh")
 {
-    NeoN::Executor exec = GENERATE(
-        NeoN::Executor(NeoN::CPUExecutor {}),
-        NeoN::Executor(NeoN::SerialExecutor {}),
-        NeoN::Executor(NeoN::GPUExecutor {})
-    );
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, *timePtr);
     const Foam::fvMesh& ofMesh = *meshPtr;

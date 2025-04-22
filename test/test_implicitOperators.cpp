@@ -26,14 +26,7 @@ TEST_CASE("matrix multiplication")
     NeoN::Database db;
     fvcc::VectorCollection& fieldCol = fvcc::VectorCollection::instance(db, "VectorCollection");
 
-    // NeoN::Executor exec = GENERATE(
-    //     NeoN::Executor(NeoN::SerialExecutor {}),
-    //     NeoN::Executor(NeoN::CPUExecutor {}),
-    //     NeoN::Executor(NeoN::GPUExecutor {})
-    // );
-    NeoN::Executor exec = NeoN::SerialExecutor {};
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     auto meshPtr = Foam::createMesh(exec, runTime);
     Foam::MeshAdapter& mesh = *meshPtr;
@@ -255,9 +248,12 @@ TEST_CASE("matrix multiplication")
         );
         fvSchemesDict.insert("divSchemes", divSchemes);
 
-        NeoN::Dictionary fvSolutionDict {};
-        fvSolutionDict.insert("maxIters", 100);
-        fvSolutionDict.insert("relTol", float(1e-8));
+        NeoN::Dictionary fvSolutionDict {
+            {{"solver", std::string {"Ginkgo"}},
+             {"type", "solver::Cg"},
+             {"criteria", NeoN::Dictionary {{{"iteration", 100}, {"relative_residual_norm", 1e-8}}}}
+            }
+        };
 
         matrix.solve();
         dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);

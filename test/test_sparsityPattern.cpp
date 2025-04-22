@@ -25,14 +25,7 @@ TEST_CASE("sparsityPattern")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    // NeoN::Executor exec = GENERATE(
-    //     NeoN::Executor(NeoN::SerialExecutor {}),
-    //     NeoN::Executor(NeoN::CPUExecutor {}),
-    //     NeoN::Executor(NeoN::GPUExecutor {})
-    // );
-    NeoN::Executor exec = NeoN::SerialExecutor {};
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     auto meshPtr = Foam::createMesh(exec, runTime);
     Foam::MeshAdapter& mesh = *meshPtr;

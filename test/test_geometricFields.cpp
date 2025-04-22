@@ -10,12 +10,7 @@ extern Foam::Time* timePtr; // A single time object
 
 TEST_CASE("VolumeField")
 {
-    NeoN::Executor exec = GENERATE(
-        NeoN::Executor(NeoN::CPUExecutor {}),
-        NeoN::Executor(NeoN::SerialExecutor {}),
-        NeoN::Executor(NeoN::GPUExecutor {})
-    );
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     Foam::Time& runTime = *timePtr;
     auto meshPtr = Foam::createMesh(exec, runTime);
