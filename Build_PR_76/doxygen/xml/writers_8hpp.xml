@@ -6,7 +6,6 @@
     <includes local="yes">volFields.H</includes>
     <includes local="yes">NeoN/NeoN.hpp</includes>
     <includes refid="convert_8hpp" local="yes">FoamAdapter/conversion/convert.hpp</includes>
-    <includedby refid="FoamAdapter_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</includedby>
     <incdepgraph>
       <node id="5">
         <label>FoamAdapter/conversion/convert.hpp</label>
@@ -38,18 +37,6 @@
         <label>volFields.H</label>
       </node>
     </incdepgraph>
-    <invincdepgraph>
-      <node id="2">
-        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</label>
-        <link refid="FoamAdapter_8hpp"/>
-      </node>
-      <node id="1">
-        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp</label>
-        <link refid="writers_8hpp"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-      </node>
-    </invincdepgraph>
     <innernamespace refid="namespaceFoam">Foam</innernamespace>
     <innernamespace refid="namespaceFoam_1_1detail">Foam::detail</innernamespace>
     <briefdescription>

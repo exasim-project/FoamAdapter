@@ -3,7 +3,6 @@
   <compounddef id="pressureVelocityCoupling_8hpp" kind="file" language="C++">
     <compoundname>pressureVelocityCoupling.hpp</compoundname>
     <includes local="yes">NeoN/NeoN.hpp</includes>
-    <includedby refid="FoamAdapter_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</includedby>
     <incdepgraph>
       <node id="1">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp</label>
@@ -15,18 +14,6 @@
         <label>NeoN/NeoN.hpp</label>
       </node>
     </incdepgraph>
-    <invincdepgraph>
-      <node id="2">
-        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</label>
-        <link refid="FoamAdapter_8hpp"/>
-      </node>
-      <node id="1">
-        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp</label>
-        <link refid="pressureVelocityCoupling_8hpp"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-      </node>
-    </invincdepgraph>
     <innernamespace refid="namespaceNeoN">NeoN</innernamespace>
     <innernamespace refid="namespaceNeoN_1_1finiteVolume">NeoN::finiteVolume</innernamespace>
     <innernamespace refid="namespaceNeoN_1_1finiteVolume_1_1cellCentred">NeoN::finiteVolume::cellCentred</innernamespace>

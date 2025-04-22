@@ -7,7 +7,6 @@
     <includes refid="convert_8hpp" local="yes">FoamAdapter/conversion/convert.hpp</includes>
     <includes refid="type__conversion_8hpp" local="yes">FoamAdapter/conversion/type_conversion.hpp</includes>
     <includes refid="foamDictionary_8hpp" local="yes">FoamAdapter/readers/foamDictionary.hpp</includes>
-    <includedby refid="FoamAdapter_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</includedby>
     <includedby refid="meshAdapter_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp</includedby>
     <incdepgraph>
       <node id="4">
@@ -70,15 +69,9 @@
     </incdepgraph>
     <invincdepgraph>
       <node id="2">
-        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</label>
-        <link refid="FoamAdapter_8hpp"/>
-      </node>
-      <node id="3">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp</label>
         <link refid="meshAdapter_8hpp"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="4" relation="include">
+        <childnode refid="3" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -86,14 +79,10 @@
         <link refid="readers_8hpp"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="3" relation="include">
-        </childnode>
       </node>
-      <node id="4">
+      <node id="3">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup.hpp</label>
         <link refid="setup_8hpp"/>
-        <childnode refid="2" relation="include">
-        </childnode>
       </node>
     </invincdepgraph>
     <innerclass refid="classFoam_1_1CreateFromFoamField" prot="public">Foam::CreateFromFoamField</innerclass>

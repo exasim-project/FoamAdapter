@@ -23,23 +23,15 @@
     </incdepgraph>
     <invincdepgraph>
       <node id="3">
-        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/FoamAdapter.hpp</label>
-        <link refid="FoamAdapter_8hpp"/>
-      </node>
-      <node id="4">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp</label>
         <link refid="meshAdapter_8hpp"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
+        <childnode refid="4" relation="include">
         </childnode>
       </node>
       <node id="2">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp</label>
         <link refid="readers_8hpp"/>
         <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="4" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -48,11 +40,9 @@
         <childnode refid="2" relation="include">
         </childnode>
       </node>
-      <node id="5">
+      <node id="4">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup.hpp</label>
         <link refid="setup_8hpp"/>
-        <childnode refid="3" relation="include">
-        </childnode>
       </node>
     </invincdepgraph>
     <innernamespace refid="namespaceFoam">Foam</innernamespace>
