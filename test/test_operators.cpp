@@ -67,13 +67,7 @@ TEST_CASE("GradOperator")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    NeoN::Executor exec = GENERATE(
-        NeoN::Executor(NeoN::CPUExecutor {}),
-        NeoN::Executor(NeoN::SerialExecutor {}),
-        NeoN::Executor(NeoN::GPUExecutor {})
-    );
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
     Foam::MeshAdapter& mesh = *meshPtr;
@@ -86,7 +80,6 @@ TEST_CASE("GradOperator")
 
         auto ofT = randomScalarField(runTime, mesh, "T");
         auto nfT = constructFrom(exec, nfMesh, ofT);
-        nfT.correctBoundaryConditions();
         REQUIRE(nfT == ofT);
 
         Foam::fv::gaussGrad<Foam::scalar> foamGradScalar(mesh, is);
@@ -172,7 +165,7 @@ TEST_CASE("DivOperator")
             NeoN::fill(nfDivT.internalVector(), 0.0);
             NeoN::fill(nfDivT.boundaryData().value(), 0.0);
             dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
-            divOp.build(scheme);
+            divOp.read(scheme);
             divOp.explicitOperation(nfDivT.internalVector());
 
             nfDivT.correctBoundaryConditions();
