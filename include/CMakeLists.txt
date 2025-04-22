@@ -12,3 +12,14 @@ set_property(
   TARGET FoamAdapter_public_api
   APPEND
   PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}")
+
+# Get list of some *.hpp files in folder include
+file(GLOB_RECURSE include_files *.hpp)
+
+# Convert the list of files into #includes
+foreach(include_file ${include_files})
+  set(include_statements "${include_statements}#include \"${include_file}\"\n")
+endforeach()
+
+configure_file(${CMAKE_CURRENT_LIST_DIR}/FoamAdapter/NeoFoam.hpp.in
+               ${CMAKE_CURRENT_BINARY_DIR}/FoamAdapter/NeoFoam.hpp)

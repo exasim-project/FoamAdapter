@@ -112,3 +112,5 @@ benchmarks/benchmarkSuite/implicitOperators/cases
 
 benchmarks/benchmarkSuite/dsl/meshes
 benchmarks/benchmarkSuite/dsl/cases
+
+*.log

@@ -5,10 +5,7 @@
 #include "volFields.H"
 #include "surfaceFields.H"
 
-#include "NeoN/finiteVolume/cellCentred/fields/volumeField.hpp"
-#include "NeoN/finiteVolume/cellCentred/fields/surfaceField.hpp"
-#include "NeoN/core/executor/executor.hpp"
-#include "NeoN/fields/field.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 

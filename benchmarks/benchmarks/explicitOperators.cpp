@@ -6,7 +6,8 @@
 
 #include "NeoN/NeoN.hpp"
 #include "benchmarks/catch_main.hpp"
-#include "NeoN/test/catch2/executorGenerator.hpp"
+#include "test/catch2/executorGenerator.hpp"
+#include "common.hpp"
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;
@@ -16,46 +17,7 @@ namespace dsl = NeoN::dsl;
 #include "gaussGrad.H"
 #include "gaussConvectionScheme.H"
 #include "gaussLaplacianScheme.H"
-#include "NeoN/core/input.hpp"
-#include "NeoN/dsl/explicit.hpp"
 
-template<typename FieldType, typename RandomFunc>
-FieldType createRandomField(
-    const Foam::Time& runTime,
-    const Foam::fvMesh& mesh,
-    Foam::word name,
-    RandomFunc rand
-)
-{
-    FieldType t(
-        Foam::IOobject(
-            name,
-            runTime.timeName(),
-            mesh,
-            Foam::IOobject::MUST_READ,
-            Foam::IOobject::AUTO_WRITE
-        ),
-        mesh
-    );
-
-    forAll(t, celli)
-    {
-        t[celli] = rand();
-    }
-
-    t.correctBoundaryConditions();
-    return t;
-}
-
-
-/* function to create a volScalarField filled with random values for test purposes */
-auto randomScalarField(const Foam::Time& runTime, const Foam::fvMesh& mesh, Foam::word name)
-{
-    std::random_device rd;  // Will be used to obtain a seed for the random number engine
-    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-    std::uniform_real_distribution<> dis(1.0, 2.0);
-    return createRandomField<Foam::volScalarField>(runTime, mesh, name, [&]() { return dis(gen); });
-}
 
 TEST_CASE("DivOperator")
 {
@@ -149,7 +111,7 @@ TEST_CASE("DivOperator")
             BENCHMARK(std::string(execName))
             {
                 NeoN::fill(nfDivT.internalVector(), 0.0);
-                NeoN::fill(nfDivT.boundaryVector().value(), 0.0);
+                NeoN::fill(nfDivT.boundaryData().value(), 0.0);
                 fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
                     .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
                 Kokkos::fence();
@@ -248,7 +210,7 @@ TEST_CASE("LaplacianOperator")
             BENCHMARK(std::string(execName))
             {
                 NeoN::fill(nfLapT.internalVector(), 0.0);
-                NeoN::fill(nfLapT.boundaryVector().value(), 0.0);
+                NeoN::fill(nfLapT.boundaryData().value(), 0.0);
                 fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
                     .laplacian(nfLapT, nfGamma, nfT, dsl::Coeff(1.0));
                 Kokkos::fence();
@@ -317,7 +279,7 @@ TEST_CASE("GradOperator")
             BENCHMARK(std::string(execName))
             {
                 NeoN::fill(nfGradT.internalVector(), NeoN::Vec3(0, 0, 0));
-                NeoN::fill(nfGradT.boundaryVector().value(), NeoN::Vec3(0, 0, 0));
+                NeoN::fill(nfGradT.boundaryData().value(), NeoN::Vec3(0, 0, 0));
                 fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
                 Kokkos::fence();
                 return;
@@ -422,7 +384,7 @@ TEST_CASE("FaceInterpolation")
             BENCHMARK(std::string(execName))
             {
                 NeoN::fill(nfTf.internalVector(), 0.0);
-                NeoN::fill(nfTf.boundaryVector().value(), 0.0);
+                NeoN::fill(nfTf.boundaryData().value(), 0.0);
                 fvcc::SurfaceInterpolation<NeoN::scalar>(exec, nfMesh, scheme)
                     .interpolate(nfPhi, nfT, nfTf);
                 Kokkos::fence();
@@ -502,7 +464,7 @@ TEST_CASE("FaceNormalGradient")
             BENCHMARK(std::string(execName))
             {
                 NeoN::fill(faceGradT.internalVector(), 0.0);
-                NeoN::fill(faceGradT.boundaryVector().value(), 0.0);
+                NeoN::fill(faceGradT.boundaryData().value(), 0.0);
                 fvcc::FaceNormalGradient<NeoN::scalar>(exec, nfMesh, scheme)
                     .faceNormalGrad(nfT, faceGradT);
                 Kokkos::fence();

@@ -11,10 +11,14 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "Kokkos_ENABLE_SERIAL": "ON",
-        "GINKGO_BUILD_PAPI_SDE": "OFF"
+        "Kokkos_ENABLE_SERIAL": "ON"
       },
-      "generator": "Ninja"
+      "generator": "Ninja",
+      "warnings": {
+        "dev": false,
+        "deprecated": true,
+        "uninitialized": true
+      }
     },
     {
       "name": "production",
@@ -37,18 +41,14 @@
       "description": "Configuration for development use",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "NEON_DEVEL_TOOLS": "ON",
         "FOAMADAPTER_BUILD_TESTS": "ON",
-        "NEON_BUILD_TESTS": "ON",
         "FOAMADAPTER_BUILD_BENCHMARKS": "ON",
         "FOAMADAPTER_BUILD_EXAMPLES": "ON",
-        "Kokkos_ENABLE_DEBUG": "OFF",
+        "Kokkos_ENABLE_DEBUG": "ON",
         "Kokkos_ENABLE_DEBUG_BOUNDS_CHECK": "ON"
       },
       "warnings": {
-        "dev": true,
-        "deprecated": true,
-        "uninitialized": true
+        "dev": true
       }
     },
     {
@@ -61,10 +61,8 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "FOAMADAPTER_BUILD_TESTS": "ON",
-        "NEON_BUILD_TESTS": "ON",
         "FOAMADAPTER_BUILD_BENCHMARKS": "ON",
         "FOAMADAPTER_BUILD_EXAMPLES": "ON",
-        "NEON_ENABLE_WARNINGS": "OFF",
         "CMAKE_CXX_FLAGS": "-fno-omit-frame-pointer $env{CXXFLAGS}"
       }
     }

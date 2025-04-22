@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 NeoFOAM authors
+// SPDX-FileCopyrightText: 2023-2025 NeoFOAM authors
 #pragma once
+
+#include "NeoN/NeoN.hpp"
+
 #include "dictionary.H"
-#include "NeoN/core/dictionary.hpp"
 
 namespace Foam
 {
