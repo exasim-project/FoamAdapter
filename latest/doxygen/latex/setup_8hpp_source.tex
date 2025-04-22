@@ -11,7 +11,7 @@
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00007}00007\ }
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{meshAdapter_8hpp}{FoamAdapter/meshAdapter.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00009}00009\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}NeoFOAM/core/executor/executor.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}NeoN/NeoN.hpp"{}}}
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00011}00011\ }
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00012}00012\ }
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00013}00013\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoam}{Foam}}}
@@ -23,11 +23,11 @@
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00019}00019\ }
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00020}\mbox{\hyperlink{namespaceFoam_a1f451056e368f6f6b507ae472e785faa}{00020}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoam_a1f451056e368f6f6b507ae472e785faa}{setDeltaT}}(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}}\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{runTime}},\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{maxCo}},\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{CoNum}},\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{maxDeltaT}});}
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00021}00021\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00022}\mbox{\hyperlink{namespaceFoam_a4d1a6b63d0688b0fab1d703ef95cdb4b}{00022}}\ std::unique\_ptr<MeshAdapter>\ \mbox{\hyperlink{namespaceFoam_a4d1a6b63d0688b0fab1d703ef95cdb4b}{createMesh}}(\textcolor{keyword}{const}\ NeoFOAM::Executor\&\ exec,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}}\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{runTime}});}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00022}\mbox{\hyperlink{namespaceFoam_a506acc94064d7ce59ed16e08a661c87a}{00022}}\ std::unique\_ptr<MeshAdapter>\ \mbox{\hyperlink{namespaceFoam_a506acc94064d7ce59ed16e08a661c87a}{createMesh}}(\textcolor{keyword}{const}\ NeoN::Executor\&\ exec,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}}\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{runTime}});}
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00023}00023\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00024}\mbox{\hyperlink{namespaceFoam_aea1c46297050941c3a6847826e9b47ce}{00024}}\ std::unique\_ptr<fvMesh>\ \mbox{\hyperlink{namespaceFoam_a4d1a6b63d0688b0fab1d703ef95cdb4b}{createMesh}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}}\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{runTime}});}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00024}\mbox{\hyperlink{namespaceFoam_aea1c46297050941c3a6847826e9b47ce}{00024}}\ std::unique\_ptr<fvMesh>\ \mbox{\hyperlink{namespaceFoam_a506acc94064d7ce59ed16e08a661c87a}{createMesh}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}}\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{runTime}});}
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00025}00025\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00026}\mbox{\hyperlink{namespaceFoam_abd04305efe6eff712344425ae7184a33}{00026}}\ NeoFOAM::Executor\ \mbox{\hyperlink{namespaceFoam_abd04305efe6eff712344425ae7184a33}{createExecutor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dictionary}}\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dict}});}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00026}\mbox{\hyperlink{namespaceFoam_a1ec9fe39937a2dad2dafcad4984c81a3}{00026}}\ NeoN::Executor\ \mbox{\hyperlink{namespaceFoam_a1ec9fe39937a2dad2dafcad4984c81a3}{createExecutor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dictionary}}\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dict}});}
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00027}00027\ }
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00028}00028\ }
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00029}00029\ \}\ \textcolor{comment}{//\ namespace\ Foam}}

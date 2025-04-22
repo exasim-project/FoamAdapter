@@ -9,83 +9,80 @@
 \DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}volFields.H"{}}}
 \DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}surfaceFields.H"{}}}
 \DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00007}00007\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}NeoFOAM/finiteVolume/cellCentred/fields/volumeField.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}NeoFOAM/finiteVolume/cellCentred/fields/surfaceField.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}NeoFOAM/core/executor/executor.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}NeoFOAM/fields/field.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00012}00012\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{convert_8hpp}{FoamAdapter/conversion/convert.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}NeoN/NeoN.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{convert_8hpp}{FoamAdapter/conversion/convert.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00012}00012\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoam}{Foam}}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00013}00013\ \{}
 \DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00014}00014\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00015}00015\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoam}{Foam}}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00016}00016\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00017}00017\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00018}00018\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred}{fvcc}}\ =\ \mbox{\hyperlink{namespaceNeoFOAM_1_1finiteVolume_1_1cellCentred}{NeoFOAM::finiteVolume::cellCentred}};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00019}00019\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ From>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00020}\mbox{\hyperlink{structFoam_1_1type__map}{00020}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00021}00021\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00022}00022\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00023}00023\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00024}00024\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00025}00025\ \textcolor{keyword}{template}<>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00026}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4}{00026}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<GeometricField<scalar,\ fvPatchField,\ volMesh>>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00027}00027\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00028}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_a12270f85319a30045cd4f3e6309ee48b}{00028}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_a12270f85319a30045cd4f3e6309ee48b}{container\_type}}\ =\ fvcc::VolumeField<NeoFOAM::scalar>;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00029}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_ae4e77d614176de240e37fb72688a661f}{00029}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_ae4e77d614176de240e37fb72688a661f}{mapped\_type}}\ =\ NeoFOAM::scalar;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00030}00030\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00031}00031\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00032}00032\ \textcolor{keyword}{template}<>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00033}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4}{00033}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<GeometricField<vector,\ fvPatchField,\ volMesh>>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00034}00034\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00035}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_a0d298bed875d975a4aa6e4ab13738e49}{00035}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_a0d298bed875d975a4aa6e4ab13738e49}{container\_type}}\ =\ fvcc::VolumeField<NeoFOAM::Vector>;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00036}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_ab0f41e532937b98d349256c75d7fc2f1}{00036}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_ab0f41e532937b98d349256c75d7fc2f1}{mapped\_type}}\ =\ NeoFOAM::Vector;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00037}00037\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00038}00038\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00039}00039\ \textcolor{keyword}{template}<>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00040}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4}{00040}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<GeometricField<scalar,\ fvsPatchField,\ surfaceMesh>>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00041}00041\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00042}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a4d9cdcef8e5c610ef68bafc4e939f5ff}{00042}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a4d9cdcef8e5c610ef68bafc4e939f5ff}{container\_type}}\ =\ fvcc::SurfaceField<NeoFOAM::scalar>;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00043}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a58def5f31790cbf10a8980ee528692e9}{00043}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a58def5f31790cbf10a8980ee528692e9}{mapped\_type}}\ =\ NeoFOAM::scalar;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00044}00044\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00045}00045\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00046}00046\ \textcolor{keyword}{template}<>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00047}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4}{00047}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<GeometricField<vector,\ fvsPatchField,\ surfaceMesh>>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00048}00048\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00049}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a8860583aff15948e60c4216a0ab9fcc2}{00049}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a8860583aff15948e60c4216a0ab9fcc2}{container\_type}}\ =\ fvcc::SurfaceField<NeoFOAM::Vector>;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00050}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a0a6f0e6509d28645d3fb8e24a5b18dda}{00050}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a0a6f0e6509d28645d3fb8e24a5b18dda}{mapped\_type}}\ =\ NeoFOAM::Vector;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00051}00051\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00052}00052\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00053}00053\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00054}00054\ \textcolor{keyword}{template}<>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00055}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4}{00055}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<Field<scalar>>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00056}00056\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00057}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_a9b55d6639f3e913bad7ddbebc450053f}{00057}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_a9b55d6639f3e913bad7ddbebc450053f}{container\_type}}\ =\ NeoFOAM::Field<NeoFOAM::scalar>;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00058}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_aeb708ba783f3ea218983c2c0c8fd7c25}{00058}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_aeb708ba783f3ea218983c2c0c8fd7c25}{mapped\_type}}\ =\ NeoFOAM::scalar;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00059}00059\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00060}00060\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00061}00061\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00062}00062\ \textcolor{keyword}{template}<>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00063}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4}{00063}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<Field<vector>>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00064}00064\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00065}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_a2181c5c5528ce8f10b99ee856a4ae833}{00065}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_a2181c5c5528ce8f10b99ee856a4ae833}{container\_type}}\ =\ NeoFOAM::Field<NeoFOAM::Vector>;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00066}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_a65312bff762aea049902041c5e9c7f47}{00066}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_a65312bff762aea049902041c5e9c7f47}{mapped\_type}}\ =\ NeoFOAM::Vector;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00067}00067\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00068}00068\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00069}00069\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00070}00070\ \textcolor{keyword}{template}<>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00071}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4}{00071}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<List<scalar>>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00072}00072\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00073}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_a3db57b44a9e602b20c4eb94053680531}{00073}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_a3db57b44a9e602b20c4eb94053680531}{container\_type}}\ =\ NeoFOAM::Field<NeoFOAM::scalar>;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00074}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_acbf41fe533c0fb72230475acf32d6e97}{00074}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_acbf41fe533c0fb72230475acf32d6e97}{mapped\_type}}\ =\ NeoFOAM::scalar;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00075}00075\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00076}00076\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00077}00077\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00078}00078\ \textcolor{keyword}{template}<>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00079}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4}{00079}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<List<label>>}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00080}00080\ \{}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00081}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4_ac356139bcc3d1cad0f90b44212a5046c}{00081}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4_ac356139bcc3d1cad0f90b44212a5046c}{container\_type}}\ =\ NeoFOAM::Field<NeoFOAM::label>;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00082}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4_ad230ae24969291b8625aa11a9fbc0274}{00082}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4_ad230ae24969291b8625aa11a9fbc0274}{mapped\_type}}\ =\ NeoFOAM::label;}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00083}00083\ \};}
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00084}00084\ }
-\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00085}00085\ \};\ \textcolor{comment}{//\ namespace\ Foam}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00015}00015\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred}{fvcc}}\ =\ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred}{NeoN::finiteVolume::cellCentred}};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00016}00016\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ From>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00017}\mbox{\hyperlink{structFoam_1_1type__map}{00017}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00018}00018\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00019}00019\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00021}00021\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00022}00022\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00023}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4}{00023}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<GeometricField<scalar,\ fvPatchField,\ volMesh>>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00024}00024\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00025}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_aabcb29a24a70b827dd4243c8156d572c}{00025}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_aabcb29a24a70b827dd4243c8156d572c}{container\_type}}\ =\ fvcc::VolumeField<NeoN::scalar>;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00026}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_a8d3ad54166f0a95c9db9b87afb2bcc26}{00026}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_a8d3ad54166f0a95c9db9b87afb2bcc26}{mapped\_type}}\ =\ NeoN::scalar;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00027}00027\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00029}00029\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00030}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4}{00030}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<GeometricField<vector,\ fvPatchField,\ volMesh>>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00031}00031\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00032}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_af8ae3755a5f2cab4c0077f95548f68a9}{00032}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_af8ae3755a5f2cab4c0077f95548f68a9}{container\_type}}\ =\ fvcc::VolumeField<NeoN::Vec3>;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00033}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_a4e792066639312d35d2e6e68f3e8b205}{00033}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_a4e792066639312d35d2e6e68f3e8b205}{mapped\_type}}\ =\ NeoN::Vec3;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00034}00034\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00036}00036\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00037}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4}{00037}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<GeometricField<scalar,\ fvsPatchField,\ surfaceMesh>>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00038}00038\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00039}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a95a11b3881c970ef1b128da8540b5c53}{00039}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a95a11b3881c970ef1b128da8540b5c53}{container\_type}}\ =\ fvcc::SurfaceField<NeoN::scalar>;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00040}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_ac8e2db4488ce05420bcdeadc50800db2}{00040}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_ac8e2db4488ce05420bcdeadc50800db2}{mapped\_type}}\ =\ NeoN::scalar;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00041}00041\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00043}00043\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00044}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4}{00044}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<GeometricField<vector,\ fvsPatchField,\ surfaceMesh>>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00045}00045\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00046}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a3e90d17154ed044390befa2a60af6cd6}{00046}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a3e90d17154ed044390befa2a60af6cd6}{container\_type}}\ =\ fvcc::SurfaceField<NeoN::Vec3>;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00047}\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a0a3d646965d9d3dda55e7a22f14750e4}{00047}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvsPatchField_00_01surfaceMesh_01_4_01_4_a0a3d646965d9d3dda55e7a22f14750e4}{mapped\_type}}\ =\ NeoN::Vec3;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00048}00048\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00050}00050\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00051}00051\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00052}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4}{00052}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<Field<scalar>>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00053}00053\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00054}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_ab89a8942c9dbae382df65e45dd97ae97}{00054}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_ab89a8942c9dbae382df65e45dd97ae97}{container\_type}}\ =\ NeoN::Vector<NeoN::scalar>;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00055}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_a192019c3f7469d7cf0dd64d2bf11c333}{00055}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_a192019c3f7469d7cf0dd64d2bf11c333}{mapped\_type}}\ =\ NeoN::scalar;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00056}00056\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00058}00058\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00059}00059\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00060}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4}{00060}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<Field<vector>>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00061}00061\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00062}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_a426f9a9656e650a73708432c77165aa2}{00062}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_a426f9a9656e650a73708432c77165aa2}{container\_type}}\ =\ NeoN::Vector<NeoN::Vec3>;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00063}\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_a168047dfee0678c91fe99e17d6bd4322}{00063}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_a168047dfee0678c91fe99e17d6bd4322}{mapped\_type}}\ =\ NeoN::Vec3;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00064}00064\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00066}00066\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00067}00067\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00068}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4}{00068}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<List<scalar>>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00069}00069\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00070}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_a2b031c61e82135dce0112e77a899ba52}{00070}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_a2b031c61e82135dce0112e77a899ba52}{container\_type}}\ =\ NeoN::Vector<NeoN::scalar>;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00071}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_a99106475fc279eeb0fc1712ed497e8cb}{00071}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01scalar_01_4_01_4_a99106475fc279eeb0fc1712ed497e8cb}{mapped\_type}}\ =\ NeoN::scalar;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00072}00072\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00074}00074\ \textcolor{comment}{//\ Specializations\ of\ type\_map\ for\ specific\ type\ mappings.}}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00075}00075\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00076}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4}{00076}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoam_1_1type__map}{type\_map}}<List<label>>}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00077}00077\ \{}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00078}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4_a1b2d315ce8b4066a4ca59407fcd386be}{00078}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4_a1b2d315ce8b4066a4ca59407fcd386be}{container\_type}}\ =\ NeoN::Vector<NeoN::label>;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00079}\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4_a612d4aa577a4d811efa27621ce10fdc8}{00079}}\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structFoam_1_1type__map_3_01List_3_01label_01_4_01_4_a612d4aa577a4d811efa27621ce10fdc8}{mapped\_type}}\ =\ NeoN::label;}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00080}00080\ \};}
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{type__conversion_8hpp_source_l00082}00082\ \};\ \textcolor{comment}{//\ namespace\ Foam}}
 
 \end{DoxyCode}

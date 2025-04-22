@@ -6,9 +6,9 @@
     <templateparamlist>
     </templateparamlist>
     <sectiondef kind="public-type">
-      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_1a12270f85319a30045cd4f3e6309ee48b" prot="public" static="no">
-        <type>fvcc::VolumeField&lt; NeoFOAM::scalar &gt;</type>
-        <definition>using Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;::container_type =  fvcc::VolumeField&lt;NeoFOAM::scalar&gt;</definition>
+      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_1aabcb29a24a70b827dd4243c8156d572c" prot="public" static="no">
+        <type>fvcc::VolumeField&lt; NeoN::scalar &gt;</type>
+        <definition>using Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;::container_type =  fvcc::VolumeField&lt;NeoN::scalar&gt;</definition>
         <argsstring></argsstring>
         <name>container_type</name>
         <qualifiedname>Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;::container_type</qualifiedname>
@@ -18,11 +18,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="28" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="28" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="25" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="25" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_1ae4e77d614176de240e37fb72688a661f" prot="public" static="no">
-        <type>NeoFOAM::scalar</type>
-        <definition>using Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;::mapped_type =  NeoFOAM::scalar</definition>
+      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_1a8d3ad54166f0a95c9db9b87afb2bcc26" prot="public" static="no">
+        <type>NeoN::scalar</type>
+        <definition>using Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;::mapped_type =  NeoN::scalar</definition>
         <argsstring></argsstring>
         <name>mapped_type</name>
         <qualifiedname>Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;::mapped_type</qualifiedname>
@@ -32,17 +32,17 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="29" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="29" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="26" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="26" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="26" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="27" bodyend="30"/>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="23" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="24" bodyend="27"/>
     <listofallmembers>
-      <member refid="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_1a12270f85319a30045cd4f3e6309ee48b" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;</scope><name>container_type</name></member>
-      <member refid="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_1ae4e77d614176de240e37fb72688a661f" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;</scope><name>mapped_type</name></member>
+      <member refid="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_1aabcb29a24a70b827dd4243c8156d572c" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;</scope><name>container_type</name></member>
+      <member refid="structFoam_1_1type__map_3_01GeometricField_3_01scalar_00_01fvPatchField_00_01volMesh_01_4_01_4_1a8d3ad54166f0a95c9db9b87afb2bcc26" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; GeometricField&lt; scalar, fvPatchField, volMesh &gt; &gt;</scope><name>mapped_type</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>
