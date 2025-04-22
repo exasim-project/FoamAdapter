@@ -35,7 +35,7 @@ TEST_CASE("sparsityPattern")
     {
         fvcc::SparsityPattern pattern(nfMesh);
         const auto colIdxs = pattern.colIdxs().view();
-        const auto rowPtrs = pattern.rowPtrs().view();
+        const auto rowPtrs = pattern.rowOffs().view();
 
         forAll(mesh.cellCells(), celli)
         {

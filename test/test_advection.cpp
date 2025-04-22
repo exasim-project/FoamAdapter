@@ -56,12 +56,7 @@ TEST_CASE("Advection Equation")
     fvcc::VectorCollection& vectorCollection =
         fvcc::VectorCollection::instance(db, "VectorCollection");
 
-    NeoN::Executor exec = GENERATE(NeoN::Executor(NeoN::SerialExecutor {})
-                                   // NeoN::Executor(NeoN::CPUExecutor {}),
-                                   // NeoN::Executor(NeoN::GPUExecutor {})
-    );
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     // std::string timeIntegration = GENERATE(std::string("forwardEuler"),
     // std::string("Runge-Kutta"));
@@ -80,7 +75,7 @@ TEST_CASE("Advection Equation")
         NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
         NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
         fvSchemesDict.get<NeoN::Dictionary>("ddtSchemes").insert("type", timeIntegration);
-        NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+        // NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
 
         NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
@@ -133,6 +128,13 @@ TEST_CASE("Advection Equation")
 
         while (runTime.run())
         {
+            NeoN::Dictionary fvSolutionDict {
+                {{"solver", std::string {"Ginkgo"}},
+                 {"type", "solver::Bicgstab"},
+                 {"criteria",
+                  NeoN::Dictionary {{{"iteration", 100}, {"relative_residual_norm", 1e-8}}}}}
+            };
+
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
@@ -173,7 +175,6 @@ TEST_CASE("Advection Equation")
             runTime.printExecutionTime(Info);
         }
         compare(nfT, T, ApproxScalar(1e-15), false);
-
 
         Info << "End\n" << endl;
     }
