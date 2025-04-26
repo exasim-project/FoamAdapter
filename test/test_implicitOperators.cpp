@@ -18,7 +18,7 @@ extern Foam::argList* argsPtr; // Some forks want argList access at createMesh.H
 extern Foam::fvMesh* meshPtr;  // A single mesh object
 
 
-TEST_CASE("matrix multiplication")
+TEST_CASE("Implicit operators")
 {
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
@@ -34,67 +34,63 @@ TEST_CASE("matrix multiplication")
 
     runTime.setDeltaT(1);
 
-    SECTION("ddt_" + execName)
+    auto ofT = randomScalarField(runTime, mesh, "T");
+    ofT.correctBoundaryConditions();
+
+    fvcc::VolumeField<NeoN::scalar>& nfT = fieldCol.registerVector<fvcc::VolumeField<NeoN::scalar>>(
+        Foam::CreateFromFoamField<Foam::volScalarField> {
+            .exec = exec,
+            .nfMesh = nfMesh,
+            .foamField = ofT,
+            .name = "nfT"
+
+        }
+    );
+
+    NeoN::Dictionary fvSchemesDict {};
+    NeoN::Dictionary fvSolutionDict {};
+
+    /* this tests computes the residual ie Ax-b for OF and NF and compares the results
+     *
+     * Since b is not initialised it is zero. A is computed from u^1 and u^1 with a  difference
+     * of 1, thus ddt(U) = 1
+     *
+     * res Ax -b
+     */
+    SECTION("ddt_ on " + execName)
     {
-        auto ofT = randomScalarField(runTime, mesh, "T");
-        ofT.correctBoundaryConditions();
-
-        fvcc::VolumeField<NeoN::scalar>& nfT =
-            fieldCol.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                Foam::CreateFromFoamField<Foam::volScalarField> {
-                    .exec = exec,
-                    .nfMesh = nfMesh,
-                    .foamField = ofT,
-                    .name = "nfT"
-                }
-            );
-        auto& nfTOld = fvcc::oldTime(nfT);
-        const auto nfTOldView = nfTOld.internalVector().view();
-        NeoN::map(
-            nfTOld.internalVector(),
-            KOKKOS_LAMBDA(const std::size_t celli) { return nfTOldView[celli] - 1.0; }
-        );
-
+        // setup OpenFOAM
         ofT.oldTime() -= Foam::dimensionedScalar("value", Foam::dimTemperature, 1);
         ofT.oldTime().correctBoundaryConditions();
-
         Foam::fvScalarMatrix matrix(Foam::fvm::ddt(ofT));
-        Foam::volScalarField ddt(
-            "ddt",
-            matrix & ofT
-        ); // we should get a uniform field with a value of 1
-        // ddt.write();
-        fvcc::DdtOperator ddtOp(dsl::Operator::Type::Implicit, nfT);
+        Foam::volScalarField ofRes("ofRes", matrix & ofT);
 
-        // TODO finshied the ddt operator
-        // auto ls = ddtOp.createEmptyLinearSystem();
-        // ddtOp.implicitOperation(ls, runTime.value(), runTime.deltaTValue());
-        // fvcc::Expression<NeoN::scalar> ls2(
-        //     nfT,
-        //     ls,
-        //     fvcc::SparsityPattern::readOrCreate(nfMesh)
-        // );
+        // setup NeoFOAM
+        auto& nfTOld = fvcc::oldTime(nfT);
 
-        // // check diag
-        // NeoN::Vector<NeoN::scalar> diag(nfT.exec(), nfT.internalVector().size(), 0.0);
-        // ls2.diag(diag);
-        // auto diagHost = diag.copyToHost();
-        // for (size_t i = 0; i < diagHost.size(); i++)
-        // {
-        //     REQUIRE(diagHost[i] == 1.0);
-        // }
-        // auto result = ls2 & nfT;
-        // auto implicitHost = result.internalVector().copyToHost();
-        // for (size_t i = 0; i < implicitHost.size(); i++)
-        // {
-        //     REQUIRE(implicitHost[i] == Catch::Approx(ddt[i]).margin(1e-16));
-        // }
+        nfTOld -= 1.0;
+        nfTOld.correctBoundaryConditions();
+
+        auto expr = dsl::Expression<NeoN::scalar>(exec);
+        expr.addOperator(NeoN::dsl::imp::ddt(nfT));
+
+        auto rhs = fvcc::VolumeField<NeoN::scalar>(nfT);
+        NeoN::fill(rhs.internalVector(), 0.0);
+
+        auto ls =
+            NeoN::finiteVolume::cellCentred::assembleLinearSystem(expr, rhs, fvSchemesDict, 0, 1.0);
+
+        auto res = ls & nfT;
+        auto resHost = res.internalVector().copyToHost();
+        for (size_t i = 0; i < resHost.size(); i++)
+        {
+            REQUIRE(resHost.view()[i] == Catch::Approx(ofRes[i]).margin(1e-16));
+        }
     }
 
     SECTION("sourceterm_" + execName)
     {
         NeoN::scalar coeff = 2.0;
-        auto ofT = randomScalarField(runTime, mesh, "T");
         fvcc::VolumeField<NeoN::scalar> nfT = constructFrom(exec, nfMesh, ofT);
 
         NeoN::map(
