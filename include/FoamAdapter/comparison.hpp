@@ -11,8 +11,7 @@
 
 #include "Field.H"
 
-#include "NeoN/fields/field.hpp"
-#include "NeoN/core/primitives/label.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"
@@ -56,7 +55,7 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
         /* compare boundaryVector */                                                               \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
-        auto nfBoundaryHost = nf.boundaryVector().value().copyToHost();                            \
+        auto nfBoundaryHost = nf.boundaryData().value().copyToHost();                              \
         auto nfBoundaryView = nfBoundaryHost.view();                                               \
         NeoN::label pFacei = 0;                                                                    \
         for (const auto& patch : of.boundaryField())                                               \

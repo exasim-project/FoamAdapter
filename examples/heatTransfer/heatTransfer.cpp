@@ -3,7 +3,7 @@
 
 #include "NeoN/NeoN.hpp"
 
-#include "FoamAdapter/FoamAdapter.hpp"
+#include "FoamAdapter/NeoFoam.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
 

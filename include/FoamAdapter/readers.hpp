@@ -4,12 +4,7 @@
 
 #include <type_traits>
 
-#include "NeoN/finiteVolume/cellCentred/fields/volumeField.hpp"
-#include "NeoN/finiteVolume/cellCentred/fields/surfaceField.hpp"
-#include "NeoN/core/dictionary.hpp"
-#include "NeoN/core/executor/executor.hpp"
-#include "NeoN/fields/field.hpp"
-#include "NeoN/core/database/fieldCollection.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"
@@ -245,7 +240,7 @@ public:
         NeoN::Field<typename type_container_t::VectorValueType> field(
             convertedField.exec(),
             convertedField.internalVector(),
-            convertedField.boundaryVector()
+            convertedField.boundaryData()
         );
 
         type_container_t registeredField(

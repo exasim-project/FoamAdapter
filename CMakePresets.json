@@ -12,7 +12,9 @@
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "Kokkos_ENABLE_SERIAL": "ON",
-        "GINKGO_BUILD_PAPI_SDE": "OFF"
+        "GINKGO_BUILD_PAPI_SDE": "OFF",
+        "NeoN_WITH_GINKGO": "ON",
+        "CMAKE_CUDA_ARCHITECTURES": "native"
       },
       "generator": "Ninja"
     },
@@ -25,7 +27,8 @@
       "description": "Configuration for production use",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "FOAMADAPTER_BUILD_EXAMPLES": "ON"
+        "FOAMADAPTER_BUILD_EXAMPLES": "ON",
+        "FOAMADAPTER_BUILD_TESTS": "ON"
       }
     },
     {

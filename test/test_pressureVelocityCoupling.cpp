@@ -4,19 +4,6 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoN/core/database/oldTimeCollection.hpp"
-#include "NeoN/dsl/expression.hpp"
-#include "NeoN/dsl/solver.hpp"
-#include "NeoN/dsl/ddt.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
-
-#include "NeoN/dsl/implicit.hpp"
-#include "NeoN/dsl/explicit.hpp"
-
-
-#include "FoamAdapter/FoamAdapter.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
-
 #include "common.hpp"
 
 
@@ -40,12 +27,7 @@ TEST_CASE("PressureVelocityCoupling")
     fvcc::VectorCollection& VectorCollection =
         fvcc::VectorCollection::instance(db, "VectorCollection");
 
-    NeoN::Executor exec = GENERATE(NeoN::Executor(NeoN::SerialExecutor {})
-                                   // NeoN::Executor(NeoN::CPUExecutor {}),
-                                   // NeoN::Executor(NeoN::GPUExecutor {})
-    );
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     auto meshPtr = Foam::createMesh(exec, runTime);
     Foam::MeshAdapter& mesh = *meshPtr;
@@ -100,7 +82,7 @@ TEST_CASE("PressureVelocityCoupling")
     Info << "ofNu: " << ofNu << endl;
     auto nfNu = constructSurfaceField(exec, nfMesh, ofNu);
     nfNu.name = "nfNu";
-    NeoN::fill(nfNu.boundaryVector().value(), 0.01);
+    NeoN::fill(nfNu.boundaryData().value(), 0.01);
 
     Foam::scalar t = runTime.time().value();
     Foam::scalar dt = runTime.deltaT().value();

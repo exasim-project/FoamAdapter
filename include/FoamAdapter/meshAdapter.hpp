@@ -6,11 +6,9 @@
 
 #include <functional>
 
-#include "fvMesh.H"
+#include "NeoN/NeoN.hpp"
 
-#include "NeoN/mesh/unstructured/unstructuredMesh.hpp"
-#include "NeoN/core/primitives/label.hpp"
-#include "NeoN/core/executor/executor.hpp"
+#include "fvMesh.H"
 
 #include "readers.hpp"
 

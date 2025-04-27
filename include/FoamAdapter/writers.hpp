@@ -5,8 +5,7 @@
 #include "fvMesh.H"
 #include "volFields.H"
 
-#include "NeoN/fields/field.hpp"
-#include "NeoN/core/error.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 

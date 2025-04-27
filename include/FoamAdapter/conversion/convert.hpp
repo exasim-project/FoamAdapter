@@ -2,20 +2,19 @@
 // SPDX-FileCopyrightText: 2023 NeoFOAM authors
 #pragma once
 
+#include "NeoN/NeoN.hpp"
+
 #include "volFields.H"
 
-#include "NeoN/core/primitives/label.hpp"
-#include "NeoN/core//primitives/scalar.hpp"
-#include "NeoN/core/primitives/vec3.hpp"
-#include "NeoN/core/tokenList.hpp"
-#include "volFields.H"
 // #include "ITstream.H"
 
 namespace Foam
 {
 
 NeoN::Vec3 convert(const Foam::vector& Type);
+
 NeoN::scalar convert(const Foam::scalar& Type);
+
 std::string convert(const Foam::word& Type);
 
 NeoN::TokenList convert(const Foam::ITstream& Type);

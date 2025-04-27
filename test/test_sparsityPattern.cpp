@@ -6,14 +6,11 @@
                             // a custom main
 #include <unordered_set>
 #include <set>
-#include "NeoN/finiteVolume/cellCentred/linearAlgebra/sparsityPattern.hpp"
-
-
-#include "gaussConvectionScheme.H"
-#include "NeoN/core/input.hpp"
-#include "NeoN/dsl/explicit.hpp"
 
 #include "common.hpp"
+
+#include "gaussConvectionScheme.H"
+
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace dsl = NeoN::dsl;
@@ -28,14 +25,7 @@ TEST_CASE("sparsityPattern")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    // NeoN::Executor exec = GENERATE(
-    //     NeoN::Executor(NeoN::SerialExecutor {}),
-    //     NeoN::Executor(NeoN::CPUExecutor {}),
-    //     NeoN::Executor(NeoN::GPUExecutor {})
-    // );
-    NeoN::Executor exec = NeoN::SerialExecutor {};
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     auto meshPtr = Foam::createMesh(exec, runTime);
     Foam::MeshAdapter& mesh = *meshPtr;
@@ -45,7 +35,7 @@ TEST_CASE("sparsityPattern")
     {
         fvcc::SparsityPattern pattern(nfMesh);
         const auto colIdxs = pattern.colIdxs().view();
-        const auto rowPtrs = pattern.rowPtrs().view();
+        const auto rowPtrs = pattern.rowOffs().view();
 
         forAll(mesh.cellCells(), celli)
         {
