@@ -18,7 +18,7 @@ void constrainHbyA(
     // const UnstructuredMesh& mesh = HbyA.mesh();
     const auto pIn = p.internalVector().view();
     auto HbyAin = HbyA.internalVector().view();
-    auto [HbyABcValue, UBcValue] = spans(HbyA.boundaryData().value(), U.boundaryData().value());
+    auto [HbyABcValue, UBcValue] = views(HbyA.boundaryData().value(), U.boundaryData().value());
 
     const std::vector<VolumeBoundary<Vec3>>& HbyABCs = HbyA.boundaryConditions();
 
@@ -43,7 +43,7 @@ discreteMomentumFields(const Expression<Vec3>& expr)
     const auto values = ls.matrix().values().view();
     const auto rhs = ls.rhs().view();
     const auto diagOffset = sparsityPattern.diagOffset().view();
-    const auto rowPtrs = ls.matrix().rowPtrs().view();
+    const auto rowPtrs = ls.matrix().rowOffs().view();
 
     auto rABCs = createExtrapolatedBCs<VolumeBoundary<scalar>>(mesh);
     VolumeField<scalar> rAU = VolumeField<scalar>(expr.exec(), "rAU", mesh, rABCs);
@@ -60,7 +60,7 @@ discreteMomentumFields(const Expression<Vec3>& expr)
     const std::size_t nInternalFaces = mesh.nInternalFaces();
 
     const auto exec = U.exec();
-    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalU, internalRAU] = spans(
+    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalU, internalRAU] = views(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
         mesh.boundaryMesh().faceCells(),
@@ -117,7 +117,7 @@ void updateFaceVelocity(
     const SparsityPattern sparsityPattern = expr.sparsityPattern();
     const std::size_t nInternalFaces = mesh.nInternalFaces();
     const auto exec = phi.exec();
-    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalP] = spans(
+    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalP] = views(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
         mesh.boundaryMesh().faceCells(),
@@ -128,12 +128,12 @@ void updateFaceVelocity(
 
     const auto& ls = expr.linearSystem();
 
-    const auto rowPtrs = ls.matrix().rowPtrs().view();
+    const auto rowPtrs = ls.matrix().rowOffs().view();
     const auto colIdxs = ls.matrix().colIdxs().view();
     auto values = ls.matrix().values().view();
     auto rhs = ls.rhs().view();
 
-    auto [iPhi, iPredPhi] = spans(phi.internalVector(), predictedPhi.internalVector());
+    auto [iPhi, iPredPhi] = views(phi.internalVector(), predictedPhi.internalVector());
 
     parallelFor(
         exec,
@@ -162,7 +162,7 @@ void updateVelocity(
 {
     VolumeField<Vec3> gradP = GaussGreenGrad(p.exec(), p.mesh()).grad(p);
     auto [iHbyA, iRAU, iGradP] =
-        spans(HbyA.internalVector(), rAU.internalVector(), gradP.internalVector());
+        views(HbyA.internalVector(), rAU.internalVector(), gradP.internalVector());
 
     U.internalVector().apply(KOKKOS_LAMBDA(const std::size_t celli) {
         return iHbyA[celli] - iRAU[celli] * iGradP[celli];
@@ -184,7 +184,7 @@ SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
 
     fill(faceFlux.internalVector(), zero<scalar>());
     fill(faceFlux.boundaryData().value(), zero<scalar>());
-    const auto [owner, neighbour, weightIn, faceAreas, volFieldIn, volFieldBc, bSf] = spans(
+    const auto [owner, neighbour, weightIn, faceAreas, volFieldIn, volFieldBc, bSf] = views(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
         weight.internalVector(),
@@ -194,7 +194,7 @@ SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
         mesh.boundaryMesh().sf()
     );
 
-    auto [faceFluxIn, bvalue] = spans(faceFlux.internalVector(), faceFlux.boundaryData().value());
+    auto [faceFluxIn, bvalue] = views(faceFlux.internalVector(), faceFlux.boundaryData().value());
 
     parallelFor(
         exec,
