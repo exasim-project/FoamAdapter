@@ -110,8 +110,6 @@
   </compound>
   <compound refid="pressureVelocityCoupling_8hpp" kind="file"><name>pressureVelocityCoupling.hpp</name>
   </compound>
-  <compound refid="FoamAdapter_8hpp" kind="file"><name>FoamAdapter.hpp</name>
-  </compound>
   <compound refid="meshAdapter_8hpp" kind="file"><name>meshAdapter.hpp</name>
   </compound>
   <compound refid="readers_8hpp" kind="file"><name>readers.hpp</name>

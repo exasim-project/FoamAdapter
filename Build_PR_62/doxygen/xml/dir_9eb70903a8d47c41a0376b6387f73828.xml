@@ -6,7 +6,6 @@
     <innerdir refid="dir_4c04ba3d9c03c846cdadce21404939a8">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume</innerdir>
     <innerdir refid="dir_79cb95f04b0bddd726ce1e4e4487e202">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers</innerdir>
     <innerfile refid="comparison_8hpp">comparison.hpp</innerfile>
-    <innerfile refid="FoamAdapter_8hpp">FoamAdapter.hpp</innerfile>
     <innerfile refid="meshAdapter_8hpp">meshAdapter.hpp</innerfile>
     <innerfile refid="readers_8hpp">readers.hpp</innerfile>
     <innerfile refid="setup_8hpp">setup.hpp</innerfile>
