@@ -6,9 +6,9 @@
     <templateparamlist>
     </templateparamlist>
     <sectiondef kind="public-type">
-      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_1ab89a8942c9dbae382df65e45dd97ae97" prot="public" static="no">
-        <type>NeoN::Vector&lt; NeoN::scalar &gt;</type>
-        <definition>using Foam::type_map&lt; Field&lt; scalar &gt; &gt;::container_type =  NeoN::Vector&lt;NeoN::scalar&gt;</definition>
+      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_1a2140e29ec12b64ea0fae66a114e7fa10" prot="public" static="no">
+        <type>NeoN::Field&lt; NeoN::scalar &gt;</type>
+        <definition>using Foam::type_map&lt; Field&lt; scalar &gt; &gt;::container_type =  NeoN::Field&lt;NeoN::scalar&gt;</definition>
         <argsstring></argsstring>
         <name>container_type</name>
         <qualifiedname>Foam::type_map&lt; Field&lt; scalar &gt; &gt;::container_type</qualifiedname>
@@ -18,7 +18,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="54" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="54" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="57" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="57" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_1a192019c3f7469d7cf0dd64d2bf11c333" prot="public" static="no">
         <type>NeoN::scalar</type>
@@ -32,16 +32,16 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="55" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="55" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="58" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="58" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="52" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="53" bodyend="56"/>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="55" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="56" bodyend="59"/>
     <listofallmembers>
-      <member refid="structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_1ab89a8942c9dbae382df65e45dd97ae97" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; Field&lt; scalar &gt; &gt;</scope><name>container_type</name></member>
+      <member refid="structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_1a2140e29ec12b64ea0fae66a114e7fa10" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; Field&lt; scalar &gt; &gt;</scope><name>container_type</name></member>
       <member refid="structFoam_1_1type__map_3_01Field_3_01scalar_01_4_01_4_1a192019c3f7469d7cf0dd64d2bf11c333" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; Field&lt; scalar &gt; &gt;</scope><name>mapped_type</name></member>
     </listofallmembers>
   </compounddef>

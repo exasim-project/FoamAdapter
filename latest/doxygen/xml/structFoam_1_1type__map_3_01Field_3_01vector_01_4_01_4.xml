@@ -6,9 +6,9 @@
     <templateparamlist>
     </templateparamlist>
     <sectiondef kind="public-type">
-      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_1a426f9a9656e650a73708432c77165aa2" prot="public" static="no">
-        <type>NeoN::Vector&lt; NeoN::Vec3 &gt;</type>
-        <definition>using Foam::type_map&lt; Field&lt; vector &gt; &gt;::container_type =  NeoN::Vector&lt;NeoN::Vec3&gt;</definition>
+      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_1af322f5ed8e92d374aac5424505f55c1c" prot="public" static="no">
+        <type>NeoN::Field&lt; NeoN::Vector &gt;</type>
+        <definition>using Foam::type_map&lt; Field&lt; vector &gt; &gt;::container_type =  NeoN::Field&lt;NeoN::Vector&gt;</definition>
         <argsstring></argsstring>
         <name>container_type</name>
         <qualifiedname>Foam::type_map&lt; Field&lt; vector &gt; &gt;::container_type</qualifiedname>
@@ -18,11 +18,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="62" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="62" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="65" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="65" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_1a168047dfee0678c91fe99e17d6bd4322" prot="public" static="no">
-        <type>NeoN::Vec3</type>
-        <definition>using Foam::type_map&lt; Field&lt; vector &gt; &gt;::mapped_type =  NeoN::Vec3</definition>
+      <memberdef kind="typedef" id="structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_1a06ba94fb4cbb912095771f763e30f161" prot="public" static="no">
+        <type>NeoN::Vector</type>
+        <definition>using Foam::type_map&lt; Field&lt; vector &gt; &gt;::mapped_type =  NeoN::Vector</definition>
         <argsstring></argsstring>
         <name>mapped_type</name>
         <qualifiedname>Foam::type_map&lt; Field&lt; vector &gt; &gt;::mapped_type</qualifiedname>
@@ -32,17 +32,17 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="63" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="63" bodyend="-1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="66" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="66" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="60" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="61" bodyend="64"/>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" line="63" column="1" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/conversion/type_conversion.hpp" bodystart="64" bodyend="67"/>
     <listofallmembers>
-      <member refid="structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_1a426f9a9656e650a73708432c77165aa2" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; Field&lt; vector &gt; &gt;</scope><name>container_type</name></member>
-      <member refid="structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_1a168047dfee0678c91fe99e17d6bd4322" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; Field&lt; vector &gt; &gt;</scope><name>mapped_type</name></member>
+      <member refid="structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_1af322f5ed8e92d374aac5424505f55c1c" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; Field&lt; vector &gt; &gt;</scope><name>container_type</name></member>
+      <member refid="structFoam_1_1type__map_3_01Field_3_01vector_01_4_01_4_1a06ba94fb4cbb912095771f763e30f161" prot="public" virt="non-virtual"><scope>Foam::type_map&lt; Field&lt; vector &gt; &gt;</scope><name>mapped_type</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

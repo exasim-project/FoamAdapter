@@ -7,6 +7,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" line="8" column="1"/>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp" line="12" column="1"/>
   </compounddef>
 </doxygen>
