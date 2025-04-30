@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['meshadapter_0',['meshadapter',['../classFoam_1_1MeshAdapter.html#a392b168bbbeec0e4cbd11f39881aab43',1,'Foam::MeshAdapter::MeshAdapter(const NeoN::Executor exec, const IOobject &amp;io, const bool doInit=true)'],['../classFoam_1_1MeshAdapter.html#a2bf38b7f492529601c3aa7614e3189f6',1,'Foam::MeshAdapter::MeshAdapter(const NeoN::Executor exec, const IOobject &amp;io, const zero, bool syncPar=true)'],['../classFoam_1_1MeshAdapter.html#a67dcde59a0cbec54c2ced79efb85e254',1,'Foam::MeshAdapter::MeshAdapter(const NeoN::Executor exec, const IOobject &amp;io, pointField &amp;&amp;points, faceList &amp;&amp;faces, labelList &amp;&amp;allOwner, labelList &amp;&amp;allNeighbour, const bool syncPar=true)'],['../classFoam_1_1MeshAdapter.html#a24dc9da4a2eb7efc0cd49c62bee93a0a',1,'Foam::MeshAdapter::MeshAdapter(const NeoN::Executor exec, const IOobject &amp;io, pointField &amp;&amp;points, faceList &amp;&amp;faces, cellList &amp;&amp;cells, const bool syncPar=true)']]]
+  ['flatbcfield_0',['flatBCField',['../namespaceFoam.html#ab181f2248e18e426c403628f8df13090',1,'Foam']]],
+  ['flux_1',['flux',['../namespaceNeoN_1_1finiteVolume_1_1cellCentred.html#a4ff7acb5abc20807253f06a3bd4e2304',1,'NeoN::finiteVolume::cellCentred']]],
+  ['fromfoamfield_2',['fromFoamField',['../namespaceFoam.html#a92f1dc8d5ddcbcf9ef2169ca944ed192',1,'Foam']]]
 ];

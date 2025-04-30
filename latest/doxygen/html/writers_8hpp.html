@@ -82,8 +82,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;fvMesh.H&quot;</code><br />
 <code>#include &quot;volFields.H&quot;</code><br />
-<code>#include &quot;NeoN/fields/field.hpp&quot;</code><br />
-<code>#include &quot;NeoN/core/error.hpp&quot;</code><br />
+<code>#include &quot;NeoN/NeoN.hpp&quot;</code><br />
 <code>#include &quot;<a class="el" href="convert_8hpp_source.html">FoamAdapter/conversion/convert.hpp</a>&quot;</code><br />
 </div>
 <p><a href="writers_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -97,13 +96,13 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2be03afc1ace009438265b3beb3a48f4" id="r_a2be03afc1ace009438265b3beb3a48f4"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">class</a> <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">DestField</a> , <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">class</a> <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">SrcField</a> &gt; </td></tr>
-<tr class="memitem:a2be03afc1ace009438265b3beb3a48f4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceFoam_1_1detail.html#a2be03afc1ace009438265b3beb3a48f4">Foam::detail::copy_impl</a> (<a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">DestField</a> &amp;<a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">dest</a>, <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">const</a> <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">SrcField</a> <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">src</a>)</td></tr>
+<tr class="memitem:a2be03afc1ace009438265b3beb3a48f4" id="r_a2be03afc1ace009438265b3beb3a48f4"><td class="memTemplParams" colspan="2">template&lt;class DestField , class SrcField &gt; </td></tr>
+<tr class="memitem:a2be03afc1ace009438265b3beb3a48f4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceFoam_1_1detail.html#a2be03afc1ace009438265b3beb3a48f4">Foam::detail::copy_impl</a> (DestField &amp;dest, const SrcField src)</td></tr>
 <tr class="separator:a2be03afc1ace009438265b3beb3a48f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a175199b88e4554e975577f7a060e53a3" id="r_a175199b88e4554e975577f7a060e53a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoam.html#a175199b88e4554e975577f7a060e53a3">Foam::write</a> (NeoN::scalarField &amp;<a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">sf</a>, <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">const</a> Foam::fvMesh &amp;<a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">mesh</a>, <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">const</a> std::string <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">fieldName</a>)</td></tr>
-<tr class="separator:a175199b88e4554e975577f7a060e53a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a029a9d2abece636b84c48e906487e006" id="r_a029a9d2abece636b84c48e906487e006"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoam.html#a029a9d2abece636b84c48e906487e006">Foam::write</a> (NeoN::vectorField &amp;<a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">sf</a>, <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">const</a> Foam::fvMesh &amp;<a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">mesh</a>, <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">const</a> std::string <a class="el" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">fieldName</a>)</td></tr>
-<tr class="separator:a029a9d2abece636b84c48e906487e006"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77eb355d2b8d0e1d5e5673c6eb3e4bbe" id="r_a77eb355d2b8d0e1d5e5673c6eb3e4bbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoam.html#a77eb355d2b8d0e1d5e5673c6eb3e4bbe">Foam::write</a> (NeoN::scalarVector &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</td></tr>
+<tr class="separator:a77eb355d2b8d0e1d5e5673c6eb3e4bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71c83b601f8dc7bda83de4e5e031c09c" id="r_a71c83b601f8dc7bda83de4e5e031c09c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoam.html#a71c83b601f8dc7bda83de4e5e031c09c">Foam::write</a> (NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</td></tr>
+<tr class="separator:a71c83b601f8dc7bda83de4e5e031c09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

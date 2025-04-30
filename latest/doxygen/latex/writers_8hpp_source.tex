@@ -9,82 +9,81 @@
 \DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}fvMesh.H"{}}}
 \DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}volFields.H"{}}}
 \DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00007}00007\ }
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}NeoN/fields/field.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}NeoN/core/error.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00010}00010\ }
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{convert_8hpp}{FoamAdapter/conversion/convert.hpp}}"{}}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00012}00012\ }
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00013}00013\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoam}{Foam}}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00014}00014\ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00015}00015\ }
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00016}\mbox{\hyperlink{namespaceFoam_1_1detail}{00016}}\ \textcolor{keyword}{namespace\ }detail}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00017}00017\ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00018}00018\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ DestField,\ \textcolor{keyword}{class}\ SrcField>}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00019}\mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{00019}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{copy\_impl}}(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{DestField}}\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dest}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{SrcField}}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{src}})}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00020}00020\ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00021}00021\ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{NF\_ASSERT\_EQUAL}}(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dest}}.size(),\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{src}}.size());}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00022}00022\ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{srcHost}}\ =\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{src}}.copyToHost();}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00023}00023\ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{srcView}}\ =\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{srcHost}}.view();}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00024}00024\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{i}}\ =\ 0;\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{i}}\ <\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dest}}.size();\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{i}}++)}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00025}00025\ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00026}00026\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dest}}[\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{i}}]\ =\ \mbox{\hyperlink{namespaceFoam_af3092baaab0236f1d1aff95ead60e002}{convert}}(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{srcView}}[\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{i}}]);}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00027}00027\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}NeoN/NeoN.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{convert_8hpp}{FoamAdapter/conversion/convert.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00012}00012\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoam}{Foam}}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00013}00013\ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00015}\mbox{\hyperlink{namespaceFoam_1_1detail}{00015}}\ \textcolor{keyword}{namespace\ }detail}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00016}00016\ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00017}00017\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ DestField,\ \textcolor{keyword}{class}\ SrcField>}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00018}\mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{00018}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{copy\_impl}}(DestField\&\ dest,\ \textcolor{keyword}{const}\ SrcField\ src)}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00019}00019\ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00020}00020\ \ \ \ \ NF\_ASSERT\_EQUAL(dest.size(),\ src.size());}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00021}00021\ \ \ \ \ \textcolor{keyword}{auto}\ srcHost\ =\ src.copyToHost();}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00022}00022\ \ \ \ \ \textcolor{keyword}{auto}\ srcView\ =\ srcHost.view();}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00023}00023\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ dest.size();\ i++)}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00024}00024\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00025}00025\ \ \ \ \ \ \ \ \ dest[i]\ =\ \mbox{\hyperlink{namespaceFoam_ab7ff1bf203b851bfdca31a3a5fefd161}{convert}}(srcView[i]);}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00026}00026\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00027}00027\ \}}
 \DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00028}00028\ \}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00029}00029\ \}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00030}00030\ }
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00031}\mbox{\hyperlink{namespaceFoam_a175199b88e4554e975577f7a060e53a3}{00031}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoam_a175199b88e4554e975577f7a060e53a3}{write}}(NeoN::scalarField\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{sf}},\ \textcolor{keyword}{const}\ Foam::fvMesh\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}},\ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{fieldName}})}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00032}00032\ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00033}00033\ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::volScalarField}}*\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{field}}\ =\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}}.getObjectPtr<\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::volScalarField}}>(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{fieldName}});}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00034}00034\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{field}})}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00035}00035\ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00036}00036\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{detail::copy\_impl}}(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{field}}-\/>ref(),\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{sf}});}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00037}00037\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{field}}-\/>write();}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00038}00038\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00039}00039\ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00040}00040\ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00041}00041\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::volScalarField}}\ foamField(}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::IOobject}}(}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{fieldName}},}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}}.time().timeName(),}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}},}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject::NO\_READ,}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject::AUTO\_WRITE}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}},}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::dimensionedScalar}}(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::dimless}},\ 0)}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00051}00051\ \ \ \ \ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00052}00052\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{detail::copy\_impl}}(foamField.ref(),\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{sf}});}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00053}00053\ \ \ \ \ \ \ \ \ foamField.write();}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00054}00054\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00055}00055\ \}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00056}00056\ }
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00057}\mbox{\hyperlink{namespaceFoam_a029a9d2abece636b84c48e906487e006}{00057}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoam_a175199b88e4554e975577f7a060e53a3}{write}}(NeoN::vectorField\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{sf}},\ \textcolor{keyword}{const}\ Foam::fvMesh\&\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}},\ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{fieldName}})}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00058}00058\ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00059}00059\ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::volVectorField}}*\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{field}}\ =\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}}.getObjectPtr<\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::volVectorField}}>(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{fieldName}});}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00060}00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{field}})}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00061}00061\ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00062}00062\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ field\ is\ already\ present\ and\ needs\ to\ be\ updated}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00063}00063\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{detail::copy\_impl}}(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{field}}-\/>ref(),\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{sf}});}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00064}00064\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{field}}-\/>write();}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00065}00065\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00066}00066\ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00067}00067\ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00068}00068\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::volVectorField}}\ foamField(}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::IOobject}}(}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{fieldName}},}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}}.time().timeName(),}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}},}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject::NO\_READ,}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject::AUTO\_WRITE}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{mesh}},}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::dimensionedVector}}(\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::dimless}},\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Foam::Zero}})}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00078}00078\ \ \ \ \ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00079}00079\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{detail::copy\_impl}}(foamField.ref(),\ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{sf}});}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00080}00080\ \ \ \ \ \ \ \ \ foamField.write();}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00081}00081\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00082}00082\ \}}
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00083}00083\ }
-\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00084}00084\ \}\ \textcolor{comment}{//\ namespace\ Foam}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00030}\mbox{\hyperlink{namespaceFoam_a77eb355d2b8d0e1d5e5673c6eb3e4bbe}{00030}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoam_a77eb355d2b8d0e1d5e5673c6eb3e4bbe}{write}}(NeoN::scalarVector\&\ sf,\ \textcolor{keyword}{const}\ Foam::fvMesh\&\ mesh,\ \textcolor{keyword}{const}\ std::string\ fieldName)}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00031}00031\ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00032}00032\ \ \ \ \ Foam::volScalarField*\ field\ =\ mesh.getObjectPtr<Foam::volScalarField>(fieldName);}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00033}00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (field)}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00034}00034\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00035}00035\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{detail::copy\_impl}}(field-\/>ref(),\ sf);}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00036}00036\ \ \ \ \ \ \ \ \ field-\/>write();}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00037}00037\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00038}00038\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00039}00039\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00040}00040\ \ \ \ \ \ \ \ \ Foam::volScalarField\ foamField(}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject(}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fieldName,}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mesh.time().timeName(),}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mesh,}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject::NO\_READ,}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject::AUTO\_WRITE}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ mesh,}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ Foam::dimensionedScalar(Foam::dimless,\ 0)}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00050}00050\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00051}00051\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{detail::copy\_impl}}(foamField.ref(),\ sf);}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00052}00052\ \ \ \ \ \ \ \ \ foamField.write();}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00053}00053\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00054}00054\ \}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00056}\mbox{\hyperlink{namespaceFoam_a71c83b601f8dc7bda83de4e5e031c09c}{00056}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoam_a77eb355d2b8d0e1d5e5673c6eb3e4bbe}{write}}(NeoN::Vector<NeoN::Vec3>\&\ sf,\ \textcolor{keyword}{const}\ Foam::fvMesh\&\ mesh,\ \textcolor{keyword}{const}\ std::string\ fieldName)}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00057}00057\ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00058}00058\ \ \ \ \ Foam::volVectorField*\ field\ =\ mesh.getObjectPtr<Foam::volVectorField>(fieldName);}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00059}00059\ \ \ \ \ \textcolor{keywordflow}{if}\ (field)}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00060}00060\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ field\ is\ already\ present\ and\ needs\ to\ be\ updated}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00062}00062\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{detail::copy\_impl}}(field-\/>ref(),\ sf);}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00063}00063\ \ \ \ \ \ \ \ \ field-\/>write();}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00064}00064\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00065}00065\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00066}00066\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00067}00067\ \ \ \ \ \ \ \ \ Foam::volVectorField\ foamField(}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject(}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fieldName,}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mesh.time().timeName(),}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mesh,}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject::NO\_READ,}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Foam::IOobject::AUTO\_WRITE}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ ),}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ mesh,}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ Foam::dimensionedVector(Foam::dimless,\ Foam::Zero)}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00077}00077\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00078}00078\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{detail::copy\_impl}}(foamField.ref(),\ sf);}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00079}00079\ \ \ \ \ \ \ \ \ foamField.write();}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00080}00080\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00081}00081\ \}}
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{writers_8hpp_source_l00083}00083\ \}\ \textcolor{comment}{//\ namespace\ Foam}}
 
 \end{DoxyCode}

@@ -10,86 +10,84 @@
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00006}00006\ }
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <functional>}}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00008}00008\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}fvMesh.H"{}}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}NeoN/NeoN.hpp"{}}}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00010}00010\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}NeoN/mesh/unstructured/unstructuredMesh.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}NeoN/core/primitives/label.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}NeoN/core/executor/executor.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}fvMesh.H"{}}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{readers_8hpp}{readers.hpp}}"{}}}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00014}00014\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00015}00015\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{readers_8hpp}{readers.hpp}}"{}}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00016}00016\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00017}00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoam}{Foam}}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00018}00018\ \{}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00015}00015\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoam}{Foam}}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00016}00016\ \{}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00018}\mbox{\hyperlink{namespaceFoam_a5b3a15f69b28143f263d57b65f5ed1a9}{00018}}\ std::vector<NeoN::localIdx>\ \mbox{\hyperlink{namespaceFoam_a5b3a15f69b28143f263d57b65f5ed1a9}{computeOffset}}(\textcolor{keyword}{const}\ fvMesh\&\ mesh);}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00019}00019\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00020}\mbox{\hyperlink{namespaceFoam_a5b3a15f69b28143f263d57b65f5ed1a9}{00020}}\ std::vector<NeoN::localIdx>\ \mbox{\hyperlink{namespaceFoam_a5b3a15f69b28143f263d57b65f5ed1a9}{computeOffset}}(\textcolor{keyword}{const}\ fvMesh\&\ mesh);}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00020}\mbox{\hyperlink{namespaceFoam_aa1f7377ad5c74f9886a6d95908462bb8}{00020}}\ int32\_t\ \mbox{\hyperlink{namespaceFoam_aa1f7377ad5c74f9886a6d95908462bb8}{computeNBoundaryFaces}}(\textcolor{keyword}{const}\ fvMesh\&\ mesh);}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00021}00021\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00022}\mbox{\hyperlink{namespaceFoam_aa1f7377ad5c74f9886a6d95908462bb8}{00022}}\ int32\_t\ \mbox{\hyperlink{namespaceFoam_aa1f7377ad5c74f9886a6d95908462bb8}{computeNBoundaryFaces}}(\textcolor{keyword}{const}\ fvMesh\&\ mesh);}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00023}00023\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00024}00024\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ FieldT>}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00025}\mbox{\hyperlink{namespaceFoam_ab181f2248e18e426c403628f8df13090}{00025}}\ FieldT\ \mbox{\hyperlink{namespaceFoam_ab181f2248e18e426c403628f8df13090}{flatBCField}}(\textcolor{keyword}{const}\ fvMesh\&\ mesh,\ std::function<FieldT(\textcolor{keyword}{const}\ fvPatch\&)>\ f);}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00022}00022\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ FieldT>}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00023}\mbox{\hyperlink{namespaceFoam_ab181f2248e18e426c403628f8df13090}{00023}}\ FieldT\ \mbox{\hyperlink{namespaceFoam_ab181f2248e18e426c403628f8df13090}{flatBCField}}(\textcolor{keyword}{const}\ fvMesh\&\ mesh,\ std::function<FieldT(\textcolor{keyword}{const}\ fvPatch\&)>\ f);}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00025}\mbox{\hyperlink{namespaceFoam_ad6adc8f06e9a4b23c76e8f8df0c83a16}{00025}}\ NeoN::UnstructuredMesh\ \mbox{\hyperlink{namespaceFoam_ad6adc8f06e9a4b23c76e8f8df0c83a16}{readOpenFOAMMesh}}(\textcolor{keyword}{const}\ NeoN::Executor\ exec,\ \textcolor{keyword}{const}\ fvMesh\&\ mesh);}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00026}00026\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00027}\mbox{\hyperlink{namespaceFoam_ad6adc8f06e9a4b23c76e8f8df0c83a16}{00027}}\ NeoN::UnstructuredMesh\ \mbox{\hyperlink{namespaceFoam_ad6adc8f06e9a4b23c76e8f8df0c83a16}{readOpenFOAMMesh}}(\textcolor{keyword}{const}\ NeoN::Executor\ exec,\ \textcolor{keyword}{const}\ fvMesh\&\ mesh);}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00028}00028\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00031}\mbox{\hyperlink{classFoam_1_1MeshAdapter}{00031}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFoam_1_1MeshAdapter}{MeshAdapter}}\ :\ \textcolor{keyword}{public}\ fvMesh}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00032}00032\ \{}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00029}\mbox{\hyperlink{classFoam_1_1MeshAdapter}{00029}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFoam_1_1MeshAdapter}{MeshAdapter}}\ :\ \textcolor{keyword}{public}\ fvMesh}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00030}00030\ \{}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00032}00032\ \ \ \ \ NeoN::UnstructuredMesh\ nfMesh\_;}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00033}00033\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00034}00034\ \ \ \ \ NeoN::UnstructuredMesh\ nfMesh\_;}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00034}00034\ \ \ \ \ \textcolor{comment}{//\ Private\ Member\ Functions}}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00035}00035\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00036}00036\ \ \ \ \ \textcolor{comment}{//\ Private\ Member\ Functions}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00037}00037\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00038}00038\ \ \ \ \ \textcolor{comment}{//-\/\ No\ copy\ construct}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00039}00039\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{MeshAdapter}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{MeshAdapter}}\&)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00040}00040\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00041}00041\ \ \ \ \ \textcolor{comment}{//-\/\ No\ copy\ assignment}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00042}00042\ \ \ \ \ \textcolor{keywordtype}{void}\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{MeshAdapter}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00036}00036\ \ \ \ \ \textcolor{comment}{//-\/\ No\ copy\ construct}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00037}00037\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{MeshAdapter}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{MeshAdapter}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00039}00039\ \ \ \ \ \textcolor{comment}{//-\/\ No\ copy\ assignment}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00040}00040\ \ \ \ \ \textcolor{keywordtype}{void}\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{MeshAdapter}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00042}00042\ \textcolor{keyword}{public}:}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00043}00043\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00044}00044\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00045}00045\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00046}00046\ \ \ \ \ \textcolor{comment}{//-\/\ Runtime\ type\ information}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00047}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a9c71a9dd8dd990fede69ae5238dc1b21}{00047}}\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a9c71a9dd8dd990fede69ae5238dc1b21}{TypeName}}(\textcolor{stringliteral}{"{}MeshAdapter"{}});}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00044}00044\ \ \ \ \ \textcolor{comment}{//-\/\ Runtime\ type\ information}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00045}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a9c71a9dd8dd990fede69ae5238dc1b21}{00045}}\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a9c71a9dd8dd990fede69ae5238dc1b21}{TypeName}}(\textcolor{stringliteral}{"{}MeshAdapter"{}});}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00047}00047\ \ \ \ \ \textcolor{comment}{//\ Constructors}}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00048}00048\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00049}00049\ \ \ \ \ \textcolor{comment}{//\ Constructors}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00050}00050\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00051}00051\ \ \ \ \ \textcolor{comment}{//-\/\ Construct\ from\ IOobject}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00052}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a392b168bbbeec0e4cbd11f39881aab43}{00052}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a392b168bbbeec0e4cbd11f39881aab43}{MeshAdapter}}(\textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}},\ \textcolor{keyword}{const}\ IOobject\&\ io,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ doInit\ =\ \textcolor{keyword}{true});}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00053}00053\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00054}00054\ \ \ \ \ \textcolor{comment}{//-\/\ Construct\ from\ IOobject\ or\ as\ zero-\/sized\ mesh}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00055}00055\ \ \ \ \ \textcolor{comment}{//\ \ Boundary\ is\ added\ using\ addFvPatches()\ member\ function}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00056}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a2bf38b7f492529601c3aa7614e3189f6}{00056}}\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a2bf38b7f492529601c3aa7614e3189f6}{MeshAdapter}}(\textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}},\ \textcolor{keyword}{const}\ IOobject\&\ io,\ \textcolor{keyword}{const}\ zero,\ \textcolor{keywordtype}{bool}\ syncPar\ =\ \textcolor{keyword}{true});}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00057}00057\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//-\/\ Construct\ from\ components\ without\ boundary.}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//\ \ Boundary\ is\ added\ using\ addFvPatches()\ member\ function}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00060}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a67dcde59a0cbec54c2ced79efb85e254}{00060}}\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a67dcde59a0cbec54c2ced79efb85e254}{MeshAdapter}}(}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}},}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00062}00062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ IOobject\&\ io,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00063}00063\ \ \ \ \ \ \ \ \ pointField\&\&\ points,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00064}00064\ \ \ \ \ \ \ \ \ faceList\&\&\ faces,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00065}00065\ \ \ \ \ \ \ \ \ labelList\&\&\ allOwner,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00066}00066\ \ \ \ \ \ \ \ \ labelList\&\&\ allNeighbour,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ syncPar\ =\ \textcolor{keyword}{true}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00068}00068\ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00069}00069\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00070}00070\ \ \ \ \ \textcolor{comment}{//-\/\ Construct\ without\ boundary\ from\ cells\ rather\ than\ owner/neighbour.}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00071}00071\ \ \ \ \ \textcolor{comment}{//\ \ Boundary\ is\ added\ using\ addPatches()\ member\ function}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00072}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a24dc9da4a2eb7efc0cd49c62bee93a0a}{00072}}\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a24dc9da4a2eb7efc0cd49c62bee93a0a}{MeshAdapter}}(}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}},}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00074}00074\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ IOobject\&\ io,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00075}00075\ \ \ \ \ \ \ \ \ pointField\&\&\ points,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00076}00076\ \ \ \ \ \ \ \ \ faceList\&\&\ faces,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00077}00077\ \ \ \ \ \ \ \ \ cellList\&\&\ cells,}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ syncPar\ =\ \textcolor{keyword}{true}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00079}00079\ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00080}00080\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//-\/\ Destructor}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00082}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a7f164ef5b5feab2c4b8127746dfb1374}{00082}}\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a7f164ef5b5feab2c4b8127746dfb1374}{\string~MeshAdapter}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00049}00049\ \ \ \ \ \textcolor{comment}{//-\/\ Construct\ from\ IOobject}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00050}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a392b168bbbeec0e4cbd11f39881aab43}{00050}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a392b168bbbeec0e4cbd11f39881aab43}{MeshAdapter}}(\textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}},\ \textcolor{keyword}{const}\ IOobject\&\ io,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ doInit\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00052}00052\ \ \ \ \ \textcolor{comment}{//-\/\ Construct\ from\ IOobject\ or\ as\ zero-\/sized\ mesh}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00053}00053\ \ \ \ \ \textcolor{comment}{//\ \ Boundary\ is\ added\ using\ addFvPatches()\ member\ function}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00054}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a2bf38b7f492529601c3aa7614e3189f6}{00054}}\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a2bf38b7f492529601c3aa7614e3189f6}{MeshAdapter}}(\textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}},\ \textcolor{keyword}{const}\ IOobject\&\ io,\ \textcolor{keyword}{const}\ zero,\ \textcolor{keywordtype}{bool}\ syncPar\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00056}00056\ \ \ \ \ \textcolor{comment}{//-\/\ Construct\ from\ components\ without\ boundary.}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00057}00057\ \ \ \ \ \textcolor{comment}{//\ \ Boundary\ is\ added\ using\ addFvPatches()\ member\ function}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00058}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a67dcde59a0cbec54c2ced79efb85e254}{00058}}\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a67dcde59a0cbec54c2ced79efb85e254}{MeshAdapter}}(}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00059}00059\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}},}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00060}00060\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ IOobject\&\ io,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00061}00061\ \ \ \ \ \ \ \ \ pointField\&\&\ points,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00062}00062\ \ \ \ \ \ \ \ \ faceList\&\&\ faces,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00063}00063\ \ \ \ \ \ \ \ \ labelList\&\&\ allOwner,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00064}00064\ \ \ \ \ \ \ \ \ labelList\&\&\ allNeighbour,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ syncPar\ =\ \textcolor{keyword}{true}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00066}00066\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00068}00068\ \ \ \ \ \textcolor{comment}{//-\/\ Construct\ without\ boundary\ from\ cells\ rather\ than\ owner/neighbour.}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00069}00069\ \ \ \ \ \textcolor{comment}{//\ \ Boundary\ is\ added\ using\ addPatches()\ member\ function}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00070}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a24dc9da4a2eb7efc0cd49c62bee93a0a}{00070}}\ \ \ \ \ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a24dc9da4a2eb7efc0cd49c62bee93a0a}{MeshAdapter}}(}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00071}00071\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}},}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ IOobject\&\ io,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00073}00073\ \ \ \ \ \ \ \ \ pointField\&\&\ points,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00074}00074\ \ \ \ \ \ \ \ \ faceList\&\&\ faces,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00075}00075\ \ \ \ \ \ \ \ \ cellList\&\&\ cells,}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ syncPar\ =\ \textcolor{keyword}{true}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00077}00077\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//-\/\ Destructor}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00080}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a7f164ef5b5feab2c4b8127746dfb1374}{00080}}\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a7f164ef5b5feab2c4b8127746dfb1374}{\string~MeshAdapter}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00082}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a46f3491199f4244328e10ec018deb70a}{00082}}\ \ \ \ \ NeoN::UnstructuredMesh\&\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a46f3491199f4244328e10ec018deb70a}{nfMesh}}()\ \{\ \textcolor{keywordflow}{return}\ nfMesh\_;\ \}}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00083}00083\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00084}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a46f3491199f4244328e10ec018deb70a}{00084}}\ \ \ \ \ NeoN::UnstructuredMesh\&\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a46f3491199f4244328e10ec018deb70a}{nfMesh}}()\ \{\ \textcolor{keywordflow}{return}\ nfMesh\_;\ \}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00084}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a62eca87ae28273f42712c05841b2b748}{00084}}\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::UnstructuredMesh\&\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a62eca87ae28273f42712c05841b2b748}{nfMesh}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ nfMesh\_;\ \}}
 \DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00085}00085\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00086}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a62eca87ae28273f42712c05841b2b748}{00086}}\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::UnstructuredMesh\&\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a62eca87ae28273f42712c05841b2b748}{nfMesh}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ nfMesh\_;\ \}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00087}00087\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00088}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{00088}}\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a46f3491199f4244328e10ec018deb70a}{nfMesh}}().exec();\ \}}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00089}00089\ \};}
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00090}00090\ }
-\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00091}00091\ \}\ \textcolor{comment}{//\ End\ namespace\ Foam}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00086}\mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{00086}}\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::Executor\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a287ae77f86e6d1061d97d13505ebf2f4}{exec}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classFoam_1_1MeshAdapter_a46f3491199f4244328e10ec018deb70a}{nfMesh}}().exec();\ \}}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00087}00087\ \};}
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{meshAdapter_8hpp_source_l00089}00089\ \}\ \textcolor{comment}{//\ End\ namespace\ Foam}}
 
 \end{DoxyCode}
