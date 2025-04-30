@@ -3,7 +3,7 @@
 **[Documentation](https://exasim-project.com/FoamAdapter/latest)** |
 # FoamAdapter
 
-FoamAdapter is a re-implementation of common OpenFOAM algorithms and solvers using
+FoamAdapter provides platform-portable implementations of common CFD algorithms and solvers using
 [NeoN](https://github.com/exasim-project/NeoN) as a computational backend.
 It provides converters between OpenFOAM and NeoN datastructures, examples, benchmarks and tests.
 
@@ -23,14 +23,6 @@ We provide several Cmake presets to set commmonly required flags for building Fo
     cmake --list-presets # To list existing presets
     cmake --preset production # Config for production
     cmake --build --preset production # Build for production
-
-### NeoN as a submodule
-
-This repository depends on NeoN which is automatically downloaded via the CPM package manager.
-Alternatively, NeoN can be included as git submodule for development purposes.
-To do so the following steps can be used to initialise the submodule.
-
-    git submodule update --init --recursive
 
 ## Structure
 
