@@ -13,7 +13,6 @@
       "cacheVariables": {
         "Kokkos_ENABLE_SERIAL": "ON",
         "GINKGO_BUILD_PAPI_SDE": "OFF",
-        "NeoN_WITH_GINKGO": "ON",
         "CMAKE_CUDA_ARCHITECTURES": "native"
       },
       "generator": "Ninja"
@@ -27,8 +26,7 @@
       "description": "Configuration for production use",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "FOAMADAPTER_BUILD_EXAMPLES": "ON",
-        "FOAMADAPTER_BUILD_TESTS": "ON"
+        "FOAMADAPTER_BUILD_EXAMPLES": "ON"
       }
     },
     {
@@ -40,9 +38,7 @@
       "description": "Configuration for development use",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "NEON_DEVEL_TOOLS": "ON",
         "FOAMADAPTER_BUILD_TESTS": "ON",
-        "NEON_BUILD_TESTS": "ON",
         "FOAMADAPTER_BUILD_BENCHMARKS": "ON",
         "FOAMADAPTER_BUILD_EXAMPLES": "ON",
         "Kokkos_ENABLE_DEBUG": "OFF",
@@ -64,10 +60,8 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "FOAMADAPTER_BUILD_TESTS": "ON",
-        "NEON_BUILD_TESTS": "ON",
         "FOAMADAPTER_BUILD_BENCHMARKS": "ON",
         "FOAMADAPTER_BUILD_EXAMPLES": "ON",
-        "NEON_ENABLE_WARNINGS": "OFF",
         "CMAKE_CXX_FLAGS": "-fno-omit-frame-pointer $env{CXXFLAGS}"
       }
     }
