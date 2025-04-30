@@ -4,6 +4,8 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
+#include "FoamAdapter/expression.hpp"
+
 #include "NeoN/NeoN.hpp"
 #include "benchmarks/catch_main.hpp"
 #include "test/catch2/executorGenerator.hpp"
