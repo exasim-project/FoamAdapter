@@ -128,7 +128,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> NeoN::Vector&lt;NF_TYPE&gt;&amp; nf, <span class="keyword">const</span> <a class="code hl_function" href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">Foam::Field&lt;OF_TYPE&gt;</a>&amp; of)               \</div>
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> NeoN::Vector&lt;NF_TYPE&gt;&amp; nf, <span class="keyword">const</span> Foam::Field&lt;OF_TYPE&gt;&amp; of)               \</div>
 <div class="line">    {                                                                                              \</div>
 <div class="line">        <span class="keyword">auto</span> nfHost = nf.copyToHost();                                                             \</div>
 <div class="line">        <span class="keyword">auto</span> nfView = nfHost.view();                                                               \</div>
@@ -141,7 +141,6 @@ Macros</h2></td></tr>
 <div class="line">        }                                                                                          \</div>
 <div class="line">        <span class="keywordflow">return</span> <span class="keyword">true</span>;                                                                               \</div>
 <div class="line">    };</div>
-<div class="ttc" id="anamespaceFoam_html_a6d2b642fe0c0e5fe72403ba83c8d9cb7"><div class="ttname"><a href="namespaceFoam.html#a6d2b642fe0c0e5fe72403ba83c8d9cb7">Foam::checkEntryType</a></div><div class="ttdeci">bool checkEntryType(const Foam::entry &amp;entry)</div><div class="ttdef"><b>Definition</b> <a href="foamDictionary_8hpp_source.html#l00027">foamDictionary.hpp:27</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="comparison_8hpp_source.html#l00024">24</a> of file <a class="el" href="comparison_8hpp_source.html">comparison.hpp</a>.</p>
 

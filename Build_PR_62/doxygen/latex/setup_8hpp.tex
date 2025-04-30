@@ -12,15 +12,15 @@ namespace \mbox{\hyperlink{namespaceFoam}{Foam}}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::tuple$<$ \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{bool}}, \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}}, \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}} $>$ \mbox{\hyperlink{namespaceFoam_ab2ae77dfac22de0e7ebc7977cc1cf6a5}{Foam\+::time\+Controls}} (\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}} \&\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{run\+Time}})
+std\+::tuple$<$ bool, scalar, scalar $>$ \mbox{\hyperlink{namespaceFoam_ab2ae77dfac22de0e7ebc7977cc1cf6a5}{Foam\+::time\+Controls}} (const Time \&run\+Time)
 \item 
-\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}} \mbox{\hyperlink{namespaceFoam_a9e14a6a8187c23468e9f04161da23872}{Foam\+::calculate\+Co\+Num}} (\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{surface\+Scalar\+Field}} \&\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{phi}})
+scalar \mbox{\hyperlink{namespaceFoam_a9e14a6a8187c23468e9f04161da23872}{Foam\+::calculate\+Co\+Num}} (const surface\+Scalar\+Field \&phi)
 \item 
-\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{void}} \mbox{\hyperlink{namespaceFoam_a1f451056e368f6f6b507ae472e785faa}{Foam\+::set\+DeltaT}} (\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}} \&\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{run\+Time}}, \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{max\+Co}}, \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Co\+Num}}, \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{scalar}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{max\+DeltaT}})
+void \mbox{\hyperlink{namespaceFoam_a1f451056e368f6f6b507ae472e785faa}{Foam\+::set\+DeltaT}} (Time \&run\+Time, scalar max\+Co, scalar Co\+Num, scalar max\+DeltaT)
 \item 
-std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{Mesh\+Adapter}} $>$ \mbox{\hyperlink{namespaceFoam_a506acc94064d7ce59ed16e08a661c87a}{Foam\+::create\+Mesh}} (\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} Neo\+N\+::\+Executor \&exec, \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}} \&\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{run\+Time}})
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{Mesh\+Adapter}} $>$ \mbox{\hyperlink{namespaceFoam_a506acc94064d7ce59ed16e08a661c87a}{Foam\+::create\+Mesh}} (const Neo\+N\+::\+Executor \&exec, const Time \&run\+Time)
 \item 
-std\+::unique\+\_\+ptr$<$ fv\+Mesh $>$ \mbox{\hyperlink{namespaceFoam_aea1c46297050941c3a6847826e9b47ce}{Foam\+::create\+Mesh}} (\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{Time}} \&\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{run\+Time}})
+std\+::unique\+\_\+ptr$<$ fv\+Mesh $>$ \mbox{\hyperlink{namespaceFoam_aea1c46297050941c3a6847826e9b47ce}{Foam\+::create\+Mesh}} (const Time \&run\+Time)
 \item 
-Neo\+N\+::\+Executor \mbox{\hyperlink{namespaceFoam_a1ec9fe39937a2dad2dafcad4984c81a3}{Foam\+::create\+Executor}} (\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{const}} \mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dictionary}} \&\mbox{\hyperlink{namespaceFoam_a6d2b642fe0c0e5fe72403ba83c8d9cb7}{dict}})
+Neo\+N\+::\+Executor \mbox{\hyperlink{namespaceFoam_a1ec9fe39937a2dad2dafcad4984c81a3}{Foam\+::create\+Executor}} (const dictionary \&dict)
 \end{DoxyCompactItemize}

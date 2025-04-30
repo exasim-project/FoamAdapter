@@ -5,12 +5,12 @@
     <includes refid="readers_8hpp" local="no">readers.hpp</includes>
     <templateparamlist>
       <param>
-        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">typename</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">FieldType</ref></type>
+        <type>typename FieldType</type>
       </param>
     </templateparamlist>
     <sectiondef kind="public-attrib">
       <memberdef kind="variable" id="classFoam_1_1CreateFromFoamField_1ad89b4c16f3351dea4b249df0d15aeddd" prot="public" static="no" mutable="no">
-        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::Executor</type>
+        <type>const NeoN::Executor</type>
         <definition>const NeoN::Executor Foam::CreateFromFoamField&lt; FieldType &gt;::exec</definition>
         <argsstring></argsstring>
         <name>exec</name>
@@ -24,7 +24,7 @@
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="221" column="26" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="221" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classFoam_1_1CreateFromFoamField_1a4e60f2d56250d10bcebadb7eccb05a69" prot="public" static="no" mutable="no">
-        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> NeoN::UnstructuredMesh &amp;</type>
+        <type>const NeoN::UnstructuredMesh &amp;</type>
         <definition>const NeoN::UnstructuredMesh&amp; Foam::CreateFromFoamField&lt; FieldType &gt;::nfMesh</definition>
         <argsstring></argsstring>
         <name>nfMesh</name>
@@ -38,7 +38,7 @@
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" line="222" column="34" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/readers.hpp" bodystart="222" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classFoam_1_1CreateFromFoamField_1aedea634561b807ccc483c30c30539af5" prot="public" static="no" mutable="no">
-        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">const</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">FieldType</ref> &amp;</type>
+        <type>const FieldType &amp;</type>
         <definition>const FieldType&amp; Foam::CreateFromFoamField&lt; FieldType &gt;::foamField</definition>
         <argsstring></argsstring>
         <name>foamField</name>
@@ -99,7 +99,7 @@
     </sectiondef>
     <sectiondef kind="public-func">
       <memberdef kind="function" id="classFoam_1_1CreateFromFoamField_1a8d4706c636d4ccaff4f6005f01a601ee" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>fvcc::VectorDocument</type>
+        <type><ref refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression" kindref="compound">fvcc::VectorDocument</ref></type>
         <definition>fvcc::VectorDocument Foam::CreateFromFoamField&lt; FieldType &gt;::operator()</definition>
         <argsstring>(NeoN::Database &amp;db)</argsstring>
         <name>operator()</name>

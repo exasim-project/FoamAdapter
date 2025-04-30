@@ -7,7 +7,7 @@
     </templateparamlist>
     <sectiondef kind="public-type">
       <memberdef kind="typedef" id="structFoam_1_1type__map_3_01GeometricField_3_01vector_00_01fvPatchField_00_01volMesh_01_4_01_4_1af8ae3755a5f2cab4c0077f95548f68a9" prot="public" static="no">
-        <type>fvcc::VolumeField&lt; NeoN::Vec3 &gt;</type>
+        <type><ref refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression" kindref="compound">fvcc::VolumeField</ref>&lt; NeoN::Vec3 &gt;</type>
         <definition>using Foam::type_map&lt; GeometricField&lt; vector, fvPatchField, volMesh &gt; &gt;::container_type =  fvcc::VolumeField&lt;NeoN::Vec3&gt;</definition>
         <argsstring></argsstring>
         <name>container_type</name>

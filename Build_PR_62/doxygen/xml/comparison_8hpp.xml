@@ -64,7 +64,7 @@
         <name>FIELD_EQUALITY_OPERATOR</name>
         <param><defname>NF_TYPE</defname></param>
         <param><defname>OF_TYPE</defname></param>
-        <initializer>    bool operator==(const NeoN::Vector&lt;NF_TYPE&gt;&amp; nf, const <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::Field</ref>&lt;OF_TYPE&gt;&amp; of)               \
+        <initializer>    bool operator==(const NeoN::Vector&lt;NF_TYPE&gt;&amp; nf, const Foam::Field&lt;OF_TYPE&gt;&amp; of)               \
     {                                                                                              \
         auto nfHost = nf.copyToHost();                                                             \
         auto nfView = nfHost.view();                                                               \
@@ -154,9 +154,9 @@
 <codeline lineno="37"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>};</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="38"><highlight class="normal"></highlight></codeline>
 <codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><ref refid="comparison_8hpp_1a995c382d7fa5751eacbf2dae73b1dff3" kindref="member">FIELD_EQUALITY_OPERATOR</ref>(NeoN::label,<sp/><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::label</ref>)</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><ref refid="comparison_8hpp_1a995c382d7fa5751eacbf2dae73b1dff3" kindref="member">FIELD_EQUALITY_OPERATOR</ref>(NeoN::scalar,<sp/><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::scalar</ref>)</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><ref refid="comparison_8hpp_1a995c382d7fa5751eacbf2dae73b1dff3" kindref="member">FIELD_EQUALITY_OPERATOR</ref>(NeoN::Vec3,<sp/><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::vector</ref>)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><ref refid="comparison_8hpp_1a995c382d7fa5751eacbf2dae73b1dff3" kindref="member">FIELD_EQUALITY_OPERATOR</ref>(NeoN::label,<sp/>Foam::label)</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><ref refid="comparison_8hpp_1a995c382d7fa5751eacbf2dae73b1dff3" kindref="member">FIELD_EQUALITY_OPERATOR</ref>(NeoN::scalar,<sp/>Foam::scalar)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><ref refid="comparison_8hpp_1a995c382d7fa5751eacbf2dae73b1dff3" kindref="member">FIELD_EQUALITY_OPERATOR</ref>(NeoN::Vec3,<sp/>Foam::vector)</highlight></codeline>
 <codeline lineno="43"><highlight class="normal"></highlight></codeline>
 <codeline lineno="44" refid="comparison_8hpp_1a3e936fd7842f6a4e065d699e3665f85e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>VOLGEOFIELD_EQUALITY_OPERATOR(NF_TYPE,<sp/>OF_TYPE)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
 <codeline lineno="45"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>bool<sp/>operator==(<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
@@ -191,8 +191,8 @@
 <codeline lineno="74"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>true;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
 <codeline lineno="75"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>}</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="76"><highlight class="normal"></highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><ref refid="comparison_8hpp_1a3e936fd7842f6a4e065d699e3665f85e" kindref="member">VOLGEOFIELD_EQUALITY_OPERATOR</ref>(NeoN::scalar,<sp/><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::scalar</ref>)</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><ref refid="comparison_8hpp_1a3e936fd7842f6a4e065d699e3665f85e" kindref="member">VOLGEOFIELD_EQUALITY_OPERATOR</ref>(NeoN::Vec3,<sp/><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::vector</ref>)</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><ref refid="comparison_8hpp_1a3e936fd7842f6a4e065d699e3665f85e" kindref="member">VOLGEOFIELD_EQUALITY_OPERATOR</ref>(NeoN::scalar,<sp/>Foam::scalar)</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><ref refid="comparison_8hpp_1a3e936fd7842f6a4e065d699e3665f85e" kindref="member">VOLGEOFIELD_EQUALITY_OPERATOR</ref>(NeoN::Vec3,<sp/>Foam::vector)</highlight></codeline>
 <codeline lineno="79"><highlight class="normal"></highlight></codeline>
 <codeline lineno="80"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
 <codeline lineno="81"><highlight class="comment"><sp/>*</highlight></codeline>
@@ -231,8 +231,8 @@
 <codeline lineno="114"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>true;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
 <codeline lineno="115"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>}</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="116"><highlight class="normal"></highlight></codeline>
-<codeline lineno="117"><highlight class="normal"><ref refid="comparison_8hpp_1aecccc7805fe3f80ddade77cf81ec9a74" kindref="member">SURFGEOFIELD_EQUALITY_OPERATOR</ref>(NeoN::scalar,<sp/><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::scalar</ref>)</highlight></codeline>
-<codeline lineno="118"><highlight class="normal"><ref refid="comparison_8hpp_1aecccc7805fe3f80ddade77cf81ec9a74" kindref="member">SURFGEOFIELD_EQUALITY_OPERATOR</ref>(NeoN::Vec3,<sp/><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">Foam::vector</ref>)</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><ref refid="comparison_8hpp_1aecccc7805fe3f80ddade77cf81ec9a74" kindref="member">SURFGEOFIELD_EQUALITY_OPERATOR</ref>(NeoN::scalar,<sp/>Foam::scalar)</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><ref refid="comparison_8hpp_1aecccc7805fe3f80ddade77cf81ec9a74" kindref="member">SURFGEOFIELD_EQUALITY_OPERATOR</ref>(NeoN::Vec3,<sp/>Foam::vector)</highlight></codeline>
 <codeline lineno="119"><highlight class="normal"></highlight></codeline>
 <codeline lineno="120"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Foam</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>

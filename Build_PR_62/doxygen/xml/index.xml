@@ -9,6 +9,28 @@
     <member refid="classFoam_1_1CreateFromFoamField_1ab9007465a8f08f1945cf0c413730a196" kind="variable"><name>subCycleIndex</name></member>
     <member refid="classFoam_1_1CreateFromFoamField_1a8d4706c636d4ccaff4f6005f01a601ee" kind="function"><name>operator()</name></member>
   </compound>
+  <compound refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression" kind="class"><name>NeoN::finiteVolume::cellCentred::Expression</name>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a6d0b144916182a57ac2294bbc44f32f1" kind="variable"><name>psi_</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1ad00f0205a8b83bc0c816710611294631" kind="variable"><name>expr_</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a68d09bb0ac59990150990db10d254422" kind="variable"><name>fvSchemes_</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a6fa7c586c075d834daef5f140d715775" kind="variable"><name>fvSolution_</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1ad843ac6ef3212b43a971913b04093cc3" kind="variable"><name>sparsityPattern_</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a432675b261e2bdc6a39a770fb572b16c" kind="variable"><name>ls_</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1aab0bf4552af22f09687801782cb49ce6" kind="function"><name>Expression</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1ac430a7c19eaca2d61a694b86930ebe2d" kind="function"><name>Expression</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a229b18b0d99762553e35175e6377752b" kind="function"><name>~Expression</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a4cfaa913d49e8f0e57ecc7595fcfbba2" kind="function"><name>linearSystem</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1ad7708d86c2611df217f691f28c4f1d89" kind="function"><name>sparsityPattern</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1ab9c6c545458030aa1daae38afa749629" kind="function"><name>getVector</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a4a060c97571cab58651239e783828fbf" kind="function"><name>getVector</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a3f50e3180cf0efa6df4e362b8d3e1bfc" kind="function"><name>linearSystem</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a1baaff5e210051508be2e08334c37b5c" kind="function"><name>sparsityPattern</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a3b2b4dc757790fcf661da6b47e1c1a0a" kind="function"><name>exec</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1ac7254fa5c400fe38615400f3e695548a" kind="function"><name>assemble</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a4b38ac1885afb4338315a6a119306ddc" kind="function"><name>assemble</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1a3f8378adb3cc48d7a82d2dabd8575113" kind="function"><name>solve</name></member>
+    <member refid="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression_1ad55183feff01e60075b59bbe828b856e" kind="function"><name>setReference</name></member>
+  </compound>
   <compound refid="classFoam_1_1MeshAdapter" kind="class"><name>Foam::MeshAdapter</name>
     <member refid="classFoam_1_1MeshAdapter_1aa929b206c2554d0368affbee33ba783f" kind="variable"><name>nfMesh_</name></member>
     <member refid="classFoam_1_1MeshAdapter_1acc22f2887e3b57f9b55eddd528384766" kind="function"><name>MeshAdapter</name></member>
@@ -93,6 +115,7 @@
   <compound refid="namespaceNeoN_1_1finiteVolume" kind="namespace"><name>NeoN::finiteVolume</name>
   </compound>
   <compound refid="namespaceNeoN_1_1finiteVolume_1_1cellCentred" kind="namespace"><name>NeoN::finiteVolume::cellCentred</name>
+    <member refid="namespaceNeoN_1_1finiteVolume_1_1cellCentred_1a3b18e10c3ac36a283a8dfccc0afd70ab" kind="function"><name>operator&amp;</name></member>
     <member refid="namespaceNeoN_1_1finiteVolume_1_1cellCentred_1a71e09fbd041a24363d9b1dabc37a0516" kind="function"><name>constrainHbyA</name></member>
     <member refid="namespaceNeoN_1_1finiteVolume_1_1cellCentred_1ab31255fd8af75de282a91b8951c858ba" kind="function"><name>discreteMomentumFields</name></member>
     <member refid="namespaceNeoN_1_1finiteVolume_1_1cellCentred_1a252cdfa0bfb7e2a40da5c5508dc6af45" kind="function"><name>updateFaceVelocity</name></member>
@@ -107,6 +130,8 @@
   <compound refid="convert_8hpp" kind="file"><name>convert.hpp</name>
   </compound>
   <compound refid="type__conversion_8hpp" kind="file"><name>type_conversion.hpp</name>
+  </compound>
+  <compound refid="expression_8hpp" kind="file"><name>expression.hpp</name>
   </compound>
   <compound refid="pressureVelocityCoupling_8hpp" kind="file"><name>pressureVelocityCoupling.hpp</name>
   </compound>

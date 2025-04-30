@@ -5,7 +5,7 @@
     <includes refid="type__conversion_8hpp" local="no">type_conversion.hpp</includes>
     <templateparamlist>
       <param>
-        <type><ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">typename</ref> <ref refid="namespaceFoam_1a6d2b642fe0c0e5fe72403ba83c8d9cb7" kindref="member">From</ref></type>
+        <type>typename From</type>
       </param>
     </templateparamlist>
     <briefdescription>
