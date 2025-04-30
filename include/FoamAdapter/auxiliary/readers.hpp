@@ -6,15 +6,14 @@
 
 #include "NeoN/NeoN.hpp"
 
-#include "FoamAdapter/conversion/convert.hpp"
-#include "FoamAdapter/conversion/type_conversion.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
+#include "FoamAdapter/auxiliary/convert.hpp"
+#include "FoamAdapter/auxiliary/type_conversion.hpp"
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 
-namespace Foam
+namespace FoamAdapter
 {
-namespace fvcc = NeoN::finiteVolume::cellCentred;
+
 template<typename FoamType>
 auto fromFoamField(const NeoN::Executor& exec, const FoamType& field)
 {
@@ -36,10 +35,10 @@ auto readVolBoundaryConditions(const NeoN::UnstructuredMesh& nfMesh, const FoamT
     using type_primitive_t = typename type_map<FoamType>::mapped_type;
 
     // get boundary as dictionary
-    OStringStream os;
+    Foam::OStringStream os;
     ofVolField.boundaryField().writeEntries(os);
-    IStringStream is(os.str());
-    dictionary bDict(is);
+    Foam::IStringStream is(os.str());
+    Foam::dictionary bDict(is);
 
     std::map<std::string, std::function<void(NeoN::Dictionary&)>> patchInserter {
         {"fixedGradient",
@@ -92,9 +91,9 @@ auto readVolBoundaryConditions(const NeoN::UnstructuredMesh& nfMesh, const FoamT
     std::vector<fvcc::VolumeBoundary<type_primitive_t>> bcs;
     for (const auto& bName : bDict.toc())
     {
-        dictionary patchDict = bDict.subDict(bName);
-        NeoN::Dictionary neoPatchDict = Foam::readFoamDictionary(patchDict);
-        patchInserter[patchDict.get<word>("type")](neoPatchDict);
+        Foam::dictionary patchDict = bDict.subDict(bName);
+        NeoN::Dictionary neoPatchDict = convert(patchDict);
+        patchInserter[patchDict.get<Foam::word>("type")](neoPatchDict);
         bcs.emplace_back(nfMesh, neoPatchDict, patchi);
         patchi++;
     }
@@ -131,10 +130,10 @@ auto readSurfaceBoundaryConditions(
     std::vector<fvcc::SurfaceBoundary<type_primitive_t>> bcs;
 
     // get boundary as dictionary
-    OStringStream os;
+    Foam::OStringStream os;
     surfaceField.boundaryField().writeEntries(os);
-    IStringStream is(os.str());
-    dictionary bDict(is);
+    Foam::IStringStream is(os.str());
+    Foam::dictionary bDict(is);
     int patchi = 0;
 
     std::map<std::string, std::function<void(NeoN::Dictionary&)>> patchInserter {
@@ -157,9 +156,9 @@ auto readSurfaceBoundaryConditions(
 
     for (const auto& bName : bDict.toc())
     {
-        dictionary patchDict = bDict.subDict(bName);
+        Foam::dictionary patchDict = bDict.subDict(bName);
         NeoN::Dictionary neoPatchDict;
-        patchInserter[patchDict.get<word>("type")](neoPatchDict);
+        patchInserter[patchDict.get<Foam::word>("type")](neoPatchDict);
         bcs.push_back(fvcc::SurfaceBoundary<type_primitive_t>(uMesh, neoPatchDict, patchi));
         patchi++;
     }
@@ -180,7 +179,7 @@ auto constructSurfaceField(
     type_container_t
         out(exec, in.name(), nfMesh, std::move(readSurfaceBoundaryConditions(nfMesh, in)));
 
-    Field<foam_primitive_t> flattenedField(out.internalVector().size());
+    Foam::Field<foam_primitive_t> flattenedField(out.internalVector().size());
     size_t nInternal = nfMesh.nInternalFaces();
 
     forAll(in, facei)
@@ -188,10 +187,10 @@ auto constructSurfaceField(
         flattenedField[facei] = convert(in[facei]);
     }
 
-    label idx = nInternal;
+    Foam::label idx = nInternal;
     forAll(in.boundaryField(), patchi)
     {
-        const fvsPatchField<foam_primitive_t>& pin = in.boundaryField()[patchi];
+        const Foam::fvsPatchField<foam_primitive_t>& pin = in.boundaryField()[patchi];
 
         forAll(pin, facei)
         {
@@ -228,7 +227,7 @@ public:
     fvcc::VectorDocument operator()(NeoN::Database& db)
     {
         using type_container_t = typename type_map<FieldType>::container_type;
-        type_container_t convertedField = Foam::constructFrom(exec, nfMesh, foamField);
+        type_container_t convertedField = constructFrom(exec, nfMesh, foamField);
         if (name != "")
         {
             convertedField.name = name;

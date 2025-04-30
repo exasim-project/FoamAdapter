@@ -25,8 +25,8 @@ TEST_CASE("cell To Face Stencil")
 
     auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-    auto meshPtr = Foam::createMesh(exec, runTime);
-    Foam::MeshAdapter& mesh = *meshPtr;
+    auto meshPtr = FoamAdapter::createMesh(exec, runTime);
+    FoamAdapter::MeshAdapter& mesh = *meshPtr;
     auto& nfMesh = mesh.nfMesh();
 
     SECTION("cellToFaceStencil_" + execName)
@@ -38,7 +38,7 @@ TEST_CASE("cell To Face Stencil")
         auto stencilView = stencil.view();
         Foam::label nFaces = mesh.nFaces();
 
-        forAll(mesh.cells(), celli)
+        for (auto celli = 0; celli < mesh.cells().size(); celli++)
         {
             std::unordered_set<Foam::label> faceSet;
             REQUIRE(stencilView.view(celli).size() == mesh.cells()[celli].size());

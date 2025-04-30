@@ -7,9 +7,9 @@
 
 #include "NeoN/NeoN.hpp"
 
-#include "FoamAdapter/conversion/convert.hpp"
+#include "FoamAdapter/auxiliary/convert.hpp"
 
-namespace Foam
+namespace FoamAdapter
 {
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
@@ -20,28 +20,28 @@ struct type_map
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<GeometricField<scalar, fvPatchField, volMesh>>
+struct type_map<Foam::GeometricField<Foam::scalar, Foam::fvPatchField, Foam::volMesh>>
 {
     using container_type = fvcc::VolumeField<NeoN::scalar>;
     using mapped_type = NeoN::scalar;
 };
 
 template<>
-struct type_map<GeometricField<vector, fvPatchField, volMesh>>
+struct type_map<Foam::GeometricField< Foam::vector,  Foam::fvPatchField,  Foam::volMesh>>
 {
     using container_type = fvcc::VolumeField<NeoN::Vec3>;
     using mapped_type = NeoN::Vec3;
 };
 
 template<>
-struct type_map<GeometricField<scalar, fvsPatchField, surfaceMesh>>
+struct type_map<Foam::GeometricField< Foam::scalar,  Foam::fvsPatchField,  Foam::surfaceMesh>>
 {
     using container_type = fvcc::SurfaceField<NeoN::scalar>;
     using mapped_type = NeoN::scalar;
 };
 
 template<>
-struct type_map<GeometricField<vector, fvsPatchField, surfaceMesh>>
+struct type_map<Foam::GeometricField< Foam::vector,  Foam::fvsPatchField,  Foam::surfaceMesh>>
 {
     using container_type = fvcc::SurfaceField<NeoN::Vec3>;
     using mapped_type = NeoN::Vec3;
@@ -49,7 +49,7 @@ struct type_map<GeometricField<vector, fvsPatchField, surfaceMesh>>
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Field<scalar>>
+struct type_map< Foam::Field< Foam::scalar>>
 {
     using container_type = NeoN::Vector<NeoN::scalar>;
     using mapped_type = NeoN::scalar;
@@ -57,7 +57,7 @@ struct type_map<Field<scalar>>
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<Field<vector>>
+struct type_map< Foam::Field<Foam::vector>>
 {
     using container_type = NeoN::Vector<NeoN::Vec3>;
     using mapped_type = NeoN::Vec3;
@@ -65,7 +65,7 @@ struct type_map<Field<vector>>
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<List<scalar>>
+struct type_map<Foam::List< Foam::scalar>>
 {
     using container_type = NeoN::Vector<NeoN::scalar>;
     using mapped_type = NeoN::scalar;
@@ -73,7 +73,7 @@ struct type_map<List<scalar>>
 
 // Specializations of type_map for specific type mappings.
 template<>
-struct type_map<List<label>>
+struct type_map<Foam::List<Foam::label>>
 {
     using container_type = NeoN::Vector<NeoN::label>;
     using mapped_type = NeoN::label;

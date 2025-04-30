@@ -3,16 +3,16 @@
 
 #include "NeoN/NeoN.hpp"
 
-#include "FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp"
+#include "FoamAdapter/algorithms/pressureVelocityCoupling.hpp"
 #include "Kokkos_Core.hpp"
 
-namespace NeoN::finiteVolume::cellCentred
+namespace FoamAdapter
 {
 
 void constrainHbyA(
-    VolumeField<Vec3>& HbyA,
-    const VolumeField<Vec3>& U,
-    const VolumeField<scalar>& p
+    nnfvcc::VolumeField<Vec3>& HbyA,
+    const nnfvcc::VolumeField<Vec3>& U,
+    const nnfvcc::VolumeField<scalar>& p
 )
 {
     // const UnstructuredMesh& mesh = HbyA.mesh();
@@ -20,9 +20,9 @@ void constrainHbyA(
     auto HbyAin = HbyA.internalVector().view();
     auto [HbyABcValue, UBcValue] = views(HbyA.boundaryData().value(), U.boundaryData().value());
 
-    const std::vector<VolumeBoundary<Vec3>>& HbyABCs = HbyA.boundaryConditions();
+    const auto& HbyABCs = HbyA.boundaryConditions();
 
-    for (std::size_t patchi = 0; patchi < HbyABCs.size(); ++patchi)
+    for (auto patchi = 0; patchi < HbyABCs.size(); ++patchi)
     {
         parallelFor(
             HbyA.exec(),
@@ -32,12 +32,12 @@ void constrainHbyA(
     }
 }
 
-std::tuple<VolumeField<scalar>, VolumeField<Vec3>>
+std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
 discreteMomentumFields(const Expression<Vec3>& expr)
 {
-    const VolumeField<Vec3>& U = expr.getVector();
-    const UnstructuredMesh& mesh = U.mesh();
-    const SparsityPattern& sparsityPattern = expr.sparsityPattern();
+    const nnfvcc::VolumeField<Vec3>& U = expr.getVector();
+    const auto& mesh = U.mesh();
+    const auto& sparsityPattern = expr.sparsityPattern();
     const auto& ls = expr.linearSystem();
     const auto vol = mesh.cellVolumes().view();
     const auto values = ls.matrix().values().view();
@@ -45,8 +45,8 @@ discreteMomentumFields(const Expression<Vec3>& expr)
     const auto diagOffset = sparsityPattern.diagOffset().view();
     const auto rowPtrs = ls.matrix().rowOffs().view();
 
-    auto rABCs = createExtrapolatedBCs<VolumeBoundary<scalar>>(mesh);
-    VolumeField<scalar> rAU = VolumeField<scalar>(expr.exec(), "rAU", mesh, rABCs);
+    auto rABCs = nnfvcc::createExtrapolatedBCs<nnfvcc::VolumeBoundary<scalar>>(mesh);
+    auto rAU = nnfvcc::VolumeField<scalar>(expr.exec(), "rAU", mesh, rABCs);
 
     rAU.internalVector().apply(KOKKOS_LAMBDA(const size_t celli) {
         auto diagOffsetCelli = diagOffset[celli];
@@ -54,10 +54,10 @@ discreteMomentumFields(const Expression<Vec3>& expr)
         return vol[celli] / (values[rowPtrs[celli] + diagOffsetCelli][0]);
     });
 
-    auto OffDiagonalSourceBCs = createExtrapolatedBCs<VolumeBoundary<Vec3>>(mesh);
-    VolumeField<Vec3> HbyA = VolumeField<Vec3>(expr.exec(), "HbyA", mesh, OffDiagonalSourceBCs);
-    fill(HbyA.internalVector(), zero<Vec3>());
-    const std::size_t nInternalFaces = mesh.nInternalFaces();
+    auto OffDiagonalSourceBCs = nnfvcc::createExtrapolatedBCs<nnfvcc::VolumeBoundary<Vec3>>(mesh);
+    auto HbyA = nnfvcc::VolumeField<Vec3>(expr.exec(), "HbyA", mesh, OffDiagonalSourceBCs);
+    NeoN::fill(HbyA.internalVector(), NeoN::zero<Vec3>());
+    const auto nInternalFaces = mesh.nInternalFaces();
 
     const auto exec = U.exec();
     const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalU, internalRAU] = views(
@@ -72,15 +72,15 @@ discreteMomentumFields(const Expression<Vec3>& expr)
 
     auto internalHbyA = HbyA.internalVector().view();
 
-    parallelFor(
+    NeoN::parallelFor(
         exec,
         {0, nInternalFaces},
         KOKKOS_LAMBDA(const size_t facei) {
-            std::size_t own = static_cast<std::size_t>(owner[facei]);
-            std::size_t nei = static_cast<std::size_t>(neighbour[facei]);
+            auto own = owner[facei];
+            auto nei = neighbour[facei];
 
-            std::size_t rowNeiStart = rowPtrs[nei];
-            std::size_t rowOwnStart = rowPtrs[own];
+            auto rowNeiStart = rowPtrs[nei];
+            auto rowOwnStart = rowPtrs[own];
 
             auto Lower = values[rowNeiStart + neiOffs[facei]];
             auto Upper = values[rowOwnStart + ownOffs[facei]];
@@ -90,7 +90,7 @@ discreteMomentumFields(const Expression<Vec3>& expr)
         }
     );
 
-    parallelFor(
+    NeoN::parallelFor(
         exec,
         {0, internalHbyA.size()},
         KOKKOS_LAMBDA(const size_t celli) {
@@ -107,15 +107,15 @@ discreteMomentumFields(const Expression<Vec3>& expr)
 
 
 void updateFaceVelocity(
-    SurfaceField<scalar>& phi,
-    const SurfaceField<scalar>& predictedPhi,
+    nnfvcc::SurfaceField<scalar>& phi,
+    const nnfvcc::SurfaceField<scalar>& predictedPhi,
     const Expression<scalar>& expr
 )
 {
-    const UnstructuredMesh& mesh = phi.mesh();
-    const VolumeField<scalar>& p = expr.getVector();
-    const SparsityPattern sparsityPattern = expr.sparsityPattern();
-    const std::size_t nInternalFaces = mesh.nInternalFaces();
+    const auto& mesh = phi.mesh();
+    const auto& p = expr.getVector();
+    const auto sparsityPattern = expr.sparsityPattern();
+    const auto nInternalFaces = mesh.nInternalFaces();
     const auto exec = phi.exec();
     const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalP] = views(
         mesh.faceOwner(),
@@ -135,15 +135,15 @@ void updateFaceVelocity(
 
     auto [iPhi, iPredPhi] = views(phi.internalVector(), predictedPhi.internalVector());
 
-    parallelFor(
+    NeoN::parallelFor(
         exec,
         {0, nInternalFaces},
         KOKKOS_LAMBDA(const size_t facei) {
-            std::size_t own = static_cast<std::size_t>(owner[facei]);
-            std::size_t nei = static_cast<std::size_t>(neighbour[facei]);
+            auto own = static_cast<std::size_t>(owner[facei]);
+            auto nei = static_cast<std::size_t>(neighbour[facei]);
 
-            std::size_t rowNeiStart = rowPtrs[nei];
-            std::size_t rowOwnStart = rowPtrs[own];
+            auto rowNeiStart = rowPtrs[nei];
+            auto rowOwnStart = rowPtrs[own];
 
             auto Upper = values[rowNeiStart + neiOffs[facei]];
             auto Lower = values[rowOwnStart + ownOffs[facei]];
@@ -154,13 +154,13 @@ void updateFaceVelocity(
 }
 
 void updateVelocity(
-    VolumeField<Vec3>& U,
-    const VolumeField<Vec3>& HbyA,
-    VolumeField<scalar>& rAU,
-    VolumeField<scalar>& p
+    nnfvcc::VolumeField<Vec3>& U,
+    const nnfvcc::VolumeField<Vec3>& HbyA,
+    nnfvcc::VolumeField<scalar>& rAU,
+    nnfvcc::VolumeField<scalar>& p
 )
 {
-    VolumeField<Vec3> gradP = GaussGreenGrad(p.exec(), p.mesh()).grad(p);
+    nnfvcc::VolumeField<Vec3> gradP = nnfvcc::GaussGreenGrad(p.exec(), p.mesh()).grad(p);
     auto [iHbyA, iRAU, iGradP] =
         views(HbyA.internalVector(), rAU.internalVector(), gradP.internalVector());
 
@@ -169,21 +169,21 @@ void updateVelocity(
     });
 }
 
-SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
+nnfvcc::SurfaceField<scalar> flux(const nnfvcc::VolumeField<Vec3>& volField)
 {
     const auto exec = volField.exec();
 
-    const UnstructuredMesh& mesh = volField.mesh();
-    const std::size_t nInternalFaces = mesh.nInternalFaces();
-    Input input = TokenList({std::string("linear")});
-    auto linear = SurfaceInterpolation<Vec3>(exec, mesh, input);
-    const SurfaceField<scalar> weight = linear.weight(volField);
+    const auto& mesh = volField.mesh();
+    const auto nInternalFaces = mesh.nInternalFaces();
+    NeoN::Input input = NeoN::TokenList({std::string("linear")});
+    auto linear = nnfvcc::SurfaceInterpolation<Vec3>(exec, mesh, input);
+    const auto weight = linear.weight(volField);
 
-    auto surfaceBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<scalar>>(mesh);
-    auto faceFlux = SurfaceField<scalar>(exec, "out", mesh, surfaceBCs);
+    auto surfaceBCs = nnfvcc::createCalculatedBCs<nnfvcc::SurfaceBoundary<scalar>>(mesh);
+    auto faceFlux = nnfvcc::SurfaceField<scalar>(exec, "out", mesh, surfaceBCs);
 
-    fill(faceFlux.internalVector(), zero<scalar>());
-    fill(faceFlux.boundaryData().value(), zero<scalar>());
+    NeoN::fill(faceFlux.internalVector(), NeoN::zero<scalar>());
+    NeoN::fill(faceFlux.boundaryData().value(), NeoN::zero<scalar>());
     const auto [owner, neighbour, weightIn, faceAreas, volFieldIn, volFieldBc, bSf] = views(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
@@ -196,12 +196,12 @@ SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
 
     auto [faceFluxIn, bvalue] = views(faceFlux.internalVector(), faceFlux.boundaryData().value());
 
-    parallelFor(
+    NeoN::parallelFor(
         exec,
         {0, nInternalFaces},
         KOKKOS_LAMBDA(const size_t facei) {
-            std::size_t own = static_cast<std::size_t>(owner[facei]);
-            std::size_t nei = static_cast<std::size_t>(neighbour[facei]);
+            auto own = static_cast<std::size_t>(owner[facei]);
+            auto nei = static_cast<std::size_t>(neighbour[facei]);
 
             faceFluxIn[facei] =
                 faceAreas[facei]
@@ -209,7 +209,7 @@ SurfaceField<scalar> flux(const VolumeField<Vec3>& volField)
         }
     );
 
-    parallelFor(
+    NeoN::parallelFor(
         exec,
         {nInternalFaces, faceFluxIn.size()},
         KOKKOS_LAMBDA(const size_t facei) {

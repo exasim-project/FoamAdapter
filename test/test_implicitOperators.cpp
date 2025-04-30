@@ -28,20 +28,20 @@ TEST_CASE("matrix multiplication")
 
     auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-    auto meshPtr = Foam::createMesh(exec, runTime);
-    Foam::MeshAdapter& mesh = *meshPtr;
+    auto meshPtr = FoamAdapter::createMesh(exec, runTime);
+    FoamAdapter::MeshAdapter& mesh = *meshPtr;
     auto nfMesh = mesh.nfMesh();
 
     runTime.setDeltaT(1);
 
     SECTION("ddt_" + execName)
     {
-        auto ofT = randomScalarField(runTime, mesh, "T");
+        auto ofT = FoamAdapter::randomScalarField(runTime, mesh, "T");
         ofT.correctBoundaryConditions();
 
         fvcc::VolumeField<NeoN::scalar>& nfT =
             fieldCol.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                Foam::CreateFromFoamField<Foam::volScalarField> {
+                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
                     .foamField = ofT,
@@ -94,8 +94,8 @@ TEST_CASE("matrix multiplication")
     SECTION("sourceterm_" + execName)
     {
         NeoN::scalar coeff = 2.0;
-        auto ofT = randomScalarField(runTime, mesh, "T");
-        fvcc::VolumeField<NeoN::scalar> nfT = constructFrom(exec, nfMesh, ofT);
+        auto ofT = FoamAdapter::randomScalarField(runTime, mesh, "T");
+        fvcc::VolumeField<NeoN::scalar> nfT = FoamAdapter::constructFrom(exec, nfMesh, ofT);
 
         NeoN::map(
             nfT.internalVector(),
@@ -183,14 +183,14 @@ TEST_CASE("matrix multiplication")
 
     SECTION("solve div" + execName)
     {
-        auto ofT = randomScalarField(runTime, mesh, "T");
+        auto ofT = FoamAdapter::randomScalarField(runTime, mesh, "T");
         forAll(ofT, celli)
         {
             ofT[celli] = celli;
         }
         ofT.correctBoundaryConditions();
 
-        auto nfT = constructFrom(exec, nfMesh, ofT);
+        auto nfT = FoamAdapter::constructFrom(exec, nfMesh, ofT);
         nfT.correctBoundaryConditions();
 
         Foam::surfaceScalarField ofPhi(
@@ -209,7 +209,7 @@ TEST_CASE("matrix multiplication")
             ofPhi[facei] = 1;
         }
 
-        auto nfPhi = constructSurfaceField(exec, nfMesh, ofPhi);
+        auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, ofPhi);
         auto nfCoeff1 = nfT;
         NeoN::scalar coeff = 1000;
         Foam::dimensionedScalar coeff1("coeff", Foam::dimensionSet(0, -3, 0, 0, 0), coeff);

@@ -3,7 +3,7 @@
 
 #include "NeoN/NeoN.hpp"
 
-#include "FoamAdapter/NeoFoam.hpp"
+#include "FoamAdapter/FoamAdapter.hpp"
 
 #include "fvCFD.H"
 
@@ -30,31 +30,27 @@ int main(int argc, char* argv[])
         fvcc::VectorCollection& VectorCollection =
             fvcc::VectorCollection::instance(db, "VectorCollection");
 
+        NeoN::Dictionary controlDict = FoamAdapter::convert(runTime.controlDict());
+        NeoN::Executor exec = FoamAdapter::createExecutor(runTime.controlDict());
 
-        NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
-        NeoN::Executor exec = createExecutor(runTime.controlDict());
-
-        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
-        Foam::MeshAdapter& mesh = *meshPtr;
+        std::unique_ptr<FoamAdapter::MeshAdapter> meshPtr = FoamAdapter::createMesh(exec, runTime);
+        FoamAdapter::MeshAdapter& mesh = *meshPtr;
 
 #include "createControl.H"
 
-        auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
+        auto [adjustTimeStep, maxCo, maxDeltaT] = FoamAdapter::timeControls(runTime);
 
 #include "createFields.H"
 
-
-        std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-
-        Foam::scalar coNum = Foam::calculateCoNum(phi);
-        if (adjustTimeStep)
-        {
-            Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
-        }
+        // Foam::scalar coNum = fvcc::computeCoNum(phi);
+        // if (adjustTimeStep)
+        // {
+        //     FoamAdapter::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
+        // }
 
 
-        NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
-        NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+        NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
+        NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
 
         Info << "creating FoamAdapter mesh" << endl;
         NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
@@ -62,15 +58,15 @@ int main(int argc, char* argv[])
         Info << "creating FoamAdapter fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfT =
             VectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                Foam::CreateFromFoamField<Foam::volScalarField> {
+                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
                     .foamField = T,
                     .name = "nfT"
                 }
             );
-        auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);
-        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
+        auto nfPhi0 = FoamAdapter::constructSurfaceField(exec, nfMesh, phi0);
+        auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, phi);
 
         Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
 
@@ -90,29 +86,30 @@ int main(int argc, char* argv[])
             }
 
 
-            std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
-            coNum = fvcc::computeCoNum(nfPhi, dt);
+            std::tie(adjustTimeStep, maxCo, maxDeltaT) = FoamAdapter::timeControls(runTime);
+            auto coNum = fvcc::computeCoNum(nfPhi, dt);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
             Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (adjustTimeStep)
             {
-                Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
+                FoamAdapter::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
             }
             runTime++;
 
             Info << "Time = " << runTime.timeName() << endl;
 
-
             {
-                dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::imp::div(nfPhi, nfT));
+                NeoN::dsl::Expression eqnSys(
+                    NeoN::dsl::imp::ddt(nfT) + NeoN::dsl::imp::div(nfPhi, nfT)
+                );
 
-                dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
+                NeoN::dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
             }
 
             if (runTime.outputTime())
             {
-                Info << "writing nfT field" << endl;
-                write(nfT.internalVector(), mesh, "nfT");
+                Foam::Info << "writing nfT field" << Foam::endl;
+                FoamAdapter::write(nfT.internalVector(), mesh, "nfT");
             }
 
             runTime.write();

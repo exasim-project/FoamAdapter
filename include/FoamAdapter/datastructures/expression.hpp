@@ -8,7 +8,7 @@
 
 namespace dsl = NeoN::dsl;
 
-namespace NeoN::finiteVolume::cellCentred
+namespace FoamAdapter
 {
 
 /*@brief extends expression by giving access to assembled matrix
@@ -17,23 +17,24 @@ namespace NeoN::finiteVolume::cellCentred
  * for dependent operations like discrete momentum fields
  * needs storage for assembled matrix? and whether update is needed like for rAU and HbyA
  */
-template<typename ValueType, typename IndexType = localIdx>
+template<typename ValueType, typename IndexType = NeoN::localIdx>
 class Expression
 {
 public:
 
     Expression(
         dsl::Expression<ValueType> expr,
-        VolumeField<ValueType>& psi,
-        const Dictionary& fvSchemes,
-        const Dictionary& fvSolution
+        NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi,
+        const NeoN::Dictionary& fvSchemes,
+        const NeoN::Dictionary& fvSolution
     )
         : psi_(psi)
         , expr_(expr)
         , fvSchemes_(fvSchemes)
         , fvSolution_(fvSolution)
-        , sparsityPattern_(SparsityPattern::readOrCreate(psi.mesh()))
-        , ls_(la::createEmptyLinearSystem<ValueType, localIdx, SparsityPattern>(
+        , sparsityPattern_(NeoN::finiteVolume::cellCentred::SparsityPattern::readOrCreate(psi.mesh()))
+        , ls_(NeoN::la::createEmptyLinearSystem<ValueType, NeoN::localIdx,
+              NeoN::finiteVolume::cellCentred::SparsityPattern>(
               *sparsityPattern_.get()
           ))
     {
@@ -51,8 +52,8 @@ public:
 
     ~Expression() = default;
 
-    [[nodiscard]] la::LinearSystem<ValueType, IndexType>& linearSystem() { return ls_; }
-    [[nodiscard]] SparsityPattern& sparsityPattern()
+    [[nodiscard]] NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() { return ls_; }
+    [[nodiscard]] NeoN::finiteVolume::cellCentred::SparsityPattern& sparsityPattern()
     {
         if (!sparsityPattern_)
         {
@@ -61,12 +62,12 @@ public:
         return *sparsityPattern_;
     }
 
-    VolumeField<ValueType>& getVector() { return this->psi_; }
+    NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& getVector() { return this->psi_; }
 
-    const VolumeField<ValueType>& getVector() const { return this->psi_; }
+    const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& getVector() const { return this->psi_; }
 
-    [[nodiscard]] const la::LinearSystem<ValueType, IndexType>& linearSystem() const { return ls_; }
-    [[nodiscard]] const SparsityPattern& sparsityPattern() const
+    [[nodiscard]] const NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() const { return ls_; }
+    [[nodiscard]] const NeoN::finiteVolume::cellCentred::SparsityPattern& sparsityPattern() const
     {
         if (!sparsityPattern_)
         {
@@ -75,17 +76,17 @@ public:
         return *sparsityPattern_;
     }
 
-    const Executor& exec() const { return ls_.exec(); }
+    const NeoN::Executor& exec() const { return ls_.exec(); }
 
 
-    void assemble(scalar t, scalar dt)
+    void assemble(NeoN::scalar t, NeoN::scalar dt)
     {
         auto vol = psi_.mesh().cellVolumes().view();
         auto expSource = expr_.explicitOperation(psi_.mesh().nCells());
         expr_.explicitOperation(expSource, t, dt);
         auto expSourceView = expSource.view();
-        fill(ls_.rhs(), zero<ValueType>());
-        fill(ls_.matrix().values(), zero<ValueType>());
+        fill(ls_.rhs(), NeoN::zero<ValueType>());
+        fill(ls_.matrix().values(), NeoN::zero<ValueType>());
         expr_.implicitOperation(ls_);
         // TODO rename implicitOperation -> assembleLinearSystem
         expr_.implicitOperation(ls_, t, dt);
@@ -94,7 +95,7 @@ public:
         NeoN::parallelFor(
             exec(),
             {0, rhs.size()},
-            KOKKOS_LAMBDA(const localIdx i) { rhs[i] -= expSourceView[i] * vol[i]; }
+            KOKKOS_LAMBDA(const NeoN::localIdx i) { rhs[i] -= expSourceView[i] * vol[i]; }
         );
     }
 
@@ -126,13 +127,13 @@ public:
             NeoN::parallelFor(
                 exec(),
                 {0, rhs.size()},
-                KOKKOS_LAMBDA(const localIdx i) { rhs[i] -= expSourceView[i] * vol[i]; }
+                KOKKOS_LAMBDA(const NeoN::localIdx i) { rhs[i] -= expSourceView[i] * vol[i]; }
             );
         }
     }
 
     // TODO unify with dsl/solver.hpp
-    void solve(scalar, scalar)
+  void solve(NeoN::scalar, NeoN::scalar)
     {
         // dsl::solve(expr_, psi_, t, dt, fvSchemes_, fvSolution_);
         if (expr_.temporalOperators().size() == 0 && expr_.spatialOperators().size() == 0)
@@ -178,19 +179,19 @@ public:
 
 private:
 
-    VolumeField<ValueType>& psi_;
-    dsl::Expression<ValueType> expr_;
-    const Dictionary& fvSchemes_;
-    const Dictionary& fvSolution_;
-    std::shared_ptr<SparsityPattern> sparsityPattern_;
-    la::LinearSystem<ValueType, IndexType> ls_;
+    NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi_;
+    NeoN::dsl::Expression<ValueType> expr_;
+    const NeoN::Dictionary& fvSchemes_;
+    const NeoN::Dictionary& fvSolution_;
+    std::shared_ptr<NeoN::finiteVolume::cellCentred::SparsityPattern> sparsityPattern_;
+    NeoN::la::LinearSystem<ValueType, IndexType> ls_;
 };
 
-template<typename ValueType, typename IndexType = localIdx>
-VolumeField<ValueType>
-operator&(const Expression<ValueType, IndexType> expr, const VolumeField<ValueType>& psi)
+template<typename ValueType, typename IndexType = NeoN::localIdx>
+NeoN::finiteVolume::cellCentred::VolumeField<ValueType>
+operator&(const Expression<ValueType, IndexType> expr, const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi)
 {
-    VolumeField<ValueType> resultVector(
+     NeoN::finiteVolume::cellCentred::VolumeField<ValueType> resultVector(
         psi.exec(),
         "ls_" + psi.name,
         psi.mesh(),

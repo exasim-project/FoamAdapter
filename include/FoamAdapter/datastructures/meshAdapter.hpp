@@ -5,29 +5,31 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
 #include "NeoN/NeoN.hpp"
 
 #include "fvMesh.H"
 
-#include "readers.hpp"
+#include "FoamAdapter/auxiliary/readers.hpp"
 
-namespace Foam
+namespace FoamAdapter
 {
 
-std::vector<NeoN::localIdx> computeOffset(const fvMesh& mesh);
+std::vector<NeoN::localIdx> computeOffset(const Foam::fvMesh& mesh);
 
-int32_t computeNBoundaryFaces(const fvMesh& mesh);
+int32_t computeNBoundaryFaces(const Foam::fvMesh& mesh);
 
 template<typename FieldT>
-FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f);
+FieldT flatBCField(const Foam::fvMesh& mesh, std::function<FieldT(const Foam::fvPatch&)> f);
 
-NeoN::UnstructuredMesh readOpenFOAMMesh(const NeoN::Executor exec, const fvMesh& mesh);
+NeoN::UnstructuredMesh readOpenFOAMMesh(const NeoN::Executor exec, const Foam::fvMesh& mesh);
 
 /** @class MeshAdapter
  */
-class MeshAdapter : public fvMesh
+class MeshAdapter : public Foam::fvMesh
 {
+    using word = Foam::word;
 
     NeoN::UnstructuredMesh nfMesh_;
 
@@ -47,21 +49,21 @@ public:
     // Constructors
 
     //- Construct from IOobject
-    explicit MeshAdapter(const NeoN::Executor exec, const IOobject& io, const bool doInit = true);
+    explicit MeshAdapter(const NeoN::Executor exec, const Foam::IOobject& io, const bool doInit = true);
 
     //- Construct from IOobject or as zero-sized mesh
     //  Boundary is added using addFvPatches() member function
-    MeshAdapter(const NeoN::Executor exec, const IOobject& io, const zero, bool syncPar = true);
+    MeshAdapter(const NeoN::Executor exec, const Foam::IOobject& io, const Foam::zero, bool syncPar = true);
 
     //- Construct from components without boundary.
     //  Boundary is added using addFvPatches() member function
     MeshAdapter(
         const NeoN::Executor exec,
-        const IOobject& io,
-        pointField&& points,
-        faceList&& faces,
-        labelList&& allOwner,
-        labelList&& allNeighbour,
+        const Foam::IOobject& io,
+        Foam::pointField&& points,
+        Foam::faceList&& faces,
+        Foam::labelList&& allOwner,
+        Foam::labelList&& allNeighbour,
         const bool syncPar = true
     );
 
@@ -69,10 +71,10 @@ public:
     //  Boundary is added using addPatches() member function
     MeshAdapter(
         const NeoN::Executor exec,
-        const IOobject& io,
-        pointField&& points,
-        faceList&& faces,
-        cellList&& cells,
+        const Foam::IOobject& io,
+        Foam::pointField&& points,
+        Foam::faceList&& faces,
+        Foam::cellList&& cells,
         const bool syncPar = true
     );
 
@@ -85,5 +87,9 @@ public:
 
     const NeoN::Executor exec() const { return nfMesh().exec(); }
 };
+
+std::unique_ptr<MeshAdapter> createMesh(const NeoN::Executor& exec, const Foam::Time& runTime);
+
+std::unique_ptr<Foam::fvMesh> createMesh(const Foam::Time& runTime);
 
 } // End namespace Foam

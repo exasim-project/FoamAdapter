@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
-#include "FoamAdapter/readers/foamMesh.hpp"
+#include "FoamAdapter/datastructures/meshAdapter.hpp"
 
-namespace Foam
+namespace FoamAdapter
 {
 
 std::vector<NeoN::localIdx> computeOffset(const Foam::fvMesh& mesh)

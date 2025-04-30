@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
-#include "FoamAdapter/conversion/convert.hpp"
+#include "FoamAdapter/auxiliary/convert.hpp"
 
-namespace Foam
+namespace FoamAdapter
 {
 
 NeoN::Vec3 convert(const Foam::vector& in) { return NeoN::Vec3(in[0], in[1], in[2]); };
