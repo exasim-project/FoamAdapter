@@ -3,7 +3,7 @@ Getting started
 
 You can build FoamAdapter by following these steps:
 
-Clone the FoamAdapter repository including NeoFOAM integrated as a submodule:
+Clone the FoamAdapter repository including FoamAdapter integrated as a submodule:
 
    .. code-block:: bash
 
@@ -34,7 +34,7 @@ Additionally, we provide several CMake presets to set commonly required flags if
 
     cmake --list-presets # To list existing presets
 
-To build NeoFOAM for production use, you can use the following commands:
+To build FoamAdapter for production use, you can use the following commands:
 
    .. code-block:: bash
 

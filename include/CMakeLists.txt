@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Unlicense
-# SPDX-FileCopyrightText: 2023 NeoFOAM authors
+# SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
 add_library(FoamAdapter_public_api INTERFACE) # dummy target
 

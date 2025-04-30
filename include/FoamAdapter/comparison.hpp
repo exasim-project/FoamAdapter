@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
-// SPDX-FileCopyrightText: 2023 NeoFOAM authors
-/* This file implements comparison operator to compare OpenFOAM and corresponding NeoFOAM fields
+// SPDX-FileCopyrightText: 2023 FoamAdapter authors
+/* This file implements comparison operator to compare OpenFOAM and corresponding FoamAdapter fields
  * TODO the comparison operator only make sense for testing purposes
  * so this should be part of the tets
  */
@@ -53,7 +53,7 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
         }                                                                                          \
                                                                                                    \
         /* compare boundaryVector */                                                               \
-        /* NeoFOAM boundaries are stored in contiguous memory */                                   \
+        /* FoamAdapter boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
         auto nfBoundaryHost = nf.boundaryData().value().copyToHost();                              \
         auto nfBoundaryView = nfBoundaryHost.view();                                               \
@@ -92,7 +92,7 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
         }                                                                                          \
                                                                                                    \
         /* compare boundaryVector */                                                               \
-        /* NeoFOAM boundaries are stored in contiguous memory */                                   \
+        /* FoamAdapter boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
         auto nfHost = nf.internalVector().copyToHost();                                            \
         auto nfView = nfHost.view();                                                               \

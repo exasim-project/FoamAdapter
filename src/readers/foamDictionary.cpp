@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2024 NeoFOAM authors
+// SPDX-FileCopyrightText: 2024 FoamAdapter authors
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"

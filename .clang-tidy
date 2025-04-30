@@ -10,6 +10,6 @@ CheckOptions:
   - { key: readability-identifier-naming.ParameterCase, value: camelBack }
 FormatStyle: file
 WarningsAsErrors: ''
-HeaderFilterRegex: '.*/include/NeoFOAM/.*'
+HeaderFilterRegex: '.*/include/FoamAdapter/.*'
 InheritParentConfig: true
 User: user

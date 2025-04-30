@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Unlicense
-# SPDX-FileCopyrightText: 2024 NeoFOAM authors
+# SPDX-FileCopyrightText: 2024 FoamAdapter authors
 
 cmake_minimum_required(VERSION 3.22.0)
 
@@ -10,7 +10,7 @@ project(
   DESCRIPTION "An implementation of FOAM")
 
 if(NOT DEFINED ENV{FOAM_SRC})
-  message(FATAL_ERROR "You must source OpenFOAM before building NeoFOAM")
+  message(FATAL_ERROR "You must source OpenFOAM before building FoamAdapter")
 endif()
 if(NOT $ENV{FOAM_API} GREATER_EQUAL 2406)
   message(WARNING "OpenFOAM version < 2406")
@@ -38,7 +38,7 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/NeoN/CMakeLists.txt)
   add_subdirectory(NeoN)
 else()
   message(STATUS "NeoN/CMakeLists.txt not found, using CPM")
-  set(NEOFOAM_NEON_VIA_CPM ON)
+  set(FOAMADAPTER_NEON_VIA_CPM ON)
 endif()
 include(cmake/CxxThirdParty.cmake)
 

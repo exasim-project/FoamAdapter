@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2025 NeoFOAM authors
+// SPDX-FileCopyrightText: 2025 FoamAdapter authors
 
 #include "NeoN/NeoN.hpp"
 
@@ -61,10 +61,10 @@ int main(int argc, char* argv[])
         NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
         auto& solverDict = fvSolutionDict.get<NeoN::Dictionary>("solvers");
 
-        Info << "creating NeoFOAM mesh" << endl;
+        Info << "creating FoamAdapter mesh" << endl;
         NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
-        Info << "creating NeoFOAM pressure fields" << endl;
+        Info << "creating FoamAdapter pressure fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfp =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
                 }
             );
 
-        Info << "creating NeoFOAM velocity fields" << endl;
+        Info << "creating FoamAdapter velocity fields" << endl;
         fvcc::VolumeField<NeoN::Vec3>& nfU =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::Vec3>>(
                 Foam::CreateFromFoamField<Foam::volVectorField> {

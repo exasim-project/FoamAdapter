@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 NeoFOAM authors
+// SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
@@ -38,7 +38,7 @@ TEST_CASE("PressureVelocityCoupling")
     oldOfU.primitiveFieldRef() = Foam::vector(0.0, 0.0, 0.0);
     oldOfU.correctBoundaryConditions();
 
-    Info << "creating NeoFOAM velocity fields" << endl;
+    Info << "creating FoamAdapter velocity fields" << endl;
     fvcc::VolumeField<NeoN::Vec3>& nfU =
         VectorCollection.registerVector<fvcc::VolumeField<NeoN::Vec3>>(
             Foam::CreateFromFoamField<Foam::volVectorField> {
@@ -78,7 +78,7 @@ TEST_CASE("PressureVelocityCoupling")
         Foam::dimensionedScalar("ofNu", Foam::dimensionSet(0, 2, -1, 0, 0), 0.01)
     );
 
-    Info << "creating NeoFOAM nu fields" << endl;
+    Info << "creating FoamAdapter nu fields" << endl;
     Info << "ofNu: " << ofNu << endl;
     auto nfNu = constructSurfaceField(exec, nfMesh, ofNu);
     nfNu.name = "nfNu";
