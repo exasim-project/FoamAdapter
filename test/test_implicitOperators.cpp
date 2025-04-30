@@ -57,7 +57,7 @@ TEST_CASE("Implicit operators")
      *
      * res Ax -b
      */
-    SECTION("ddt_ on " + execName)
+    SECTION("ddt operator on " + execName)
     {
         // setup OpenFOAM
         ofT.oldTime() -= Foam::dimensionedScalar("value", Foam::dimTemperature, 1);
@@ -67,7 +67,6 @@ TEST_CASE("Implicit operators")
 
         // setup NeoFOAM
         auto& nfTOld = fvcc::oldTime(nfT);
-
         nfTOld -= 1.0;
         nfTOld.correctBoundaryConditions();
 
@@ -90,17 +89,13 @@ TEST_CASE("Implicit operators")
 
     SECTION("sourceterm_" + execName)
     {
-        NeoN::scalar coeff = 2.0;
-        fvcc::VolumeField<NeoN::scalar> nfT = constructFrom(exec, nfMesh, ofT);
-
-        NeoN::map(
-            nfT.internalVector(),
-            KOKKOS_LAMBDA(const std::size_t celli) { return celli; }
-        );
         auto coefficients = nfT;
+
+        NeoN::scalar coeff = 2.0;
         NeoN::fill(coefficients.internalVector(), coeff);
+
+        NeoN::Vector<NeoN::scalar> source(exec, nfT.internalVector().size(), 0.0);
         fvcc::SourceTerm sourceTerm(dsl::Operator::Type::Implicit, coefficients, nfT);
-        NeoN::Vector<NeoN::scalar> source(nfT.exec(), nfT.internalVector().size(), 0.0);
         sourceTerm.explicitOperation(source);
 
         auto sourceHost = source.copyToHost();
@@ -179,16 +174,6 @@ TEST_CASE("Implicit operators")
 
     SECTION("solve div" + execName)
     {
-        auto ofT = randomScalarField(runTime, mesh, "T");
-        forAll(ofT, celli)
-        {
-            ofT[celli] = celli;
-        }
-        ofT.correctBoundaryConditions();
-
-        auto nfT = constructFrom(exec, nfMesh, ofT);
-        nfT.correctBoundaryConditions();
-
         Foam::surfaceScalarField ofPhi(
             Foam::IOobject(
                 "phi",
