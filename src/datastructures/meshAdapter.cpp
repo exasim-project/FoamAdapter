@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
-#include "FoamAdapter/meshAdapter.hpp"
+#include "FoamAdapter/datastructures/meshAdapter.hpp"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 
-namespace Foam
+namespace FoamAdapter
 {
 
 template<typename FieldT>
-FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f)
+FieldT flatBCField(const Foam::fvMesh& mesh, std::function<FieldT(const Foam::fvPatch&)> f)
 {
     FieldT result(computeNBoundaryFaces(mesh));
-    const fvBoundaryMesh& bMesh = mesh.boundary();
-    label idx = 0;
+    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
+    Foam::label idx = 0;
     forAll(bMesh, patchI)
     {
-        const fvPatch& patch = bMesh[patchI];
+        const Foam::fvPatch& patch = bMesh[patchI];
         auto pResult = f(patch);
         forAll(pResult, i)
         {
@@ -30,33 +30,33 @@ FieldT flatBCField(const fvMesh& mesh, std::function<FieldT(const fvPatch&)> f)
 
 defineTypeNameAndDebug(MeshAdapter, 0);
 
-std::vector<NeoN::localIdx> computeOffset(const fvMesh& mesh)
+std::vector<NeoN::localIdx> computeOffset(const Foam::fvMesh& mesh)
 {
     std::vector<NeoN::localIdx> result;
-    const fvBoundaryMesh& bMesh = mesh.boundary();
+    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
     result.push_back(0);
     forAll(bMesh, patchI)
     {
         NeoN::localIdx curOffset = result.back();
-        const fvPatch& patch = bMesh[patchI];
+        const Foam::fvPatch& patch = bMesh[patchI];
         result.push_back(curOffset + patch.size());
     }
     return result;
 }
 
-int32_t computeNBoundaryFaces(const fvMesh& mesh)
+int32_t computeNBoundaryFaces(const Foam::fvMesh& mesh)
 {
-    const fvBoundaryMesh& bMesh = mesh.boundary();
+    const Foam::fvBoundaryMesh& bMesh = mesh.boundary();
     int32_t nBoundaryFaces = 0;
     forAll(bMesh, patchI)
     {
-        const fvPatch& patch = bMesh[patchI];
+        const Foam::fvPatch& patch = bMesh[patchI];
         nBoundaryFaces += patch.size();
     }
     return nBoundaryFaces;
 }
 
-NeoN::UnstructuredMesh readOpenFOAMMesh(const NeoN::Executor exec, const fvMesh& mesh)
+NeoN::UnstructuredMesh readOpenFOAMMesh(const NeoN::Executor exec, const Foam::fvMesh& mesh)
 {
     const int32_t nCells = mesh.nCells();
     const int32_t nInternalFaces = mesh.nInternalFaces();
@@ -64,32 +64,40 @@ NeoN::UnstructuredMesh readOpenFOAMMesh(const NeoN::Executor exec, const fvMesh&
     const int32_t nBoundaries = mesh.boundary().size();
     const int32_t nFaces = mesh.nFaces();
 
-    scalarField magFaceAreas(mag(mesh.faceAreas()));
+    Foam::scalarField magFaceAreas(mag(mesh.faceAreas()));
 
-    labelList faceCells =
-        flatBCField<labelList>(mesh, [](const fvPatch& patch) { return patch.faceCells(); });
-    vectorField cf =
-        flatBCField<vectorField>(mesh, [](const fvPatch& patch) { return patch.Cf(); });
-    vectorField cn = flatBCField<vectorField>(
+    Foam::labelList faceCells = flatBCField<Foam::labelList>(
         mesh,
-        [](const fvPatch& patch) { return vectorField(patch.Cn()); }
+        [](const Foam::fvPatch& patch) { return patch.faceCells(); }
     );
-    vectorField sf =
-        flatBCField<vectorField>(mesh, [](const fvPatch& patch) { return patch.Sf(); });
-    scalarField magSf =
-        flatBCField<scalarField>(mesh, [](const fvPatch& patch) { return patch.magSf(); });
-    vectorField nf = flatBCField<vectorField>(
+    Foam::vectorField cf =
+        flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch) { return patch.Cf(); });
+    Foam::vectorField cn = flatBCField<Foam::vectorField>(
         mesh,
-        [](const fvPatch& patch) { return vectorField(patch.nf()); }
+        [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.Cn()); }
     );
-    vectorField delta = flatBCField<vectorField>(
+    Foam::vectorField sf =
+        flatBCField<Foam::vectorField>(mesh, [](const Foam::fvPatch& patch) { return patch.Sf(); });
+    Foam::scalarField magSf = flatBCField<Foam::scalarField>(
         mesh,
-        [](const fvPatch& patch) { return vectorField(patch.delta()); }
+        [](const Foam::fvPatch& patch) { return patch.magSf(); }
     );
-    scalarField weights =
-        flatBCField<scalarField>(mesh, [](const fvPatch& patch) { return patch.weights(); });
-    scalarField deltaCoeffs =
-        flatBCField<scalarField>(mesh, [](const fvPatch& patch) { return patch.deltaCoeffs(); });
+    Foam::vectorField nf = flatBCField<Foam::vectorField>(
+        mesh,
+        [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.nf()); }
+    );
+    Foam::vectorField delta = flatBCField<Foam::vectorField>(
+        mesh,
+        [](const Foam::fvPatch& patch) { return Foam::vectorField(patch.delta()); }
+    );
+    Foam::scalarField weights = flatBCField<Foam::scalarField>(
+        mesh,
+        [](const Foam::fvPatch& patch) { return patch.weights(); }
+    );
+    Foam::scalarField deltaCoeffs = flatBCField<Foam::scalarField>(
+        mesh,
+        [](const Foam::fvPatch& patch) { return patch.deltaCoeffs(); }
+    );
     std::vector<NeoN::localIdx> offset = computeOffset(mesh);
 
 
@@ -127,7 +135,7 @@ NeoN::UnstructuredMesh readOpenFOAMMesh(const NeoN::Executor exec, const fvMesh&
     return uMesh;
 }
 
-MeshAdapter::MeshAdapter(const NeoN::Executor exec, const IOobject& io, const bool doInit)
+MeshAdapter::MeshAdapter(const NeoN::Executor exec, const Foam::IOobject& io, const bool doInit)
     : fvMesh(io, doInit)
     , nfMesh_(readOpenFOAMMesh(exec, *this))
 {
@@ -138,19 +146,24 @@ MeshAdapter::MeshAdapter(const NeoN::Executor exec, const IOobject& io, const bo
 }
 
 
-MeshAdapter::MeshAdapter(const NeoN::Executor exec, const IOobject& io, const zero, bool syncPar)
-    : fvMesh(io, zero {}, syncPar)
+MeshAdapter::MeshAdapter(
+    const NeoN::Executor exec,
+    const Foam::IOobject& io,
+    const Foam::zero,
+    bool syncPar
+)
+    : fvMesh(io, Foam::zero {}, syncPar)
     , nfMesh_(readOpenFOAMMesh(exec, *this))
 {}
 
 
 MeshAdapter::MeshAdapter(
     const NeoN::Executor exec,
-    const IOobject& io,
-    pointField&& points,
-    faceList&& faces,
-    labelList&& allOwner,
-    labelList&& allNeighbour,
+    const Foam::IOobject& io,
+    Foam::pointField&& points,
+    Foam::faceList&& faces,
+    Foam::labelList&& allOwner,
+    Foam::labelList&& allNeighbour,
     const bool syncPar
 )
     : fvMesh(
@@ -167,10 +180,10 @@ MeshAdapter::MeshAdapter(
 
 MeshAdapter::MeshAdapter(
     const NeoN::Executor exec,
-    const IOobject& io,
-    pointField&& points,
-    faceList&& faces,
-    cellList&& cells,
+    const Foam::IOobject& io,
+    Foam::pointField&& points,
+    Foam::faceList&& faces,
+    Foam::cellList&& cells,
     const bool syncPar
 )
     : fvMesh(io, std::move(points), std::move(faces), std::move(cells), syncPar)

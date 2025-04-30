@@ -9,5 +9,11 @@ target_link_libraries(FoamAdapter PUBLIC FoamAdapter_public_api OpenFOAM NeoN)
 
 target_sources(
   FoamAdapter
-  PRIVATE "conversion/convert.cpp" "setup.cpp" "meshAdapter.cpp" "readers/foamDictionary.cpp"
-          "finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.cpp")
+  PRIVATE "algorithms/pressureVelocityCoupling.cpp"
+          "auxiliary/convert.cpp"
+          "auxiliary/foamDictionary.cpp"
+          "auxiliary/setup.cpp"
+          "auxiliary/writers.cpp"
+          "auxiliary/comparison.cpp"
+          # "datastructures/foamMesh.cpp"
+          "datastructures/meshAdapter.cpp")

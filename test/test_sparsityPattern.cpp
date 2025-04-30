@@ -27,8 +27,8 @@ TEST_CASE("sparsityPattern")
 
     auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-    auto meshPtr = Foam::createMesh(exec, runTime);
-    Foam::MeshAdapter& mesh = *meshPtr;
+    auto meshPtr = FoamAdapter::createMesh(exec, runTime);
+    FoamAdapter::MeshAdapter& mesh = *meshPtr;
     auto& nfMesh = mesh.nfMesh();
 
     SECTION("sparsityPattern_" + execName)
@@ -37,7 +37,7 @@ TEST_CASE("sparsityPattern")
         const auto colIdxs = pattern.colIdxs().view();
         const auto rowPtrs = pattern.rowOffs().view();
 
-        forAll(mesh.cellCells(), celli)
+        for (auto celli = 0; mesh.cellCells().size(); celli++)
         {
             std::set<Foam::label> stencilCells;
             stencilCells.insert(celli);

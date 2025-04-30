@@ -13,8 +13,7 @@
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
-
-#include "FoamAdapter/setup.hpp"
+#include "FoamAdapter/FoamAdapter.hpp"
 
 #include "argList.H"
 #include "fvMesh.H"

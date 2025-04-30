@@ -25,7 +25,7 @@ TEST_CASE("read dict")
     subDict.add("subWord", "subWord");
     testDict.add("subDict", subDict);
 
-    NeoN::Dictionary neoDict = Foam::readFoamDictionary(testDict);
+    NeoN::Dictionary neoDict = FoamAdapter::convert(testDict);
 
     REQUIRE(neoDict.get<NeoN::label>("label") == 1);
     REQUIRE(neoDict.get<NeoN::scalar>("scalar") == 2.1);
@@ -43,13 +43,13 @@ TEST_CASE("read dict")
 TEST_CASE("read fvSchemes")
 {
     Foam::Time& runTime = *timePtr;
-    auto meshPtr = Foam::createMesh(NeoN::SerialExecutor {}, runTime);
-    Foam::MeshAdapter& mesh = *meshPtr;
+    auto meshPtr = FoamAdapter::createMesh(NeoN::SerialExecutor {}, runTime);
+    FoamAdapter::MeshAdapter& mesh = *meshPtr;
 
     Foam::dictionary fvSchemes = mesh.schemesDict();
     Foam::Info << "reading fvSchemes" << fvSchemes << Foam::endl;
 
-    NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+    NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
     auto keys = fvSchemesDict.keys();
 
     REQUIRE(fvSchemesDict.subDict("ddtSchemes").get<std::string>("ddt(T)") == "Euler");

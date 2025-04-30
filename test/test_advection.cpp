@@ -69,11 +69,12 @@ TEST_CASE("Advection Equation")
         Foam::label startTimeIndex = 0;
         runTime.setTime(startTime, startTimeIndex);
 
-        std::unique_ptr<Foam::MeshAdapter> meshAdapterPtr = Foam::createMesh(exec, runTime);
-        Foam::MeshAdapter& mesh = *meshAdapterPtr;
+        std::unique_ptr<FoamAdapter::MeshAdapter> meshAdapterPtr =
+            FoamAdapter::createMesh(exec, runTime);
+        FoamAdapter::MeshAdapter& mesh = *meshAdapterPtr;
 
-        NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
-        NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+        NeoN::Dictionary controlDict = FoamAdapter::convert(runTime.controlDict());
+        NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
         fvSchemesDict.get<NeoN::Dictionary>("ddtSchemes").insert("type", timeIntegration);
         // NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
 
@@ -114,15 +115,15 @@ TEST_CASE("Advection Equation")
         Info << "creating FoamAdapter fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfT =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                Foam::CreateFromFoamField<Foam::volScalarField> {
+                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
                     .foamField = T,
                     .name = "nfT"
                 }
             );
-        auto nfPhi0 = Foam::constructSurfaceField(exec, nfMesh, phi0);
-        auto nfPhi = Foam::constructSurfaceField(exec, nfMesh, phi);
+        auto nfPhi0 = FoamAdapter::constructSurfaceField(exec, nfMesh, phi0);
+        auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, phi);
 
         Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
 
@@ -147,7 +148,7 @@ TEST_CASE("Advection Equation")
 
             runTime++;
 
-            Info << "Time = " << runTime.timeName() << endl;
+            Foam::Info << "Time = " << runTime.timeName() << Foam::endl;
 
             // advance Foam fields in time
             {
@@ -158,15 +159,17 @@ TEST_CASE("Advection Equation")
 
             // advance FoamAdapter fields in time
             {
-                dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::imp::div(nfPhi, nfT));
+                NeoN::dsl::Expression eqnSys(
+                    NeoN::dsl::imp::ddt(nfT) + NeoN::dsl::imp::div(nfPhi, nfT)
+                );
 
-                dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
+                NeoN::dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
             }
 
             // for debugging with paraview
             if (runTime.outputTime())
             {
-                Info << "writing nfT fields" << endl;
+                Foam::Info << "writing nfT fields" << Foam::endl;
                 write(nfT.internalVector(), mesh, "nfT_" + execName);
                 T.write(); // for some reason T was not written
             }
@@ -174,8 +177,8 @@ TEST_CASE("Advection Equation")
             runTime.write();
             runTime.printExecutionTime(Info);
         }
-        compare(nfT, T, ApproxScalar(1e-15), false);
+        FoamAdapter::compare(nfT, T, ApproxScalar(1e-15), false);
 
-        Info << "End\n" << endl;
+        Foam::Info << "End\n" << Foam::endl;
     }
 }

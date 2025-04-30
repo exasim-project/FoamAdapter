@@ -3,8 +3,7 @@
 
 #include "NeoN/NeoN.hpp"
 
-#include "FoamAdapter/NeoFoam.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
+#include "FoamAdapter/FoamAdapter.hpp"
 
 
 #include "fvCFD.H"
@@ -35,21 +34,20 @@ int main(int argc, char* argv[])
             fvcc::VectorCollection::instance(db, "VectorCollection");
 
 
-        NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
-        NeoN::Executor exec = createExecutor(runTime.controlDict());
+        NeoN::Dictionary controlDict = FoamAdapter::convert(runTime.controlDict());
+        NeoN::Executor exec = FoamAdapter::createExecutor(runTime.controlDict());
 
-        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
-        Foam::MeshAdapter& mesh = *meshPtr;
+        std::unique_ptr<FoamAdapter::MeshAdapter> meshPtr = FoamAdapter::createMesh(exec, runTime);
+        FoamAdapter::MeshAdapter& mesh = *meshPtr;
 
         Foam::pisoControl piso(mesh);
 
-        auto [adjustTimeStep, maxCo, maxDeltaT] = Foam::timeControls(runTime);
+        auto [adjustTimeStep, maxCo, maxDeltaT] = FoamAdapter::timeControls(runTime);
 
 #include "createFields.H"
 
-
-        NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
-        NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+        NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
+        NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
 
         Info << "creating FoamAdapter mesh" << endl;
         NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
@@ -57,7 +55,7 @@ int main(int argc, char* argv[])
         Info << "creating FoamAdapter fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfT =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                Foam::CreateFromFoamField<Foam::volScalarField> {
+                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
                     .foamField = T,
@@ -68,15 +66,13 @@ int main(int argc, char* argv[])
         nfTOld.internalVector() = nfT.internalVector();
         nfT.correctBoundaryConditions();
 
-        auto nfKappa = Foam::constructSurfaceField(exec, nfMesh, kappa);
-
+        auto nfKappa = FoamAdapter::constructSurfaceField(exec, nfMesh, kappa);
 
         Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
 
-
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-        Info << "\nStarting time loop\n" << endl;
+        Foam::Info << "\nStarting time loop\n" << Foam::endl;
 
         while (runTime.loop())
         {
@@ -86,15 +82,17 @@ int main(int argc, char* argv[])
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
-            Info << "Time = " << runTime.timeName() << nl << endl;
+            Foam::Info << "Time = " << runTime.timeName() << Foam::nl << Foam::endl;
 
-            Foam::fvScalarMatrix TEqn(fvm::ddt(T) - fvm::laplacian(kappa, T));
+            Foam::fvScalarMatrix TEqn(Foam::fvm::ddt(T) - Foam::fvm::laplacian(kappa, T));
 
             TEqn.solve();
 
-            dsl::Expression nfTEqn(dsl::imp::ddt(nfT) - dsl::imp::laplacian(nfKappa, nfT));
+            NeoN::dsl::Expression nfTEqn(
+                NeoN::dsl::imp::ddt(nfT) - NeoN::dsl::imp::laplacian(nfKappa, nfT)
+            );
 
-            dsl::solve(
+            NeoN::dsl::solve(
                 nfTEqn,
                 nfT,
                 t,
@@ -106,14 +104,14 @@ int main(int argc, char* argv[])
             runTime.write();
             if (runTime.outputTime())
             {
-                Info << "writing nfT field" << endl;
+                Foam::Info << "writing nfT field" << Foam::endl;
                 write(nfT.internalVector(), mesh, "nfT");
             }
 
             runTime.printExecutionTime(Info);
         }
 
-        Info << "End\n" << endl;
+        Foam::Info << "End\n" << Foam::endl;
     }
     Kokkos::finalize();
 
