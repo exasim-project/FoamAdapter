@@ -86,7 +86,7 @@ Y88888o.       8 8 8888         ,8 8888       `8b  8 8888         ,8 8888       
   string(APPEND log "\n Third-Party dependencies:")
   string(APPEND log "\n--\tOpenFOAM version = $ENV{FOAM_API}")
   add_separator(log)
-  string(APPEND log "\n NeoFOAM components:")
+  string(APPEND log "\n FoamAdapter components:")
   dump_cmake_variables("^FOAMADAPTER_BUILD" log)
   add_separator(log)
   string(APPEND log "\n NeoN definitions:")

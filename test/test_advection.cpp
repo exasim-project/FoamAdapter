@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 NeoFOAM authors
+// SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
@@ -111,7 +111,7 @@ TEST_CASE("Advection Equation")
         Foam::surfaceScalarField phi0 = phi;
         Foam::volVectorField U0 = U;
 
-        Info << "creating NeoFOAM fields" << endl;
+        Info << "creating FoamAdapter fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfT =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
@@ -156,7 +156,7 @@ TEST_CASE("Advection Equation")
                 TEqn.solve();
             }
 
-            // advance NeoFOAM fields in time
+            // advance FoamAdapter fields in time
             {
                 dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::imp::div(nfPhi, nfT));
 
