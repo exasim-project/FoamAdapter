@@ -5,7 +5,7 @@
 
 FoamAdapter provides platform-portable implementations of common CFD algorithms and solvers using
 [NeoN](https://github.com/exasim-project/NeoN) as a computational backend.
-It provides converters between OpenFOAM and NeoN datastructures, examples, benchmarks and tests.
+Additionally, It implements converters between OpenFOAM and NeoN datastructures such that you can run examples, benchmarks and tests on accelerator devices.
 
 ## Requirements
 
