@@ -4,12 +4,7 @@
 
 #include <type_traits>
 
-#include "NeoN/finiteVolume/cellCentred/fields/volumeField.hpp"
-#include "NeoN/finiteVolume/cellCentred/fields/surfaceField.hpp"
-#include "NeoN/core/dictionary.hpp"
-#include "NeoN/core/executor/executor.hpp"
-#include "NeoN/fields/field.hpp"
-#include "NeoN/core/database/fieldCollection.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"
@@ -67,9 +62,9 @@ auto readVolBoundaryConditions(const NeoN::UnstructuredMesh& nfMesh, const FoamT
              dict.insert("type", std::string("fixedValue"));
              NeoN::TokenList tokenList = dict.template get<NeoN::TokenList>("value");
              type_primitive_t fixedValue {};
-             if (std::is_same<type_primitive_t, NeoN::Vector>::value)
+             if (std::is_same<type_primitive_t, NeoN::Vec3>::value)
              {
-                 NeoN::Vector tmpFixedValue {};
+                 NeoN::Vec3 tmpFixedValue {};
                  tmpFixedValue[0] = tokenList.get<int>(1);
                  tmpFixedValue[1] = tokenList.get<int>(2);
                  tmpFixedValue[2] = tokenList.get<int>(3);
@@ -118,7 +113,7 @@ auto constructFrom(
 
     type_container_t out(exec, in.name(), nfMesh, readVolBoundaryConditions(nfMesh, in));
 
-    out.internalField() = fromFoamField(exec, in.primitiveField());
+    out.internalVector() = fromFoamField(exec, in.primitiveField());
     out.correctBoundaryConditions();
 
     return out;
@@ -185,7 +180,7 @@ auto constructSurfaceField(
     type_container_t
         out(exec, in.name(), nfMesh, std::move(readSurfaceBoundaryConditions(nfMesh, in)));
 
-    Field<foam_primitive_t> flattenedField(out.internalField().size());
+    Field<foam_primitive_t> flattenedField(out.internalVector().size());
     size_t nInternal = nfMesh.nInternalFaces();
 
     forAll(in, facei)
@@ -206,17 +201,17 @@ auto constructSurfaceField(
     }
     assert(idx == flattenedField.size());
 
-    out.internalField() = fromFoamField(exec, flattenedField);
+    out.internalVector() = fromFoamField(exec, flattenedField);
     out.correctBoundaryConditions();
 
     return out;
 }
 
 /**
- * @brief Creates a FieldDocument from an existing Foam Field.
+ * @brief Creates a VectorDocument from an existing Foam Field.
  *
 
- * @return The created FieldDocument.
+ * @return The created VectorDocument.
  */
 template<typename FieldType>
 class CreateFromFoamField
@@ -230,7 +225,7 @@ public:
     std::int64_t iterationIndex = 0;
     std::int64_t subCycleIndex = -1;
 
-    fvcc::FieldDocument operator()(NeoN::Database& db)
+    fvcc::VectorDocument operator()(NeoN::Database& db)
     {
         using type_container_t = typename type_map<FieldType>::container_type;
         type_container_t convertedField = Foam::constructFrom(exec, nfMesh, foamField);
@@ -242,17 +237,17 @@ public:
         const Foam::Time& runTime = mesh.time();
         std::int64_t timeIndex = runTime.timeIndex();
 
-        NeoN::DomainField<typename type_container_t::FieldValueType> domainField(
+        NeoN::Field<typename type_container_t::VectorValueType> field(
             convertedField.exec(),
-            convertedField.internalField(),
-            convertedField.boundaryField()
+            convertedField.internalVector(),
+            convertedField.boundaryData()
         );
 
         type_container_t registeredField(
             convertedField.exec(),
             convertedField.name,
             convertedField.mesh(),
-            domainField,
+            field,
             convertedField.boundaryConditions(),
             db,
             "",
@@ -265,7 +260,7 @@ public:
              {"iterationIndex", iterationIndex},
              {"subCycleIndex", subCycleIndex},
              {"field", registeredField}},
-            fvcc::validateFieldDoc
+            fvcc::validateVectorDoc
         );
     }
 };

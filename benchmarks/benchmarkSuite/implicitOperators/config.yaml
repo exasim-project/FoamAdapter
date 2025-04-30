@@ -1,0 +1,27 @@
+meshes:
+  - 3DCube:
+      N10:
+        Res: 10
+      N20:
+        Res: 20
+      N50:
+        Res: 50
+      N100:
+        Res: 100
+      N200:
+        Res: 200
+  - 2DSquare:
+      N20:
+        Res: 20
+      N50:
+        Res: 50
+      N100:
+        Res: 100
+      N200:
+        Res: 200
+      N500:
+        Res: 500
+      N1000:
+        Res: 1000
+      N2000:
+        Res: 2000

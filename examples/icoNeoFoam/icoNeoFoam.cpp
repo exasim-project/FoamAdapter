@@ -3,7 +3,7 @@
 
 #include "NeoN/NeoN.hpp"
 
-#include "FoamAdapter/FoamAdapter.hpp"
+#include "FoamAdapter/NeoFoam.hpp"
 #include "FoamAdapter/readers/foamDictionary.hpp"
 
 
@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
 
         NeoN::Database db;
 
-        fvcc::FieldCollection& fieldCollection =
-            fvcc::FieldCollection::instance(db, "fieldCollection");
+        fvcc::VectorCollection& vectorCollection =
+            fvcc::VectorCollection::instance(db, "VectorCollection");
 
 
         NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 
         Info << "creating NeoFOAM pressure fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfp =
-            fieldCollection.registerField<fvcc::VolumeField<NeoN::scalar>>(
+            vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
             );
 
         Info << "creating NeoFOAM velocity fields" << endl;
-        fvcc::VolumeField<NeoN::Vector>& nfU =
-            fieldCollection.registerField<fvcc::VolumeField<NeoN::Vector>>(
+        fvcc::VolumeField<NeoN::Vec3>& nfU =
+            vectorCollection.registerVector<fvcc::VolumeField<NeoN::Vec3>>(
                 Foam::CreateFromFoamField<Foam::volVectorField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
@@ -88,8 +88,8 @@ int main(int argc, char* argv[])
 
         auto nuBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<NeoN::scalar>>(nfMesh);
         fvcc::SurfaceField<NeoN::scalar> nfNu(exec, "nfNu", nfMesh, nuBCs);
-        fill(nfNu.internalField(), nu.value());
-        fill(nfNu.boundaryField().value(), nu.value());
+        fill(nfNu.internalVector(), nu.value());
+        fill(nfNu.boundaryData().value(), nu.value());
 
         NeoN::scalar endTime = controlDict.get<NeoN::scalar>("endTime");
 
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
             Foam::scalar dt = runTime.deltaT().value();
 
             auto& nfOldU = fvcc::oldTime(nfU);
-            nfOldU.internalField() = nfU.internalField();
+            nfOldU.internalVector() = nfU.internalVector();
             std::tie(adjustTimeStep, maxCo, maxDeltaT) = timeControls(runTime);
             coNum = fvcc::computeCoNum(nfPhi, dt);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
             Info << "Time = " << runTime.timeName() << nl << endl;
 
             // Momentum predictor
-            fvcc::Expression<NeoN::Vector> UEqn2(
+            fvcc::Expression<NeoN::Vec3> UEqn2(
                 dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
                 nfU,
                 fvSchemesDict,
@@ -190,8 +190,8 @@ int main(int argc, char* argv[])
             if (runTime.outputTime())
             {
                 Info << "writing nfp field" << endl;
-                write(nfp.internalField(), mesh, "nfp");
-                write(nfU.internalField(), mesh, "nfU");
+                write(nfp.internalVector(), mesh, "nfp");
+                write(nfU.internalVector(), mesh, "nfU");
             }
 
             runTime.printExecutionTime(Info);

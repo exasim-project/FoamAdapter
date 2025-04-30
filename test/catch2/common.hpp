@@ -6,8 +6,7 @@
 #include "FoamAdapter/conversion/convert.hpp"
 
 #include "NeoN/fields/field.hpp"
-#include "NeoN/fields/boundaryFields.hpp"
-#include "NeoN/fields/domainField.hpp"
+#include "NeoN/fields/boundaryData.hpp"
 
 #include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
 #include "NeoN/finiteVolume/cellCentred/interpolation/linear.hpp"
@@ -33,9 +32,9 @@ struct ApproxScalar
 struct ApproxVector
 {
     Foam::scalar margin;
-    bool operator()(NeoN::Vector rhs, Foam::vector lhs) const
+    bool operator()(NeoN::Vec3 rhs, Foam::vector lhs) const
     {
-        NeoN::Vector diff(rhs[0] - lhs[0], rhs[1] - lhs[1], rhs[2] - lhs[2]);
+        NeoN::Vec3 diff(rhs[0] - lhs[0], rhs[1] - lhs[1], rhs[2] - lhs[2]);
 
         return Catch::Approx(0).margin(margin) == mag(diff);
     }

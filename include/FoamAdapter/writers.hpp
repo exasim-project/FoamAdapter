@@ -5,8 +5,7 @@
 #include "fvMesh.H"
 #include "volFields.H"
 
-#include "NeoN/fields/field.hpp"
-#include "NeoN/core/error.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 
@@ -28,7 +27,7 @@ void copy_impl(DestField& dest, const SrcField src)
 }
 }
 
-void write(NeoN::scalarField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
+void write(NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string fieldName)
 {
     Foam::volScalarField* field = mesh.getObjectPtr<Foam::volScalarField>(fieldName);
     if (field)
@@ -54,7 +53,7 @@ void write(NeoN::scalarField& sf, const Foam::fvMesh& mesh, const std::string fi
     }
 }
 
-void write(NeoN::vectorField& sf, const Foam::fvMesh& mesh, const std::string fieldName)
+void write(NeoN::Vector<NeoN::Vec3>& sf, const Foam::fvMesh& mesh, const std::string fieldName)
 {
     Foam::volVectorField* field = mesh.getObjectPtr<Foam::volVectorField>(fieldName);
     if (field)

@@ -3,15 +3,8 @@
 
 #include <vector>
 
-#include <catch2/catch_session.hpp>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators_all.hpp>
-#include <catch2/matchers/catch_matchers_all.hpp>
-#include "catch2/common.hpp"
 
-#include "FoamAdapter/setup.hpp"
-#include "FoamAdapter/comparison.hpp"
-#include "FoamAdapter/meshAdapter.hpp"
+#include "common.hpp"
 
 
 namespace fvcc = NeoN::finiteVolume::cellCentred;
@@ -22,13 +15,7 @@ extern Foam::fvMesh* meshPtr; // A single mesh object
 
 TEST_CASE("unstructuredMesh")
 {
-    NeoN::Executor exec = GENERATE(
-        NeoN::Executor(NeoN::CPUExecutor {}),
-        NeoN::Executor(NeoN::SerialExecutor {}),
-        NeoN::Executor(NeoN::GPUExecutor {})
-    );
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, *timePtr);
     const Foam::fvMesh& ofMesh = *meshPtr;
@@ -255,7 +242,7 @@ TEST_CASE("fvccGeometryScheme")
         scheme.update(); // make sure it uptodate
         auto foamWeights = mesh.weights();
 
-        auto weightsHost = scheme.weights().internalField().copyToHost();
+        auto weightsHost = scheme.weights().internalVector().copyToHost();
         std::span<Foam::scalar> sFoamWeights(
             foamWeights.primitiveFieldRef().data(),
             foamWeights.size()
@@ -273,7 +260,7 @@ TEST_CASE("fvccGeometryScheme")
         scheme.update(); // make sure it uptodate
         auto foamWeights = mesh.weights();
 
-        auto weightsHost = scheme.weights().internalField().copyToHost();
+        auto weightsHost = scheme.weights().internalVector().copyToHost();
         std::span<Foam::scalar> sFoamWeights(
             foamWeights.primitiveFieldRef().data(),
             foamWeights.size()

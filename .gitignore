@@ -102,3 +102,15 @@ benchmark/matrixAssembly/results
 
 */0/
 constant/polyMesh
+
+# benchmark intermediate files
+benchmarks/benchmarkSuite/explicitOperators/meshes
+benchmarks/benchmarkSuite/explicitOperators/cases
+
+benchmarks/benchmarkSuite/implicitOperators/meshes
+benchmarks/benchmarkSuite/implicitOperators/cases
+
+benchmarks/benchmarkSuite/dsl/meshes
+benchmarks/benchmarkSuite/dsl/cases
+
+*.log

@@ -11,8 +11,7 @@
 
 #include "Field.H"
 
-#include "NeoN/fields/field.hpp"
-#include "NeoN/core/primitives/label.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include "FoamAdapter/conversion/convert.hpp"
 #include "FoamAdapter/conversion/type_conversion.hpp"
@@ -23,7 +22,7 @@ namespace Foam
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 #define FIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                                  \
-    bool operator==(const NeoN::Field<NF_TYPE>& nf, const Foam::Field<OF_TYPE>& of)                \
+    bool operator==(const NeoN::Vector<NF_TYPE>& nf, const Foam::Field<OF_TYPE>& of)               \
     {                                                                                              \
         auto nfHost = nf.copyToHost();                                                             \
         auto nfView = nfHost.view();                                                               \
@@ -40,7 +39,7 @@ namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 FIELD_EQUALITY_OPERATOR(NeoN::label, Foam::label)
 FIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
-FIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
+FIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
 
 #define VOLGEOFIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                            \
     bool operator==(                                                                               \
@@ -48,15 +47,15 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
         const Foam::GeometricField<OF_TYPE, Foam::fvPatchField, Foam::volMesh>& of                 \
     )                                                                                              \
     {                                                                                              \
-        if (nf.internalField() != of.internalField())                                              \
+        if (nf.internalVector() != of.internalField())                                             \
         {                                                                                          \
             return false;                                                                          \
         }                                                                                          \
                                                                                                    \
-        /* compare boundaryField */                                                                \
+        /* compare boundaryVector */                                                               \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
-        auto nfBoundaryHost = nf.boundaryField().value().copyToHost();                             \
+        auto nfBoundaryHost = nf.boundaryData().value().copyToHost();                              \
         auto nfBoundaryView = nfBoundaryHost.view();                                               \
         NeoN::label pFacei = 0;                                                                    \
         for (const auto& patch : of.boundaryField())                                               \
@@ -76,7 +75,7 @@ FIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
     }
 
 VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
-VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
+VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
 
 /*
  *
@@ -87,17 +86,17 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
         const Foam::GeometricField<OF_TYPE, Foam::fvsPatchField, Foam::surfaceMesh>& of            \
     )                                                                                              \
     {                                                                                              \
-        if (nf.internalField() != of.internalField())                                              \
+        if (nf.internalVector() != of.internalField())                                             \
         {                                                                                          \
             return false;                                                                          \
         }                                                                                          \
                                                                                                    \
-        /* compare boundaryField */                                                                \
+        /* compare boundaryVector */                                                               \
         /* NeoFOAM boundaries are stored in contiguous memory */                                   \
         /* whereas OpenFOAM boundaries are stored in a vector of patches */                        \
-        auto nfHost = nf.internalField().copyToHost();                                             \
+        auto nfHost = nf.internalVector().copyToHost();                                            \
         auto nfView = nfHost.view();                                                               \
-        NeoN::label nInternalFaces = nf.internalField().size();                                    \
+        NeoN::label nInternalFaces = nf.internalVector().size();                                   \
         NeoN::label pFacei = nInternalFaces;                                                       \
         for (const auto& patch : of.boundaryField())                                               \
         {                                                                                          \
@@ -116,6 +115,6 @@ VOLGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
     }
 
 SURFGEOFIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar)
-SURFGEOFIELD_EQUALITY_OPERATOR(NeoN::Vector, Foam::vector)
+SURFGEOFIELD_EQUALITY_OPERATOR(NeoN::Vec3, Foam::vector)
 
 } // namespace Foam

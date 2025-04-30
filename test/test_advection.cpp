@@ -4,20 +4,7 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "NeoN/dsl/expression.hpp"
-#include "NeoN/dsl/solver.hpp"
-#include "NeoN/dsl/ddt.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
-
-#include "NeoN/dsl/implicit.hpp"
-#include "NeoN/dsl/explicit.hpp"
-
-
-#include "FoamAdapter/FoamAdapter.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
-
 #include "common.hpp"
-
 
 using Foam::Info;
 using Foam::endl;
@@ -66,14 +53,10 @@ TEST_CASE("Advection Equation")
     Foam::Time& runTime = *timePtr;
 
     NeoN::Database db;
-    fvcc::FieldCollection& fieldCollection = fvcc::FieldCollection::instance(db, "fieldCollection");
+    fvcc::VectorCollection& vectorCollection =
+        fvcc::VectorCollection::instance(db, "VectorCollection");
 
-    NeoN::Executor exec = GENERATE(NeoN::Executor(NeoN::SerialExecutor {})
-                                   // NeoN::Executor(NeoN::CPUExecutor {}),
-                                   // NeoN::Executor(NeoN::GPUExecutor {})
-    );
-
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     // std::string timeIntegration = GENERATE(std::string("forwardEuler"),
     // std::string("Runge-Kutta"));
@@ -92,7 +75,7 @@ TEST_CASE("Advection Equation")
         NeoN::Dictionary controlDict = Foam::readFoamDictionary(runTime.controlDict());
         NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
         fvSchemesDict.get<NeoN::Dictionary>("ddtSchemes").insert("type", timeIntegration);
-        NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
+        // NeoN::Dictionary fvSolutionDict = Foam::readFoamDictionary(mesh.solutionDict());
 
         NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
@@ -130,7 +113,7 @@ TEST_CASE("Advection Equation")
 
         Info << "creating NeoFOAM fields" << endl;
         fvcc::VolumeField<NeoN::scalar>& nfT =
-            fieldCollection.registerField<fvcc::VolumeField<NeoN::scalar>>(
+            vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 Foam::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
@@ -145,6 +128,13 @@ TEST_CASE("Advection Equation")
 
         while (runTime.run())
         {
+            NeoN::Dictionary fvSolutionDict {
+                {{"solver", std::string {"Ginkgo"}},
+                 {"type", "solver::Bicgstab"},
+                 {"criteria",
+                  NeoN::Dictionary {{{"iteration", 100}, {"relative_residual_norm", 1e-8}}}}}
+            };
+
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
@@ -152,8 +142,8 @@ TEST_CASE("Advection Equation")
             U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
             phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
 
-            nfPhi.internalField() =
-                nfPhi0.internalField() * std::cos(pi * (t + 0.5 * dt) / endTime);
+            nfPhi.internalVector() =
+                nfPhi0.internalVector() * std::cos(pi * (t + 0.5 * dt) / endTime);
 
             runTime++;
 
@@ -177,7 +167,7 @@ TEST_CASE("Advection Equation")
             if (runTime.outputTime())
             {
                 Info << "writing nfT fields" << endl;
-                write(nfT.internalField(), mesh, "nfT_" + execName);
+                write(nfT.internalVector(), mesh, "nfT_" + execName);
                 T.write(); // for some reason T was not written
             }
 
@@ -185,7 +175,6 @@ TEST_CASE("Advection Equation")
             runTime.printExecutionTime(Info);
         }
         compare(nfT, T, ApproxScalar(1e-15), false);
-
 
         Info << "End\n" << endl;
     }
