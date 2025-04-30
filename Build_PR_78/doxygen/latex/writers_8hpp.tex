@@ -1,0 +1,22 @@
+\doxysection{/home/runner/work/\+Foam\+Adapter/\+Foam\+Adapter/include/\+Foam\+Adapter/writers.hpp File Reference}
+\hypertarget{writers_8hpp}{}\label{writers_8hpp}\index{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp@{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/writers.hpp}}
+{\ttfamily \#include "{}fv\+Mesh.\+H"{}}\newline
+{\ttfamily \#include "{}vol\+Fields.\+H"{}}\newline
+{\ttfamily \#include "{}Neo\+N/\+Neo\+N.\+hpp"{}}\newline
+{\ttfamily \#include "{}Foam\+Adapter/conversion/convert.\+hpp"{}}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceFoam}{Foam}}
+\item 
+namespace \mbox{\hyperlink{namespaceFoam_1_1detail}{Foam\+::detail}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class Dest\+Field , class Src\+Field $>$ }\\void \mbox{\hyperlink{namespaceFoam_1_1detail_a2be03afc1ace009438265b3beb3a48f4}{Foam\+::detail\+::copy\+\_\+impl}} (Dest\+Field \&dest, const Src\+Field src)
+\item 
+void \mbox{\hyperlink{namespaceFoam_a77eb355d2b8d0e1d5e5673c6eb3e4bbe}{Foam\+::write}} (Neo\+N\+::scalar\+Vector \&sf, const Foam\+::fv\+Mesh \&mesh, const std\+::string field\+Name)
+\item 
+void \mbox{\hyperlink{namespaceFoam_a71c83b601f8dc7bda83de4e5e031c09c}{Foam\+::write}} (Neo\+N\+::\+Vector$<$ Neo\+N\+::\+Vec3 $>$ \&sf, const Foam\+::fv\+Mesh \&mesh, const std\+::string field\+Name)
+\end{DoxyCompactItemize}

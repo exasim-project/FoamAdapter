@@ -1,0 +1,49 @@
+\doxysection{pressure\+Velocity\+Coupling.\+hpp}
+\hypertarget{pressureVelocityCoupling_8hpp_source}{}\label{pressureVelocityCoupling_8hpp_source}\index{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp@{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp}}
+\mbox{\hyperlink{pressureVelocityCoupling_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00001}00001\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ GPL-\/3.0-\/or-\/later}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00002}00002\ \textcolor{comment}{//\ SPDX-\/FileCopyrightText:\ 2025\ FoamAdapter\ authors}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00004}00004\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{expression_8hpp}{FoamAdapter/expression.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}NeoN/NeoN.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00009}00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred}{NeoN::finiteVolume::cellCentred}}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00010}00010\ \{}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00012}00012\ \textcolor{comment}{/*\ @brief}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00013}00013\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00014}00014\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00015}\mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a71e09fbd041a24363d9b1dabc37a0516}{00015}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a71e09fbd041a24363d9b1dabc37a0516}{constrainHbyA}}(}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00016}00016\ \ \ \ \ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<Vec3>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{HbyA}},}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00017}00017\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<Vec3>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{U}},}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00018}00018\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<scalar>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{p}}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00019}00019\ );}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00021}00021\ std::tuple<VolumeField<scalar>,\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<Vec3>}}>}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00022}\mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_ab31255fd8af75de282a91b8951c858ba}{00022}}\ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_ab31255fd8af75de282a91b8951c858ba}{discreteMomentumFields}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{Expression<Vec3>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{expr}});}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00024}\mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a252cdfa0bfb7e2a40da5c5508dc6af45}{00024}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a252cdfa0bfb7e2a40da5c5508dc6af45}{updateFaceVelocity}}(}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00025}00025\ \ \ \ \ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{SurfaceField<scalar>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{phi}},}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00026}00026\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{SurfaceField<scalar>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{predictedPhi}},}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00027}00027\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{Expression<scalar>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{expr}}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00028}00028\ );}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00030}\mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a7a7304a04b3e9b46dc7ca12bd2a27cf7}{00030}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a7a7304a04b3e9b46dc7ca12bd2a27cf7}{updateVelocity}}(}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00031}00031\ \ \ \ \ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<Vec3>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{U}},}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00032}00032\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<Vec3>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{HbyA}},}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00033}00033\ \ \ \ \ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<scalar>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{rAU}},}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00034}00034\ \ \ \ \ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<scalar>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{p}}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00035}00035\ );}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00038}00038\ \textcolor{comment}{/*\ @brief\ Reimplementation\ of\ OpenFOAMs\ fvMatrix.flux()}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00039}00039\ \textcolor{comment}{\ *\ @return\ flux\ surface\ field}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00040}00040\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00041}\mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a4ff7acb5abc20807253f06a3bd4e2304}{00041}}\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{SurfaceField<scalar>}}\ \mbox{\hyperlink{namespaceNeoN_1_1finiteVolume_1_1cellCentred_a4ff7acb5abc20807253f06a3bd4e2304}{flux}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{VolumeField<Vec3>}}\&\ \mbox{\hyperlink{classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression}{volField}});}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00043}00043\ \}}
+
+\end{DoxyCode}
