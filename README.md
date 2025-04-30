@@ -27,7 +27,7 @@ We provide several Cmake presets to set commmonly required flags for building Fo
 ## Structure
 
 The repository is structured in the following way:
-- src and include implement common functionality to copy data between OpenFOAM and NeoN
-- tests demonstrating that FoamAdapter and OpenFOAM deliver identical results are provided by this repository in the test folder.
-- examples provides examples of how FoamAdapter and FoamAdapter can be used for writing applications
-- tutorials provides tutorial cases which can be run like typical OpenFOAM cases
+- *src* and *include* implement common functionality to copy data between OpenFOAM and NeoN
+- *tests* demonstrating that FoamAdapter and OpenFOAM deliver identical results are provided by this repository in the test folder.
+- *examples* provides examples of how FoamAdapter can be used for writing applications
+- *tutorials** provides tutorial cases which can be run like typical OpenFOAM cases
