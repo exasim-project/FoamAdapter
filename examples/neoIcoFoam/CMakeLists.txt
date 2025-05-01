@@ -2,6 +2,6 @@
 #
 # SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
-add_executable(icoNeoFoam icoNeoFoam.cpp)
+add_executable(neoIcoFoam neoIcoFoam.cpp)
 
-target_link_libraries(icoNeoFoam FoamAdapter)
+target_link_libraries(neoIcoFoam FoamAdapter)
