@@ -34,8 +34,10 @@ TEST_CASE("sparsityPattern")
     SECTION("sparsityPattern_" + execName)
     {
         fvcc::SparsityPattern pattern(nfMesh);
-        const auto colIdxs = pattern.colIdxs().view();
-        const auto rowPtrs = pattern.rowOffs().view();
+        const auto hostColIdxs = pattern.colIdxs().copyToHost();
+        const auto hostRowPtrs = pattern.rowOffs().copyToHost();
+        const auto colIdxs = hostColIdxs.view();
+        const auto rowPtrs = hostRowPtrs.view();
 
         REQUIRE(colIdxs.size() == mesh.nCells() + 2 * mesh.nInternalFaces());
         REQUIRE(rowPtrs.size() == mesh.nCells() + 1);
