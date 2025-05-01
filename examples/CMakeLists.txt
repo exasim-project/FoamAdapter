@@ -2,5 +2,5 @@
 # SPDX-FileCopyrightText: 2024 FoamAdapter authors
 
 add_subdirectory(scalarAdvection)
-add_subdirectory(icoNeoFoam)
+add_subdirectory(neoIcoFoam)
 add_subdirectory(heatTransfer)
