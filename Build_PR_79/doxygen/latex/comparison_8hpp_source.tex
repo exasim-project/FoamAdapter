@@ -7,122 +7,36 @@
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00003}00003\ \textcolor{comment}{//\ SPDX-\/FileCopyrightText:\ 2023\ FoamAdapter\ authors}}
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00004}00004\ \textcolor{comment}{/*\ This\ file\ implements\ comparison\ operator\ to\ compare\ OpenFOAM\ and\ corresponding\ FoamAdapter\ fields}}
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00005}00005\ \textcolor{comment}{\ *\ TODO\ the\ comparison\ operator\ only\ make\ sense\ for\ testing\ purposes}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00006}00006\ \textcolor{comment}{\ *\ so\ this\ should\ be\ part\ of\ the\ tets}}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00006}00006\ \textcolor{comment}{\ *\ so\ this\ should\ be\ part\ of\ the\ tests}}
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00007}00007\ \textcolor{comment}{\ */}}
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00008}00008\ \textcolor{preprocessor}{\#pragma\ once}}
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00009}00009\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00010}00010\ \textcolor{preprocessor}{\#include\ <span>}}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}NeoN/NeoN.hpp"{}}}
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00011}00011\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}NeoN/NeoN.hpp"{}}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00013}00013\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00014}00014\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{convert_8hpp}{FoamAdapter/auxiliary/convert.hpp}}"{}}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00015}00015\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{type__conversion_8hpp}{FoamAdapter/auxiliary/type\_conversion.hpp}}"{}}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00016}00016\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00017}00017\ \textcolor{preprocessor}{\#include\ "{}Field.H"{}}}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}GeometricField.H"{}}}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}volMesh.H"{}}}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00014}00014\ \textcolor{preprocessor}{\#include\ "{}Field.H"{}}}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00016}00016\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoamAdapter}{FoamAdapter}}}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00017}00017\ \{}
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00018}00018\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00019}00019\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoamAdapter}{FoamAdapter}}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00020}00020\ \{}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00021}00021\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00022}00022\ \textcolor{keyword}{namespace\ }fvcc\ =\ NeoN::finiteVolume::cellCentred;}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00019}00019\ \textcolor{keyword}{namespace\ }fvcc\ =\ NeoN::finiteVolume::cellCentred;}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00021}00021\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NT,\ \textcolor{keyword}{typename}\ OT>}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00022}\mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{00022}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{operator==}}(\textcolor{keyword}{const}\ NeoN::Vector<NT>\&\ nf,\ \textcolor{keyword}{const}\ Foam::Field<OT>\&\ of);}
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00023}00023\ }
 \DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00024}00024\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NT,\ \textcolor{keyword}{typename}\ OT>}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00025}\mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{00025}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{operator==}}(\textcolor{keyword}{const}\ NeoN::Vector<NT>\&\ nf,\ \textcolor{keyword}{const}\ Foam::Field<OT>\&\ of);}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00026}00026\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00027}00027\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NT,\ \textcolor{keyword}{typename}\ OT>}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00028}\mbox{\hyperlink{namespaceFoamAdapter_ad1fb93c62a9f4dcc22f47fc524c9a80e}{00028}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{operator==}}(}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00029}00029\ \ \ \ \ fvcc::VolumeField<NT>\&\ nf,}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00030}00030\ \ \ \ \ \textcolor{keyword}{const}\ Foam::GeometricField<OT,\ Foam::fvPatchField,\ Foam::volMesh>\&\ of}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00031}00031\ );}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00032}00032\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00033}00033\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00034}00034\ \textcolor{comment}{//\ \#define\ VOLGEOFIELD\_EQUALITY\_OPERATOR(NF\_TYPE,\ OF\_TYPE)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00035}00035\ \textcolor{comment}{//\ \ \ \ \ bool\ operator==(\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00036}00036\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ fvcc::VolumeField<NF\_TYPE>\&\ nf,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00037}00037\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ const\ Foam::GeometricField<OF\_TYPE,\ Foam::fvPatchField,\ Foam::volMesh>\&\ of\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00038}00038\ \textcolor{comment}{//\ \ \ \ \ )\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00039}00039\ \textcolor{comment}{//\ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00040}00040\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ if\ (nf.internalVector()\ !=\ of.internalField())\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00041}00041\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00042}00042\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ return\ false;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00043}00043\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00044}00044\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00045}00045\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ compare\ boundaryVector\ */\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00046}00046\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ FoamAdapter\ boundaries\ are\ stored\ in\ contiguous\ memory\ */\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00047}00047\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ whereas\ OpenFOAM\ boundaries\ are\ stored\ in\ a\ vector\ of\ patches\ */\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00048}00048\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ auto\ nfBoundaryHost\ =\ nf.boundaryData().value().copyToHost();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00049}00049\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ auto\ nfBoundaryView\ =\ nfBoundaryHost.view();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00050}00050\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ NeoN::label\ pFacei\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00051}00051\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ for\ (const\ auto\&\ patch\ :\ of.boundaryField())\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00052}00052\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00053}00053\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ int\ patchSize\ =\ patch.size();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00054}00054\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ for\ (const\ auto\&\ patchValue\ :\ patch)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00055}00055\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00056}00056\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (nfBoundaryView[pFacei]\ !=\ convert(patchValue))\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00057}00057\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00058}00058\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ return\ false;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00059}00059\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00060}00060\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pFacei++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00061}00061\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00062}00062\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00063}00063\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00064}00064\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ return\ true;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00065}00065\ \textcolor{comment}{//\ \ \ \ \ \}}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00066}00066\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00067}00067\ \textcolor{comment}{//\ VOLGEOFIELD\_EQUALITY\_OPERATOR(NeoN::scalar,\ Foam::scalar)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00068}00068\ \textcolor{comment}{//\ VOLGEOFIELD\_EQUALITY\_OPERATOR(NeoN::Vec3,\ Foam::vector)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00069}00069\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00070}00070\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00071}00071\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NT,\ \textcolor{keyword}{typename}\ OT>}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00072}\mbox{\hyperlink{namespaceFoamAdapter_a82089b04dc2e3a6ff1c1743b4136905f}{00072}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{operator==}}(}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00073}00073\ \ \ \ \ \textcolor{keyword}{const}\ fvcc::SurfaceField<NT>\&\ nf,}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00074}00074\ \ \ \ \ \textcolor{keyword}{const}\ Foam::GeometricField<OT,\ Foam::fvsPatchField,\ Foam::surfaceMesh>\&\ of}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00075}00075\ );}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00076}00076\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00077}00077\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NT,\ \textcolor{keyword}{typename}\ OT>}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00078}00078\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{operator==}}(}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00079}00079\ \ \ \ \ \textcolor{keyword}{const}\ fvcc::SurfaceField<NT>\&\ nf,}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00080}00080\ \ \ \ \ \textcolor{keyword}{const}\ Foam::GeometricField<OT,\ Foam::fvsPatchField,\ Foam::surfaceMesh>\&\ of}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00081}00081\ );}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00082}00082\ \textcolor{comment}{//\ /*}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00083}00083\ \textcolor{comment}{//\ \ *}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00084}00084\ \textcolor{comment}{//\ \ */}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00085}00085\ \textcolor{comment}{//\ \#define\ SURFGEOFIELD\_EQUALITY\_OPERATOR(NF\_TYPE,\ OF\_TYPE)\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00086}00086\ \textcolor{comment}{//\ \ \ \ \ bool\ operator==(\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00087}00087\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ const\ fvcc::SurfaceField<NF\_TYPE>\&\ nf,\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00088}00088\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ const\ Foam::GeometricField<OF\_TYPE,\ Foam::fvsPatchField,\ Foam::surfaceMesh>\&\ of\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00089}00089\ \textcolor{comment}{//\ \ \ \ \ )\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00090}00090\ \textcolor{comment}{//\ \ \ \ \ \{\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00091}00091\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ if\ (nf.internalVector()\ !=\ of.internalField())\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00092}00092\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \{\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00093}00093\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ return\ false;\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00094}00094\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \}\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00095}00095\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00096}00096\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ compare\ boundaryVector\ */\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00097}00097\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ FoamAdapter\ boundaries\ are\ stored\ in\ contiguous\ memory\ */\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00098}00098\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ whereas\ OpenFOAM\ boundaries\ are\ stored\ in\ a\ vector\ of\ patches\ */\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00099}00099\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ auto\ nfHost\ =\ nf.internalVector().copyToHost();\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00100}00100\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ auto\ nfView\ =\ nfHost.view();\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00101}00101\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ NeoN::label\ nInternalFaces\ =\ nf.internalVector().size();\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00102}00102\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ NeoN::label\ pFacei\ =\ nInternalFaces;\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00103}00103\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ for\ (const\ auto\&\ patch\ :\ of.boundaryField())\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00104}00104\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \{\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00105}00105\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ int\ patchSize\ =\ patch.size();\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00106}00106\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ for\ (const\ auto\&\ patchValue\ :\ patch)\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00107}00107\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00108}00108\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (nfView[pFacei]\ !=\ convert(patchValue))\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00109}00109\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00110}00110\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ return\ false;\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00111}00111\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00112}00112\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pFacei++;\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00113}00113\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00114}00114\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \}\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00115}00115\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00116}00116\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ return\ true;\ \(\backslash\)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00117}00117\ \textcolor{comment}{//\ \ \ \ \ \}}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00118}00118\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00119}00119\ \textcolor{comment}{//\ SURFGEOFIELD\_EQUALITY\_OPERATOR(NeoN::scalar,\ Foam::scalar)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00120}00120\ \textcolor{comment}{//\ SURFGEOFIELD\_EQUALITY\_OPERATOR(NeoN::Vec3,\ Foam::vector)}}
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00121}00121\ }
-\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00122}00122\ \}\ \textcolor{comment}{//\ namespace\ Foam}}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00025}\mbox{\hyperlink{namespaceFoamAdapter_ad1fb93c62a9f4dcc22f47fc524c9a80e}{00025}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{operator==}}(}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00026}00026\ \ \ \ \ fvcc::VolumeField<NT>\&\ nf,}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00027}00027\ \ \ \ \ \textcolor{keyword}{const}\ Foam::GeometricField<OT,\ Foam::fvPatchField,\ Foam::volMesh>\&\ of}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00028}00028\ );}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00030}00030\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NT,\ \textcolor{keyword}{typename}\ OT>}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00031}\mbox{\hyperlink{namespaceFoamAdapter_a82089b04dc2e3a6ff1c1743b4136905f}{00031}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceFoamAdapter_a9f22c54b08a010fb0c71f78f7b1b8167}{operator==}}(}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00032}00032\ \ \ \ \ \textcolor{keyword}{const}\ fvcc::SurfaceField<NT>\&\ nf,}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00033}00033\ \ \ \ \ \textcolor{keyword}{const}\ Foam::GeometricField<OT,\ Foam::fvsPatchField,\ Foam::surfaceMesh>\&\ of}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00034}00034\ );}
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{comparison_8hpp_source_l00036}00036\ \}\ \textcolor{comment}{//\ namespace\ Foam}}
 
 \end{DoxyCode}

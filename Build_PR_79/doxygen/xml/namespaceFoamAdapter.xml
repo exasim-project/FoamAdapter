@@ -162,7 +162,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="25" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="25" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="22" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="22" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1ad1fb93c62a9f4dcc22f47fc524c9a80e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -192,7 +192,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="28" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="28" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="25" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="25" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a82089b04dc2e3a6ff1c1743b4136905f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -222,7 +222,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="72" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="72" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="31" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="31" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a25a465bba7f6725729af83a99c22f9f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>NeoN::Vec3</type>

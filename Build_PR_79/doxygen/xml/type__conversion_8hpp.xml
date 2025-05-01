@@ -6,7 +6,6 @@
     <includes local="yes">surfaceFields.H</includes>
     <includes local="yes">NeoN/NeoN.hpp</includes>
     <includes refid="convert_8hpp" local="yes">FoamAdapter/auxiliary/convert.hpp</includes>
-    <includedby refid="comparison_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp</includedby>
     <includedby refid="readers_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp</includedby>
     <incdepgraph>
       <node id="5">
@@ -44,13 +43,9 @@
     </incdepgraph>
     <invincdepgraph>
       <node id="2">
-        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp</label>
-        <link refid="comparison_8hpp"/>
-      </node>
-      <node id="3">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp</label>
         <link refid="readers_8hpp"/>
-        <childnode refid="4" relation="include">
+        <childnode refid="3" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -58,10 +53,8 @@
         <link refid="type__conversion_8hpp"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="3" relation="include">
-        </childnode>
       </node>
-      <node id="4">
+      <node id="3">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp</label>
         <link refid="meshAdapter_8hpp"/>
       </node>
