@@ -25,7 +25,8 @@ bool operator==(const NeoN::Vector<NT>& nf, const Foam::Field<OT>& of)
 };
 
 #define FIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                                  \
-    bool operator==(const NeoN::Vector<NF_TYPE>& nf, const Foam::Field<OF_TYPE>& of);
+    template bool                                                                                  \
+    operator== <NF_TYPE, OF_TYPE>(const NeoN::Vector<NF_TYPE>&, const Foam::Field<OF_TYPE>&)
 
 FIELD_EQUALITY_OPERATOR(NeoN::label, Foam::label);
 FIELD_EQUALITY_OPERATOR(NeoN::scalar, Foam::scalar);
@@ -66,8 +67,8 @@ bool operator==(
 }
 
 #define VOLGEOFIELD_EQUALITY_OPERATOR(NF_TYPE, OF_TYPE)                                            \
-    bool operator==(                                                                               \
-        fvcc::VolumeField<NF_TYPE>& nf,                                                            \
+    template bool operator== <NF_TYPE, OF_TYPE>(                                                   \
+        fvcc::VolumeField<NF_TYPE> & nf,                                                           \
         const Foam::GeometricField<OF_TYPE, Foam::fvPatchField, Foam::volMesh>& of                 \
     )
 

@@ -15,7 +15,6 @@
 
 namespace FoamAdapter
 {
-
 namespace fvcc = NeoN::finiteVolume::cellCentred;
 
 template<typename NT, typename OT>
