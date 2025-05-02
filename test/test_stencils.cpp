@@ -35,8 +35,8 @@ TEST_CASE("cell To Face Stencil")
         NeoN::SegmentedVector<NeoN::localIdx, NeoN::localIdx> stencil =
             cellToFaceStencil.computeStencil();
 
-        auto stencilView = stencil.view();
-        Foam::label nFaces = mesh.nFaces();
+        auto hostStencil = stencil.copyToHost();
+        auto stencilView = hostStencil.view();
 
         for (auto celli = 0; celli < mesh.cells().size(); celli++)
         {
