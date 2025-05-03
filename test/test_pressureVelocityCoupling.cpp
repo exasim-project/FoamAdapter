@@ -5,7 +5,7 @@
                             // a custom main
 
 #include "common.hpp"
-
+#include "constrainHbyA.H"
 
 using Foam::Info;
 using Foam::endl;
@@ -34,6 +34,7 @@ TEST_CASE("PressureVelocityCoupling")
     auto nfMesh = mesh.nfMesh();
 
     auto ofU = randomVectorField(runTime, mesh, "ofU");
+    auto ofp = randomScalarField(runTime, mesh, "ofp");
     // a predictable field is simpler to debug
     // forAll(ofU, celli)
     // {
@@ -54,6 +55,15 @@ TEST_CASE("PressureVelocityCoupling")
                 .name = "nfU"
             }
         );
+    Info << "creating FoamAdapter pressure fields" << endl;
+    auto nfp = VectorCollection.registerVector<nnfvcc::VolumeField<NeoN::scalar>>(
+        FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
+            .exec = exec,
+            .nfMesh = nfMesh,
+            .foamField = ofp,
+            .name = "nfp"
+        }
+    );
 
     auto& nfOldU = fvcc::oldTime(nfU);
     NeoN::fill(nfOldU.internalVector(), NeoN::Vec3(0.0, 0.0, 0.0));
@@ -167,6 +177,43 @@ TEST_CASE("PressureVelocityCoupling")
                 REQUIRE(hostnfHbyA.view()[celli][0] == Catch::Approx(HbyA[celli][0]).margin(1e-14));
                 REQUIRE(hostnfHbyA.view()[celli][1] == Catch::Approx(HbyA[celli][1]).margin(1e-14));
                 REQUIRE(hostnfHbyA.view()[celli][2] == Catch::Approx(HbyA[celli][2]).margin(1e-14));
+            }
+
+            SECTION("constrainHbyA")
+            {
+                Foam::volVectorField ofConstrainHbyA(
+                    "ofConstrainHbyA",
+                    Foam::constrainHbyA(forAU * ofUEqn.H(), ofU, ofp)
+                );
+                nffvcc::constrainHbyA(nfHbyA, nfU, nfp);
+                auto hostBCnfHbyA = nfHbyA.boundaryData().value().copyToHost();
+
+                forAll(ofConstrainHbyA.boundaryField(), patchi)
+                {
+                    REQUIRE(
+                        ofConstrainHbyA.boundaryField()[patchi].size()
+                        == nfHbyA.boundaryData().nBoundaryFaces(patchi)
+                    );
+                    const Foam::fvPatchVectorField& ofConstrainHbyAPatch =
+                        ofConstrainHbyA.boundaryField()[patchi];
+                    auto [start, end] = nfHbyA.boundaryData().range(patchi);
+
+                    forAll(ofConstrainHbyAPatch, bfacei)
+                    {
+                        REQUIRE(
+                            hostBCnfHbyA.view()[start + bfacei][0]
+                            == Catch::Approx(ofConstrainHbyAPatch[bfacei][0]).margin(1e-14)
+                        );
+                        REQUIRE(
+                            hostBCnfHbyA.view()[start + bfacei][1]
+                            == Catch::Approx(ofConstrainHbyAPatch[bfacei][1]).margin(1e-14)
+                        );
+                        REQUIRE(
+                            hostBCnfHbyA.view()[start + bfacei][2]
+                            == Catch::Approx(ofConstrainHbyAPatch[bfacei][2]).margin(1e-14)
+                        );
+                    }
+                }
             }
         }
 

@@ -20,15 +20,19 @@ void constrainHbyA(
     auto HbyAin = HbyA.internalVector().view();
     auto [HbyABcValue, UBcValue] = views(HbyA.boundaryData().value(), U.boundaryData().value());
 
-    const auto& HbyABCs = HbyA.boundaryConditions();
+    const auto& UBCs = U.boundaryConditions();
 
-    for (auto patchi = 0; patchi < HbyABCs.size(); ++patchi)
+    for (auto patchi = 0; patchi < UBCs.size(); ++patchi)
     {
-        parallelFor(
-            HbyA.exec(),
-            HbyA.boundaryData().range(patchi),
-            KOKKOS_LAMBDA(const size_t bfacei) { HbyABcValue[bfacei] = UBcValue[bfacei]; }
-        );
+        bool assignable = UBCs[patchi].attributes().get<bool>("assignable");
+        if (!assignable)
+        {
+            parallelFor(
+                HbyA.exec(),
+                HbyA.boundaryData().range(patchi),
+                KOKKOS_LAMBDA(const size_t bfacei) { HbyABcValue[bfacei] = UBcValue[bfacei]; }
+            );
+        }
     }
 }
 
