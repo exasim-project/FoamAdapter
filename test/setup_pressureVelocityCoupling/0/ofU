@@ -22,8 +22,22 @@ boundaryField
 {
     fixedWalls
     {
-        // type            zeroGradient;
+        type            noSlip;
         // type               noSlip;
+        // type            fixedValue;
+        // value           uniform (1.0 0.0 0.0); // note 1.0 is interpreted as an int
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+        // type               noSlip;
+        // type            fixedValue;
+        // value           uniform (1.0 0.0 0.0); // note 1.0 is interpreted as an int
+    }
+
+    inlet
+    {
         type            fixedValue;
         value           uniform (1.0 0.0 0.0); // note 1.0 is interpreted as an int
     }

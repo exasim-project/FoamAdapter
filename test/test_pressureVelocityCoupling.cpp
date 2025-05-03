@@ -34,6 +34,12 @@ TEST_CASE("PressureVelocityCoupling")
     auto nfMesh = mesh.nfMesh();
 
     auto ofU = randomVectorField(runTime, mesh, "ofU");
+    // a predictable field is simpler to debug
+    // forAll(ofU, celli)
+    // {
+    //     ofU[celli] = Foam::vector(celli, celli, celli);
+    // }
+    ofU.correctBoundaryConditions();
     auto& oldOfU = ofU.oldTime();
     oldOfU.primitiveFieldRef() = Foam::vector(0.0, 0.0, 0.0);
     oldOfU.correctBoundaryConditions();
@@ -119,7 +125,7 @@ TEST_CASE("PressureVelocityCoupling")
             forAU.write();
 
             auto hostnfRAU = nfrAU.internalVector().copyToHost();
-            write(nfrAU.internalVector(), mesh, "nfrAU");
+            write(nfrAU.internalVector(), mesh, "nfrAU" + execName);
 
             for (size_t celli = 0; celli < hostnfRAU.size(); celli++)
             {
@@ -138,7 +144,7 @@ TEST_CASE("PressureVelocityCoupling")
             forAU.write();
 
             auto hostnfRAU = nfrAU.internalVector().copyToHost();
-            write(nfrAU.internalVector(), mesh, "nfrAU");
+            write(nfrAU.internalVector(), mesh, "nfrAU" + execName);
 
             for (size_t celli = 0; celli < hostnfRAU.size(); celli++)
             {
@@ -154,7 +160,7 @@ TEST_CASE("PressureVelocityCoupling")
             HbyA.write();
 
             auto hostnfHbyA = nfHbyA.internalVector().copyToHost();
-            write(nfHbyA.internalVector(), mesh, "nfHbyA");
+            write(nfHbyA.internalVector(), mesh, "nfHbyA" + execName);
 
             for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
             {
@@ -176,7 +182,7 @@ TEST_CASE("PressureVelocityCoupling")
             HbyA.write();
 
             auto hostnfHbyA = nfHbyA.internalVector().copyToHost();
-            write(nfHbyA.internalVector(), mesh, "nfHbyA");
+            write(nfHbyA.internalVector(), mesh, "nfHbyA" + execName);
 
             for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
             {
