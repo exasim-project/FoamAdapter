@@ -155,6 +155,19 @@ void updateFaceVelocity(
             iPhi[facei] = iPredPhi[facei] - (Upper * internalP[nei] - Lower * internalP[own]);
         }
     );
+
+    auto [bvalue, bPredValue] =
+        views(phi.boundaryData().value(), predictedPhi.boundaryData().value());
+
+    NeoN::parallelFor(
+        exec,
+        {nInternalFaces, iPhi.size()},
+        KOKKOS_LAMBDA(const size_t facei) {
+            auto bfacei = facei - nInternalFaces;
+            iPhi[facei] = iPredPhi[facei];
+            bvalue[bfacei] = bPredValue[bfacei];
+        }
+    );
 }
 
 void updateVelocity(
