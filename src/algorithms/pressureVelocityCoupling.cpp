@@ -156,16 +156,28 @@ void updateFaceVelocity(
         }
     );
 
-    auto [bvalue, bPredValue] =
-        views(phi.boundaryData().value(), predictedPhi.boundaryData().value());
+    auto [bvalue, bPredValue, faceCells] = views(
+        phi.boundaryData().value(),
+        predictedPhi.boundaryData().value(),
+        mesh.boundaryMesh().faceCells()
+    );
+
+    const auto& bcCoeffs =
+        ls.auxiliaryCoefficients()
+            .template get<la::BoundaryCoefficients<NeoN::scalar, NeoN::localIdx>>(
+                "boundaryCoefficients"
+            );
+
+    const auto [mValue, rhsValue] = views(bcCoeffs.matrixValues, bcCoeffs.rhsValues);
 
     NeoN::parallelFor(
         exec,
         {nInternalFaces, iPhi.size()},
         KOKKOS_LAMBDA(const size_t facei) {
             auto bfacei = facei - nInternalFaces;
-            iPhi[facei] = iPredPhi[facei];
-            bvalue[bfacei] = bPredValue[bfacei];
+            scalar bflux = (rhsValue[bfacei] - mValue[bfacei] * internalP[faceCells[bfacei]]);
+            iPhi[facei] = iPredPhi[facei] - bflux;
+            bvalue[bfacei] = bPredValue[bfacei] - bflux;
         }
     );
 }
