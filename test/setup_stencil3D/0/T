@@ -25,6 +25,22 @@ boundaryField
     fixedWalls
     {
         type            zeroGradient;
+        // type            fixedValue;
+        // value           uniform 0.1;
+    }
+
+    inlet
+    {
+        // type            zeroGradient;
+        type            fixedValue;
+        value           uniform 0.01;
+    }
+
+    outlet
+    {
+        // type            zeroGradient;
+        type            fixedValue;
+        value           uniform 0.1;
     }
 
 }

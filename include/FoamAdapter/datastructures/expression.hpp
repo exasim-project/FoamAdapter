@@ -32,11 +32,13 @@ public:
         , expr_(expr)
         , fvSchemes_(fvSchemes)
         , fvSolution_(fvSolution)
-        , sparsityPattern_(NeoN::finiteVolume::cellCentred::SparsityPattern::readOrCreate(psi.mesh()))
-        , ls_(NeoN::la::createEmptyLinearSystem<ValueType, NeoN::localIdx,
-              NeoN::finiteVolume::cellCentred::SparsityPattern>(
-              *sparsityPattern_.get()
-          ))
+        , sparsityPattern_(
+              NeoN::finiteVolume::cellCentred::SparsityPattern::readOrCreate(psi.mesh())
+          )
+        , ls_(NeoN::la::createEmptyLinearSystem<
+              ValueType,
+              NeoN::localIdx,
+              NeoN::finiteVolume::cellCentred::SparsityPattern>(*sparsityPattern_.get()))
     {
         expr_.read(fvSchemes_);
         // assemble();
@@ -64,9 +66,15 @@ public:
 
     NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& getVector() { return this->psi_; }
 
-    const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& getVector() const { return this->psi_; }
+    const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& getVector() const
+    {
+        return this->psi_;
+    }
 
-    [[nodiscard]] const NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() const { return ls_; }
+    [[nodiscard]] const NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() const
+    {
+        return ls_;
+    }
     [[nodiscard]] const NeoN::finiteVolume::cellCentred::SparsityPattern& sparsityPattern() const
     {
         if (!sparsityPattern_)
@@ -133,7 +141,7 @@ public:
     }
 
     // TODO unify with dsl/solver.hpp
-  void solve(NeoN::scalar, NeoN::scalar)
+    void solve(NeoN::scalar, NeoN::scalar)
     {
         // dsl::solve(expr_, psi_, t, dt, fvSchemes_, fvSolution_);
         if (expr_.temporalOperators().size() == 0 && expr_.spatialOperators().size() == 0)
@@ -188,10 +196,35 @@ private:
 };
 
 template<typename ValueType, typename IndexType = NeoN::localIdx>
-NeoN::finiteVolume::cellCentred::VolumeField<ValueType>
-operator&(const Expression<ValueType, IndexType> expr, const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi)
+NeoN::Vector<ValueType> diag(
+    const la::LinearSystem<ValueType, IndexType>& ls,
+    const NeoN::finiteVolume::cellCentred::SparsityPattern& sparsityPattern
+)
 {
-     NeoN::finiteVolume::cellCentred::VolumeField<ValueType> resultVector(
+    NeoN::Vector<ValueType> diagonal(ls.exec(), sparsityPattern.diagOffset().size(), 0.0);
+    auto diagView = diagonal.view();
+
+    const auto diagOffset = sparsityPattern.diagOffset().view();
+    const auto [matrix, b] = ls.view();
+    NeoN::parallelFor(
+        ls.exec(),
+        {0, diagOffset.size()},
+        KOKKOS_LAMBDA(const std::size_t celli) {
+            auto diagOffsetCelli = diagOffset[celli];
+            diagView[celli] = matrix.values[matrix.rowOffs[celli] + diagOffsetCelli];
+        }
+    );
+    return diagonal;
+}
+
+
+template<typename ValueType, typename IndexType = NeoN::localIdx>
+NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
+    const la::LinearSystem<ValueType, IndexType>& ls,
+    const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi
+)
+{
+    NeoN::finiteVolume::cellCentred::VolumeField<ValueType> resultVector(
         psi.exec(),
         "ls_" + psi.name,
         psi.mesh(),
@@ -200,26 +233,35 @@ operator&(const Expression<ValueType, IndexType> expr, const NeoN::finiteVolume:
         psi.boundaryConditions()
     );
 
-    auto [result, b, x] =
-        views(resultVector.internalVector(), expr.linearSystem().rhs(), psi.internalVector());
-    const auto [values, colIdxs, rowOffs] = expr.linearSystem().view();
+    auto [result, x] = views(resultVector.internalVector(), psi.internalVector());
+    const auto [matrix, b] = ls.view();
 
     NeoN::parallelFor(
         resultVector.exec(),
         {0, result.size()},
         KOKKOS_LAMBDA(const std::size_t rowi) {
-            IndexType rowStart = rowOffs[rowi];
-            IndexType rowEnd = rowOffs[rowi + 1];
+            IndexType rowStart = matrix.rowOffs[rowi];
+            IndexType rowEnd = matrix.rowOffs[rowi + 1];
             ValueType sum = 0.0;
             for (IndexType coli = rowStart; coli < rowEnd; coli++)
             {
-                sum += values[coli] * x[colIdxs[coli]];
+                sum += matrix.values[coli] * x[matrix.colIdxs[coli]];
             }
             result[rowi] = sum - b[rowi];
         }
     );
 
     return resultVector;
+}
+
+
+template<typename ValueType, typename IndexType = NeoN::localIdx>
+NeoN::finiteVolume::cellCentred::VolumeField<ValueType> operator&(
+    const Expression<ValueType, IndexType> expr,
+    const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi
+)
+{
+    return applyOperator(expr.linearSystem(), psi);
 }
 
 }
