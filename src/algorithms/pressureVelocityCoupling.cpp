@@ -164,10 +164,10 @@ void updateFaceVelocity(
         mesh.boundaryMesh().faceCells()
     );
 
-    auto& bcCoeffs = ls.auxiliaryCoefficients()
-                         .template get<la::BoundaryCoefficients<NeoN::scalar, NeoN::localIdx>>(
-                             "boundaryCoefficients"
-                         );
+    auto& bcCoeffs =
+        ls.auxiliaryCoefficients().get<la::BoundaryCoefficients<NeoN::scalar, NeoN::localIdx>>(
+            "boundaryCoefficients"
+        );
 
     const auto [mValue, rhsValue] = views(bcCoeffs.matrixValues, bcCoeffs.rhsValues);
 
