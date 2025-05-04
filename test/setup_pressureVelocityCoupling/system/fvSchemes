@@ -43,6 +43,8 @@ laplacianSchemes
     default         none;
     laplacian(ofNu,ofU) $LAPSCHEME;
     laplacian(nfNu,nfU) $LAPSCHEME;
+    laplacian(nfrAUf,nfp) $LAPSCHEME;
+    laplacian(forAUf,ofp) $LAPSCHEME;
 }
 
 interpolationSchemes
@@ -54,8 +56,13 @@ interpolationSchemes
 
 snGradSchemes
 {
-    default         none;
+    default         uncorrected;
     // default         corrected;
+}
+
+fluxRequired
+{
+    ofp;
 }
 
 
