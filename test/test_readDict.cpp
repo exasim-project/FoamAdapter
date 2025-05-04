@@ -67,3 +67,29 @@ TEST_CASE("read fvSchemes")
     REQUIRE(gradU.get<std::string>(0) == "Gauss");
     REQUIRE(gradU.get<std::string>(1) == "linear");
 }
+
+TEST_CASE("read testDictionary")
+{
+    Foam::Time& runTime = *timePtr;
+    Foam::IOdictionary ofTestDict(Foam::IOobject(
+        "testDictionary",
+        runTime.system(),
+        runTime,
+        Foam::IOobject::MUST_READ,
+        Foam::IOobject::NO_WRITE
+    ));
+
+    NeoN::Dictionary nfTestDict = Foam::readFoamDictionary(ofTestDict);
+
+    REQUIRE(nfTestDict.get<NeoN::label>("label") == 1);
+    REQUIRE(nfTestDict.get<NeoN::scalar>("scalar") == 2.1);
+    REQUIRE(nfTestDict.get<NeoN::scalar>("scalar2") == 2.0);
+    REQUIRE(nfTestDict.get<NeoN::scalar>("scalarWriteAnsInt") == 2);
+    REQUIRE(nfTestDict.get<NeoN::Vec3>("vector") == NeoN::Vec3(1.0, 2.0, 3.0));
+    REQUIRE(nfTestDict.get<std::string>("word") == "word");
+
+    NeoN::Dictionary& subNeoDict = nfTestDict.subDict("subDict");
+    REQUIRE(subNeoDict.get<NeoN::scalar>("subScalar") == 4.1);
+    REQUIRE(subNeoDict.get<NeoN::Vec3>("subVector") == NeoN::Vec3(5.0, 6.0, 7.0));
+    REQUIRE(subNeoDict.get<std::string>("subWord") == "subWord");
+}
