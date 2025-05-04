@@ -6,6 +6,8 @@
 #include "FoamAdapter/algorithms/pressureVelocityCoupling.hpp"
 #include "Kokkos_Core.hpp"
 
+namespace la = NeoN::la;
+
 namespace FoamAdapter
 {
 
@@ -162,11 +164,10 @@ void updateFaceVelocity(
         mesh.boundaryMesh().faceCells()
     );
 
-    const auto& bcCoeffs =
-        ls.auxiliaryCoefficients()
-            .template get<la::BoundaryCoefficients<NeoN::scalar, NeoN::localIdx>>(
-                "boundaryCoefficients"
-            );
+    auto& bcCoeffs = ls.auxiliaryCoefficients()
+                         .template get<la::BoundaryCoefficients<NeoN::scalar, NeoN::localIdx>>(
+                             "boundaryCoefficients"
+                         );
 
     const auto [mValue, rhsValue] = views(bcCoeffs.matrixValues, bcCoeffs.rhsValues);
 
