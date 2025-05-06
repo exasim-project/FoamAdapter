@@ -17,6 +17,15 @@ function(foam_adapter_unit_test TEST SETUP_DIRECTORY)
   set_target_properties(adapter_${TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                                    ${adapter_WORKING_DIRECTORY})
 
+  if(NeoN_WITH_PETSC)
+    message("Hallo")
+    message("${PETSc_LIBRARIES}")
+    target_link_libraries(adapter_${TEST} ${PETSc_LIBRARIES} fftw3 mpi)
+    target_include_directories(adapter_${TEST} PUBLIC ${PETSc_INCLUDE_DIRS})
+    target_link_directories(adapter_${TEST} PUBLIC ${PETSc_LIBRARY_DIRS})
+    link_directories(${PETSc_LIBRARY_DIRS})
+  endif()
+
   add_test(
     NAME adapter_${TEST}
     COMMAND ${adapter_WORKING_DIRECTORY}/adapter_${TEST}
