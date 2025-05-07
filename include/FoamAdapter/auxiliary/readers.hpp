@@ -188,6 +188,7 @@ auto constructSurfaceField(
     }
 
     Foam::label idx = nInternal;
+    Foam::Field<foam_primitive_t> bvalue(out.internalVector().size());
     forAll(in.boundaryField(), patchi)
     {
         const Foam::fvsPatchField<foam_primitive_t>& pin = in.boundaryField()[patchi];
@@ -195,12 +196,14 @@ auto constructSurfaceField(
         forAll(pin, facei)
         {
             flattenedField[idx] = pin[facei];
+            bvalue[idx - nInternal] = pin[facei];
             idx++;
         }
     }
     assert(idx == flattenedField.size());
 
     out.internalVector() = fromFoamField(exec, flattenedField);
+    out.boundaryData().value() = fromFoamField(exec, bvalue);
     out.correctBoundaryConditions();
 
     return out;

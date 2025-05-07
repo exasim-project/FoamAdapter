@@ -75,6 +75,9 @@ int main(int argc, char* argv[])
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
+            auto& nfOldT = fvcc::oldTime(nfT);
+            nfOldT.internalVector() = nfT.internalVector();
+
             if (controlDict.get<int>("setFields"))
             {
                 Foam::scalar pi = Foam::constant::mathematical::pi;

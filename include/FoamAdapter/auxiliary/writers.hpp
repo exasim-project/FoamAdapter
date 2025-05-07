@@ -9,6 +9,8 @@
 
 #include "FoamAdapter/auxiliary/convert.hpp"
 
+namespace fvcc = NeoN::finiteVolume::cellCentred;
+
 namespace FoamAdapter
 {
 
@@ -31,5 +33,9 @@ void copy_impl(DestField& dest, const SrcField src)
 void write(NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string fieldName);
 
 void write(NeoN::Vector<NeoN::Vec3>& sf, const Foam::fvMesh& mesh, const std::string fieldName);
+
+void write(const fvcc::VolumeField<NeoN::scalar>& volField, const Foam::fvMesh& mesh, const std::string fieldName);
+
+void write(const fvcc::VolumeField<NeoN::Vec3>& volField, const Foam::fvMesh& mesh, const std::string fieldName);
 
 } // namespace Foam
