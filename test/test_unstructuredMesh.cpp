@@ -56,7 +56,7 @@ template<typename OFMesh, typename NFMesh, typename Accessor>
 auto allPatchesMatch(const OFMesh& ofMesh, const NFMesh& nfMesh, Accessor accessor)
     -> EqualsRangeMatcher<OFMesh, NFMesh, Accessor>
 {
-    return EqualsRangeMatcher<Range, NFMesh, Accessor> {ofMesh, nfMesh, accessor};
+    return EqualsRangeMatcher<OFMesh, NFMesh, Accessor> {ofMesh, nfMesh, accessor};
 }
 
 TEST_CASE("UnstructuredMesh")
