@@ -8,6 +8,19 @@ if(FoamAdapter_BUILD_TESTS OR FoamAdapter_BUILD_BENCHMARKS)
 endif()
 
 if(FOAMADAPTER_NEON_VIA_CPM)
-  # cpmaddpackage(NAME NeoN GITHUB_REPOSITORY exasim-project/NeoN SYSTEM YES VERSION 0.1)
-  cpmaddpackage("gh:exasim-project/NeoN#main")
+  if(NOT DEFINED FOAMADAPTER_NEON_VERSION)
+    set(FOAMADAPTER_NEON_VERSION
+        ON
+        CACHE INTERNAL "main")
+  endif()
+
+  cpmaddpackage(
+    NAME
+    NeoN
+    GITHUB_REPOSITORY
+    exasim-project/NeoN
+    SYSTEM
+    YES
+    VERSION
+    ${FOAMADAPTER_NEON_VERSION})
 endif()
