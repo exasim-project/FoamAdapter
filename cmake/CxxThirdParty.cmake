@@ -10,8 +10,8 @@ endif()
 if(FOAMADAPTER_NEON_VIA_CPM)
   if(NOT DEFINED FOAMADAPTER_NEON_VERSION)
     set(FOAMADAPTER_NEON_VERSION
-        ON
-        CACHE INTERNAL "main")
+        "main"
+        CACHE INTERNAL "")
   endif()
 
   cpmaddpackage(
@@ -19,8 +19,8 @@ if(FOAMADAPTER_NEON_VIA_CPM)
     NeoN
     GITHUB_REPOSITORY
     exasim-project/NeoN
+    GIT_TAG
+    ${FOAMADAPTER_NEON_VERSION}
     SYSTEM
-    YES
-    VERSION
-    ${FOAMADAPTER_NEON_VERSION})
+    YES)
 endif()
