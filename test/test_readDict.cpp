@@ -79,7 +79,7 @@ TEST_CASE("read testDictionary")
         Foam::IOobject::NO_WRITE
     ));
 
-    NeoN::Dictionary nfTestDict = Foam::readFoamDictionary(ofTestDict);
+    NeoN::Dictionary nfTestDict = FoamAdapter::convert(ofTestDict);
 
     REQUIRE(nfTestDict.get<NeoN::label>("label") == 1);
     REQUIRE(nfTestDict.get<NeoN::scalar>("scalar") == 2.1);
