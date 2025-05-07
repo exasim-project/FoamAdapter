@@ -34,7 +34,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 include(cmake/OpenFOAM.cmake)
 
 if(NOT DEFINED FOAMADAPTER_NEON_DIR)
-  if(EXISTS src/NeoN/CMakeLists.txt)
+  if(EXISTS src/NeoN/CMakeLists.txt AND NOT DEFINED FOAMADAPTER_NEON_VERSION)
     message(STATUS "deps/NeoN/CMakeLists.txt found, using NeoN")
     add_subdirectory(src/NeoN)
   else()
