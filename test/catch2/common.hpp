@@ -3,19 +3,9 @@
 
 #pragma once
 
-#include "FoamAdapter/conversion/convert.hpp"
+#include "FoamAdapter/auxiliary/convert.hpp"
 
-#include "NeoN/fields/field.hpp"
-#include "NeoN/fields/boundaryData.hpp"
-
-#include "NeoN/finiteVolume/cellCentred/operators/gaussGreenGrad.hpp"
-#include "NeoN/finiteVolume/cellCentred/interpolation/linear.hpp"
-#include "NeoN/finiteVolume/cellCentred/interpolation/upwind.hpp"
-#include "NeoN/finiteVolume/cellCentred/interpolation/surfaceInterpolation.hpp"
-
-#include "NeoN/finiteVolume/cellCentred/stencil/geometryScheme.hpp"
-#include "NeoN/finiteVolume/cellCentred/stencil/basicGeometryScheme.hpp"
-#include "NeoN/mesh/unstructured/unstructuredMesh.hpp"
+#include "NeoN/NeoN.hpp"
 
 #include <catch2/catch_approx.hpp>
 

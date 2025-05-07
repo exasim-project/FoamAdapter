@@ -25,12 +25,12 @@ TEST_CASE("Interpolation")
 
     auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-    auto meshPtr = Foam::createMesh(exec, runTime);
-    Foam::MeshAdapter& mesh = *meshPtr;
+    auto meshPtr = FoamAdapter::createMesh(exec, runTime);
+    FoamAdapter::MeshAdapter& mesh = *meshPtr;
     auto nfMesh = mesh.nfMesh();
 
     auto ofT = randomScalarField(runTime, mesh, "T");
-    auto nfT = constructFrom(exec, nfMesh, ofT);
+    auto nfT = FoamAdapter::constructFrom(exec, nfMesh, ofT);
 
     auto zero = [](auto& field, auto value)
     {
@@ -45,7 +45,7 @@ TEST_CASE("Interpolation")
         Foam::tmp<Foam::surfaceInterpolationScheme<Foam::scalar>> foamInterPol =
             Foam::surfaceInterpolationScheme<Foam::scalar>::New(mesh, is);
         Foam::surfaceScalarField ofSurfT(foamInterPol->interpolate(ofT));
-        auto nfSurfT = constructSurfaceField(exec, nfMesh, ofSurfT);
+        auto nfSurfT = FoamAdapter::constructSurfaceField(exec, nfMesh, ofSurfT);
         zero(nfSurfT, 0.0);
 
         interpolationScheme.insert(std::string("linear"));
@@ -58,7 +58,7 @@ TEST_CASE("Interpolation")
         op.interpolate(nfT, nfSurfT);
         nfSurfT.correctBoundaryConditions();
 
-        compare(nfSurfT, ofSurfT, ApproxScalar(1e-15), false);
+        FoamAdapter::compare(nfSurfT, ofSurfT, ApproxScalar(1e-15), false);
     }
 
     SECTION("GaussGreenGrad[scalar] on " + execName)
@@ -66,13 +66,13 @@ TEST_CASE("Interpolation")
         Foam::fv::gaussGrad<Foam::scalar> foamGradScalar(mesh, is);
         Foam::volVectorField ofGradT("ofGradT", foamGradScalar.calcGrad(ofT, "test"));
 
-        auto nfGradT = constructFrom(exec, nfMesh, ofGradT);
+        auto nfGradT = FoamAdapter::constructFrom(exec, nfMesh, ofGradT);
         zero(nfGradT, NeoN::Vec3(0.0, 0.0, 0.0));
 
         fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
         nfGradT.correctBoundaryConditions();
 
-        compare(nfGradT, ofGradT, ApproxVector(1e-12), false);
+        FoamAdapter::compare(nfGradT, ofGradT, ApproxVector(1e-12), false);
     }
 
     Foam::surfaceScalarField ofPhi(
@@ -86,7 +86,7 @@ TEST_CASE("Interpolation")
         mesh,
         Foam::dimensionedScalar("phi", Foam::dimless, 0.0)
     );
-    auto nfPhi = constructSurfaceField(exec, nfMesh, ofPhi);
+    auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, ofPhi);
 
     SECTION("GaussGreenDiv[scalar] on " + execName)
     {
@@ -94,14 +94,14 @@ TEST_CASE("Interpolation")
         Foam::fv::gaussConvectionScheme<Foam::scalar> foamDivScalar(mesh, ofPhi, is);
         Foam::volScalarField ofDivT("ofDivT", foamDivScalar.fvcDiv(ofPhi, ofT));
 
-        auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
+        auto nfDivT = FoamAdapter::constructFrom(exec, nfMesh, ofDivT);
         zero(nfDivT, 0.0);
 
         fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, interpolationScheme)
             .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
         nfDivT.correctBoundaryConditions();
 
-        compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
+        FoamAdapter::compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
     }
 
     SECTION("linear GaussGreen from expression on " + execName)
@@ -110,14 +110,14 @@ TEST_CASE("Interpolation")
         Foam::volScalarField ofDivT("ofDivT", foamDivScalar.fvcDiv(ofPhi, ofT));
         NeoN::TokenList scheme = NeoN::TokenList({std::string("Gauss"), std::string("linear")});
 
-        auto nfDivT = constructFrom(exec, nfMesh, ofDivT);
+        auto nfDivT = FoamAdapter::constructFrom(exec, nfMesh, ofDivT);
         zero(nfDivT, 0.0);
 
-        dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
+        NeoN::dsl::SpatialOperator divOp = dsl::exp::div(nfPhi, nfT);
         divOp.read(scheme);
         divOp.explicitOperation(nfDivT.internalVector());
         nfDivT.correctBoundaryConditions();
 
-        compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
+        FoamAdapter::compare(nfDivT, ofDivT, ApproxScalar(1e-15), false);
     }
 }

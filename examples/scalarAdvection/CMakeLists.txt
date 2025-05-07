@@ -2,7 +2,4 @@
 #
 # SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
-add_executable(scalarAdvection scalarAdvection.cpp)
-
-target_link_libraries(scalarAdvection FoamAdapter)
-target_compile_definitions(scalarAdvection INTERFACE namespaceFoam=1)
+foam_adapter_example(scalarAdvection)

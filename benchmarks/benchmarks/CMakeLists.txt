@@ -1,6 +1,0 @@
-# SPDX-License-Identifier: Unlicense
-# SPDX-FileCopyrightText: 2023 NeoN authors
-
-neon_benchmark(explicitOperators)
-neon_benchmark(implicitOperators)
-neon_benchmark(dsl)

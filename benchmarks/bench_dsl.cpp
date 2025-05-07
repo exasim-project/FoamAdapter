@@ -4,14 +4,15 @@
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
                             // a custom main
 
-#include "FoamAdapter/expression.hpp"
+#include "FoamAdapter/FoamAdapter.hpp"
 
 #include "NeoN/NeoN.hpp"
 #include "benchmarks/catch_main.hpp"
 #include "test/catch2/executorGenerator.hpp"
 #include "common.hpp"
 
-namespace fvcc = NeoN::finiteVolume::cellCentred;
+namespace nnfvcc = NeoN::finiteVolume::cellCentred;
+namespace nffvcc = FoamAdapter;
 namespace dsl = NeoN::dsl;
 
 #include "fvc.H"
@@ -28,7 +29,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
 
     SECTION("OpenFOAM")
     {
-        std::unique_ptr<Foam::fvMesh> meshPtr = Foam::createMesh(runTime);
+        std::unique_ptr<Foam::fvMesh> meshPtr = FoamAdapter::createMesh(runTime);
         Foam::fvMesh& mesh = *meshPtr;
 
         auto ofT = randomScalarField(runTime, mesh, "T");
@@ -82,19 +83,18 @@ TEST_CASE("advection–diffusion-equation_scalar")
 
         NeoN::Database db;
 
-        fvcc::VectorCollection& vectorCollection =
-            fvcc::VectorCollection::instance(db, "VectorCollection");
+        auto& vectorCollection = nnfvcc::VectorCollection::instance(db, "VectorCollection");
 
-        std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, runTime);
-        Foam::MeshAdapter& mesh = *meshPtr;
+        std::unique_ptr<FoamAdapter::MeshAdapter> meshPtr = FoamAdapter::createMesh(exec, runTime);
+        FoamAdapter::MeshAdapter& mesh = *meshPtr;
         const auto& nfMesh = mesh.nfMesh();
         // linear interpolation hardcoded for now
 
 
         auto ofT = randomScalarField(runTime, mesh, "T");
-        fvcc::VolumeField<NeoN::scalar>& nfT =
-            vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                Foam::CreateFromFoamField<Foam::volScalarField> {
+        nnfvcc::VolumeField<NeoN::scalar>& nfT =
+            vectorCollection.registerVector<nnfvcc::VolumeField<NeoN::scalar>>(
+                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
                     .foamField = ofT,
@@ -111,12 +111,12 @@ TEST_CASE("advection–diffusion-equation_scalar")
             mesh,
             Foam::dimensionedScalar("phi", Foam::dimensionSet(0, 3, -1, 0, 0), 0.0)
         );
-        forAll(ofPhi, facei)
+        for (auto facei = 0; facei < ofPhi.size(); facei++)
         {
             ofPhi[facei] = facei;
         }
 
-        auto nfPhi = constructSurfaceField(exec, nfMesh, ofPhi);
+        auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, ofPhi);
 
         Foam::surfaceScalarField ofGamma(
             Foam::IOobject("Gamma", "0", mesh, Foam::IOobject::NO_READ, Foam::IOobject::AUTO_WRITE),
@@ -124,8 +124,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
             Foam::dimensionedScalar("Gamma", Foam::dimensionSet(0, 2, -1, 0, 0), 1.0)
         );
 
-        auto nfGamma = constructSurfaceField(exec, nfMesh, ofGamma);
-
+        auto nfGamma = FoamAdapter::constructSurfaceField(exec, nfMesh, ofGamma);
 
         NeoN::Dictionary fvSolutionExpDict;
 
@@ -159,7 +158,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
             BENCHMARK(std::string(execName))
             {
                 // Momentum predictor
-                fvcc::Expression<NeoN::scalar> advectDiffEqn(
+                nffvcc::Expression<NeoN::scalar> advectDiffEqn(
                     dsl::imp::ddt(nfT) + dsl::exp::div(nfPhi, nfT)
                         - dsl::exp::laplacian(nfGamma, nfT),
                     nfT,
@@ -200,7 +199,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
             BENCHMARK(std::string(execName))
             {
                 // Momentum predictor
-                fvcc::Expression<NeoN::scalar> advectDiffEqn(
+                nffvcc::Expression<NeoN::scalar> advectDiffEqn(
                     dsl::imp::ddt(nfT) + dsl::imp::div(nfPhi, nfT)
                         - dsl::imp::laplacian(nfGamma, nfT),
                     nfT,

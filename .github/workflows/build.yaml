@@ -36,8 +36,8 @@ jobs:
     steps:
      - name: Checkout to repository
        uses: actions/checkout@v4
-       with:
-         submodules: true # Recursively clone submodules
+       # with:
+       #  submodules: true # Recursively clone submodules
 
      - name: Set up OpenFOAM
        uses: gerlero/setup-openfoam@v1

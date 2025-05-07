@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // SPDX-FileCopyrightText: 2024 FoamAdapter authors
 
-#include "FoamAdapter/conversion/convert.hpp"
-#include "FoamAdapter/readers/foamDictionary.hpp"
+#include "FoamAdapter/auxiliary/convert.hpp"
+
 #include "vector.H"
 #include <functional>
-namespace Foam
-{
 
+namespace FoamAdapter
+{
 
 static std::vector<std::function<bool(NeoN::Dictionary&, const Foam::entry&)>> mapEntries = {
     [](NeoN::Dictionary& neoDict, const Foam::entry& entry)
@@ -27,9 +27,9 @@ static std::vector<std::function<bool(NeoN::Dictionary&, const Foam::entry&)>> m
         }
         return false;
     },
-    &convertEntry<Foam::scalar>,
-    &convertEntry<Foam::vector>,
-    &convertEntry<Foam::word>,
+    &insert<Foam::scalar>,
+    &insert<Foam::vector>,
+    &insert<Foam::word>,
     {[](NeoN::Dictionary& neoDict, const Foam::entry& entry)
      {
          if (entry.isStream())
@@ -83,7 +83,7 @@ void readFoamDictionary(const Foam::dictionary& dict, NeoN::Dictionary& neoDict)
     }
 }
 
-NeoN::Dictionary readFoamDictionary(const Foam::dictionary& dict)
+NeoN::Dictionary convert(const Foam::dictionary& dict)
 {
     NeoN::Dictionary neoDict;
     readFoamDictionary(dict, neoDict);

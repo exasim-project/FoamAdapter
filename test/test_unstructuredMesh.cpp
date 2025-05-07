@@ -12,226 +12,161 @@ namespace fvcc = NeoN::finiteVolume::cellCentred;
 extern Foam::Time* timePtr;   // A single time object
 extern Foam::fvMesh* meshPtr; // A single mesh object
 
-
-TEST_CASE("unstructuredMesh")
+namespace FoamAdapter
 {
+
+template<typename OFMesh, typename NFMesh, typename Accessor>
+struct EqualsRangeMatcher : Catch::Matchers::MatcherGenericBase
+{
+    EqualsRangeMatcher(const OFMesh& range, const NFMesh& nfMesh, Accessor accessor)
+        : ofMesh {range}
+        , nfMesh {nfMesh}
+        , accessor {accessor}
+    {}
+
+    template<typename OtherRange>
+    bool match(OtherRange const& other) const
+    {
+        for (auto i = 0; i < ofMesh.size(); i++)
+        {
+            auto a = other.copyToHost();
+            const auto& b = accessor(ofMesh[i]);
+            auto start = nfMesh.offset()[i];
+            auto end = nfMesh.offset()[i + 1];
+            auto aV = a.view({start, end});
+
+            for (auto j = 0; j < aV.size(); j++)
+            {
+                if (aV[j] != convert(b[j])) return false;
+            }
+        }
+        return true;
+    }
+
+    std::string describe() const override { return "Equals: "; }
+
+private:
+
+    OFMesh const& ofMesh;
+    NFMesh const& nfMesh;
+    Accessor accessor;
+};
+
+template<typename OFMesh, typename NFMesh, typename Accessor>
+auto allPatchesMatch(const OFMesh& ofMesh, const NFMesh& nfMesh, Accessor accessor)
+    -> EqualsRangeMatcher<OFMesh, NFMesh, Accessor>
+{
+    return EqualsRangeMatcher<OFMesh, NFMesh, Accessor> {ofMesh, nfMesh, accessor};
+}
+
+TEST_CASE("UnstructuredMesh")
+{
+    Foam::Time& runTime = *timePtr;
+
     auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-    std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, *timePtr);
+    auto meshPtr = createMesh(exec, runTime);
     const Foam::fvMesh& ofMesh = *meshPtr;
     const NeoN::UnstructuredMesh& nfMesh = meshPtr->nfMesh();
 
-    SECTION("Internal mesh" + execName)
+    SECTION("Internal mesh data members on " + execName)
     {
+
         REQUIRE(nfMesh.nCells() == ofMesh.nCells());
 
         REQUIRE(nfMesh.nInternalFaces() == ofMesh.nInternalFaces());
 
-        SECTION("points") { REQUIRE(nfMesh.points() == ofMesh.points()); }
+        // NOTE for some reason using our operator== inside the REQUIRE macro fails
+        auto samePoints = nfMesh.points() == ofMesh.points();
+        REQUIRE(samePoints);
 
-        SECTION("cellVolumes") { REQUIRE(nfMesh.cellVolumes() == ofMesh.cellVolumes()); }
+        auto sameCellVolumes = nfMesh.cellVolumes() == ofMesh.cellVolumes();
+        REQUIRE(sameCellVolumes);
 
-        SECTION("cellCentres") { REQUIRE(nfMesh.cellCentres() == ofMesh.cellCentres()); }
+        auto sameFaceCentres = nfMesh.faceCentres() == ofMesh.faceCentres();
+        REQUIRE(sameFaceCentres);
 
-        SECTION("faceCentres") { REQUIRE(nfMesh.faceCentres() == ofMesh.faceCentres()); }
+        auto sameFaceAreas = nfMesh.faceAreas() == ofMesh.faceAreas();
+        REQUIRE(sameFaceAreas);
 
-        SECTION("faceAreas") { REQUIRE(nfMesh.faceAreas() == ofMesh.faceAreas()); }
+        auto magSf = Foam::mag(ofMesh.faceAreas());
+        auto sameMagSf = nfMesh.magFaceAreas() == magSf();
+        REQUIRE(sameMagSf);
 
-        SECTION("magFaceAreas")
-        {
-            Foam::scalarField magSf(mag(ofMesh.faceAreas()));
-            REQUIRE(nfMesh.magFaceAreas() == magSf);
-        }
-
-        // TODO This requires ofMesh.faceOwner to be field but faceOwner() is a list
-        // SECTION("faceOwner") { REQUIRE(nfMesh.faceOwner() == ofMesh.faceOwner()); }
+        // TODO NeoN::Vector to OF List comparison currently not supported
+        // auto sameOwner = nfMesh.faceOwner() == ofMesh.faceOwner();
+        // REQUIRE(sameOwner);
         // SECTION("faceNeighbour") { REQUIRE(nfMesh.faceNeighbour() == ofMesh.faceNeighbour()); }
     }
 
-    SECTION("boundaryMesh " + execName)
+    SECTION("BoundaryMesh on " + execName)
     {
-        const Foam::fvBoundaryMesh& ofBoundaryMesh = ofMesh.boundary();
-        const NeoN::BoundaryMesh& bMesh = nfMesh.boundaryMesh();
-        const auto& offset = bMesh.offset();
+        const Foam::fvBoundaryMesh& ofBMesh = ofMesh.boundary();
+        const NeoN::BoundaryMesh& nfBMesh = nfMesh.boundaryMesh();
+        const auto& offset = nfBMesh.offset();
 
         SECTION("offset")
         {
-            forAll(ofBoundaryMesh, patchi)
+            forAll(ofBMesh, patchi)
             {
-                REQUIRE(ofBoundaryMesh[patchi].size() == bMesh.faceCells(patchi).size());
+                REQUIRE(ofBMesh[patchi].size() == nfBMesh.faceCells(patchi).size());
             }
         }
 
-        // TODO: prettify the following tests
-        SECTION("faceCells")
-        {
-            auto faceCellsHost = bMesh.faceCells().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pFaceCells = faceCellsHost.view({start, end});
-                forAll(patchOF.faceCells(), i)
-                {
-                    REQUIRE(pFaceCells[i] == patchOF.faceCells()[i]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.faceCells(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.faceCells(); })
+        );
 
-        SECTION("Cf")
-        {
-            const auto& cfHost = bMesh.cf().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pCf = cfHost.view({start, end});
-                forAll(patchOF.Cf(), i)
-                {
-                    REQUIRE(pCf[i][0] == patchOF.Cf()[i][0]);
-                    REQUIRE(pCf[i][1] == patchOF.Cf()[i][1]);
-                    REQUIRE(pCf[i][2] == patchOF.Cf()[i][2]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.cf(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.Cf(); })
+        );
 
-        SECTION("Cn")
-        {
-            const auto& cnHost = bMesh.cn().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pCn = cnHost.view({start, end});
-                forAll(patchOF.Cn()(), i)
-                {
-                    REQUIRE(pCn[i][0] == patchOF.Cn()()[i][0]);
-                    REQUIRE(pCn[i][1] == patchOF.Cn()()[i][1]);
-                    REQUIRE(pCn[i][2] == patchOF.Cn()()[i][2]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.cn(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.Cn()(); })
+        );
 
-        SECTION("Sf")
-        {
-            const auto& sFHost = bMesh.sf().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pSf = sFHost.view({start, end});
-                forAll(patchOF.Sf(), i)
-                {
-                    REQUIRE(pSf[i][0] == patchOF.Sf()[i][0]);
-                    REQUIRE(pSf[i][1] == patchOF.Sf()[i][1]);
-                    REQUIRE(pSf[i][2] == patchOF.Sf()[i][2]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.sf(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.Sf(); })
+        );
 
-        SECTION("magSf")
-        {
-            const auto& magSfHost = bMesh.magSf().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pMagSf = magSfHost.view({start, end});
-                forAll(patchOF.magSf(), i)
-                {
-                    REQUIRE(pMagSf[i] == patchOF.magSf()[i]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.magSf(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.magSf(); })
+        );
 
-        SECTION("nf")
-        {
-            const auto& nfHost = bMesh.nf().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pNf = nfHost.view({start, end});
-                forAll(patchOF.nf()(), i)
-                {
-                    REQUIRE(pNf[i][0] == patchOF.nf()()[i][0]);
-                    REQUIRE(pNf[i][1] == patchOF.nf()()[i][1]);
-                    REQUIRE(pNf[i][2] == patchOF.nf()()[i][2]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.nf(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.nf()(); })
+        );
 
-        SECTION("delta")
-        {
-            const auto& deltaHost = bMesh.delta().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pDelta = deltaHost.view({start, end});
-                forAll(patchOF.delta()(), i)
-                {
-                    REQUIRE(pDelta[i][0] == patchOF.delta()()[i][0]);
-                    REQUIRE(pDelta[i][1] == patchOF.delta()()[i][1]);
-                    REQUIRE(pDelta[i][2] == patchOF.delta()()[i][2]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.delta(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.delta()(); })
+        );
 
-        SECTION("weights")
-        {
-            const auto& weightsHost = bMesh.weights().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pWeights = weightsHost.view({start, end});
-                forAll(patchOF.weights(), i)
-                {
-                    REQUIRE(pWeights[i] == patchOF.weights()[i]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.weights(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.weights(); })
+        );
 
-        SECTION("deltaCoeffs")
-        {
-            const auto& deltaCoeffsHost = bMesh.deltaCoeffs().copyToHost();
-            forAll(ofBoundaryMesh, patchi)
-            {
-                const Foam::fvPatch& patchOF = ofBoundaryMesh[patchi];
-                NeoN::label start = bMesh.offset()[patchi];
-                NeoN::label end = bMesh.offset()[patchi + 1];
-                auto pDeltaCoeffs = deltaCoeffsHost.view({start, end});
-                forAll(patchOF.deltaCoeffs(), i)
-                {
-                    REQUIRE(pDeltaCoeffs[i] == patchOF.deltaCoeffs()[i]);
-                }
-            }
-        }
+        REQUIRE_THAT(
+            nfBMesh.deltaCoeffs(),
+            allPatchesMatch(ofBMesh, nfBMesh, [](const auto& p) { return p.deltaCoeffs(); })
+        );
     }
 }
 
 
 TEST_CASE("fvccGeometryScheme")
 {
-    NeoN::Executor exec = GENERATE(
-        NeoN::Executor(NeoN::CPUExecutor {}),
-        NeoN::Executor(NeoN::SerialExecutor {}),
-        NeoN::Executor(NeoN::GPUExecutor {})
-    );
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-    std::string execName = std::visit([](auto e) { return e.name(); }, exec);
-
-    std::unique_ptr<Foam::MeshAdapter> meshPtr = Foam::createMesh(exec, *timePtr);
-    Foam::MeshAdapter& mesh = *meshPtr;
+    std::unique_ptr<FoamAdapter::MeshAdapter> meshPtr = FoamAdapter::createMesh(exec, *timePtr);
+    FoamAdapter::MeshAdapter& mesh = *meshPtr;
     const NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
     SECTION("BasicFvccGeometryScheme" + execName)
@@ -270,4 +205,6 @@ TEST_CASE("fvccGeometryScheme")
             Catch::Matchers::RangeEquals(sFoamWeights, ApproxScalar(1e-16))
         );
     }
+}
+
 }

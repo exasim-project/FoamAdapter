@@ -21,5 +21,5 @@ foreach(include_file ${include_files})
   set(include_statements "${include_statements}#include \"${include_file}\"\n")
 endforeach()
 
-configure_file(${CMAKE_CURRENT_LIST_DIR}/FoamAdapter/NeoFoam.hpp.in
-               ${CMAKE_CURRENT_BINARY_DIR}/FoamAdapter/NeoFoam.hpp)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/FoamAdapter/FoamAdapter.hpp.in
+               ${CMAKE_CURRENT_BINARY_DIR}/FoamAdapter/FoamAdapter.hpp)

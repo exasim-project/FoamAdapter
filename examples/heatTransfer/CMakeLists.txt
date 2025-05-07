@@ -2,6 +2,4 @@
 #
 # SPDX-FileCopyrightText: 2023 FoamAdapter authors
 
-add_executable(heatTransfer heatTransfer.cpp)
-
-target_link_libraries(heatTransfer FoamAdapter)
+foam_adapter_example(heatTransfer)

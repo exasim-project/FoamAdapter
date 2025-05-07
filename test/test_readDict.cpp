@@ -8,10 +8,8 @@
 
 extern Foam::Time* timePtr; // A single time object
 
-TEST_CASE("read dict")
+TEST_CASE("Convert OpenFOAM::dictionary dict to NeoN::Dict")
 {
-    Foam::Info << "\nReading testDict" << Foam::endl;
-
     Foam::dictionary testDict;
     testDict.add("label", 1);
     testDict.add("scalar", 2.1);
@@ -25,31 +23,29 @@ TEST_CASE("read dict")
     subDict.add("subWord", "subWord");
     testDict.add("subDict", subDict);
 
-    NeoN::Dictionary neoDict = Foam::readFoamDictionary(testDict);
+    auto nfDict = FoamAdapter::convert(testDict);
 
-    REQUIRE(neoDict.get<NeoN::label>("label") == 1);
-    REQUIRE(neoDict.get<NeoN::scalar>("scalar") == 2.1);
-    REQUIRE(neoDict.get<NeoN::scalar>("scalar2") == 2.0);
-    REQUIRE(neoDict.get<NeoN::Vec3>("vector") == NeoN::Vec3(1.0, 2.0, 3.0));
-    REQUIRE(neoDict.get<std::string>("word") == "word");
+    REQUIRE(nfDict.get<NeoN::label>("label") == 1);
+    REQUIRE(nfDict.get<NeoN::scalar>("scalar") == 2.1);
+    REQUIRE(nfDict.get<NeoN::scalar>("scalar2") == 2.0);
+    REQUIRE(nfDict.get<NeoN::Vec3>("vector") == NeoN::Vec3(1.0, 2.0, 3.0));
+    REQUIRE(nfDict.get<std::string>("word") == "word");
 
-
-    NeoN::Dictionary& subNeoDict = neoDict.subDict("subDict");
-    REQUIRE(subNeoDict.get<NeoN::scalar>("subScalar") == 4.1);
-    REQUIRE(subNeoDict.get<NeoN::Vec3>("subVector") == NeoN::Vec3(5.0, 6.0, 7.0));
+    auto& nfSubDict = nfDict.subDict("subDict");
+    REQUIRE(nfSubDict.get<NeoN::scalar>("subScalar") == 4.1);
+    REQUIRE(nfSubDict.get<NeoN::Vec3>("subVector") == NeoN::Vec3(5.0, 6.0, 7.0));
 }
 
 
 TEST_CASE("read fvSchemes")
 {
     Foam::Time& runTime = *timePtr;
-    auto meshPtr = Foam::createMesh(NeoN::SerialExecutor {}, runTime);
-    Foam::MeshAdapter& mesh = *meshPtr;
+    auto meshPtr = FoamAdapter::createMesh(NeoN::SerialExecutor {}, runTime);
+    FoamAdapter::MeshAdapter& mesh = *meshPtr;
 
     Foam::dictionary fvSchemes = mesh.schemesDict();
-    Foam::Info << "reading fvSchemes" << fvSchemes << Foam::endl;
 
-    NeoN::Dictionary fvSchemesDict = Foam::readFoamDictionary(mesh.schemesDict());
+    NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
     auto keys = fvSchemesDict.keys();
 
     REQUIRE(fvSchemesDict.subDict("ddtSchemes").get<std::string>("ddt(T)") == "Euler");
@@ -68,7 +64,7 @@ TEST_CASE("read fvSchemes")
     REQUIRE(gradU.get<std::string>(1) == "linear");
 }
 
-TEST_CASE("read testDictionary")
+TEST_CASE("read testDictionary from disk")
 {
     Foam::Time& runTime = *timePtr;
     Foam::IOdictionary ofTestDict(Foam::IOobject(
@@ -79,7 +75,7 @@ TEST_CASE("read testDictionary")
         Foam::IOobject::NO_WRITE
     ));
 
-    NeoN::Dictionary nfTestDict = Foam::readFoamDictionary(ofTestDict);
+    NeoN::Dictionary nfTestDict = FoamAdapter::convert(ofTestDict);
 
     REQUIRE(nfTestDict.get<NeoN::label>("label") == 1);
     REQUIRE(nfTestDict.get<NeoN::scalar>("scalar") == 2.1);
@@ -88,8 +84,8 @@ TEST_CASE("read testDictionary")
     REQUIRE(nfTestDict.get<NeoN::Vec3>("vector") == NeoN::Vec3(1.0, 2.0, 3.0));
     REQUIRE(nfTestDict.get<std::string>("word") == "word");
 
-    NeoN::Dictionary& subNeoDict = nfTestDict.subDict("subDict");
-    REQUIRE(subNeoDict.get<NeoN::scalar>("subScalar") == 4.1);
-    REQUIRE(subNeoDict.get<NeoN::Vec3>("subVector") == NeoN::Vec3(5.0, 6.0, 7.0));
-    REQUIRE(subNeoDict.get<std::string>("subWord") == "subWord");
+    NeoN::Dictionary& nfSubDict = nfTestDict.subDict("subDict");
+    REQUIRE(nfSubDict.get<NeoN::scalar>("subScalar") == 4.1);
+    REQUIRE(nfSubDict.get<NeoN::Vec3>("subVector") == NeoN::Vec3(5.0, 6.0, 7.0));
+    REQUIRE(nfSubDict.get<std::string>("subWord") == "subWord");
 }

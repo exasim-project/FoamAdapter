@@ -27,26 +27,34 @@ TEST_CASE("sparsityPattern")
 
     auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-    auto meshPtr = Foam::createMesh(exec, runTime);
-    Foam::MeshAdapter& mesh = *meshPtr;
+    auto meshPtr = FoamAdapter::createMesh(exec, runTime);
+    FoamAdapter::MeshAdapter& mesh = *meshPtr;
     auto& nfMesh = mesh.nfMesh();
 
     SECTION("sparsityPattern_" + execName)
     {
         fvcc::SparsityPattern pattern(nfMesh);
-        const auto colIdxs = pattern.colIdxs().view();
-        const auto rowPtrs = pattern.rowOffs().view();
+        const auto hostColIdxs = pattern.colIdxs().copyToHost();
+        const auto hostRowPtrs = pattern.rowOffs().copyToHost();
+        const auto colIdxs = hostColIdxs.view();
+        const auto rowPtrs = hostRowPtrs.view();
 
-        forAll(mesh.cellCells(), celli)
+        REQUIRE(colIdxs.size() == mesh.nCells() + 2 * mesh.nInternalFaces());
+        REQUIRE(rowPtrs.size() == mesh.nCells() + 1);
+
+        for (auto celli = 0; celli < mesh.nCells(); celli++)
         {
             std::set<Foam::label> stencilCells;
             stencilCells.insert(celli);
+
+            // get cells connected to celli
             for (auto neiCelli : mesh.cellCells()[celli])
             {
                 stencilCells.insert(neiCelli);
             }
 
-            for (std::size_t i = rowPtrs[celli]; i < rowPtrs[celli + 1]; i++)
+            // test if columns in corresponding rows are in stencil cells set
+            for (auto i = rowPtrs[celli]; i < rowPtrs[celli + 1]; i++)
             {
                 auto colIdx = colIdxs[i];
                 REQUIRE(stencilCells.contains(colIdx));
