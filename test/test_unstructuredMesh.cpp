@@ -15,10 +15,10 @@ extern Foam::fvMesh* meshPtr; // A single mesh object
 namespace FoamAdapter
 {
 
-template<typename Range, typename NFMesh, typename Accessor>
+template<typename OFMesh, typename NFMesh, typename Accessor>
 struct EqualsRangeMatcher : Catch::Matchers::MatcherGenericBase
 {
-    EqualsRangeMatcher(const Range& range, const NFMesh& nfMesh, Accessor accessor)
+    EqualsRangeMatcher(const OFMesh& range, const NFMesh& nfMesh, Accessor accessor)
         : ofMesh {range}
         , nfMesh {nfMesh}
         , accessor {accessor}
@@ -47,14 +47,14 @@ struct EqualsRangeMatcher : Catch::Matchers::MatcherGenericBase
 
 private:
 
-    Range const& ofMesh;
+    OFMesh const& ofMesh;
     NFMesh const& nfMesh;
     Accessor accessor;
 };
 
-template<typename Range, typename NFMesh, typename Accessor>
-auto allPatchesMatch(const Range& ofMesh, const NFMesh& nfMesh, Accessor accessor)
-    -> EqualsRangeMatcher<Range, NFMesh, Accessor>
+template<typename OFMesh, typename NFMesh, typename Accessor>
+auto allPatchesMatch(const OFMesh& ofMesh, const NFMesh& nfMesh, Accessor accessor)
+    -> EqualsRangeMatcher<OFMesh, NFMesh, Accessor>
 {
     return EqualsRangeMatcher<Range, NFMesh, Accessor> {ofMesh, nfMesh, accessor};
 }
