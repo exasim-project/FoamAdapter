@@ -26,7 +26,7 @@ void constrainHbyA(
 
     for (auto patchi = 0; patchi < UBCs.size(); ++patchi)
     {
-        bool assignable = UBCs[patchi].attributes().get<bool>("assignable");
+        bool assignable = UBCs[patchi].attributes().assignable;
         if (!assignable)
         {
             parallelFor(

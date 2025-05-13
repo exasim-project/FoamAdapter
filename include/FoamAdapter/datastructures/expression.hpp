@@ -33,12 +33,11 @@ public:
         , fvSchemes_(fvSchemes)
         , fvSolution_(fvSolution)
         , sparsityPattern_(
-              NeoN::finiteVolume::cellCentred::SparsityPattern::readOrCreate(psi.mesh())
+              NeoN::la::SparsityPattern::readOrCreate(psi.mesh())
           )
         , ls_(NeoN::la::createEmptyLinearSystem<
               ValueType,
-              NeoN::localIdx,
-              NeoN::finiteVolume::cellCentred::SparsityPattern>(*sparsityPattern_.get()))
+              NeoN::localIdx>(psi.mesh(),sparsityPattern_))
     {
         expr_.read(fvSchemes_);
         // assemble();
@@ -55,13 +54,9 @@ public:
     ~Expression() = default;
 
     [[nodiscard]] NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() { return ls_; }
-    [[nodiscard]] NeoN::finiteVolume::cellCentred::SparsityPattern& sparsityPattern()
+    [[nodiscard]] NeoN::la::SparsityPattern& sparsityPattern()
     {
-        if (!sparsityPattern_)
-        {
-            NF_THROW(std::string("fvcc:LinearSystem:sparsityPattern: sparsityPattern is null"));
-        }
-        return *sparsityPattern_;
+        return sparsityPattern_;
     }
 
     NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& getVector() { return this->psi_; }
@@ -75,13 +70,9 @@ public:
     {
         return ls_;
     }
-    [[nodiscard]] const NeoN::finiteVolume::cellCentred::SparsityPattern& sparsityPattern() const
+    [[nodiscard]] const NeoN::la::SparsityPattern& sparsityPattern() const
     {
-        if (!sparsityPattern_)
-        {
-            NF_THROW("fvcc:LinearSystem:sparsityPattern: sparsityPattern is null");
-        }
-        return *sparsityPattern_;
+        return sparsityPattern_;
     }
 
     const NeoN::Executor& exec() const { return ls_.exec(); }
@@ -169,7 +160,7 @@ public:
     void setReference(const IndexType refCell, ValueType refValue)
     {
         // TODO currently assumes that matrix is already assembled
-        const auto diagOffset = sparsityPattern_->diagOffset().view();
+        const auto diagOffset = sparsityPattern_.diagOffset().view();
         const auto rowOffs = ls_.matrix().rowOffs().view();
         auto rhs = ls_.rhs().view();
         auto values = ls_.matrix().values().view();
@@ -191,14 +182,14 @@ private:
     NeoN::dsl::Expression<ValueType> expr_;
     const NeoN::Dictionary& fvSchemes_;
     const NeoN::Dictionary& fvSolution_;
-    std::shared_ptr<NeoN::finiteVolume::cellCentred::SparsityPattern> sparsityPattern_;
+    NeoN::la::SparsityPattern& sparsityPattern_;
     NeoN::la::LinearSystem<ValueType, IndexType> ls_;
 };
 
 template<typename ValueType, typename IndexType = NeoN::localIdx>
 NeoN::Vector<ValueType> diag(
     const la::LinearSystem<ValueType, IndexType>& ls,
-    const NeoN::finiteVolume::cellCentred::SparsityPattern& sparsityPattern
+    const NeoN::la::SparsityPattern& sparsityPattern
 )
 {
     NeoN::Vector<ValueType> diagonal(ls.exec(), sparsityPattern.diagOffset().size(), 0.0);
