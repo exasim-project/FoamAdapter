@@ -95,10 +95,9 @@ TEST_CASE("DivOperator")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::la::LinearSystem<NeoN::scalar, NeoN::localIdx> ls(
-                    la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
-                        la::SparsityPattern::readOrCreate(nfMesh)
-                    )
+                auto ls = la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
+                    nfMesh,
+                    la::SparsityPattern::readOrCreate(nfMesh)
                 );
                 fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
                     .div(ls, nfPhi, nfT, NeoN::dsl::Coeff(1.0));
@@ -109,10 +108,9 @@ TEST_CASE("DivOperator")
 
         SECTION("No allocation")
         {
-            NeoN::la::LinearSystem<NeoN::scalar, NeoN::localIdx> ls(
-                la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
-                    la::SparsityPattern::readOrCreate(nfMesh)
-                )
+            auto ls = la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
+                nfMesh,
+                la::SparsityPattern::readOrCreate(nfMesh)
             );
             NeoN::TokenList scheme({std::string("linear")});
 
@@ -201,10 +199,9 @@ TEST_CASE("LaplacianOperator")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::la::LinearSystem<NeoN::scalar, NeoN::localIdx> ls(
-                    la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
-                        la::SparsityPattern::readOrCreate(nfMesh)
-                    )
+                auto ls = la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
+                    nfMesh,
+                    la::SparsityPattern::readOrCreate(nfMesh)
                 );
                 fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
                     .laplacian(ls, nfGamma, nfT, dsl::Coeff(1.0));
@@ -215,10 +212,9 @@ TEST_CASE("LaplacianOperator")
 
         SECTION("No allocation")
         {
-            NeoN::la::LinearSystem<NeoN::scalar, NeoN::localIdx> ls(
-                la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
-                    la::SparsityPattern::readOrCreate(nfMesh)
-                )
+            auto ls = la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
+                nfMesh,
+                la::SparsityPattern::readOrCreate(nfMesh)
             );
             NeoN::TokenList scheme({std::string("linear"), std::string("uncorrected")});
 
