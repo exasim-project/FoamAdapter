@@ -54,7 +54,7 @@ public:
     ~Expression() = default;
 
     [[nodiscard]] NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() { return ls_; }
-    [[nodiscard]] NeoN::la::SparsityPattern& sparsityPattern()
+    [[nodiscard]] const  NeoN::la::SparsityPattern& sparsityPattern() const
     {
         return sparsityPattern_;
     }
@@ -70,13 +70,8 @@ public:
     {
         return ls_;
     }
-    [[nodiscard]] const NeoN::la::SparsityPattern& sparsityPattern() const
-    {
-        return sparsityPattern_;
-    }
 
     const NeoN::Executor& exec() const { return ls_.exec(); }
-
 
     void assemble(NeoN::scalar t, NeoN::scalar dt)
     {
@@ -182,7 +177,7 @@ private:
     NeoN::dsl::Expression<ValueType> expr_;
     const NeoN::Dictionary& fvSchemes_;
     const NeoN::Dictionary& fvSolution_;
-    NeoN::la::SparsityPattern& sparsityPattern_;
+    const NeoN::la::SparsityPattern& sparsityPattern_;
     NeoN::la::LinearSystem<ValueType, IndexType> ls_;
 };
 
