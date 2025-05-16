@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 FoamAdapter authors
+// SPDX-FileCopyrightText: 2023-2025 FoamAdapter authors
 
 #include <cstddef>
 #define CATCH_CONFIG_RUNNER // Define this before including catch.hpp to create
@@ -33,7 +33,7 @@ TEST_CASE("sparsityPattern")
 
     SECTION("sparsityPattern_" + execName)
     {
-        fvcc::SparsityPattern pattern(nfMesh);
+        auto pattern = NeoN::la::createSparsity(nfMesh);
         const auto hostColIdxs = pattern.colIdxs().copyToHost();
         const auto hostRowPtrs = pattern.rowOffs().copyToHost();
         const auto colIdxs = hostColIdxs.view();

@@ -30,7 +30,7 @@ TEST_CASE("matrix multiplication")
     auto meshPtr = FoamAdapter::createMesh(exec, runTime);
     FoamAdapter::MeshAdapter& mesh = *meshPtr;
     auto nfMesh = mesh.nfMesh();
-    const auto sparsityPattern = fvcc::SparsityPattern::readOrCreate(nfMesh);
+    const auto sparsityPattern = NeoN::la::createSparsity(nfMesh);
 
     runTime.setDeltaT(1);
 
@@ -66,8 +66,10 @@ TEST_CASE("matrix multiplication")
         // ddt.write();
         fvcc::DdtOperator ddtOp(dsl::Operator::Type::Implicit, nfT);
 
-        auto ls =
-            NeoN::la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(*sparsityPattern.get());
+        auto ls = NeoN::la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
+            nfMesh,
+            sparsityPattern
+        );
         ddtOp.implicitOperation(ls, runTime.value(), runTime.deltaTValue());
 
         // check rhs
@@ -79,7 +81,7 @@ TEST_CASE("matrix multiplication")
         }
 
         // check diag
-        auto diag = FoamAdapter::diag(ls, *sparsityPattern.get());
+        auto diag = FoamAdapter::diag(ls, sparsityPattern);
         auto diagHost = diag.copyToHost();
 
         for (size_t celli = 0; celli < diagHost.size(); celli++)
@@ -123,13 +125,15 @@ TEST_CASE("matrix multiplication")
         }
 
         // the sourceterm operator implicit
-        auto ls =
-            NeoN::la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(*sparsityPattern.get());
+        auto ls = NeoN::la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
+            nfMesh,
+            sparsityPattern
+        );
         auto cellVolumes = nfMesh.cellVolumes().copyToHost();
         sourceTerm.implicitOperation(ls);
 
         // check diag
-        auto diag = FoamAdapter::diag(ls, *sparsityPattern.get());
+        auto diag = FoamAdapter::diag(ls, sparsityPattern);
         auto diagHost = diag.copyToHost();
 
         for (size_t celli = 0; celli < diagHost.size(); celli++)
@@ -184,8 +188,10 @@ TEST_CASE("matrix multiplication")
         NeoN::TokenList input = {std::string("Gauss"), std::string("linear")};
         fvcc::DivOperator<NeoN::scalar> divOp(dsl::Operator::Type::Implicit, nfPhi, nfT, input);
 
-        auto ls =
-            NeoN::la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(*sparsityPattern.get());
+        auto ls = NeoN::la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
+            nfMesh,
+            sparsityPattern
+        );
         divOp.implicitOperation(ls);
 
         // diag and rhs differ from the foam matrix as openfoam does not added the boundary values
@@ -236,8 +242,10 @@ TEST_CASE("matrix multiplication")
         fvcc::LaplacianOperator<NeoN::scalar>
             laplacianOp(dsl::Operator::Type::Implicit, nfNuf, nfT, input);
 
-        auto ls =
-            NeoN::la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(*sparsityPattern.get());
+        auto ls = NeoN::la::createEmptyLinearSystem<NeoN::scalar, NeoN::localIdx>(
+            nfMesh,
+            sparsityPattern
+        );
         laplacianOp.implicitOperation(ls);
 
         // diag and rhs differ from the foam matrix as openfoam does not added the boundary values
