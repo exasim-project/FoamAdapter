@@ -56,10 +56,7 @@ TEST_CASE("Advection Equation")
     fvcc::VectorCollection& vectorCollection =
         fvcc::VectorCollection::instance(db, "VectorCollection");
 
-    // auto [execName, exec] = GENERATE(allAvailableExecutor());
-    std::string execName = "GPUExecutor";
-    NeoN::Executor exec = NeoN::GPUExecutor {};
-
+    auto [execName, exec] = GENERATE(allAvailableExecutor());
 
     SECTION("Scalar advection with " + execName + " and " + "backwardEuler")
     {

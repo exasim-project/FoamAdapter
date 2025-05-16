@@ -17,7 +17,6 @@ void constrainHbyA(
     const nnfvcc::VolumeField<scalar>& p
 )
 {
-    // const UnstructuredMesh& mesh = HbyA.mesh();
     const auto pIn = p.internalVector().view();
     auto HbyAin = HbyA.internalVector().view();
     auto [HbyABcValue, UBcValue] = views(HbyA.boundaryData().value(), U.boundaryData().value());
