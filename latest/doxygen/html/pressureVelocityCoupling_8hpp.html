@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>FoamAdapter: /home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/finiteVolume/cellCentred/pressureVelocityCoupling/pressureVelocityCoupling.hpp File Reference</title>
+<title>FoamAdapter: /home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,43 +70,80 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_9eb70903a8d47c41a0376b6387f73828.html">FoamAdapter</a></li><li class="navelem"><a class="el" href="dir_4c04ba3d9c03c846cdadce21404939a8.html">finiteVolume</a></li><li class="navelem"><a class="el" href="dir_3561132cf2ff7e3100a20f48a1f9c298.html">cellCentred</a></li><li class="navelem"><a class="el" href="dir_ba1d03e2343bc62d44b7f725e731a85d.html">pressureVelocityCoupling</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_9eb70903a8d47c41a0376b6387f73828.html">FoamAdapter</a></li><li class="navelem"><a class="el" href="dir_a4d4eceee78d0324774abd2790fbae3f.html">algorithms</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">pressureVelocityCoupling.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="expression_8hpp_source.html">FoamAdapter/expression.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="expression_8hpp_source.html">FoamAdapter/datastructures/expression.hpp</a>&quot;</code><br />
 <code>#include &quot;NeoN/NeoN.hpp&quot;</code><br />
 </div>
 <p><a href="pressureVelocityCoupling_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceNeoN" id="r_namespaceNeoN"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNeoN.html">NeoN</a></td></tr>
+<tr class="memitem:namespaceFoamAdapter" id="r_namespaceFoamAdapter"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html">FoamAdapter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceNeoN_1_1finiteVolume" id="r_namespaceNeoN_1_1finiteVolume"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNeoN_1_1finiteVolume.html">NeoN::finiteVolume</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceNeoN_1_1finiteVolume_1_1cellCentred" id="r_namespaceNeoN_1_1finiteVolume_1_1cellCentred"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNeoN_1_1finiteVolume_1_1cellCentred.html">NeoN::finiteVolume::cellCentred</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:acc912e7a5a44b028589fda3fd76ba7ea" id="r_acc912e7a5a44b028589fda3fd76ba7ea"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> = NeoN::scalar</td></tr>
+<tr class="separator:acc912e7a5a44b028589fda3fd76ba7ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae261b7f2859c508a432e8a334ad179d2" id="r_ae261b7f2859c508a432e8a334ad179d2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> = NeoN::Vec3</td></tr>
+<tr class="separator:ae261b7f2859c508a432e8a334ad179d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a71e09fbd041a24363d9b1dabc37a0516" id="r_a71e09fbd041a24363d9b1dabc37a0516"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNeoN_1_1finiteVolume_1_1cellCentred.html#a71e09fbd041a24363d9b1dabc37a0516">NeoN::finiteVolume::cellCentred::constrainHbyA</a> (<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Vec3</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">HbyA</a>, <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">const</a> <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Vec3</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">U</a>, <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">const</a> <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">scalar</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">p</a>)</td></tr>
-<tr class="separator:a71e09fbd041a24363d9b1dabc37a0516"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab31255fd8af75de282a91b8951c858ba" id="r_ab31255fd8af75de282a91b8951c858ba"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">scalar</a> &gt;, <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Vec3</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNeoN_1_1finiteVolume_1_1cellCentred.html#ab31255fd8af75de282a91b8951c858ba">NeoN::finiteVolume::cellCentred::discreteMomentumFields</a> (<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">const</a> <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Expression</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Vec3</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">expr</a>)</td></tr>
-<tr class="separator:ab31255fd8af75de282a91b8951c858ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a252cdfa0bfb7e2a40da5c5508dc6af45" id="r_a252cdfa0bfb7e2a40da5c5508dc6af45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNeoN_1_1finiteVolume_1_1cellCentred.html#a252cdfa0bfb7e2a40da5c5508dc6af45">NeoN::finiteVolume::cellCentred::updateFaceVelocity</a> (<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">SurfaceField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">scalar</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">phi</a>, <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">const</a> <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">SurfaceField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">scalar</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">predictedPhi</a>, <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">const</a> <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Expression</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">scalar</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">expr</a>)</td></tr>
-<tr class="separator:a252cdfa0bfb7e2a40da5c5508dc6af45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a7304a04b3e9b46dc7ca12bd2a27cf7" id="r_a7a7304a04b3e9b46dc7ca12bd2a27cf7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNeoN_1_1finiteVolume_1_1cellCentred.html#a7a7304a04b3e9b46dc7ca12bd2a27cf7">NeoN::finiteVolume::cellCentred::updateVelocity</a> (<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Vec3</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">U</a>, <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">const</a> <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Vec3</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">HbyA</a>, <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">scalar</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">rAU</a>, <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">scalar</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">p</a>)</td></tr>
-<tr class="separator:a7a7304a04b3e9b46dc7ca12bd2a27cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ff7acb5abc20807253f06a3bd4e2304" id="r_a4ff7acb5abc20807253f06a3bd4e2304"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">SurfaceField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">scalar</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNeoN_1_1finiteVolume_1_1cellCentred.html#a4ff7acb5abc20807253f06a3bd4e2304">NeoN::finiteVolume::cellCentred::flux</a> (<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">const</a> <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">VolumeField</a>&lt; <a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">Vec3</a> &gt; &amp;<a class="el" href="classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html">volField</a>)</td></tr>
-<tr class="separator:a4ff7acb5abc20807253f06a3bd4e2304"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54bbeabff5f4044f250027a13ebe295d" id="r_a54bbeabff5f4044f250027a13ebe295d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a54bbeabff5f4044f250027a13ebe295d">FoamAdapter::constrainHbyA</a> (nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">HbyA</a>, <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">U</a>, <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">p</a>)</td></tr>
+<tr class="separator:a54bbeabff5f4044f250027a13ebe295d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab83d9f57643ab6599fed6c3a318f4a" id="r_a0ab83d9f57643ab6599fed6c3a318f4a"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt;, nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a0ab83d9f57643ab6599fed6c3a318f4a">FoamAdapter::discreteMomentumFields</a> (<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">expr</a>)</td></tr>
+<tr class="separator:a0ab83d9f57643ab6599fed6c3a318f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a678aeff6603442623c3cb8c784435ecb" id="r_a678aeff6603442623c3cb8c784435ecb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a678aeff6603442623c3cb8c784435ecb">FoamAdapter::updateFaceVelocity</a> (nnfvcc::SurfaceField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">phi</a>, <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> nnfvcc::SurfaceField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">predictedPhi</a>, <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">expr</a>)</td></tr>
+<tr class="separator:a678aeff6603442623c3cb8c784435ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab07cdffe2f504299318aad761dfd4b9b" id="r_ab07cdffe2f504299318aad761dfd4b9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#ab07cdffe2f504299318aad761dfd4b9b">FoamAdapter::updateVelocity</a> (nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">U</a>, <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">HbyA</a>, nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">rAU</a>, nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">p</a>)</td></tr>
+<tr class="separator:ab07cdffe2f504299318aad761dfd4b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb9d6048345debcb9e018bb2e75436b3" id="r_aeb9d6048345debcb9e018bb2e75436b3"><td class="memItemLeft" align="right" valign="top">nnfvcc::SurfaceField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#aeb9d6048345debcb9e018bb2e75436b3">FoamAdapter::flux</a> (<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">volField</a>)</td></tr>
+<tr class="separator:aeb9d6048345debcb9e018bb2e75436b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="acc912e7a5a44b028589fda3fd76ba7ea" name="acc912e7a5a44b028589fda3fd76ba7ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc912e7a5a44b028589fda3fd76ba7ea">&#9670;&#160;</a></span>scalar</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> =  NeoN::scalar</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pressureVelocityCoupling_8hpp_source.html#l00011">11</a> of file <a class="el" href="pressureVelocityCoupling_8hpp_source.html">pressureVelocityCoupling.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ae261b7f2859c508a432e8a334ad179d2" name="ae261b7f2859c508a432e8a334ad179d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae261b7f2859c508a432e8a334ad179d2">&#9670;&#160;</a></span>Vec3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> =  NeoN::Vec3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pressureVelocityCoupling_8hpp_source.html#l00012">12</a> of file <a class="el" href="pressureVelocityCoupling_8hpp_source.html">pressureVelocityCoupling.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

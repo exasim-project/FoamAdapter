@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['setdeltat_0',['setDeltaT',['../namespaceFoam.html#a1f451056e368f6f6b507ae472e785faa',1,'Foam']]],
-  ['setreference_1',['setReference',['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#ad55183feff01e60075b59bbe828b856e',1,'NeoN::finiteVolume::cellCentred::Expression']]],
-  ['setup_2ehpp_2',['setup.hpp',['../setup_8hpp.html',1,'']]],
-  ['solve_3',['solve',['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#a3f8378adb3cc48d7a82d2dabd8575113',1,'NeoN::finiteVolume::cellCentred::Expression']]],
-  ['sparsitypattern_4',['sparsitypattern',['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#ad7708d86c2611df217f691f28c4f1d89',1,'NeoN::finiteVolume::cellCentred::Expression::sparsityPattern()'],['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#a1baaff5e210051508be2e08334c37b5c',1,'NeoN::finiteVolume::cellCentred::Expression::sparsityPattern() const']]],
-  ['subcycleindex_5',['subCycleIndex',['../classFoam_1_1CreateFromFoamField.html#ab9007465a8f08f1945cf0c413730a196',1,'Foam::CreateFromFoamField']]],
-  ['surfgeofield_5fequality_5foperator_6',['SURFGEOFIELD_EQUALITY_OPERATOR',['../comparison_8hpp.html#aecccc7805fe3f80ddade77cf81ec9a74',1,'comparison.hpp']]]
+  ['scalar_0',['scalar',['../pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea',1,'pressureVelocityCoupling.hpp']]],
+  ['setdeltat_1',['setDeltaT',['../namespaceFoamAdapter.html#a52be9ed969f57da51a090c9df132990d',1,'FoamAdapter']]],
+  ['setreference_2',['setReference',['../classFoamAdapter_1_1Expression.html#a8ed934777e6059677c60d31b9c2f4c40',1,'FoamAdapter::Expression']]],
+  ['setup_2ehpp_3',['setup.hpp',['../setup_8hpp.html',1,'']]],
+  ['solve_4',['solve',['../classFoamAdapter_1_1Expression.html#a64c5b8b6cb311a71dbd4b9b148db4d91',1,'FoamAdapter::Expression']]],
+  ['sparsitypattern_5',['sparsityPattern',['../classFoamAdapter_1_1Expression.html#a855cf32c23315ea3cc202e7bb1cd89d5',1,'FoamAdapter::Expression']]],
+  ['subcycleindex_6',['subCycleIndex',['../classFoamAdapter_1_1CreateFromFoamField.html#a42bdc86ceec3e7f5a6ecaee3087f87a7',1,'FoamAdapter::CreateFromFoamField']]]
 ];

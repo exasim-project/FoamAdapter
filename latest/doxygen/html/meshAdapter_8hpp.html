@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>FoamAdapter: /home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp File Reference</title>
+<title>FoamAdapter: /home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,7 +70,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_9eb70903a8d47c41a0376b6387f73828.html">FoamAdapter</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_9eb70903a8d47c41a0376b6387f73828.html">FoamAdapter</a></li><li class="navelem"><a class="el" href="dir_3e526c92fae3924df7a34821142a66e6.html">datastructures</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -82,33 +82,38 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 <code>#include &quot;NeoN/NeoN.hpp&quot;</code><br />
 <code>#include &quot;fvMesh.H&quot;</code><br />
-<code>#include &quot;<a class="el" href="readers_8hpp_source.html">readers.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="readers_8hpp_source.html">FoamAdapter/auxiliary/readers.hpp</a>&quot;</code><br />
 </div>
 <p><a href="meshAdapter_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFoam_1_1MeshAdapter.html">Foam::MeshAdapter</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFoamAdapter_1_1MeshAdapter.html">FoamAdapter::MeshAdapter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceFoam" id="r_namespaceFoam"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoam.html">Foam</a></td></tr>
+<tr class="memitem:namespaceFoamAdapter" id="r_namespaceFoamAdapter"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html">FoamAdapter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5b3a15f69b28143f263d57b65f5ed1a9" id="r_a5b3a15f69b28143f263d57b65f5ed1a9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; NeoN::localIdx &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoam.html#a5b3a15f69b28143f263d57b65f5ed1a9">Foam::computeOffset</a> (const fvMesh &amp;mesh)</td></tr>
-<tr class="separator:a5b3a15f69b28143f263d57b65f5ed1a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1f7377ad5c74f9886a6d95908462bb8" id="r_aa1f7377ad5c74f9886a6d95908462bb8"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoam.html#aa1f7377ad5c74f9886a6d95908462bb8">Foam::computeNBoundaryFaces</a> (const fvMesh &amp;mesh)</td></tr>
-<tr class="separator:aa1f7377ad5c74f9886a6d95908462bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab181f2248e18e426c403628f8df13090" id="r_ab181f2248e18e426c403628f8df13090"><td class="memTemplParams" colspan="2">template&lt;typename FieldT &gt; </td></tr>
-<tr class="memitem:ab181f2248e18e426c403628f8df13090"><td class="memTemplItemLeft" align="right" valign="top">FieldT&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceFoam.html#ab181f2248e18e426c403628f8df13090">Foam::flatBCField</a> (const fvMesh &amp;mesh, std::function&lt; FieldT(const fvPatch &amp;)&gt; f)</td></tr>
-<tr class="separator:ab181f2248e18e426c403628f8df13090"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6adc8f06e9a4b23c76e8f8df0c83a16" id="r_ad6adc8f06e9a4b23c76e8f8df0c83a16"><td class="memItemLeft" align="right" valign="top">NeoN::UnstructuredMesh&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoam.html#ad6adc8f06e9a4b23c76e8f8df0c83a16">Foam::readOpenFOAMMesh</a> (const NeoN::Executor exec, const fvMesh &amp;mesh)</td></tr>
-<tr class="separator:ad6adc8f06e9a4b23c76e8f8df0c83a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a756cc6e6886d3830b69f190c6144d45d" id="r_a756cc6e6886d3830b69f190c6144d45d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; NeoN::localIdx &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a756cc6e6886d3830b69f190c6144d45d">FoamAdapter::computeOffset</a> (<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> Foam::fvMesh &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">mesh</a>)</td></tr>
+<tr class="separator:a756cc6e6886d3830b69f190c6144d45d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a350e30b195d83112881719b760db48af" id="r_a350e30b195d83112881719b760db48af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">int32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a350e30b195d83112881719b760db48af">FoamAdapter::computeNBoundaryFaces</a> (<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> Foam::fvMesh &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">mesh</a>)</td></tr>
+<tr class="separator:a350e30b195d83112881719b760db48af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab204c114163c8f7c5363ea1ce677bc57" id="r_ab204c114163c8f7c5363ea1ce677bc57"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">typename</a> <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">FieldT</a> &gt; </td></tr>
+<tr class="memitem:ab204c114163c8f7c5363ea1ce677bc57"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">FieldT</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#ab204c114163c8f7c5363ea1ce677bc57">FoamAdapter::flatBCField</a> (<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> Foam::fvMesh &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">mesh</a>, std::function&lt; <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">FieldT</a>(<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> Foam::fvPatch &amp;)&gt; <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">f</a>)</td></tr>
+<tr class="separator:ab204c114163c8f7c5363ea1ce677bc57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3211f53f1673aa91a630ab089ceae7d2" id="r_a3211f53f1673aa91a630ab089ceae7d2"><td class="memItemLeft" align="right" valign="top">NeoN::UnstructuredMesh&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a3211f53f1673aa91a630ab089ceae7d2">FoamAdapter::readOpenFOAMMesh</a> (<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> NeoN::Executor exec, <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> Foam::fvMesh &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">mesh</a>)</td></tr>
+<tr class="separator:a3211f53f1673aa91a630ab089ceae7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51e665d621ee4cf402e9427637c25cea" id="r_a51e665d621ee4cf402e9427637c25cea"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classFoamAdapter_1_1MeshAdapter.html">MeshAdapter</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a51e665d621ee4cf402e9427637c25cea">FoamAdapter::createMesh</a> (<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> NeoN::Executor &amp;exec, <a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> Foam::Time &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">runTime</a>)</td></tr>
+<tr class="separator:a51e665d621ee4cf402e9427637c25cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3218439d4f85ce028cfd1575954d1109" id="r_a3218439d4f85ce028cfd1575954d1109"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; Foam::fvMesh &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a3218439d4f85ce028cfd1575954d1109">FoamAdapter::createMesh</a> (<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">const</a> Foam::Time &amp;<a class="el" href="namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5">runTime</a>)</td></tr>
+<tr class="separator:a3218439d4f85ce028cfd1575954d1109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

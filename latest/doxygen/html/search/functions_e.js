@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['write_0',['write',['../namespaceFoam.html#a77eb355d2b8d0e1d5e5673c6eb3e4bbe',1,'Foam::write(NeoN::scalarVector &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)'],['../namespaceFoam.html#a71c83b601f8dc7bda83de4e5e031c09c',1,'Foam::write(NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)']]]
+  ['updatefacevelocity_0',['updateFaceVelocity',['../namespaceFoamAdapter.html#a678aeff6603442623c3cb8c784435ecb',1,'FoamAdapter']]],
+  ['updatevelocity_1',['updateVelocity',['../namespaceFoamAdapter.html#ab07cdffe2f504299318aad761dfd4b9b',1,'FoamAdapter']]]
 ];

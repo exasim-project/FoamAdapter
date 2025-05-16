@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['assemble_0',['assemble',['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#ac7254fa5c400fe38615400f3e695548a',1,'NeoN::finiteVolume::cellCentred::Expression::assemble(scalar t, scalar dt)'],['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#a4b38ac1885afb4338315a6a119306ddc',1,'NeoN::finiteVolume::cellCentred::Expression::assemble()']]]
+  ['applyoperator_0',['applyOperator',['../namespaceFoamAdapter.html#a67a615e0cb1de634ffc9df635d48775e',1,'FoamAdapter']]],
+  ['assemble_1',['assemble',['../classFoamAdapter_1_1Expression.html#a13c52bda6ecc679a32fba0a32736977c',1,'FoamAdapter::Expression::assemble(NeoN::scalar t, NeoN::scalar dt)'],['../classFoamAdapter_1_1Expression.html#a9b92f687be098c4e645f47111fce07c0',1,'FoamAdapter::Expression::assemble()']]]
 ];

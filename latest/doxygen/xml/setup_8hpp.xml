@@ -3,66 +3,11 @@
   <compounddef id="setup_8hpp" kind="file" language="C++">
     <compoundname>setup.hpp</compoundname>
     <includes local="no">tuple</includes>
-    <includes local="no">memory</includes>
-    <includes refid="meshAdapter_8hpp" local="yes">FoamAdapter/meshAdapter.hpp</includes>
     <includes local="yes">NeoN/NeoN.hpp</includes>
+    <includes local="yes">fvc.H</includes>
     <incdepgraph>
-      <node id="10">
-        <label>FoamAdapter/conversion/convert.hpp</label>
-        <link refid="convert_8hpp"/>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="11" relation="include">
-        </childnode>
-      </node>
-      <node id="12">
-        <label>FoamAdapter/conversion/type_conversion.hpp</label>
-        <link refid="type__conversion_8hpp"/>
-        <childnode refid="11" relation="include">
-        </childnode>
-        <childnode refid="13" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-      </node>
-      <node id="4">
-        <label>FoamAdapter/meshAdapter.hpp</label>
-        <link refid="meshAdapter_8hpp"/>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
-        </childnode>
-        <childnode refid="8" relation="include">
-        </childnode>
-      </node>
-      <node id="8">
-        <label>readers.hpp</label>
-        <link refid="readers_8hpp"/>
-        <childnode refid="9" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="12" relation="include">
-        </childnode>
-        <childnode refid="14" relation="include">
-        </childnode>
-      </node>
-      <node id="14">
-        <label>FoamAdapter/readers/foamDictionary.hpp</label>
-        <link refid="foamDictionary_8hpp"/>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="15" relation="include">
-        </childnode>
-      </node>
       <node id="1">
-        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup.hpp</label>
+        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp</label>
         <link refid="setup_8hpp"/>
         <childnode refid="2" relation="include">
         </childnode>
@@ -70,38 +15,18 @@
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
-      <node id="6">
-        <label>NeoN/NeoN.hpp</label>
-      </node>
-      <node id="15">
-        <label>dictionary.H</label>
-      </node>
-      <node id="5">
-        <label>functional</label>
-      </node>
-      <node id="7">
-        <label>fvMesh.H</label>
       </node>
       <node id="3">
-        <label>memory</label>
+        <label>NeoN/NeoN.hpp</label>
       </node>
-      <node id="13">
-        <label>surfaceFields.H</label>
+      <node id="4">
+        <label>fvc.H</label>
       </node>
       <node id="2">
         <label>tuple</label>
       </node>
-      <node id="9">
-        <label>type_traits</label>
-      </node>
-      <node id="11">
-        <label>volFields.H</label>
-      </node>
     </incdepgraph>
-    <innernamespace refid="namespaceFoam">Foam</innernamespace>
+    <innernamespace refid="namespaceFoamAdapter">FoamAdapter</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -112,31 +37,23 @@
 <codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="4"><highlight class="normal"></highlight></codeline>
 <codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;tuple&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="7"><highlight class="normal"></highlight></codeline>
-<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meshAdapter_8hpp" kindref="compound">FoamAdapter/meshAdapter.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="9"><highlight class="normal"></highlight></codeline>
-<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NeoN/NeoN.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="11"><highlight class="normal"></highlight></codeline>
-<codeline lineno="12"><highlight class="normal"></highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceFoam" kindref="compound">Foam</ref></highlight></codeline>
-<codeline lineno="14"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NeoN/NeoN.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;fvc.H&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceFoamAdapter" kindref="compound">FoamAdapter</ref></highlight></codeline>
+<codeline lineno="12"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" refkind="member"><highlight class="normal">std::tuple&lt;bool,<sp/>Foam::scalar,Foam::scalar&gt;<sp/><ref refid="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" kindref="member">timeControls</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Foam::Time&amp;<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">runTime</ref>);</highlight></codeline>
 <codeline lineno="15"><highlight class="normal"></highlight></codeline>
-<codeline lineno="16" refid="namespaceFoam_1ab2ae77dfac22de0e7ebc7977cc1cf6a5" refkind="member"><highlight class="normal">std::tuple&lt;bool,<sp/>scalar,<sp/>scalar&gt;<sp/><ref refid="namespaceFoam_1ab2ae77dfac22de0e7ebc7977cc1cf6a5" kindref="member">timeControls</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Time&amp;<sp/>runTime);</highlight></codeline>
+<codeline lineno="16" refid="namespaceFoamAdapter_1a52be9ed969f57da51a090c9df132990d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceFoamAdapter_1a52be9ed969f57da51a090c9df132990d" kindref="member">setDeltaT</ref>(Foam::Time&amp;<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">runTime</ref>,<sp/>Foam::scalar<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">maxCo</ref>,<sp/>Foam::scalar<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">CoNum</ref>,<sp/>Foam::scalar<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">maxDeltaT</ref>);</highlight></codeline>
 <codeline lineno="17"><highlight class="normal"></highlight></codeline>
-<codeline lineno="18" refid="namespaceFoam_1a9e14a6a8187c23468e9f04161da23872" refkind="member"><highlight class="normal">scalar<sp/><ref refid="namespaceFoam_1a9e14a6a8187c23468e9f04161da23872" kindref="member">calculateCoNum</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>surfaceScalarField&amp;<sp/>phi);</highlight></codeline>
+<codeline lineno="18" refid="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" refkind="member"><highlight class="normal">NeoN::Executor<sp/><ref refid="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" kindref="member">createExecutor</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Foam::dictionary&amp;<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">dict</ref>);</highlight></codeline>
 <codeline lineno="19"><highlight class="normal"></highlight></codeline>
-<codeline lineno="20" refid="namespaceFoam_1a1f451056e368f6f6b507ae472e785faa" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceFoam_1a1f451056e368f6f6b507ae472e785faa" kindref="member">setDeltaT</ref>(Time&amp;<sp/>runTime,<sp/>scalar<sp/>maxCo,<sp/>scalar<sp/>CoNum,<sp/>scalar<sp/>maxDeltaT);</highlight></codeline>
-<codeline lineno="21"><highlight class="normal"></highlight></codeline>
-<codeline lineno="22" refid="namespaceFoam_1a506acc94064d7ce59ed16e08a661c87a" refkind="member"><highlight class="normal">std::unique_ptr&lt;MeshAdapter&gt;<sp/><ref refid="namespaceFoam_1a506acc94064d7ce59ed16e08a661c87a" kindref="member">createMesh</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::Executor&amp;<sp/>exec,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Time&amp;<sp/>runTime);</highlight></codeline>
-<codeline lineno="23"><highlight class="normal"></highlight></codeline>
-<codeline lineno="24" refid="namespaceFoam_1aea1c46297050941c3a6847826e9b47ce" refkind="member"><highlight class="normal">std::unique_ptr&lt;fvMesh&gt;<sp/><ref refid="namespaceFoam_1a506acc94064d7ce59ed16e08a661c87a" kindref="member">createMesh</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Time&amp;<sp/>runTime);</highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight></codeline>
-<codeline lineno="26" refid="namespaceFoam_1a1ec9fe39937a2dad2dafcad4984c81a3" refkind="member"><highlight class="normal">NeoN::Executor<sp/><ref refid="namespaceFoam_1a1ec9fe39937a2dad2dafcad4984c81a3" kindref="member">createExecutor</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dictionary&amp;<sp/>dict);</highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Foam</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Foam</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup.hpp"/>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp"/>
   </compounddef>
 </doxygen>

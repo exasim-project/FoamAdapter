@@ -1,27 +1,32 @@
-\doxysection{/home/runner/work/\+Foam\+Adapter/\+Foam\+Adapter/include/\+Foam\+Adapter/mesh\+Adapter.hpp File Reference}
-\hypertarget{meshAdapter_8hpp}{}\label{meshAdapter_8hpp}\index{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp@{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/meshAdapter.hpp}}
+\doxysection{/home/runner/work/\+Foam\+Adapter/\+Foam\+Adapter/include/\+Foam\+Adapter/datastructures/mesh\+Adapter.hpp File Reference}
+\hypertarget{meshAdapter_8hpp}{}\label{meshAdapter_8hpp}\index{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp@{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp}}
 {\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
 {\ttfamily \#include "{}Neo\+N/\+Neo\+N.\+hpp"{}}\newline
 {\ttfamily \#include "{}fv\+Mesh.\+H"{}}\newline
-{\ttfamily \#include "{}readers.\+hpp"{}}\newline
+{\ttfamily \#include "{}Foam\+Adapter/auxiliary/readers.\+hpp"{}}\newline
 \doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classFoam_1_1MeshAdapter}{Foam\+::\+Mesh\+Adapter}}
+class \mbox{\hyperlink{classFoamAdapter_1_1MeshAdapter}{Foam\+Adapter\+::\+Mesh\+Adapter}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
-namespace \mbox{\hyperlink{namespaceFoam}{Foam}}
+namespace \mbox{\hyperlink{namespaceFoamAdapter}{Foam\+Adapter}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::vector$<$ Neo\+N\+::local\+Idx $>$ \mbox{\hyperlink{namespaceFoam_a5b3a15f69b28143f263d57b65f5ed1a9}{Foam\+::compute\+Offset}} (const fv\+Mesh \&mesh)
+std\+::vector$<$ Neo\+N\+::local\+Idx $>$ \mbox{\hyperlink{namespaceFoamAdapter_a756cc6e6886d3830b69f190c6144d45d}{Foam\+Adapter\+::compute\+Offset}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::fv\+Mesh \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{mesh}})
 \item 
-int32\+\_\+t \mbox{\hyperlink{namespaceFoam_aa1f7377ad5c74f9886a6d95908462bb8}{Foam\+::compute\+NBoundary\+Faces}} (const fv\+Mesh \&mesh)
+\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{int32\+\_\+t}} \mbox{\hyperlink{namespaceFoamAdapter_a350e30b195d83112881719b760db48af}{Foam\+Adapter\+::compute\+NBoundary\+Faces}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::fv\+Mesh \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{mesh}})
 \item 
-{\footnotesize template$<$typename FieldT $>$ }\\FieldT \mbox{\hyperlink{namespaceFoam_ab181f2248e18e426c403628f8df13090}{Foam\+::flat\+BCField}} (const fv\+Mesh \&mesh, std\+::function$<$ FieldT(const fv\+Patch \&)$>$ f)
+{\footnotesize template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{FieldT}} $>$ }\\\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{FieldT}} \mbox{\hyperlink{namespaceFoamAdapter_ab204c114163c8f7c5363ea1ce677bc57}{Foam\+Adapter\+::flat\+BCField}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::fv\+Mesh \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{mesh}}, std\+::function$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{FieldT}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::fv\+Patch \&)$>$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{f}})
 \item 
-Neo\+N\+::\+Unstructured\+Mesh \mbox{\hyperlink{namespaceFoam_ad6adc8f06e9a4b23c76e8f8df0c83a16}{Foam\+::read\+Open\+FOAMMesh}} (const Neo\+N\+::\+Executor exec, const fv\+Mesh \&mesh)
+Neo\+N\+::\+Unstructured\+Mesh \mbox{\hyperlink{namespaceFoamAdapter_a3211f53f1673aa91a630ab089ceae7d2}{Foam\+Adapter\+::read\+Open\+FOAMMesh}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::\+Executor exec, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::fv\+Mesh \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{mesh}})
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classFoamAdapter_1_1MeshAdapter}{Mesh\+Adapter}} $>$ \mbox{\hyperlink{namespaceFoamAdapter_a51e665d621ee4cf402e9427637c25cea}{Foam\+Adapter\+::create\+Mesh}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::\+Executor \&exec, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::\+Time \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{run\+Time}})
+\item 
+std\+::unique\+\_\+ptr$<$ Foam\+::fv\+Mesh $>$ \mbox{\hyperlink{namespaceFoamAdapter_a3218439d4f85ce028cfd1575954d1109}{Foam\+Adapter\+::create\+Mesh}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::\+Time \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{run\+Time}})
 \end{DoxyCompactItemize}

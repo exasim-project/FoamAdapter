@@ -247,7 +247,7 @@
         <article role="main" id="furo-main-content">
           <section id="welcome-to-foamadapter">
 <h1>Welcome to FoamAdapter!<a class="headerlink" href="#welcome-to-foamadapter" title="Link to this heading">¶</a></h1>
-<p>The FoamAdapter is the coupling interface of the FoamAdapter CFD core to standard OpenFOAM. It provides application examples to run OpenFOAM simulations via the FoamAdapter backend.</p>
+<p>The FoamAdapter is the coupling interface. It provides platform-portable implementations of common CFD algorithms and solvers using NeoN as a computational backend. It leverages standard OpenFOAM such that OpenFOAM simulations can be run on accelerator devices.</p>
 <section id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -265,12 +265,6 @@
 </li>
 </ul>
 </div>
-</section>
-<section id="running-openfoam-with-foamadapter-backend">
-<h2>Running OpenFOAM with FoamAdapter backend<a class="headerlink" href="#running-openfoam-with-foamadapter-backend" title="Link to this heading">¶</a></h2>
-<p>We are aiming for a high level of compatibility with OpenFOAM. However, we don’t expect binary or ABI compatibility.
-This means that FoamAdapter won’t produce a <cite>libfiniteVolume.so</cite> and <cite>libOpenFOAM.so</cite> which could serve as a plugin replacement for existing <cite>libfiniteVolume.so</cite> and <cite>libOpenFOAM.so</cite>.
-Instead, we aim for source compatibility, i.e. the possibility to compile application OpenFOAM code like pimpleFoam and others against the FoamAdapter libraries.</p>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -330,8 +324,9 @@ Instead, we aim for source compatibility, i.e. the possibility to compile applic
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Welcome to FoamAdapter!</a><ul>
-<li><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
-<li><a class="reference internal" href="#running-openfoam-with-foamadapter-backend">Running OpenFOAM with FoamAdapter backend</a></li>
+<li><a class="reference internal" href="#table-of-contents">Table of Contents</a><ul>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>

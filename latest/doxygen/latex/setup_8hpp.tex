@@ -1,26 +1,19 @@
-\doxysection{/home/runner/work/\+Foam\+Adapter/\+Foam\+Adapter/include/\+Foam\+Adapter/setup.hpp File Reference}
-\hypertarget{setup_8hpp}{}\label{setup_8hpp}\index{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup.hpp@{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/setup.hpp}}
+\doxysection{/home/runner/work/\+Foam\+Adapter/\+Foam\+Adapter/include/\+Foam\+Adapter/auxiliary/setup.hpp File Reference}
+\hypertarget{setup_8hpp}{}\label{setup_8hpp}\index{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp@{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp}}
 {\ttfamily \#include $<$tuple$>$}\newline
-{\ttfamily \#include $<$memory$>$}\newline
-{\ttfamily \#include "{}Foam\+Adapter/mesh\+Adapter.\+hpp"{}}\newline
 {\ttfamily \#include "{}Neo\+N/\+Neo\+N.\+hpp"{}}\newline
+{\ttfamily \#include "{}fvc.\+H"{}}\newline
 \doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
-namespace \mbox{\hyperlink{namespaceFoam}{Foam}}
+namespace \mbox{\hyperlink{namespaceFoamAdapter}{Foam\+Adapter}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::tuple$<$ bool, scalar, scalar $>$ \mbox{\hyperlink{namespaceFoam_ab2ae77dfac22de0e7ebc7977cc1cf6a5}{Foam\+::time\+Controls}} (const Time \&run\+Time)
+std\+::tuple$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{bool}}, Foam\+::scalar, Foam\+::scalar $>$ \mbox{\hyperlink{namespaceFoamAdapter_ae692c4d706feeb179d51b6ea54bfbda8}{Foam\+Adapter\+::time\+Controls}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::\+Time \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{run\+Time}})
 \item 
-scalar \mbox{\hyperlink{namespaceFoam_a9e14a6a8187c23468e9f04161da23872}{Foam\+::calculate\+Co\+Num}} (const surface\+Scalar\+Field \&phi)
+\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} \mbox{\hyperlink{namespaceFoamAdapter_a52be9ed969f57da51a090c9df132990d}{Foam\+Adapter\+::set\+DeltaT}} (Foam\+::\+Time \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{run\+Time}}, Foam\+::scalar \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{max\+Co}}, Foam\+::scalar \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Co\+Num}}, Foam\+::scalar \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{max\+DeltaT}})
 \item 
-void \mbox{\hyperlink{namespaceFoam_a1f451056e368f6f6b507ae472e785faa}{Foam\+::set\+DeltaT}} (Time \&run\+Time, scalar max\+Co, scalar Co\+Num, scalar max\+DeltaT)
-\item 
-std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classFoam_1_1MeshAdapter}{Mesh\+Adapter}} $>$ \mbox{\hyperlink{namespaceFoam_a506acc94064d7ce59ed16e08a661c87a}{Foam\+::create\+Mesh}} (const Neo\+N\+::\+Executor \&exec, const Time \&run\+Time)
-\item 
-std\+::unique\+\_\+ptr$<$ fv\+Mesh $>$ \mbox{\hyperlink{namespaceFoam_aea1c46297050941c3a6847826e9b47ce}{Foam\+::create\+Mesh}} (const Time \&run\+Time)
-\item 
-Neo\+N\+::\+Executor \mbox{\hyperlink{namespaceFoam_a1ec9fe39937a2dad2dafcad4984c81a3}{Foam\+::create\+Executor}} (const dictionary \&dict)
+Neo\+N\+::\+Executor \mbox{\hyperlink{namespaceFoamAdapter_a3089a13fbddccb398fa4f54d6dd0fc01}{Foam\+Adapter\+::create\+Executor}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::dictionary \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{dict}})
 \end{DoxyCompactItemize}

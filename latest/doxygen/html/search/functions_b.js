@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['setdeltat_0',['setDeltaT',['../namespaceFoam.html#a1f451056e368f6f6b507ae472e785faa',1,'Foam']]],
-  ['setreference_1',['setReference',['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#ad55183feff01e60075b59bbe828b856e',1,'NeoN::finiteVolume::cellCentred::Expression']]],
-  ['solve_2',['solve',['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#a3f8378adb3cc48d7a82d2dabd8575113',1,'NeoN::finiteVolume::cellCentred::Expression']]],
-  ['sparsitypattern_3',['sparsitypattern',['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#ad7708d86c2611df217f691f28c4f1d89',1,'NeoN::finiteVolume::cellCentred::Expression::sparsityPattern()'],['../classNeoN_1_1finiteVolume_1_1cellCentred_1_1Expression.html#a1baaff5e210051508be2e08334c37b5c',1,'NeoN::finiteVolume::cellCentred::Expression::sparsityPattern() const']]]
+  ['readopenfoammesh_0',['readOpenFOAMMesh',['../namespaceFoamAdapter.html#a3211f53f1673aa91a630ab089ceae7d2',1,'FoamAdapter']]],
+  ['readsurfaceboundaryconditions_1',['readSurfaceBoundaryConditions',['../namespaceFoamAdapter.html#ad7849fbeb06f57b55857d3a36a5acd26',1,'FoamAdapter']]],
+  ['readvolboundaryconditions_2',['readVolBoundaryConditions',['../namespaceFoamAdapter.html#aede9b3b7c2b995b24825529cfe2c2386',1,'FoamAdapter']]]
 ];

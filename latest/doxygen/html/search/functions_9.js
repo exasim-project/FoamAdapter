@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['operator_26_0',['operator&amp;',['../namespaceNeoN_1_1finiteVolume_1_1cellCentred.html#a3b18e10c3ac36a283a8dfccc0afd70ab',1,'NeoN::finiteVolume::cellCentred']]],
-  ['operator_28_29_1',['operator()',['../classFoam_1_1CreateFromFoamField.html#a8d4706c636d4ccaff4f6005f01a601ee',1,'Foam::CreateFromFoamField']]]
+  ['nfmesh_0',['nfmesh',['../classFoamAdapter_1_1MeshAdapter.html#a05e872a8e76a491cf191887032c65ac2',1,'FoamAdapter::MeshAdapter::nfMesh()'],['../classFoamAdapter_1_1MeshAdapter.html#a4b9a8243377dd4ccdb55b52e21305d5a',1,'FoamAdapter::MeshAdapter::nfMesh() const']]]
 ];
