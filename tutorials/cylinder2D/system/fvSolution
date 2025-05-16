@@ -20,8 +20,9 @@ solvers
     {
         solver          PCG;
         preconditioner  DIC;
-        tolerance       1e-06;
-        relTol          0.01;
+        tolerance       1e-20;
+        relTol          0.00;
+        maxIter         200;
     }
 
     pFinal
@@ -32,8 +33,19 @@ solvers
 
     nfP
     {
-        maxIters        5;
-        relTol          1e-06;
+        solver          Ginkgo;
+        type            "solver::Cg";
+        preconditioner
+        {
+            type            "preconditioner::Jacobi";
+            max_block_size  8;
+        }
+        criteria
+        {
+            iteration 50;
+            relative_residual_norm 1e-20;
+            absolute_residual_norm 1e-20;
+        }
     }
 
     U

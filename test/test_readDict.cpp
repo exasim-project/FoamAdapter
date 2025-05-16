@@ -80,7 +80,7 @@ TEST_CASE("read testDictionary from disk")
     REQUIRE(nfTestDict.get<NeoN::label>("label") == 1);
     REQUIRE(nfTestDict.get<NeoN::scalar>("scalar") == 2.1);
     REQUIRE(nfTestDict.get<NeoN::scalar>("scalar2") == 2.0);
-    REQUIRE(nfTestDict.get<NeoN::scalar>("scalarWriteAnsInt") == 2);
+    REQUIRE(nfTestDict.get<int>("scalarWriteAnsInt") == 2);
     REQUIRE(nfTestDict.get<NeoN::Vec3>("vector") == NeoN::Vec3(1.0, 2.0, 3.0));
     REQUIRE(nfTestDict.get<std::string>("word") == "word");
 

@@ -28,6 +28,7 @@ macro(_minimal)
   file(APPEND ${minimal_log} "${ARGN}")
 endmacro()
 
+# cmake-lint: disable=C0301
 macro(add_separator log)
   set(sep "\n+------------------------------------------------------------------------------+")
   string(APPEND ${log} ${sep})

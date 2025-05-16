@@ -11,7 +11,8 @@ upstream_length = 0.1  # [m]
 downstream_length = 0.3  # [m]
 
 # size to roughly match cells outside ring
-cell_size = 0.3 * ring_thickness
+cell_size = 0.3 * ring_thickness * 0.25 # [m]
+print(f"cell size: {cell_size} m")
 bl_thickness = 1e-4
 c2c_expansion = 1.2  # cell-to-cell expansion ratio
 

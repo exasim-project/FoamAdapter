@@ -10,7 +10,7 @@ endif()
 if(FOAMADAPTER_NEON_VIA_CPM)
   if(NOT DEFINED FOAMADAPTER_NEON_VERSION)
     set(FOAMADAPTER_NEON_VERSION
-        "e2bd3c96fdfcde9156eae5a474d8c8b8c61bbaf1"
+        "refact/move_sparsity_pattern"
         CACHE INTERNAL "")
   endif()
 

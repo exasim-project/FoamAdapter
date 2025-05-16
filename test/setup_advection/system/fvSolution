@@ -18,10 +18,10 @@ solvers
 {
     T
     {
-        solver          diagonal;
-        /* preconditioner  DIC;
-        tolerance       1e-06;
-        relTol          0; */
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-14;
+        relTol          0;
     }
 }
 
