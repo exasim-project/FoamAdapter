@@ -16,14 +16,26 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-1
+3
 (
     fixedWalls
     {
         type            wall;
         inGroups        1(wall);
-        nFaces          54;
+        nFaces          36;
         startFace       54;
+    }
+    inlet
+    {
+        type            patch;
+        nFaces          9;
+        startFace       90;
+    }
+    outlet
+    {
+        type            patch;
+        nFaces          9;
+        startFace       99;
     }
 )
 

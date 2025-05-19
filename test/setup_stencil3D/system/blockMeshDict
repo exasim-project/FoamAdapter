@@ -47,11 +47,28 @@ boundary
         faces
         (
             (3 7 6 2)
-            (0 4 7 3)
-            (2 6 5 1)
             (1 5 4 0)
             (0 3 2 1)
             (4 5 6 7)
+        );
+    }
+
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (2 6 5 1)
+        );
+    }
+
+    outlet
+    {
+        type patch;
+        faces
+        (
+
+            (0 4 7 3)
         );
     }
 );

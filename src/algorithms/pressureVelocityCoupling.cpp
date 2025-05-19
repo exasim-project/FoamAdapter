@@ -6,6 +6,8 @@
 #include "FoamAdapter/algorithms/pressureVelocityCoupling.hpp"
 #include "Kokkos_Core.hpp"
 
+namespace la = NeoN::la;
+
 namespace FoamAdapter
 {
 
@@ -15,20 +17,23 @@ void constrainHbyA(
     const nnfvcc::VolumeField<scalar>& p
 )
 {
-    // const UnstructuredMesh& mesh = HbyA.mesh();
     const auto pIn = p.internalVector().view();
     auto HbyAin = HbyA.internalVector().view();
     auto [HbyABcValue, UBcValue] = views(HbyA.boundaryData().value(), U.boundaryData().value());
 
-    const auto& HbyABCs = HbyA.boundaryConditions();
+    const auto& UBCs = U.boundaryConditions();
 
-    for (auto patchi = 0; patchi < HbyABCs.size(); ++patchi)
+    for (auto patchi = 0; patchi < UBCs.size(); ++patchi)
     {
-        parallelFor(
-            HbyA.exec(),
-            HbyA.boundaryData().range(patchi),
-            KOKKOS_LAMBDA(const size_t bfacei) { HbyABcValue[bfacei] = UBcValue[bfacei]; }
-        );
+        bool assignable = UBCs[patchi].attributes().assignable;
+        if (!assignable)
+        {
+            parallelFor(
+                HbyA.exec(),
+                HbyA.boundaryData().range(patchi),
+                KOKKOS_LAMBDA(const size_t bfacei) { HbyABcValue[bfacei] = UBcValue[bfacei]; }
+            );
+        }
     }
 }
 
@@ -149,6 +154,30 @@ void updateFaceVelocity(
             auto Lower = values[rowOwnStart + ownOffs[facei]];
 
             iPhi[facei] = iPredPhi[facei] - (Upper * internalP[nei] - Lower * internalP[own]);
+        }
+    );
+
+    auto [bvalue, bPredValue, faceCells] = views(
+        phi.boundaryData().value(),
+        predictedPhi.boundaryData().value(),
+        mesh.boundaryMesh().faceCells()
+    );
+
+    auto& bcCoeffs =
+        ls.auxiliaryCoefficients().get<la::BoundaryCoefficients<NeoN::scalar, NeoN::localIdx>>(
+            "boundaryCoefficients"
+        );
+
+    const auto [mValue, rhsValue] = views(bcCoeffs.matrixValues, bcCoeffs.rhsValues);
+
+    NeoN::parallelFor(
+        exec,
+        {nInternalFaces, iPhi.size()},
+        KOKKOS_LAMBDA(const size_t facei) {
+            auto bfacei = facei - nInternalFaces;
+            scalar bflux = (rhsValue[bfacei] - mValue[bfacei] * internalP[faceCells[bfacei]]);
+            iPhi[facei] = iPredPhi[facei] - bflux;
+            bvalue[bfacei] = bPredValue[bfacei] - bflux;
         }
     );
 }
