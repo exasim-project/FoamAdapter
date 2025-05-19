@@ -59,7 +59,7 @@
       "description": "Configuration for profiling use",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-        "FOAMADAPTER_BUILD_TESTS": "ON",
+        "FOAMADAPTER_BUILD_TESTS": "OFF",
         "FOAMADAPTER_BUILD_BENCHMARKS": "ON",
         "FOAMADAPTER_BUILD_EXAMPLES": "ON",
         "CMAKE_CXX_FLAGS": "-fno-omit-frame-pointer $env{CXXFLAGS}"
