@@ -16,7 +16,7 @@ if(NOT $ENV{FOAM_API} GREATER_EQUAL 2406)
   message(WARNING "OpenFOAM version < 2406")
 endif()
 
-option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoN examples" OFF)
+option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoN examples" ON)
 option(FOAMADAPTER_BUILD_TESTS "Build the unit tests" OFF)
 option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" OFF)
 
@@ -50,7 +50,10 @@ include(cmake/CxxThirdParty.cmake)
 
 add_subdirectory(include)
 add_subdirectory(src)
-add_subdirectory(benchmarks)
+
+if(FOAMADAPTER_BUILD_BENCHMARKS)
+  add_subdirectory(benchmarks)
+endif()
 
 if(FOAMADAPTER_BUILD_EXAMPLES)
   add_subdirectory(examples)
