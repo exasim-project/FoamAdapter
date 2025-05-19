@@ -17,3 +17,5 @@ target_sources(
           "auxiliary/comparison.cpp"
           # "datastructures/foamMesh.cpp"
           "datastructures/meshAdapter.cpp")
+
+install(TARGETS FoamAdapter)
