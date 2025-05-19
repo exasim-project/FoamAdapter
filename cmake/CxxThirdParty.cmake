@@ -10,7 +10,7 @@ endif()
 if(FOAMADAPTER_NEON_VIA_CPM)
   if(NOT DEFINED FOAMADAPTER_NEON_VERSION)
     set(FOAMADAPTER_NEON_VERSION
-        "refact/move_sparsity_pattern"
+        "main"
         CACHE INTERNAL "")
   endif()
 
@@ -22,5 +22,8 @@ if(FOAMADAPTER_NEON_VIA_CPM)
     GIT_TAG
     ${FOAMADAPTER_NEON_VERSION}
     SYSTEM
-    YES)
+    YES
+    "Kokkos_ENABLE_CUDA ${Kokkos_ENABLE_CUDA}"
+    "Kokkos_ENABLE_HIP ${Kokkos_ENABLE_HIP}"
+    )
 endif()
