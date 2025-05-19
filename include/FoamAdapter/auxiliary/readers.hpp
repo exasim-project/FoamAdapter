@@ -71,7 +71,14 @@ auto readVolBoundaryConditions(const NeoN::UnstructuredMesh& nfMesh, const FoamT
              }
              else
              {
-                 fixedValue = tokenList.get<type_primitive_t>(1);
+                 try
+                 {
+                     fixedValue = tokenList.get<type_primitive_t>(1);
+                 }
+                 catch (const std::bad_any_cast& e)
+                 {
+                     fixedValue = NeoN::one<type_primitive_t>() * (tokenList.get<int>(1));
+                 }
                  dict.insert("fixedValue", fixedValue);
              }
          }},
