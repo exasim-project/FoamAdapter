@@ -18,7 +18,7 @@ endif()
 
 option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoN examples" ON)
 option(FOAMADAPTER_BUILD_TESTS "Build the unit tests" OFF)
-option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" ON)
+option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" OFF)
 
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
