@@ -18,7 +18,7 @@ endif()
 
 option(FOAMADAPTER_BUILD_EXAMPLES "Build the NeoN examples" ON)
 option(FOAMADAPTER_BUILD_TESTS "Build the unit tests" OFF)
-option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" OFF)
+option(FOAMADAPTER_BUILD_BENCHMARKS "Build benchmarks" ON)
 
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
@@ -51,17 +51,18 @@ include(cmake/CxxThirdParty.cmake)
 add_subdirectory(include)
 add_subdirectory(src)
 
-if(FOAMADAPTER_BUILD_BENCHMARKS)
-  add_subdirectory(benchmarks)
-endif()
-
 if(FOAMADAPTER_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
 
 if(FOAMADAPTER_BUILD_TESTS)
-  enable_testing()
+enable_testing()
   add_subdirectory(test)
 endif()
+
+if(FOAMADAPTER_BUILD_BENCHMARKS)
+enable_testing()
+  add_subdirectory(benchmarks)
+  endif()
 
 include(cmake/banner.cmake)
