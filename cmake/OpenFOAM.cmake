@@ -46,4 +46,4 @@ target_link_libraries(
   OpenFOAM
   PUBLIC
   INTERFACE OpenFOAM::api OpenFOAM::core OpenFOAM::finiteVolume OpenFOAM::Pstream
-  OpenFOAM::meshtools MPI::MPI_CXX)
+            OpenFOAM::meshtools MPI::MPI_CXX)

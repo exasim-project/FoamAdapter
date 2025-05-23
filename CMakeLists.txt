@@ -56,13 +56,13 @@ if(FOAMADAPTER_BUILD_EXAMPLES)
 endif()
 
 if(FOAMADAPTER_BUILD_TESTS)
-enable_testing()
+  enable_testing()
   add_subdirectory(test)
 endif()
 
 if(FOAMADAPTER_BUILD_BENCHMARKS)
-enable_testing()
+  enable_testing()
   add_subdirectory(benchmarks)
-  endif()
+endif()
 
 include(cmake/banner.cmake)

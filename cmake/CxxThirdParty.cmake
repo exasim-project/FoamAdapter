@@ -14,16 +14,15 @@ if(FOAMADAPTER_NEON_VIA_CPM)
         CACHE INTERNAL "")
   endif()
 
-   cpmaddpackage(
-     NAME
-     NeoN
-     GITHUB_REPOSITORY
-     exasim-project/NeoN
-     GIT_TAG
-     ${FOAMADAPTER_NEON_VERSION}
-     SYSTEM
-     YES
-     "Kokkos_ENABLE_CUDA ${Kokkos_ENABLE_CUDA}"
-     "Kokkos_ENABLE_HIP ${Kokkos_ENABLE_HIP}"
-     )
+  cpmaddpackage(
+    NAME
+    NeoN
+    GITHUB_REPOSITORY
+    exasim-project/NeoN
+    GIT_TAG
+    ${FOAMADAPTER_NEON_VERSION}
+    SYSTEM
+    YES
+    "Kokkos_ENABLE_CUDA ${Kokkos_ENABLE_CUDA}"
+    "Kokkos_ENABLE_HIP ${Kokkos_ENABLE_HIP}")
 endif()
