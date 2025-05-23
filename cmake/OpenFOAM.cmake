@@ -8,6 +8,8 @@ add_library(OpenFOAM::meshtools SHARED IMPORTED)
 add_library(OpenFOAM::finiteVolume SHARED IMPORTED)
 add_library(OpenFOAM::Pstream SHARED IMPORTED)
 
+find_package(MPI REQUIRED)
+
 target_include_directories(
   OpenFOAM::core
   PUBLIC
@@ -44,4 +46,4 @@ target_link_libraries(
   OpenFOAM
   PUBLIC
   INTERFACE OpenFOAM::api OpenFOAM::core OpenFOAM::finiteVolume OpenFOAM::Pstream
-            OpenFOAM::meshtools)
+            OpenFOAM::meshtools MPI::MPI_CXX)

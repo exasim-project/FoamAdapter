@@ -114,3 +114,7 @@ benchmarks/benchmarkSuite/dsl/meshes
 benchmarks/benchmarkSuite/dsl/cases
 
 *.log
+
+tutorials/cylinder2D/0.*
+benchmarks/benchmarkSuite/*Operators/
+build-*/

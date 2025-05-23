@@ -24,6 +24,5 @@ if(FOAMADAPTER_NEON_VIA_CPM)
     SYSTEM
     YES
     "Kokkos_ENABLE_CUDA ${Kokkos_ENABLE_CUDA}"
-    "Kokkos_ENABLE_HIP ${Kokkos_ENABLE_HIP}"
-    )
+    "Kokkos_ENABLE_HIP ${Kokkos_ENABLE_HIP}")
 endif()

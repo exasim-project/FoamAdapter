@@ -51,10 +51,6 @@ include(cmake/CxxThirdParty.cmake)
 add_subdirectory(include)
 add_subdirectory(src)
 
-if(FOAMADAPTER_BUILD_BENCHMARKS)
-  add_subdirectory(benchmarks)
-endif()
-
 if(FOAMADAPTER_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
@@ -62,6 +58,11 @@ endif()
 if(FOAMADAPTER_BUILD_TESTS)
   enable_testing()
   add_subdirectory(test)
+endif()
+
+if(FOAMADAPTER_BUILD_BENCHMARKS)
+  enable_testing()
+  add_subdirectory(benchmarks)
 endif()
 
 include(cmake/banner.cmake)

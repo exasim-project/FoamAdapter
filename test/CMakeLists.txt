@@ -12,7 +12,7 @@ function(foam_adapter_unit_test TEST SETUP_DIRECTORY)
 
   target_compile_definitions(adapter_${TEST} PUBLIC OMPI_SKIP_MPICXX)
 
-  target_link_libraries(adapter_${TEST} foamadapter_catch_main OpenFOAM NeoN)
+  target_link_libraries(adapter_${TEST} FoamAdapter_public_api foamadapter_catch_main OpenFOAM)
 
   set_target_properties(adapter_${TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                                    ${adapter_WORKING_DIRECTORY})
@@ -22,6 +22,7 @@ function(foam_adapter_unit_test TEST SETUP_DIRECTORY)
     COMMAND ${adapter_WORKING_DIRECTORY}/adapter_${TEST}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/test/${SETUP_DIRECTORY})
 
+  install(TARGETS adapter_${TEST})
 endfunction()
 
 foam_adapter_unit_test(geometricFields setup_operator)

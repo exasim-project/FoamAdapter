@@ -13,6 +13,8 @@ set_property(
   APPEND
   PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}")
 
+target_link_libraries(FoamAdapter_public_api INTERFACE NeoN::NeoN NeoN::NeoN_public_api)
+
 # Get list of some *.hpp files in folder include
 file(GLOB_RECURSE include_files *.hpp)
 

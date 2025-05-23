@@ -24,7 +24,8 @@ function(NeoN_benchmark BENCH)
   add_test(
     NAME bench_${BENCH}
     COMMAND sh -c "./bench_${BENCH} -r xml > ${BENCH}.xml"
-    WORKING_DIRECTORY ${NeoN_WORKING_DIRECTORY})
+    WORKING_DIRECTORY ${NeoN_WORKING_DIRECTORY}/benchmarkSuite/${BENCH})
+  install(TARGETS bench_${BENCH})
 endfunction()
 
 neon_benchmark(explicitOperators)
