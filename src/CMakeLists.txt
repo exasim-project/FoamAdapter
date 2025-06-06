@@ -16,6 +16,7 @@ target_sources(
           "auxiliary/writers.cpp"
           "auxiliary/comparison.cpp"
           # "datastructures/foamMesh.cpp"
-          "datastructures/meshAdapter.cpp")
+          "datastructures/meshAdapter.cpp"
+          "compatibility/fvSolution.cpp")
 
 install(TARGETS FoamAdapter)
