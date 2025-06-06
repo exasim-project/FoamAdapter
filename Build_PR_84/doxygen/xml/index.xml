@@ -111,6 +111,9 @@
     <member refid="namespaceFoamAdapter_1a8ad8cc5431b3fde26ae90f6a760ff452" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1ab50ddf2a52315c0dca39d480c4cbb4a2" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1aa07b2f5c8b1055724f7c8b3a408c5574" kind="function"><name>write</name></member>
+    <member refid="namespaceFoamAdapter_1a46e698646a94db94dd4f57ca77f699bd" kind="function"><name>updateSolver</name></member>
+    <member refid="namespaceFoamAdapter_1a387368bb2d20ed59a7547204e2f3aaa2" kind="function"><name>updatePreconditioner</name></member>
+    <member refid="namespaceFoamAdapter_1adf5f68e388035bb188ca7ed993972a1a" kind="function"><name>mapFvSolution</name></member>
     <member refid="namespaceFoamAdapter_1a13b42389ef03dfeb668a50344c66743c" kind="function"><name>diag</name></member>
     <member refid="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" kind="function"><name>applyOperator</name></member>
     <member refid="namespaceFoamAdapter_1a735d5fda9dfb92f1b072e6b2dc2ead40" kind="function"><name>operator&amp;</name></member>
@@ -140,6 +143,8 @@
   </compound>
   <compound refid="writers_8hpp" kind="file"><name>writers.hpp</name>
   </compound>
+  <compound refid="fvSolution_8hpp" kind="file"><name>fvSolution.hpp</name>
+  </compound>
   <compound refid="expression_8hpp" kind="file"><name>expression.hpp</name>
   </compound>
   <compound refid="meshAdapter_8hpp" kind="file"><name>meshAdapter.hpp</name>
@@ -147,6 +152,8 @@
   <compound refid="dir_a4d4eceee78d0324774abd2790fbae3f" kind="dir"><name>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms</name>
   </compound>
   <compound refid="dir_e764c51f1378e06d3c0b8e3264216a13" kind="dir"><name>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary</name>
+  </compound>
+  <compound refid="dir_98dbe43afdba21462c33a791488e8bba" kind="dir"><name>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility</name>
   </compound>
   <compound refid="dir_3e526c92fae3924df7a34821142a66e6" kind="dir"><name>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures</name>
   </compound>
