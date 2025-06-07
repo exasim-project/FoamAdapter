@@ -33,9 +33,9 @@ TEST_CASE("fvSolution")
 
 
     NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
-    auto& solverDict = fvSolutionDict.get<NeoN::Dictionary>("solvers");
+    NeoN::Dictionary& solverDict = fvSolutionDict.subDict("solvers");
 
-    auto solver1 = solverDict.get<NeoN::Dictionary>("solver1");
+    NeoN::Dictionary& solver1 = solverDict.subDict("solver1");
 
 
     SECTION("updateSolver")
@@ -66,24 +66,29 @@ TEST_CASE("fvSolution")
         // REQUIRE(solver1.get<std::string>("type") == "solver::Cg");
     }
 
-    // SECTION("updatePreconditioner")
-    // {
-    //     SECTION("DIC")
-    //     {
-    //         solver1.insert("preconditioner", NeoN::Dictionary{{"type", "DIC"}});
-    //         FoamAdapter::updatePreconditioner(solver1);
-    //         REQUIRE(solver1.get<NeoN::Dictionary>("preconditioner").get<std::string>("type") ==
-    //         "Diagonal");
-    //         // auto solver = NeoN::la::Solver(exec, solver1);
-    //     }
-    //     SECTION("ILU")
-    //     {
-    //         solver1.insert("preconditioner", NeoN::Dictionary{{"type", "ILU"}});
-    //         FoamAdapter::updatePreconditioner(solver1);
-    //         REQUIRE(solver1.get<NeoN::Dictionary>("preconditioner").get<std::string>("type") ==
-    //         "IncompleteLU");
-    //     }
-    // }
+    SECTION("updatePreconditioner")
+    {
+        SECTION("DIC")
+        {
+            solver1.insert("preconditioner", std::string("DIC"));
+            FoamAdapter::updatePreconditioner(solver1);
+            auto& preconditionerDict = solver1.subDict("preconditioner");
+            REQUIRE(preconditionerDict.get<std::string>("type") == "preconditioner::Jacobi");
+            REQUIRE(preconditionerDict.get<int>("max_block_size") == 8);
+        }
+        SECTION("DILU")
+        {
+            solver1.insert("preconditioner", std::string("DILU"));
+            FoamAdapter::updatePreconditioner(solver1);
+            auto& preconditionerDict = solver1.subDict("preconditioner");
+            REQUIRE(preconditionerDict.get<std::string>("type") == "preconditioner::Ilu");
+            REQUIRE(preconditionerDict.get<bool>("reverse_apply") == false);
+            REQUIRE(
+                preconditionerDict.subDict("factorization").get<std::string>("type")
+                == "factorization::ParIlu"
+            );
+        }
+    }
 
 
     // FoamAdapter::updateSolver(solver1);
