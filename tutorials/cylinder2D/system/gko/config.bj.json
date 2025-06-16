@@ -1,0 +1,17 @@
+{
+  "type": "solver::Cg",
+  "preconditioner": {
+    "type": "preconditioner::Jacobi",
+    "max_block_size": 1
+  },
+  "criteria": [
+    {
+      "type": "Iteration",
+      "max_iters": 1000
+    },
+    {
+      "type": "ResidualNorm",
+      "reduction_factor": 1e-05
+    }
+  ]
+}

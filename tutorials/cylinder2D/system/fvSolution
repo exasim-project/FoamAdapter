@@ -21,7 +21,7 @@ solvers
         solver          PCG;
         preconditioner  DIC;
         tolerance       1e-8;
-        relTol          0.001;
+        relTol          1e-5;
         maxIter         500;
     }
 
@@ -33,22 +33,8 @@ solvers
 
     nfP
     {
-        solver          Ginkgo;
-        type            "solver::Cg";
-        preconditioner
-        {
-            // type            "preconditioner::Ic";
-            // type            "preconditioner::IcIsai";
-            type            "preconditioner::Jacobi";
-            // type            "preconditioner::Ilu";
-            max_block_size  8;
-        }
-        criteria
-        {
-            iteration 500;
-            relative_residual_norm 1e-300;
-            absolute_residual_norm 1e-300;
-        }
+       solver          Ginkgo;
+       configFile      system/gko/config.mg.json;
     }
 
     U

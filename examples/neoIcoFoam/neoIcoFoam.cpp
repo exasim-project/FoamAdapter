@@ -49,8 +49,10 @@ int main(int argc, char* argv[])
         auto [adjustTimeStep, maxCo, maxDeltaT] = FoamAdapter::timeControls(runTime);
 
         NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
+        std::cout << " fvSchemesDict: " << fvSchemesDict << "\n";
         NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
         auto& solverDict = fvSolutionDict.get<NeoN::Dictionary>("solvers");
+        std::cout << " solverDict: " << solverDict << "\n";
         solverDict.get<NeoN::Dictionary>("p") =
             FoamAdapter::mapFvSolution(solverDict.get<NeoN::Dictionary>("p"));
 
@@ -151,12 +153,11 @@ int main(int argc, char* argv[])
                 while (piso.correctNonOrthogonal())
                 {
                     // Pressure corrector
-
                     nffvcc::Expression<NeoN::scalar> pEqn(
                         NeoN::dsl::imp::laplacian(nfrAUf, p) - NeoN::dsl::exp::div(phiHbyA),
                         p,
                         fvSchemesDict,
-                        solverDict.get<NeoN::Dictionary>("p")
+                        solverDict.get<NeoN::Dictionary>("nfP")
                     );
 
                     pEqn.assemble(t, dt);
@@ -165,7 +166,13 @@ int main(int argc, char* argv[])
                     {
                         pEqn.setReference(pRefCell, pRefValue);
                     }
-                    pEqn.solve(t, dt);
+                    Info << "Solve P" << endl;
+                    auto stats = pEqn.solve(t, dt);
+                    std::cout << " solver stats:\n"
+                              << "\t num iter: " << stats.numIter
+                              << "\n\t initial residual norm: " << stats.initResNorm
+                              << "\n\t final residual norm: " << stats.finalResNorm
+                              << "\n\t solve time: " << stats.solveTime << " [ms]\n";
                     p.correctBoundaryConditions();
 
                     if (piso.finalNonOrthogonalIter())
