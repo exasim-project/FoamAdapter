@@ -108,9 +108,7 @@ benchmarks/benchmarkSuite/explicitOperators/Cases
 
 benchmarks/benchmarkSuite/implicitOperators/meshes
 benchmarks/benchmarkSuite/implicitOperators/cases
-
-benchmarks/benchmarkSuite/dsl/meshes
-benchmarks/benchmarkSuite/dsl/cases
+benchmarks/benchmarkSuite/dsl/Cases
 
 *.log
 
