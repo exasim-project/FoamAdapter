@@ -104,8 +104,7 @@ benchmark/matrixAssembly/results
 constant/polyMesh
 
 # benchmark intermediate files
-benchmarks/benchmarkSuite/explicitOperators/meshes
-benchmarks/benchmarkSuite/explicitOperators/cases
+benchmarks/benchmarkSuite/explicitOperators/Cases
 
 benchmarks/benchmarkSuite/implicitOperators/meshes
 benchmarks/benchmarkSuite/implicitOperators/cases
@@ -116,5 +115,4 @@ benchmarks/benchmarkSuite/dsl/cases
 *.log
 
 tutorials/cylinder2D/0.*
-benchmarks/benchmarkSuite/*Operators/
 build-*/
