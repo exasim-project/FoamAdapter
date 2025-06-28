@@ -1,0 +1,8 @@
+case_name,Res,MeshType,Resolution
+2DSquare_N20,20,2DSquare,N20
+2DSquare_N50,50,2DSquare,N50
+2DSquare_N100,100,2DSquare,N100
+2DSquare_N200,200,2DSquare,N200
+2DSquare_N500,500,2DSquare,N500
+2DSquare_N1000,1000,2DSquare,N1000
+2DSquare_N2000,2000,2DSquare,N2000
