@@ -105,9 +105,7 @@ constant/polyMesh
 
 # benchmark intermediate files
 benchmarks/benchmarkSuite/explicitOperators/Cases
-
-benchmarks/benchmarkSuite/implicitOperators/meshes
-benchmarks/benchmarkSuite/implicitOperators/cases
+benchmarks/benchmarkSuite/implicitOperators/Cases
 benchmarks/benchmarkSuite/dsl/Cases
 
 *.log
