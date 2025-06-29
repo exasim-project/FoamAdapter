@@ -114,7 +114,10 @@ TEST_CASE("DivOperator")
                 NeoN::fill(nfDivT.boundaryData().value(), 0.0);
                 fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
                     .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
@@ -210,7 +213,10 @@ TEST_CASE("LaplacianOperator")
                 NeoN::fill(nfLapT.boundaryData().value(), 0.0);
                 fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
                     .laplacian(nfLapT, nfGamma, nfT, dsl::Coeff(1.0));
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
@@ -278,7 +284,10 @@ TEST_CASE("GradOperator")
                 NeoN::fill(nfGradT.internalVector(), NeoN::Vec3(0, 0, 0));
                 NeoN::fill(nfGradT.boundaryData().value(), NeoN::Vec3(0, 0, 0));
                 fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
@@ -383,7 +392,10 @@ TEST_CASE("FaceInterpolation")
                 NeoN::fill(nfTf.boundaryData().value(), 0.0);
                 fvcc::SurfaceInterpolation<NeoN::scalar>(exec, nfMesh, scheme)
                     .interpolate(nfPhi, nfT, nfTf);
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
@@ -460,7 +472,10 @@ TEST_CASE("FaceNormalGradient")
                 NeoN::fill(faceGradT.boundaryData().value(), 0.0);
                 fvcc::FaceNormalGradient<NeoN::scalar>(exec, nfMesh, scheme)
                     .faceNormalGrad(nfT, faceGradT);
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
