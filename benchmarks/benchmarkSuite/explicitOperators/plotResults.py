@@ -2,92 +2,60 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
-# Load the CSV file
-df = pd.read_csv("results/benchmark_results.csv")
-
-# Create a label for plotting
-# df["Label"] = df["Geometry"] + "_" + df["Resolution"] + " | " + df["Executor"]
-df["Label"] = df["SubSection"] + " | " + df["Executor"]
-
-
-def normalize_all_by_openfoam(group):
-    openfoam_rows = group[group["Executor"] == "OpenFOAM"]
-    if not openfoam_rows.empty:
-        openfoam_mean = openfoam_rows["Mean"].iloc[0]
-        group["Normalized_Mean"] = group["Mean"] / openfoam_mean
-    else:
-        group["Normalized_Mean"] = float("nan")
-    return group
-
-
-# Apply corrected normalization across Geometry + Resolution
-df_fixed_normalization = df.groupby(["TestCase","Geometry", "Resolution"], group_keys=False).apply(
-    normalize_all_by_openfoam
-)
-#%%
-# Plot using seaborn
-df_fixed_normalization["Speed up"] = 1 / df_fixed_normalization["Normalized_Mean"]
+from pathlib import Path
 
 # %%
-# Plot 3D cube
-def slice_dataframe(df, geometry, TestCase):
-    # Filter the DataFrame for the specific geometry and test case
-    df_filtered = df[(df["Geometry"] == geometry) & (df["TestCase"] == TestCase)]
-    return df_filtered
 
-def plot(df_fixed_normalization, testcase):
-    # Filter the DataFrame for the specific test case
-    df_fixed_normalization_3dCube = slice_dataframe(df_fixed_normalization, "3DCube", testcase)
-    resolution_order = ["N10", "N20", "N50", "N100", "N200"]
-    df_fixed_normalization_3dCube["Resolution"] = pd.Categorical(
-        df_fixed_normalization_3dCube.loc[:,"Resolution"],
+## plot results as bar plots
+
+
+def create_bar_plot(table, testcase, mesh_type, resolution_order):
+    sliced_table = table[table["MeshType"] == mesh_type].copy()
+    sliced_table["Resolution"] = pd.Categorical(
+        sliced_table.loc[:, "Resolution"],
         categories=resolution_order,
         ordered=True
     )
-
     plt.figure(figsize=(14, 6))
+    sliced_table.loc[:, "Label"] = (
+        sliced_table.loc[:, "benchmark_name"] + "_" + sliced_table.loc[:, "section2"]
+    )
     sns.barplot(
-        data=df_fixed_normalization_3dCube,
+        data=sliced_table,
         x="Resolution",
-        y="Speed up",
+        y="normalized_speedup",
         hue="Label"
     )
     # plt.xticks(rotation=90)
-    plt.axhline(1, color='black', linestyle='--', linewidth=1)  # Add baseline
+    plt.axhline(1, color="black", linestyle="--", linewidth=1)  # Add baseline
     plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
-    plt.title(f"3DCube: Speed up for the explicit {testcase}")
+    plt.title(f"{mesh_type}: Speed up for the explicit {testcase}")
     plt.tight_layout()
     plt.yscale("log")
-    plt.savefig(f"results/{testcase}_3DCube.png")
+    plt.savefig(f"results/{testcase}_{mesh_type}.png")
 
-    df_fixed_normalization_2DSquare = slice_dataframe(df_fixed_normalization, "2DSquare", testcase)
-    resolution_order = ["N20", "N50", "N100", "N200", "N500", "N1000", "N2000"]
-    df_fixed_normalization_2DSquare["Resolution"] = pd.Categorical(
-        df_fixed_normalization_2DSquare.loc[:,"Resolution"],
-        categories=resolution_order,
-        ordered=True
-    )
-    plt.figure(figsize=(14, 6))
-    sns.barplot(
-        data=df_fixed_normalization_2DSquare,
-        x="Resolution",
-        y="Speed up",
-        hue="Label",
-    )
-    # plt.xticks(rotation=90)
-    plt.axhline(1, color='black', linestyle='--', linewidth=1)  # Add baseline
-    plt.ylabel("Normalized Mean (w.r.t. OpenFOAM = 1)")
-    plt.title(f"2DSquare: Speed up for the explicit {testcase}")
-    plt.tight_layout()
-    plt.yscale("log")
-    plt.savefig(f"results/{testcase}_2DSquare.png")
 
-# %%
-plot(df_fixed_normalization, "DivOperator")
-plot(df_fixed_normalization, "LaplacianOperator")
-plot(df_fixed_normalization, "GradOperator")
-plot(df_fixed_normalization, "FaceInterpolation")
-plot(df_fixed_normalization, "FaceNormalGradient")
-plt.show()
-# %%
+def plot_table(test_case):
+    # Load the CSV file
+    table = pd.read_csv(Path(f"results/{test_case}.csv"))
+
+    create_bar_plot(
+        table=table,
+        testcase=test_case,
+        mesh_type="3DCube",
+        resolution_order=["N10", "N20", "N50", "N100", "N200"],
+    )
+
+    create_bar_plot(
+        table=table,
+        testcase=test_case,
+        mesh_type="2DSquare",
+        resolution_order=["N20", "N50", "N100", "N200", "N500", "N1000", "N2000"],
+    )
+
+
+plot_table("DivOperator")
+plot_table("LaplacianOperator")
+plot_table("GradOperator")
+plot_table("FaceInterpolation")
+plot_table("FaceNormalGradient")
