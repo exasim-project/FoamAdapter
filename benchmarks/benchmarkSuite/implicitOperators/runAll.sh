@@ -1,0 +1,12 @@
+./Cases/2DSquare_N20/Allrun
+./Cases/3DCube_N100/Allrun
+./Cases/3DCube_N10/Allrun
+./Cases/3DCube_N50/Allrun
+./Cases/3DCube_N20/Allrun
+./Cases/3DCube_N200/Allrun
+./Cases/2DSquare_N100/Allrun
+./Cases/2DSquare_N200/Allrun
+./Cases/2DSquare_N500/Allrun
+./Cases/2DSquare_N50/Allrun
+./Cases/2DSquare_N1000/Allrun
+./Cases/2DSquare_N2000/Allrun
