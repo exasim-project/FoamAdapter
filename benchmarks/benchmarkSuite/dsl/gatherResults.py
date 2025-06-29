@@ -15,12 +15,27 @@ file = datafile(file_name="dsl.xml", folder=".")
 benchmark_results = load_tables(
     source=file, dir_name=root / "Cases", reader_fn=read_catch2_benchmark
 )
+benchmark_results
+#%%
+group_keys = ["MeshType", "Resolution"]
+
+# Function to normalize avg_runtime within each group relative to OpenFOAM
+def normalize_group(group):
+    baseline = group.loc[group["benchmark_name"] == "OpenFOAM", "avg_runtime"]
+    if not baseline.empty:
+        group["normalized_speedup"] = baseline.values[0] / group["avg_runtime"]
+    else:
+        group["normalized_speedup"] = float("nan")  # No baseline found
+    return group
 
 
 # save per test case
 def save_test_results(df: pd.DataFrame, test_case: str):
-    test_case_df = df[df["test_case"] == test_case]
+    test_case_df = df[df["test_case"] == test_case].copy()
     if not test_case_df.empty:
+        test_case_df = test_case_df.groupby(group_keys).apply(
+            normalize_group, include_groups=True
+        )
         test_case_df.to_csv(results / f"{test_case}.csv", index=False)
 
 
