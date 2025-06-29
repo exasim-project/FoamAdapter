@@ -34,8 +34,8 @@ def save_test_results(df: pd.DataFrame, test_case: str):
     test_case_df = df[df["test_case"] == test_case]
     if not test_case_df.empty:
         test_case_df = test_case_df.groupby(group_keys).apply(
-            normalize_group, include_groups=True
-        )
+            normalize_group, include_groups=False
+        ).reset_index()
         test_case_df.to_csv(results / f"{test_case}.csv", index=False)
 
 
