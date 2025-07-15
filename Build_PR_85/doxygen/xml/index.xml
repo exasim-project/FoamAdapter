@@ -27,7 +27,7 @@
     <member refid="classFoamAdapter_1_1Expression_1a350c68b8ce406f1027e73f688deb4af4" kind="function"><name>exec</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a13c52bda6ecc679a32fba0a32736977c" kind="function"><name>assemble</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a9b92f687be098c4e645f47111fce07c0" kind="function"><name>assemble</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a64c5b8b6cb311a71dbd4b9b148db4d91" kind="function"><name>solve</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1a18ce364852da75332139d8053146df6a" kind="function"><name>solve</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a8ed934777e6059677c60d31b9c2f4c40" kind="function"><name>setReference</name></member>
   </compound>
   <compound refid="classFoamAdapter_1_1MeshAdapter" kind="class"><name>FoamAdapter::MeshAdapter</name>

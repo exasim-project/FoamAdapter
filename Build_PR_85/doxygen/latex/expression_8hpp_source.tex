@@ -131,7 +131,7 @@
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00127}00127\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00128}00128\ }
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00129}00129\ \ \ \ \ \textcolor{comment}{//\ TODO\ unify\ with\ dsl/solver.hpp}}
-\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00130}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a64c5b8b6cb311a71dbd4b9b148db4d91}{00130}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a64c5b8b6cb311a71dbd4b9b148db4d91}{solve}}(NeoN::scalar,\ NeoN::scalar)}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00130}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a18ce364852da75332139d8053146df6a}{00130}}\ \ \ \ \ NeoN::la::SolverStats\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a18ce364852da75332139d8053146df6a}{solve}}(NeoN::scalar,\ NeoN::scalar)}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00131}00131\ \ \ \ \ \{}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00132}00132\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ dsl::solve(expr\_,\ psi\_,\ t,\ dt,\ fvSchemes\_,\ fvSolution\_);}}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00133}00133\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (expr\_.temporalOperators().size()\ ==\ 0\ \&\&\ expr\_.spatialOperators().size()\ ==\ 0)}
@@ -151,7 +151,7 @@
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \{}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a350c68b8ce406f1027e73f688deb4af4}{exec}}\ =\ psi\_.exec();}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{solver}}\ =\ NeoN::la::Solver(\mbox{\hyperlink{classFoamAdapter_1_1Expression_a350c68b8ce406f1027e73f688deb4af4}{exec}},\ fvSolution\_);}
-\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{solver}}.solve(ls\_,\ psi\_.internalVector());}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{solver}}.solve(ls\_,\ psi\_.internalVector());}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ NF\_ERROR\_EXIT("{}No\ linear\ solver\ is\ available,\ build\ with\ -\/DNeoN\_WITH\_GINKGO=ON"{});}}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00152}00152\ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00153}00153\ \ \ \ \ \}}
