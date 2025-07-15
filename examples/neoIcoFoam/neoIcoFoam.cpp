@@ -171,8 +171,7 @@ int main(int argc, char* argv[])
                     std::cout << " solver stats:\n"
                               << "\t num iter: " << stats.numIter
                               << "\n\t initial residual norm: " << stats.initResNorm
-                              << "\n\t final residual norm: " << stats.finalResNorm
-                              << "\n\t solve time: " << stats.solveTime << " [ms]\n";
+                              << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
                     p.correctBoundaryConditions();
 
                     if (piso.finalNonOrthogonalIter())
