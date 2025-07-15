@@ -127,7 +127,7 @@ public:
     }
 
     // TODO unify with dsl/solver.hpp
-    void solve(NeoN::scalar, NeoN::scalar)
+    NeoN::la::SolverStats solve(NeoN::scalar, NeoN::scalar)
     {
         // dsl::solve(expr_, psi_, t, dt, fvSchemes_, fvSolution_);
         if (expr_.temporalOperators().size() == 0 && expr_.spatialOperators().size() == 0)
@@ -147,7 +147,7 @@ public:
         {
             auto exec = psi_.exec();
             auto solver = NeoN::la::Solver(exec, fvSolution_);
-            solver.solve(ls_, psi_.internalVector());
+            return solver.solve(ls_, psi_.internalVector());
             // NF_ERROR_EXIT("No linear solver is available, build with -DNeoN_WITH_GINKGO=ON");
         }
     }
