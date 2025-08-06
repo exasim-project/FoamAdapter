@@ -1,0 +1,26 @@
+name: GitHub-LRZ_GitLab Mirror
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["**"]
+  delete:
+    branches: ["**"]
+    tags: ["**"]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repo as bare
+        run: |
+          git clone --bare https://gitlab-ce.lrz.de/greole/foamadapter.git
+
+      - name: Push to LRZ GitLab (mirror)
+        env:
+          GITLAB_USERNAME: "greole"
+          GITLAB_PAT: ${{ secrets.GITLAB_PAT }}
+        run: |
+          cd FoamAdapter.git
+          git push --mirror https://${GITLAB_USERNAME}:${GITLAB_PAT}@gitlab-ce.lrz.de/greole/foamadapter.git
