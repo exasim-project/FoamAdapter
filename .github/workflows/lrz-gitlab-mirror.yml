@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Clone repo as bare
         run: |
-          git clone --bare https://gitlab-ce.lrz.de/greole/foamadapter.git
+          git clone --bare https://github.com/exasim-project/FoamAdapter.git
 
       - name: Push to LRZ GitLab (mirror)
         env:
