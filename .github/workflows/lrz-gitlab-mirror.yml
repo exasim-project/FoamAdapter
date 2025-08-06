@@ -19,8 +19,7 @@ jobs:
 
       - name: Push to LRZ GitLab (mirror)
         env:
-          GITLAB_USERNAME: "greole"
           GITLAB_PAT: ${{ secrets.GITLAB_PAT }}
         run: |
           cd FoamAdapter.git
-          git push --mirror https://${GITLAB_USERNAME}:${GITLAB_PAT}@gitlab-ce.lrz.de/greole/foamadapter.git
+          git push --mirror https://oauth2:${GITLAB_PAT}@gitlab-ce.lrz.de/greole/foamadapter.git
