@@ -1,4 +1,4 @@
-name: GitHub-LRZ_GitLab Mirror
+name: GitHub-to-LRZ-GitLab Mirror (Project Token)
 
 on:
   push:
@@ -13,13 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repo as bare
+      - name: Clone GitHub repo as bare
         run: |
           git clone --bare https://github.com/exasim-project/FoamAdapter.git
 
       - name: Push to LRZ GitLab (mirror)
         env:
-          GITLAB_PAT: ${{ secrets.GITLAB_PAT }}
+          GITLAB_TOKEN_NAME: "github-mirror-token"           
+          GITLAB_PROJECT_TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}
         run: |
           cd FoamAdapter.git
-          git push --mirror https://oauth2:${GITLAB_PAT}@gitlab-ce.lrz.de/greole/foamadapter.git
+          git push --mirror https://${GITLAB_TOKEN_NAME}:${GITLAB_PROJECT_TOKEN}@gitlab-ce.lrz.de/greole/foamadapter.git
