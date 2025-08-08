@@ -18,3 +18,12 @@ foamadapter = "foamadapter.cli.app:app"
 [build-system]
 requires = ["uv_build>=0.8.6,<0.9.0"]
 build-backend = "uv_build"
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra --showlocals"
+testpaths = [
+    "test"
+]
+

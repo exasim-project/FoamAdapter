@@ -5,6 +5,5 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 cleanCase0
 
-rm -rf fluentInterface
 
 #------------------------------------------------------------------------------
