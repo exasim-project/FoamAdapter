@@ -23,7 +23,16 @@ app.add_typer(solver_app, name="solver")
 def icofoam(ctx: typer.Context):
     """Run the icoFoam solver."""
     import sys
-    from foamadapter.cli.solver.icoFoam import main as icofoam_main
+    from foamadapter.solver.icoFoam import main as icofoam_main
     # Only pass the extra args (not the Typer command path)
     argv = [sys.argv[0]] + [str(arg) for arg in ctx.args]
     icofoam_main(argv)
+
+@solver_app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def pimplefoam(ctx: typer.Context):
+    """Run the pimpleFoam solver."""
+    import sys
+    from foamadapter.solver.pimpleFoam import main as pimplefoam_main
+    # Only pass the extra args (not the Typer command path)
+    argv = [sys.argv[0]] + [str(arg) for arg in ctx.args]
+    pimplefoam_main(argv)
