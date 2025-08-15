@@ -1,6 +1,6 @@
 from typing import Literal, Union, Annotated, Optional
-from pydantic import Field
-from pybFoam.io.model_base import IOModelBase
+from pydantic import Field, RootModel
+from pybFoam.io.model_base import IOModelBase, IOModelMixin
 
 
 # ---------- RAS models (each with its own extra fields) ----------
@@ -34,11 +34,31 @@ class SpalartAllmaras(IOModelBase):
     sigma: float = 2 / 3
     kappa: float = 0.41
 
+class RASConfig(
+    RootModel[
+        Annotated[
+            Union[kEpsilon, kOmega, SpalartAllmaras],
+            Field(discriminator="RASModel"),
+        ]
+    ],
+    IOModelMixin
+):
+    @classmethod
+    def from_ofdict(cls, d):
+        """Parse RAS config from OpenFOAM dictionary."""
+        ras_model_name = d.get[str]("RASModel")
 
-# Discriminated union within the RAS block:
-RASConfig = Annotated[
-    Union[kEpsilon, kOmega, SpalartAllmaras],
-    Field(discriminator="RASModel"),
-]
-
-
+        # Map model names to classes
+        model_classes = {
+            "kEpsilon": kEpsilon,
+            "kOmega": kOmega, 
+            "SpalartAllmaras": SpalartAllmaras
+        }
+        
+        if ras_model_name not in model_classes:
+            raise ValueError(f"Unknown RAS model: {ras_model_name}")
+        
+        model_class = model_classes[ras_model_name]
+        model_instance = model_class.from_ofdict(d)
+        
+        return cls(model_instance)
