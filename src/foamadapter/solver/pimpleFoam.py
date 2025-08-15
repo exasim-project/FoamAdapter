@@ -3,7 +3,7 @@ import sys
 import pybFoam 
 from pybFoam import (
     volScalarField, volVectorField, surfaceScalarField, fvScalarMatrix, fvVectorMatrix,
-    fvMesh, Time, fvc, fvm, Word, dictionary, Info,
+    fvMesh, Time, fvc, fvm, Word, dictionary, Info, dynamicFvMesh,
     solve, adjustPhi, constrainPressure, createPhi, setRefCell,
     constrainHbyA, pimpleControl, computeCFLNumber
 )
@@ -24,39 +24,64 @@ def create_fields(mesh):
 
     return pU
 
+class PimpleFoam():
+
+
+    def inputs(self):
+        """
+        Return the input parameters for the PIMPLE algorithm.
+        """
+        return {
+            "mesh": "dynamicFvMesh",
+            "turbulence": "incompressibleTurbulenceModel",
+            "laminarTransport": "singlePhaseTransportModel"
+        }
+
+    def __init__(self, argv):
+        """
+        """
+        self.argList = pybFoam.argList(argv)
+
+    def run(self):
+        """
+        Run the PIMPLE algorithm for the given mesh and turbulence model.
+        :param pimple: The PIMPLE control object.
+        """
+
+        runTime = Time(self.argList)
+        mesh = dynamicFvMesh.New(self.argList,runTime)
+
+        pU = create_fields(mesh)
+        stability_criteria = StabilityCriteria()
+        stability_criteria.add_criteria(pU.stability_criteria())
+
+        pimple = pimpleControl(mesh)
+
+        while runTime.loop():
+            Info(f"Time = {runTime.timeName()}")
+
+            # Compute Courant number
+            stability_criteria.setDelta(runTime)
+
+            while pimple.loop():
+
+                pU.momentum_equation(pimple)
+
+                while pimple.correct():
+                    pU.pressure_correction(pimple)
+                
+                if pimple.turbCorr():
+                    pU.laminarTransport.correct()
+                    pU.turbulence.correct()
+
+            runTime.write(True)
+            runTime.printExecutionTime()
+
+        Info("End")
+
 def main(argv):
-    argList = pybFoam.argList(argv)
-    runTime = Time(argList)
-    mesh = fvMesh(runTime)
 
-    pU = create_fields(mesh)
-
-    stability_criteria = StabilityCriteria()
-    stability_criteria.add_criteria(pU.stability_criteria())
-
-    pimple = pimpleControl(mesh)
-
-    while runTime.loop():
-        Info(f"Time = {runTime.timeName()}")
-
-        # Compute Courant number
-        stability_criteria.setDelta(runTime)
-
-        while pimple.loop():
-
-            pU.momentum_equation(pimple)
-
-            while pimple.correct():
-                pU.pressure_correction(pimple)
-            
-            if pimple.turbCorr():
-                pU.laminarTransport.correct()
-                pU.turbulence.correct()
-
-        runTime.write(True)
-        runTime.printExecutionTime()
-
-    Info("End")
+    PimpleFoam(argv).run()
 
 if __name__ == "__main__":
     main(sys.argv)

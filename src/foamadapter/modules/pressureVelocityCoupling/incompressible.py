@@ -33,7 +33,7 @@ class PimpleAlgorithm:
         self.mesh.setFluxRequired(Word("p"))
         self.cfl_number = CFLNumber(self.phi, 5.0)
 
-    def stability_criteria(self):
+    def stability_criteria(self) -> CFLNumber:
         return self.cfl_number
 
     def momentum_equation(self,pimple) -> None:
