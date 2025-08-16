@@ -13,7 +13,7 @@ class Smagorinsky(IOModelBase):
     @classmethod
     def additional_inputs(cls, reg: Registry) -> Registry:
         """Example method for Smagorinsky properties."""
-        reg["Smagorinsky"] = 1
+        # reg["Smagorinsky"] = 1
         return reg
 
 
@@ -26,7 +26,7 @@ class OneEqEddy(IOModelBase):
     @classmethod
     def additional_inputs(cls, reg: Registry) -> Registry:
         """Example method for OneEqEddy properties."""
-        reg["OneEqEddy"] = 1
+        # reg["OneEqEddy"] = 1
         return reg
 
 class LESConfig(

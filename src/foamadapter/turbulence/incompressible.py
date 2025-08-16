@@ -105,16 +105,13 @@ class TurbulenceModel(
         d = dictionary.read(turb_file)
 
         simulation_type = d.get[str]("simulationType")
-        
-        # Build the mapping for the specific model type
-        mapping = {"simulationType": simulation_type}
-        
+      
         # Add type-specific fields
         if simulation_type == "RAS" and d.isDict("RAS"):
             from foamadapter.turbulence.RASModel.incompressible import RASConfig
-            mapping["RAS"] = RASConfig.additional_inputs(d.subDict("RAS"), reg)
+            RASConfig.additional_inputs(d.subDict("RAS"), reg)
         elif simulation_type == "LES" and d.isDict("LES"):
             from foamadapter.turbulence.LESModel.incompressible import LESConfig
-            mapping["LES"] = LESConfig.additional_inputs(d.subDict("LES"), reg)
+            LESConfig.additional_inputs(d.subDict("LES"), reg)
 
         return reg

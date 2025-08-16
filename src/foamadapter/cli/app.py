@@ -79,6 +79,7 @@ def pimplefoam(
         ControlDict,
         FvSchemes,
         TransportProperties,
+        TurbulenceModel
     )
 
     # Only pass the extra args (not the Typer command path)
@@ -92,10 +93,12 @@ def pimplefoam(
                 "transportProperties": TransportProperties.from_file(
                     "constant/transportProperties"
                 ),
+                "turbulenceProperties": TurbulenceModel.from_file("constant/turbulenceProperties"),
             }
 
             # This would normally load the inputs
-            config = PimpleFoam(argv).inputs()(**config_data)
+            case_inputs = PimpleFoam(argv).inputs()
+            config = case_inputs.model_validate(config_data)
             typer.echo(typer.style("✅ All inputs are valid!", fg=typer.colors.GREEN))
 
         except ValidationError as e:
@@ -116,4 +119,4 @@ def pimplefoam(
         return
 
     pimplefoam = PimpleFoam(argv)
-    pimplefoam.run()
+    # pimplefoam.run()

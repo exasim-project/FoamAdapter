@@ -1,5 +1,5 @@
 from typing import Literal, Union, Annotated, Optional
-from pydantic import Field, RootModel
+from pydantic import Field, RootModel, create_model
 from pybFoam.io.model_base import IOModelBase, IOModelMixin
 from foamadapter.inputs_files.case_inputs import Registry, FileSpec
 
@@ -18,7 +18,7 @@ class kEpsilon(IOModelBase):
     @classmethod
     def additional_inputs(cls, reg: Registry) -> Registry:
         """Example method for kEpsilon properties."""
-        reg["kEpsilon"] = 0
+        # reg["kEpsilon"] = 0
         return reg
 
 
@@ -34,7 +34,33 @@ class kOmega(IOModelBase):
     @classmethod
     def additional_inputs(cls, reg: Registry) -> Registry:
         """Example method for kOmega properties."""
-        reg["kOmega"] = 1
+        # reg["fvSchemes"]
+        FvSchemes, fileSpec = reg["fvSchemes"]
+        divSchemes = FvSchemes.model_fields["divSchemes"].annotation
+        updated_divSchemes = create_model(
+            "divSchemes",
+            __base__=divSchemes,
+            div_phi_k=(Optional[str], Field(alias="div(phi,k)", default=None)),
+            div_phi_omega=(str, Field(alias="div(phi,omega)")),
+        )
+        print(f"Updated divSchemes: {updated_divSchemes}")
+        print(f"Updated divSchemes fields: {list(updated_divSchemes.model_fields.keys())}")
+        
+        update_fvSchemes = create_model(
+            "FvSchemes",
+            __base__=FvSchemes,
+            divSchemes=(updated_divSchemes, ...) 
+        )
+        print(f"Updated FvSchemes: {update_fvSchemes}")
+    
+        # Test creating an instance
+        try:
+            test_instance = update_fvSchemes()
+            print(f"Test instance created successfully: {test_instance}")
+        except Exception as e:
+            print(f"Error creating instance: {e}")
+        reg["fvSchemes"] = (update_fvSchemes, fileSpec)
+
         return reg
 
 
@@ -50,7 +76,7 @@ class SpalartAllmaras(IOModelBase):
     @classmethod
     def additional_inputs(cls, reg: Registry) -> Registry:
         """Example method for SpalartAllmaras properties."""
-        reg["SpalartAllmaras"] = 2
+        # reg["SpalartAllmaras"] = 2
         return reg
 
 class RASConfig(
