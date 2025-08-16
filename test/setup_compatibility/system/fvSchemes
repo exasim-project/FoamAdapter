@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2406                                 |
+|  \\    /   O peration     | Version:  v2306                                 |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -13,43 +13,47 @@ FoamFile
     object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "simulationParameters"
 
 ddtSchemes
 {
-    default         Euler;
+    default         none;
+    ddt(T)          Euler;
+    ddt(rho,U)      Euler;
+    ddt(rho,T)      Euler;
 }
 
 gradSchemes
 {
-    default         Gauss linear;
-    grad(p)         Gauss linear;
+    //default         none;
+    grad(T)         $GRADSCHEME; //  Gauss linear leastSquares pointCellsLeastSquares
+    grad(U)         $GRADSCHEME;
 }
 
 divSchemes
 {
     default         none;
-    div(phi,U)      Gauss upwind;
-    div(phi,nfU)    Gauss upwind;
+    div(phi,T)      $DIVSCHEME;
+    div(phi,U)      $DIVSCHEME;
 }
 
 laplacianSchemes
 {
-    //default               Gauss linear uncorrected;
-    laplacian(nu,U)         Gauss linear uncorrected;
-    laplacian(rAUf,p)       Gauss linear uncorrected;
-    //laplacian(rAUf,p)       Gauss linear uncorrected;
-    //laplacian(nfNu,nfU)     Gauss linear uncorrected;
-    //laplacian((1|A(U)),p)   Gauss linear uncorrected;
+    default         none;
+    laplacian(Gamma,T) $LAPSCHEME;
+    laplacian(mu,U) $LAPSCHEME;
 }
 
 interpolationSchemes
 {
-    default         linear;
+    default         none;
+    // default         linear;
 }
 
 snGradSchemes
 {
-    default         uncorrected;
+    default         none;
+    // default         corrected;
 }
 
 
