@@ -1,6 +1,7 @@
 from typing import Literal, Union, Annotated, Optional
 from pydantic import Field, RootModel
 from pybFoam.io.model_base import IOModelBase, IOModelMixin
+from foamadapter.inputs_files.case_inputs import Registry, FileSpec
 
 
 # ---------- RAS models (each with its own extra fields) ----------
@@ -14,6 +15,12 @@ class kEpsilon(IOModelBase):
     sigma_k: float = 1.0
     sigma_epsilon: float = 1.3
 
+    @classmethod
+    def additional_inputs(cls, reg: Registry) -> Registry:
+        """Example method for kEpsilon properties."""
+        reg["kEpsilon"] = 0
+        return reg
+
 
 class kOmega(IOModelBase):
     RASModel: Literal["kOmega"] = "kOmega"
@@ -24,6 +31,12 @@ class kOmega(IOModelBase):
     sigma_k: float = 2.0
     sigma_omega: float = 2.0
 
+    @classmethod
+    def additional_inputs(cls, reg: Registry) -> Registry:
+        """Example method for kOmega properties."""
+        reg["kOmega"] = 1
+        return reg
+
 
 class SpalartAllmaras(IOModelBase):
     RASModel: Literal["SpalartAllmaras"] = "SpalartAllmaras"
@@ -33,6 +46,12 @@ class SpalartAllmaras(IOModelBase):
     Cb2: float = 0.622
     sigma: float = 2 / 3
     kappa: float = 0.41
+
+    @classmethod
+    def additional_inputs(cls, reg: Registry) -> Registry:
+        """Example method for SpalartAllmaras properties."""
+        reg["SpalartAllmaras"] = 2
+        return reg
 
 class RASConfig(
     RootModel[
@@ -62,3 +81,24 @@ class RASConfig(
         model_instance = model_class.from_ofdict(d)
         
         return cls(model_instance)
+    
+    @classmethod
+    def additional_inputs(cls, d, reg: Registry) -> Registry:
+        """Example method for RAS properties."""
+
+        """Parse RAS config from OpenFOAM dictionary."""
+        ras_model_name = d.get[str]("RASModel")
+
+        # Map model names to classes
+        model_classes = {
+            "kEpsilon": kEpsilon,
+            "kOmega": kOmega, 
+            "SpalartAllmaras": SpalartAllmaras
+        }
+        
+        if ras_model_name not in model_classes:
+            raise ValueError(f"Unknown RAS model: {ras_model_name}")
+        
+        model_class = model_classes[ras_model_name]
+
+        return model_class.additional_inputs(reg)
