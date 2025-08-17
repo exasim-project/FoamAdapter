@@ -14,7 +14,7 @@ class FileSpec:
 
 @dataclass(frozen=True)
 class ValidationErrors:
-    field: str
+    field: Any
     error_type: str
     message: str
     file_name: str
@@ -109,15 +109,15 @@ class Registry(Dict[str, Tuple[Type[BaseModel], FileSpec]]):
                 # Try to load and validate the file
                 model_class.from_file(str(file_path))
             except ValidationError as errors:
-                for e in errors.errors():
+                for err in errors.errors(include_url=False):
                     # Collect validation errors
                     validation_errors.append(
                         ValidationErrors(
-                            field=e.get("loc", [None])[0],
-                            message=e.get("msg", "Validation error"),
+                            field=err.get("loc", [None]),
+                            message=err.get("msg", "Validation error"),
                             file_name=str(file_path),
-                            input_value=e.get("input", None),
-                            error_type=e.get("type", "UnknownError"),
+                            input_value=err.get("input", None),
+                            error_type=err.get("type", "UnknownError"),
                         )
                     )
 
