@@ -18,7 +18,22 @@ class kEpsilon(IOModelBase):
     @classmethod
     def additional_inputs(cls, reg: Registry) -> Registry:
         """Example method for kEpsilon properties."""
-        # reg["kEpsilon"] = 0
+        FvSchemes, fileSpec = reg["fvSchemes"]
+        divSchemes = FvSchemes.model_fields["divSchemes"].annotation
+        updated_divSchemes = create_model(
+            "divSchemes",
+            __base__=divSchemes,
+            div_phi_k=(Optional[str], Field(alias="div(phi,k)", default=None)),
+            div_phi_epsilon=(str, Field(alias="div(phi,epsilon)")),
+        )
+        
+        update_fvSchemes = create_model(
+            "FvSchemes",
+            __base__=FvSchemes,
+            divSchemes=(updated_divSchemes, ...) 
+        )
+
+        reg["fvSchemes"] = (update_fvSchemes, fileSpec)
         return reg
 
 
@@ -34,7 +49,7 @@ class kOmega(IOModelBase):
     @classmethod
     def additional_inputs(cls, reg: Registry) -> Registry:
         """Example method for kOmega properties."""
-        # reg["fvSchemes"]
+
         FvSchemes, fileSpec = reg["fvSchemes"]
         divSchemes = FvSchemes.model_fields["divSchemes"].annotation
         updated_divSchemes = create_model(
@@ -43,22 +58,13 @@ class kOmega(IOModelBase):
             div_phi_k=(Optional[str], Field(alias="div(phi,k)", default=None)),
             div_phi_omega=(str, Field(alias="div(phi,omega)")),
         )
-        print(f"Updated divSchemes: {updated_divSchemes}")
-        print(f"Updated divSchemes fields: {list(updated_divSchemes.model_fields.keys())}")
         
         update_fvSchemes = create_model(
             "FvSchemes",
             __base__=FvSchemes,
             divSchemes=(updated_divSchemes, ...) 
         )
-        print(f"Updated FvSchemes: {update_fvSchemes}")
-    
-        # Test creating an instance
-        try:
-            test_instance = update_fvSchemes()
-            print(f"Test instance created successfully: {test_instance}")
-        except Exception as e:
-            print(f"Error creating instance: {e}")
+
         reg["fvSchemes"] = (update_fvSchemes, fileSpec)
 
         return reg

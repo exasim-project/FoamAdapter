@@ -28,9 +28,11 @@ from pybFoam import (
     pimpleControl,
     computeCFLNumber,
 )
-from pybFoam.turbulence import incompressibleTurbulenceModel, singlePhaseTransportModel
+from ..inputs_files.case_inputs import Registry, FileSpec, build_case_inputs_class
+from ..turbulence.incompressible import TurbulenceModel
 from ..modules.pressureVelocityCoupling.incompressible import PimpleAlgorithm
 from ..modules.stability_criteria import StabilityCriteria
+from ..modules.transportModels import singlePhaseTransportModel
 
 ControlDict = create_model(
     "controlDict",
@@ -51,10 +53,6 @@ class TransportProperties(IOModelBase):
     nu: float = Field(..., description="Kinematic viscosity", gt=0)
 
 
-class _CaseInputs(IOModelBase):
-    controlDict: ControlDict
-    fvSchemes: FvSchemes
-    transportProperties: TransportProperties
 
 
 def create_fields(mesh):
@@ -62,10 +60,11 @@ def create_fields(mesh):
     U = pU.U
     phi = pU.phi
 
-    laminarTransport = singlePhaseTransportModel(U, phi)
+    transportModel = singlePhaseTransportModel(U, phi)
 
-    turbulence = incompressibleTurbulenceModel.New(U, phi, laminarTransport)
-    pU.laminarTransport = laminarTransport
+    turbulence = TurbulenceModel.New(U, phi, transportModel)
+
+    pU.laminarTransport = transportModel
     pU.turbulence = turbulence
 
     return pU
@@ -77,11 +76,15 @@ class PimpleFoam:
         """
         Return the input parameters for the PIMPLE algorithm.
         """
-        return _CaseInputs
+        registry = Registry({ })
+        registry = PimpleAlgorithm.inputs(registry)
+        registry = TurbulenceModel.inputs(registry)
+        registry = singlePhaseTransportModel.inputs(registry)
+        return registry
 
     def __init__(self, argv):
         """ """
-        self.argList = pybFoam.argList(argv)
+        self._argv = argv
 
     def run(self):
         """
@@ -89,8 +92,9 @@ class PimpleFoam:
         :param pimple: The PIMPLE control object.
         """
 
-        runTime = Time(self.argList)
-        mesh = dynamicFvMesh.New(self.argList, runTime)
+        argList = pybFoam.argList(self._argv)
+        runTime = Time(argList)
+        mesh = dynamicFvMesh.New(argList, runTime)
 
         pU = create_fields(mesh)
         stability_criteria = StabilityCriteria()

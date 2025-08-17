@@ -1,10 +1,43 @@
 from pybFoam import (
-    volScalarField, volVectorField, surfaceScalarField, fvScalarMatrix, fvVectorMatrix,
-    fvMesh, Time, fvc, fvm, Word, dictionary, Info,
-    solve, adjustPhi, constrainPressure, createPhi, setRefCell,
-    constrainHbyA, pimpleControl, computeCFLNumber
+    volScalarField,
+    volVectorField,
+    surfaceScalarField,
+    fvScalarMatrix,
+    fvVectorMatrix,
+    fvMesh,
+    Time,
+    fvc,
+    fvm,
+    Word,
+    dictionary,
+    Info,
+    solve,
+    adjustPhi,
+    constrainPressure,
+    createPhi,
+    setRefCell,
+    constrainHbyA,
+    pimpleControl,
+    computeCFLNumber,
 )
 from ..stability_criteria import CFLNumber
+from ...inputs_files.case_inputs import Registry
+from ...inputs_files.system import ControlDictBase, FvSchemesBase, DIVSchemes
+from pydantic import create_model, Field
+from ...inputs_files.case_inputs import Registry, FileSpec
+
+ControlDict = create_model(
+    "controlDict",
+    maxCo=(float, Field(..., description="Maximum Courant number")),
+    __base__=ControlDictBase,
+)
+
+divSchemes = create_model(
+    "divSchemes",
+    __base__=DIVSchemes,
+)
+
+FvSchemes = create_model("fvSchemes", __base__=FvSchemesBase)
 
 
 class PimpleAlgorithm:
@@ -12,6 +45,19 @@ class PimpleAlgorithm:
     Protocol for PIMPLE algorithm implementations.
     This can be used to define the interface for different PIMPLE algorithms.
     """
+
+    @staticmethod
+    def inputs(registry: Registry) -> Registry:
+        registry["controlDict"] = (
+            ControlDict,
+            FileSpec("system/controlDict", description="Time control settings"),
+        )
+        registry["fvSchemes"] = (
+            FvSchemes,
+            FileSpec("system/fvSchemes", description="Discretization schemes"),
+        )
+
+        return registry
 
     def __init__(self, mesh, turbulence=None, laminarTransport=None):
         """
@@ -36,12 +82,14 @@ class PimpleAlgorithm:
     def stability_criteria(self) -> CFLNumber:
         return self.cfl_number
 
-    def momentum_equation(self,pimple) -> None:
+    def momentum_equation(self, pimple) -> None:
         """
         Solve the momentum equations using the PIMPLE algorithm.
         """
         self.UEqn = fvVectorMatrix(
-            fvm.ddt(self.U) + fvm.div(self.phi, self.U) + self.turbulence.divDevReff(self.U)
+            fvm.ddt(self.U)
+            + fvm.div(self.phi, self.U)
+            + self.turbulence.divDevReff(self.U)
         )
 
         self.UEqn.relax()
@@ -49,7 +97,7 @@ class PimpleAlgorithm:
         if pimple.momentumPredictor():
             solve(self.UEqn + fvc.grad(self.p))
 
-    def pressure_correction(self,pimple) -> None:
+    def pressure_correction(self, pimple) -> None:
         """
         Correct the solution based on the PIMPLE algorithm.
         """
@@ -58,7 +106,7 @@ class PimpleAlgorithm:
 
         phiHbyA = surfaceScalarField(
             Word("phiHbyA"),
-            fvc.flux(HbyA) + fvc.interpolate(rAU) * fvc.ddtCorr(self.U, self.phi)
+            fvc.flux(HbyA) + fvc.interpolate(rAU) * fvc.ddtCorr(self.U, self.phi),
         )
 
         adjustPhi(phiHbyA, self.U, self.p)
@@ -75,4 +123,3 @@ class PimpleAlgorithm:
         # Optionally include continuityErrs()
         self.U.assign(HbyA - rAU * fvc.grad(self.p))
         self.U.correctBoundaryConditions()
-

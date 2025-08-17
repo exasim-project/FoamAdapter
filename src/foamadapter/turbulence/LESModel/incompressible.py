@@ -5,8 +5,8 @@ from foamadapter.inputs_files.case_inputs import Registry, FileSpec
 
 # ---------- LES models (example) ----------
 class Smagorinsky(IOModelBase):
-    LESModel: Literal["Smagorinsky"]
-    turbulence: Literal["on", "off"]
+    LESModel: Literal["Smagorinsky"] = "Smagorinsky"
+    turbulence: Literal["on", "off"] = "on"
     delta: str = "cubeRootVol"
     Cs: float = 0.17
 
@@ -18,8 +18,8 @@ class Smagorinsky(IOModelBase):
 
 
 class OneEqEddy(IOModelBase):
-    LESModel: Literal["oneEqEddy"]
-    turbulence: Literal["on", "off"]
+    LESModel: Literal["oneEqEddy"] = "oneEqEddy"
+    turbulence: Literal["on", "off"] = "on"
     delta: str = "cubeRootVol"
     Prt: float = 0.9
 

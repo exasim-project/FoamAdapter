@@ -2,6 +2,7 @@ import typer
 import sys
 from pydantic import ValidationError, BaseModel, Field
 from typing import List, Optional
+from foamadapter.turbulence.incompressible import TurbulenceModel
 
 app = typer.Typer()
 
@@ -71,35 +72,47 @@ def pimplefoam(
     check_inputs: bool = typer.Option(
         False, "--check_inputs", help="Check inputs and mesh before running"
     ),
+    case_dir: str = typer.Option(".", "--case", help="Case directory path"),
 ):
     """Run the pimpleFoam solver."""
 
-    from foamadapter.solver.pimpleFoam import (
-        PimpleFoam,
-        ControlDict,
-        FvSchemes,
-        TransportProperties,
-        TurbulenceModel
-    )
+    from foamadapter.solver.pimpleFoam import PimpleFoam
 
     # Only pass the extra args (not the Typer command path)
     argv = [sys.argv[0]] + [str(arg) for arg in ctx.args]
+    
     if check_inputs:
         try:
-            # Dummy validation - this would normally read from your config files
-            config_data = {
-                "controlDict": ControlDict.from_file("system/controlDict"),
-                "fvSchemes": FvSchemes.from_file("system/fvSchemes"),
-                "transportProperties": TransportProperties.from_file(
-                    "constant/transportProperties"
-                ),
-                "turbulenceProperties": TurbulenceModel.from_file("constant/turbulenceProperties"),
-            }
-
-            # This would normally load the inputs
-            case_inputs = PimpleFoam(argv).inputs()
-            config = case_inputs.model_validate(config_data)
+            # Get the registry from PimpleFoam
+            registry = PimpleFoam(argv).inputs()
+            
+            # Validate the case using the registry
+            is_valid, errors = registry.validate_case(case_dir)
+            
+            if not is_valid:
+                typer.echo(
+                    typer.style(
+                        "❌ Input validation failed:", fg=typer.colors.RED, bold=True
+                    )
+                )
+                for error in errors:
+                    typer.echo(f"  • {error}")
+                typer.echo(
+                    typer.style(
+                        "Fix the above errors before running the solver.",
+                        fg=typer.colors.YELLOW,
+                    )
+                )
+                raise typer.Exit(code=1)
+            
+            # Try to read all inputs using the registry
+            case_inputs = registry.read_case_inputs(case_dir, name="PimpleFoamInputs")
             typer.echo(typer.style("✅ All inputs are valid!", fg=typer.colors.GREEN))
+            
+            # Show loaded files
+            typer.echo("📁 Loaded files:")
+            for key, (_, file_spec) in registry.items():
+                typer.echo(f"  • {key}: {file_spec.relpath}")
 
         except ValidationError as e:
             typer.echo(
@@ -115,8 +128,15 @@ def pimplefoam(
                 )
             )
             raise typer.Exit(code=1)
+        except Exception as e:
+            typer.echo(
+                typer.style(
+                    f"❌ Error validating case: {e}", fg=typer.colors.RED, bold=True
+                )
+            )
+            raise typer.Exit(code=1)
 
         return
 
     pimplefoam = PimpleFoam(argv)
-    # pimplefoam.run()
+    pimplefoam.run()
