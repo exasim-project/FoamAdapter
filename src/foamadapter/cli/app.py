@@ -92,11 +92,16 @@ def pimplefoam(
             if not is_valid:
                 typer.echo(
                     typer.style(
-                        "❌ Input validation failed:", fg=typer.colors.RED, bold=True
+                        "Input validation failed:", fg=typer.colors.RED, bold=True
                     )
                 )
                 for error in errors:
-                    typer.echo(f"  • {error}")
+                    typer.echo(f"error in {error.file_name}:")
+                    typer.echo(f"    error type     = {error.error_type}")
+                    typer.echo(f"    affected key   = {error.field}")
+                    typer.echo(f"    error message  = {error.message}")
+                    typer.echo(f"    provided value = {error.input_value}")
+
                 typer.echo(
                     typer.style(
                         "Fix the above errors before running the solver.",
@@ -107,17 +112,12 @@ def pimplefoam(
             
             # Try to read all inputs using the registry
             case_inputs = registry.read_case_inputs(case_dir, name="PimpleFoamInputs")
-            typer.echo(typer.style("✅ All inputs are valid!", fg=typer.colors.GREEN))
-            
-            # Show loaded files
-            typer.echo("📁 Loaded files:")
-            for key, (_, file_spec) in registry.items():
-                typer.echo(f"  • {key}: {file_spec.relpath}")
+            typer.echo(typer.style("All inputs are valid!", fg=typer.colors.GREEN))
 
         except ValidationError as e:
             typer.echo(
                 typer.style(
-                    "❌ Input validation failed:", fg=typer.colors.RED, bold=True
+                    "Input validation failed:", fg=typer.colors.RED, bold=True
                 )
             )
             typer.echo(format_pydantic_errors(e))
@@ -125,13 +125,6 @@ def pimplefoam(
                 typer.style(
                     "Fix the above errors before running the solver.",
                     fg=typer.colors.YELLOW,
-                )
-            )
-            raise typer.Exit(code=1)
-        except Exception as e:
-            typer.echo(
-                typer.style(
-                    f"❌ Error validating case: {e}", fg=typer.colors.RED, bold=True
                 )
             )
             raise typer.Exit(code=1)

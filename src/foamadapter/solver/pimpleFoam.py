@@ -28,7 +28,7 @@ from pybFoam import (
     pimpleControl,
     computeCFLNumber,
 )
-from ..inputs_files.case_inputs import Registry, FileSpec, build_case_inputs_class
+from ..inputs_files.case_inputs import Registry, FileSpec
 from ..turbulence.incompressible import TurbulenceModel
 from ..modules.pressureVelocityCoupling.incompressible import PimpleAlgorithm
 from ..modules.stability_criteria import StabilityCriteria
