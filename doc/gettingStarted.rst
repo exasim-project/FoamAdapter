@@ -74,7 +74,9 @@ Run test case
 ^^^^^^^^^^^^^
 
 To build these test cases, the CMake preset `profiling` should be used during config and build step for FoamAdapter.
+
 .. code-block:: bash
+
    cmake --preset profiling
    cmake --build --preset profiling
 
