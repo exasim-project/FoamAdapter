@@ -309,12 +309,11 @@ build-essential
 </section>
 <section id="run-test-case">
 <h2>Run test case<a class="headerlink" href="#run-test-case" title="Link to this heading">¶</a></h2>
-<p>To build these test cases, the CMake preset <cite>profiling</cite> should be used during config and build step for FoamAdapter.
-.. code-block:: bash</p>
-<blockquote>
-<div><p>cmake –preset profiling
-cmake –build –preset profiling</p>
-</div></blockquote>
+<p>To build these test cases, the CMake preset <cite>profiling</cite> should be used during config and build step for FoamAdapter.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--preset<span class="w"> </span>profiling
+cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class="w"> </span>profiling
+</pre></div>
+</div>
 <p>Then go to the <cite>tutorials</cite> directory and use the predefined script <cite>Allrun</cite> in the directory of each test case to run the chosen test case.</p>
 </section>
 </section>
