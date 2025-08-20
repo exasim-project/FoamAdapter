@@ -2,11 +2,14 @@ Test cases
 ==========
 
 Currently the following test cases are provided within the FoamAdapter:
-- scalar advection
-- cavity
-- cylinder 2D
-- heat transfer 2D
-- heat transfer 3D
+
+.. code-block:: bash
+
+    - scalar advection
+    - cavity
+    - cylinder 2D
+    - heat transfer 2D
+    - heat transfer 3D
 
 They can be found under `tutorials` directory.
 
