@@ -1,9 +1,17 @@
 Test cases
 ==========
 
-Currently the following testcases are provided within the FoamAdapter.
+Currently the following test cases are provided within the FoamAdapter:
+- scalar advection
+- cavity
+- cylinder 2D
+- heat transfer 2D
+- heat transfer 3D
+
+They can be found under `tutorials` directory.
+
 
 Scalar advection
 ^^^^^^^^^^^^^^^^
 
-Additionally, we provide several CMake presets to set commonly required flags if you compile NeoFoam in combination with Kokkos.
+A two-dimensional scalar advection problem is solved in a 50 x 50 x 1 OpenFOAM's block mesh.
