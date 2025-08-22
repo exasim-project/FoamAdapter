@@ -1,0 +1,75 @@
+# SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
+#
+# SPDX-License-Identifier: Unlicense
+
+image: chihtaw/cuda-openfoam:v2412
+
+stages:
+  - prepare
+  - build
+  - test
+
+variables:
+  GIT_STRATEGY: clone
+  GIT_DEPTH: 1
+
+# ------------------------------------------------
+# Stage 1: Prepare NeoN
+# ------------------------------------------------
+prepare-neon:
+  stage: prepare
+  tags: ["nvidia-gpus"]
+  script:
+    - echo "Cloning NeoN (main branch)..."
+    - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+  artifacts:
+    paths:
+      - ../NeoN
+    expire_in: 1h
+
+# ------------------------------------------------
+# Stage 2: Build FoamAdapter
+# ------------------------------------------------
+build-foamadapter:
+  stage: build
+  tags: ["nvidia-gpus"]
+  needs: ["prepare-neon"]
+  before_script:
+    # Install pre-commit once
+    - pip3 install --user --break-system-packages pre-commit
+    - export PATH="$HOME/.local/bin:$PATH"
+
+    # Show versions for debugging
+    - cmake --version
+    - clang++ --version || g++ --version
+    - nvidia-smi
+    - nvcc --version
+
+    # Source OpenFOAM
+    - source /usr/local/app/openfoam/OpenFOAM-v2412/etc/bashrc
+
+  script:
+    - echo "Building FoamAdapter against NeoN..."
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
+            -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF
+    - cmake --build --preset develop
+  artifacts:
+    paths:
+      - build/         
+    expire_in: 1h
+
+# ------------------------------------------------
+# Stage 3: Test FoamAdapter
+# ------------------------------------------------
+test-foamadapter:
+  stage: test
+  tags: ["nvidia-gpus"]
+  needs: ["build-foamadapter"]
+  dependencies:
+    - build-foamadapter   
+  before_script:
+    - source /usr/local/app/openfoam/OpenFOAM-v2412/etc/bashrc
+
+  script:
+    - echo "Running FoamAdapter tests..."
+    - ctest --preset develop --output-on-failure
