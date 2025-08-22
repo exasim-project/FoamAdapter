@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Unlicense
 
-image: chihtaw/cuda-openfoam:v2412
+image: chihtaw/cuda-openfoam-bash:v2412
 
 workflow:
   rules:
