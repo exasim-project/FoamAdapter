@@ -26,7 +26,7 @@ build-and-test-foamadapter:
   stage: build-and-test
   tags: ["nvidia-gpus"]
   before_script:
-    # Install pre-commit 
+    # Install pre-commit
     - pip3 install --user --break-system-packages pre-commit
     - export PATH="$HOME/.local/bin:$PATH"
 
