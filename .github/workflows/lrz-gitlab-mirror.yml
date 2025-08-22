@@ -19,7 +19,7 @@ jobs:
 
       - name: Push to LRZ GitLab (mirror)
         env:
-          GITLAB_TOKEN_NAME: "github-mirror-token"           
+          GITLAB_TOKEN_NAME: "github-mirror-token"
           GITLAB_PROJECT_TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}
         run: |
           cd FoamAdapter.git
