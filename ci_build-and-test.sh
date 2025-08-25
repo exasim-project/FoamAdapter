@@ -1,5 +1,5 @@
 #!/bin/bash -l
-set -euo pipefail
+set -eo pipefail
 
 echo "Sourcing OpenFOAM..."
 source /usr/local/app/openfoam/OpenFOAM-v2412/etc/bashrc
