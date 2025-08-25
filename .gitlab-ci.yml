@@ -25,6 +25,23 @@ variables:
 build-and-test-foamadapter:
   stage: build-and-test
   tags: ["nvidia-gpus"]
+  variables:
+    FOAM_INST_DIR: /usr/local/app/openfoam/OpenFOAM-v2412
+    WM_PROJECT: OpenFOAM
+    WM_OPTIONS: linux64GccDPInt32Opt
+    WM_COMPILER_TYPE: system
+    WM_COMPILER: Gcc
+    WM_PRECISION_OPTION: DP
+    WM_LABEL_SIZE: 32
+    WM_COMPILE_OPTION: Opt
+    WM_OSTYPE: POSIX
+    WM_ARCH: linux64
+    WM_ARCH_OPTION: 64
+    WM_LINK_LANGUAGE: c++
+    WM_LABEL_OPTION: Int32
+    WM_MPLIB: SYSTEMOPENMPI
+    MPI_BUFFER_SIZE: 20000000
+
   before_script:
     # Install pre-commit
     - pip3 install --user --break-system-packages pre-commit
@@ -37,4 +54,23 @@ build-and-test-foamadapter:
     - nvcc --version
 
   script:
-    - bash -l ./ci_build-and-test.sh
+  # -------------------------
+  # Step 1: Prepare NeoN
+  # -------------------------
+  - echo "Cloning NeoN (main branch)..."
+  - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+
+  # -------------------------
+  # Step 2: Build FoamAdapter
+  # -------------------------
+  - echo "Building FoamAdapter against NeoN..."
+  - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
+        -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF
+  - cmake --build --preset develop
+
+  # -------------------------
+  # Step 3: Run Tests
+  # -------------------------
+  - echo "Running FoamAdapter tests..."
+  - ctest --preset develop --output-on-failure
+
