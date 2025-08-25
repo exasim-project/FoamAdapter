@@ -71,14 +71,23 @@ build-and-test-foamadapter:
     # -------------------------
     - echo "Cloning NeoN (main branch)..."
     - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-
     # -------------------------
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF
-    - cmake --build --preset develop
 
+    # Detect actual location of libPstream.so
+    - export FOAM_PSTREAM_DIR=$(dirname $(find $FOAM_LIBBIN -name libPstream.so | head -n1))
+    - echo "Detected libPstream.so in $FOAM_PSTREAM_DIR"
+
+    # Tell both runtime linker and CMake about it
+    - export LD_LIBRARY_PATH="$FOAM_PSTREAM_DIR:$LD_LIBRARY_PATH"
+    - cmake --preset develop \
+          -DFOAMADAPTER_NEON_DIR=../NeoN \
+          -DCMAKE_CUDA_ARCHITECTURES=89 \
+          -DNeoN_WITH_THREADS=OFF \
+          -DCMAKE_LIBRARY_PATH=$FOAM_PSTREAM_DIR
+    - cmake --build --preset develop
     # -------------------------
     # Step 3: Run Tests
     # -------------------------
