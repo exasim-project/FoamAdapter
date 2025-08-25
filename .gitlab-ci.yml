@@ -37,17 +37,24 @@ build-and-test-foamadapter:
     # Add OpenFOAM executables and libraries to path
     - export PATH="$FOAM_APPBIN:$PATH"
     - export LD_LIBRARY_PATH="$FOAM_LIBBIN:$LD_LIBRARY_PATH"
-    - export MANPATH="$FOAM_ETC/man:$MANPATH"
 
-    # Install pre-commit
-    - pip3 install --user --break-system-packages pre-commit
-    - export PATH="$HOME/.local/bin:$PATH"
+    # Add all subdirectories of FOAM_LIBBIN to LD_LIBRARY_PATH
+    - for d in "$FOAM_LIBBIN"/*; do
+        if [ -d "$d" ]; then
+          export LD_LIBRARY_PATH="$d:$LD_LIBRARY_PATH";
+        fi;
+      done
+
+    - export MANPATH="$FOAM_ETC/man:$MANPATH"
 
     # Debugging info
     - echo "PATH=$PATH"
     - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-    - echo "WM_PROJECT_VERSION=$WM_PROJECT_VERSION"
     - which simpleFoam || echo "simpleFoam not found!"
+
+    # Install pre-commit
+    - pip3 install --user --break-system-packages pre-commit
+    - export PATH="$HOME/.local/bin:$PATH"
 
     # Show versions for debugging
     - cmake --version
