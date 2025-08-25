@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
 #
 # SPDX-License-Identifier: Unlicense
-
 image: chihtaw/cuda-openfoam:v2412
 
 stages:
@@ -31,8 +30,11 @@ variables:
   FOAM_LIBBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/lib"
   FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
 
+build-and-test-foamadapter:
+  stage: build-and-test
+  tags: ["nvidia-gpus"]
   before_script:
-      # Add OpenFOAM executables and libraries to path
+    # Add OpenFOAM executables and libraries to path
     - export PATH="$FOAM_APPBIN:$PATH"
     - export LD_LIBRARY_PATH="$FOAM_LIBBIN:$LD_LIBRARY_PATH"
     - export MANPATH="$FOAM_ETC/man:$MANPATH"
@@ -47,10 +49,6 @@ variables:
     - echo "WM_PROJECT_VERSION=$WM_PROJECT_VERSION"
     - which simpleFoam || echo "simpleFoam not found!"
 
-    # Install pre-commit
-    - pip3 install --user --break-system-packages pre-commit
-    - export PATH="$HOME/.local/bin:$PATH"
-
     # Show versions for debugging
     - cmake --version
     - clang++ --version || g++ --version
@@ -58,22 +56,21 @@ variables:
     - nvcc --version
 
   script:
-  # -------------------------
-  # Step 1: Prepare NeoN
-  # -------------------------
-  - echo "Cloning NeoN (main branch)..."
-  - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+    # -------------------------
+    # Step 1: Prepare NeoN
+    # -------------------------
+    - echo "Cloning NeoN (main branch)..."
+    - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
 
-  # -------------------------
-  # Step 2: Build FoamAdapter
-  # -------------------------
-  - echo "Building FoamAdapter against NeoN..."
-  - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF
-  - cmake --build --preset develop
+    # -------------------------
+    # Step 2: Build FoamAdapter
+    # -------------------------
+    - echo "Building FoamAdapter against NeoN..."
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF
+    - cmake --build --preset develop
 
-  # -------------------------
-  # Step 3: Run Tests
-  # -------------------------
-  - echo "Running FoamAdapter tests..."
-  - ctest --preset develop --output-on-failure
-
+    # -------------------------
+    # Step 3: Run Tests
+    # -------------------------
+    - echo "Running FoamAdapter tests..."
+    - ctest --preset develop --output-on-failure
