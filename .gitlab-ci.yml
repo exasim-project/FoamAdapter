@@ -34,36 +34,36 @@ build-and-test-foamadapter:
   stage: build-and-test
   tags: ["nvidia-gpus"]
   before_script:
-    # Add OpenFOAM executables and libraries to path
-   - export PATH="$FOAM_APPBIN:$PATH"
-   - export LD_LIBRARY_PATH="$FOAM_LIBBIN:$LD_LIBRARY_PATH"
+    # Add OpenFOAM executables to PATH
+    - export PATH="$FOAM_APPBIN:$PATH"
 
-   # Detect and add MPI subdirectory (contains libPstream.so) to both runtime and build paths
-   - for d in "$FOAM_LIBBIN"/*; do
-       if [ -d "$d" ] && [ -f "$d/libPstream.so" ]; then
-         echo "Found libPstream.so in $d";
-         export LD_LIBRARY_PATH="$d:$LD_LIBRARY_PATH";
-         export CMAKE_LIBRARY_PATH="$d:$CMAKE_LIBRARY_PATH";
-       fi;
-     done
+    # Detect MPI subdirectory containing libPstream.so
+    - export FOAM_MPI=$(basename $(dirname $(find $FOAM_LIBBIN -name libPstream.so | head -n1)))
+    - echo "Detected FOAM_MPI=$FOAM_MPI"
 
-   - export MANPATH="$FOAM_ETC/man:$MANPATH"
+    # Add OpenFOAM libraries to build and runtime paths
+    - export LD_LIBRARY_PATH="$FOAM_LIBBIN:$FOAM_LIBBIN/$FOAM_MPI:$LD_LIBRARY_PATH"
+    - export CMAKE_LIBRARY_PATH="$FOAM_LIBBIN:$FOAM_LIBBIN/$FOAM_MPI:$CMAKE_LIBRARY_PATH"
 
-   # Debugging info
-   - echo "PATH=$PATH"
-   - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-   - echo "CMAKE_LIBRARY_PATH=$CMAKE_LIBRARY_PATH"
-   - which simpleFoam || echo "simpleFoam not found!"
+    # Set man path
+    - export MANPATH="$FOAM_ETC/man:$MANPATH"
 
-   # Install pre-commit
-   - pip3 install --user --break-system-packages pre-commit
-   - export PATH="$HOME/.local/bin:$PATH"
+    # Debugging info
+    - echo "PATH=$PATH"
+    - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+    - echo "CMAKE_LIBRARY_PATH=$CMAKE_LIBRARY_PATH"
+    - which simpleFoam || echo "simpleFoam not found!"
+    - find $FOAM_LIBBIN -name "libPstream.so"
 
-   # Show versions for debugging
-   - cmake --version
-   - clang++ --version || g++ --version
-   - nvidia-smi
-   - nvcc --version
+    # Install pre-commit
+    - pip3 install --user --break-system-packages pre-commit
+    - export PATH="$HOME/.local/bin:$PATH"
+
+    # Show tool versions for debugging
+    - cmake --version
+    - clang++ --version || g++ --version
+    - nvidia-smi
+    - nvcc --version
 
   script:
     # -------------------------
@@ -71,19 +71,14 @@ build-and-test-foamadapter:
     # -------------------------
     - echo "Cloning NeoN (main branch)..."
     - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+
     # -------------------------
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-
-    # Detect actual location of libPstream.so
-    - export FOAM_PSTREAM_DIR=$(dirname $(find $FOAM_LIBBIN -name libPstream.so | head -n1))
-    - echo "Detected libPstream.so in $FOAM_PSTREAM_DIR"
-
-    # Tell both runtime linker and CMake about it
-    - export LD_LIBRARY_PATH="$FOAM_PSTREAM_DIR:$LD_LIBRARY_PATH"
-    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DCMAKE_LIBRARY_PATH=$FOAM_PSTREAM_DIR
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF
     - cmake --build --preset develop
+
     # -------------------------
     # Step 3: Run Tests
     # -------------------------
