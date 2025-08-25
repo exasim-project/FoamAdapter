@@ -37,4 +37,4 @@ build-and-test-foamadapter:
     - nvcc --version
 
   script:
-    - ./ci_build-and-test.sh
+    - bash -l ./ci_build-and-test.sh
