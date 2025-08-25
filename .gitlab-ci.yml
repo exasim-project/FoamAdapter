@@ -35,32 +35,35 @@ build-and-test-foamadapter:
   tags: ["nvidia-gpus"]
   before_script:
     # Add OpenFOAM executables and libraries to path
-    - export PATH="$FOAM_APPBIN:$PATH"
-    - export LD_LIBRARY_PATH="$FOAM_LIBBIN:$LD_LIBRARY_PATH"
+   - export PATH="$FOAM_APPBIN:$PATH"
+   - export LD_LIBRARY_PATH="$FOAM_LIBBIN:$LD_LIBRARY_PATH"
 
-    # Add all subdirectories of FOAM_LIBBIN to LD_LIBRARY_PATH
-    - for d in "$FOAM_LIBBIN"/*; do
-        if [ -d "$d" ]; then
-          export LD_LIBRARY_PATH="$d:$LD_LIBRARY_PATH";
-        fi;
-      done
+   # Detect and add MPI subdirectory (contains libPstream.so) to both runtime and build paths
+   - for d in "$FOAM_LIBBIN"/*; do
+       if [ -d "$d" ] && [ -f "$d/libPstream.so" ]; then
+         echo "Found libPstream.so in $d";
+         export LD_LIBRARY_PATH="$d:$LD_LIBRARY_PATH";
+         export CMAKE_LIBRARY_PATH="$d:$CMAKE_LIBRARY_PATH";
+       fi;
+     done
 
-    - export MANPATH="$FOAM_ETC/man:$MANPATH"
+   - export MANPATH="$FOAM_ETC/man:$MANPATH"
 
-    # Debugging info
-    - echo "PATH=$PATH"
-    - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-    - which simpleFoam || echo "simpleFoam not found!"
+   # Debugging info
+   - echo "PATH=$PATH"
+   - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+   - echo "CMAKE_LIBRARY_PATH=$CMAKE_LIBRARY_PATH"
+   - which simpleFoam || echo "simpleFoam not found!"
 
-    # Install pre-commit
-    - pip3 install --user --break-system-packages pre-commit
-    - export PATH="$HOME/.local/bin:$PATH"
+   # Install pre-commit
+   - pip3 install --user --break-system-packages pre-commit
+   - export PATH="$HOME/.local/bin:$PATH"
 
-    # Show versions for debugging
-    - cmake --version
-    - clang++ --version || g++ --version
-    - nvidia-smi
-    - nvcc --version
+   # Show versions for debugging
+   - cmake --version
+   - clang++ --version || g++ --version
+   - nvidia-smi
+   - nvcc --version
 
   script:
     # -------------------------
