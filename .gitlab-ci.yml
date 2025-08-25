@@ -4,46 +4,49 @@
 
 image: chihtaw/cuda-openfoam:v2412
 
-workflow:
-  rules:
-    # Skip pipeline if only doc or Markdown files changed
-    - changes:
-        - doc/**/*
-        - '*.md'
-      when: never
-
-    # Run pipeline for everything else
-    - when: always
-
 stages:
   - build-and-test
 
 variables:
-  GIT_STRATEGY: clone
-  GIT_DEPTH: 1
+  FOAM_INST_DIR: /usr/local/app/openfoam
+  WM_PROJECT: OpenFOAM
+  WM_PROJECT_VERSION: v2412
+  WM_OPTIONS: linux64GccDPInt32Opt
+  WM_COMPILER_TYPE: system
+  WM_COMPILER: Gcc
+  WM_PRECISION_OPTION: DP
+  WM_LABEL_SIZE: 32
+  WM_COMPILE_OPTION: Opt
+  WM_OSTYPE: POSIX
+  WM_ARCH: linux64
+  WM_ARCH_OPTION: 64
+  WM_LINK_LANGUAGE: c++
+  WM_LABEL_OPTION: Int32
+  WM_MPLIB: SYSTEMOPENMPI
+  MPI_BUFFER_SIZE: 20000000
 
-build-and-test-foamadapter:
-  stage: build-and-test
-  tags: ["nvidia-gpus"]
-  variables:
-    FOAM_INST_DIR: /usr/local/app/openfoam/OpenFOAM-v2412
-    FOAM_SRC: /usr/local/app/openfoam/OpenFOAM-v2412/src
-    WM_PROJECT: OpenFOAM
-    WM_OPTIONS: linux64GccDPInt32Opt
-    WM_COMPILER_TYPE: system
-    WM_COMPILER: Gcc
-    WM_PRECISION_OPTION: DP
-    WM_LABEL_SIZE: 32
-    WM_COMPILE_OPTION: Opt
-    WM_OSTYPE: POSIX
-    WM_ARCH: linux64
-    WM_ARCH_OPTION: 64
-    WM_LINK_LANGUAGE: c++
-    WM_LABEL_OPTION: Int32
-    WM_MPLIB: SYSTEMOPENMPI
-    MPI_BUFFER_SIZE: 20000000
+  # Derived OpenFOAM environment paths
+  FOAM_ETC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/etc"
+  FOAM_SRC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/src"
+  FOAM_LIBBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/lib"
+  FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
 
   before_script:
+      # Add OpenFOAM executables and libraries to path
+    - export PATH="$FOAM_APPBIN:$PATH"
+    - export LD_LIBRARY_PATH="$FOAM_LIBBIN:$LD_LIBRARY_PATH"
+    - export MANPATH="$FOAM_ETC/man:$MANPATH"
+
+    # Install pre-commit
+    - pip3 install --user --break-system-packages pre-commit
+    - export PATH="$HOME/.local/bin:$PATH"
+
+    # Debugging info
+    - echo "PATH=$PATH"
+    - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+    - echo "WM_PROJECT_VERSION=$WM_PROJECT_VERSION"
+    - which simpleFoam || echo "simpleFoam not found!"
+
     # Install pre-commit
     - pip3 install --user --break-system-packages pre-commit
     - export PATH="$HOME/.local/bin:$PATH"
