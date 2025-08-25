@@ -82,11 +82,7 @@ build-and-test-foamadapter:
 
     # Tell both runtime linker and CMake about it
     - export LD_LIBRARY_PATH="$FOAM_PSTREAM_DIR:$LD_LIBRARY_PATH"
-    - cmake --preset develop \
-          -DFOAMADAPTER_NEON_DIR=../NeoN \
-          -DCMAKE_CUDA_ARCHITECTURES=89 \
-          -DNeoN_WITH_THREADS=OFF \
-          -DCMAKE_LIBRARY_PATH=$FOAM_PSTREAM_DIR
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DCMAKE_LIBRARY_PATH=$FOAM_PSTREAM_DIR
     - cmake --build --preset develop
     # -------------------------
     # Step 3: Run Tests
