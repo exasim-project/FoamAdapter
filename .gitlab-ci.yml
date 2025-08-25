@@ -27,6 +27,7 @@ build-and-test-foamadapter:
   tags: ["nvidia-gpus"]
   variables:
     FOAM_INST_DIR: /usr/local/app/openfoam/OpenFOAM-v2412
+    FOAM_SRC: /usr/local/app/openfoam/OpenFOAM-v2412/src
     WM_PROJECT: OpenFOAM
     WM_OPTIONS: linux64GccDPInt32Opt
     WM_COMPILER_TYPE: system
