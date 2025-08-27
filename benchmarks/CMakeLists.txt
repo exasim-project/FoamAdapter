@@ -6,19 +6,13 @@ include(FetchContent)
 FetchContent_Declare(
   Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG v3.4.0   
-)
+  GIT_TAG v3.4.0)
 FetchContent_MakeAvailable(Catch2)
 
 function(NeoN_benchmark BENCH)
 
   add_executable(bench_${BENCH} "bench_${BENCH}.cpp")
-  target_link_libraries(bench_${BENCH}
-    PRIVATE
-      Catch2::Catch2
-      OpenFOAM
-      FoamAdapter
-  )
+  target_link_libraries(bench_${BENCH} PRIVATE Catch2::Catch2 OpenFOAM FoamAdapter)
   target_include_directories(bench_${BENCH} PRIVATE "${CMAKE_SOURCE_DIR}")
 
   if(WIN32)

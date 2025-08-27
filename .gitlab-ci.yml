@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
+#
+# SPDX-License-Identifier: Unlicense
+image: chihtaw/cuda-openfoam:v2412
+
+stages:
+  - build-and-test
+
+variables:
+  FOAM_INST_DIR: /usr/local/app/openfoam
+  WM_PROJECT: OpenFOAM
+  WM_PROJECT_VERSION: v2412
+  WM_OPTIONS: linux64GccDPInt32Opt
+  WM_COMPILER_TYPE: system
+  WM_COMPILER: Gcc
+  WM_PRECISION_OPTION: DP
+  WM_LABEL_SIZE: 32
+  WM_COMPILE_OPTION: Opt
+  WM_OSTYPE: POSIX
+  WM_ARCH: linux64
+  WM_ARCH_OPTION: 64
+  WM_LINK_LANGUAGE: c++
+  WM_LABEL_OPTION: Int32
+  WM_MPLIB: SYSTEMOPENMPI
+  MPI_BUFFER_SIZE: 20000000
+
+  # Derived OpenFOAM environment paths
+  FOAM_ETC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/etc"
+  FOAM_SRC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/src"
+  FOAM_LIBBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/lib"
+  FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
+  WM_PROJECT_DIR: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION"
+
+build-and-test-foamadapter:
+  stage: build-and-test
+  tags: ["nvidia-gpus"]
+  before_script:
+    # Add OpenFOAM executables to PATH
+    - export PATH="$FOAM_APPBIN:$PATH"
+
+    # Detect MPI subdirectory containing libPstream.so
+    - export FOAM_MPI=$(basename $(dirname $(find $FOAM_LIBBIN -name libPstream.so | head -n1)))
+    - echo "Detected FOAM_MPI=$FOAM_MPI"
+
+    # Add OpenFOAM libraries to build and runtime paths
+    - export LD_LIBRARY_PATH="$FOAM_LIBBIN:$FOAM_LIBBIN/$FOAM_MPI:$LD_LIBRARY_PATH"
+    - export CMAKE_LIBRARY_PATH="$FOAM_LIBBIN:$FOAM_LIBBIN/$FOAM_MPI:$CMAKE_LIBRARY_PATH"
+
+    # Set man path
+    - export MANPATH="$FOAM_ETC/man:$MANPATH"
+
+    # Debugging info
+    - echo "PATH=$PATH"
+    - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+    - echo "CMAKE_LIBRARY_PATH=$CMAKE_LIBRARY_PATH"
+    - which simpleFoam || echo "simpleFoam not found!"
+    - find $FOAM_LIBBIN -name "libPstream.so"
+
+    # Install pre-commit
+    - pip3 install --user --break-system-packages pre-commit
+    - export PATH="$HOME/.local/bin:$PATH"
+
+    # Show tool versions for debugging
+    - cmake --version
+    - clang++ --version || g++ --version
+    - nvidia-smi
+    - nvcc --version
+
+  script:
+    # -------------------------
+    # Step 1: Prepare NeoN
+    # -------------------------
+    - echo "Cloning NeoN (main branch)..."
+    - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+
+    # -------------------------
+    # Step 2: Build FoamAdapter
+    # -------------------------
+    - echo "Building FoamAdapter against NeoN..."
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF
+    - cmake --build --preset develop
+
+    # -------------------------
+    # Step 3: Run Tests
+    # -------------------------
+    - echo "Running FoamAdapter tests..."
+    - ctest --preset develop --output-on-failure
