@@ -32,9 +32,9 @@ public:
     ExecutorGenerator()
     {
 #if defined(KOKKOS_ENABLE_OPENMP)
-        execs.push_back({"CPUExecutor", NeoN::CPUExecutor {}});
+        execs.push_back({"ParallelCPUExecutor", NeoN::CPUExecutor {}});
 #elif defined(KOKKOS_ENABLE_THREADS)
-        execs.push_back({"CPUExecutor", NeoN::CPUExecutor {}});
+        execs.push_back({"ParallelCPUExecutor", NeoN::CPUExecutor {}});
 #endif
 #if defined(KOKKOS_ENABLE_CUDA)
         execs.push_back({"GPUExecutor", NeoN::GPUExecutor {}});
