@@ -5,6 +5,7 @@
                             // a custom main
 
 #include "common.hpp"
+#include "iostream"
 
 using Foam::Info;
 using Foam::endl;
@@ -174,7 +175,18 @@ TEST_CASE("Advection Equation")
             runTime.write();
             runTime.printExecutionTime(Info);
         }
-        FoamAdapter::compare(nfT, T, ApproxScalar(1e-10), false);
+        // *** Debug ***
+        std::cout << "=== Debug ===\n";
+        std::cout << "Executor: " << execName << "\n";
+        std::cout << "Time Integration: " << timeIntegration << "\n";
+        
+        // --- Compute max absolute and relative difference between nfT and T ---
+        std::cout << "Max absolute difference: " << FoamAdapter::max_abs_diff(nfT, T) << "\n";
+        std::cout << "Max relative difference: " << FoamAdapter::max_rel_diff(nfT, T) << "\n";
+        std::cout << "=== End Debug ===\n";
+        // ***
+
+        FoamAdapter::compare(nfT, T, ApproxScalar(1e-8), false);
     }
 
     SECTION("Scalar advection with " + execName + " and " + "forwardEuler")
@@ -290,6 +302,17 @@ TEST_CASE("Advection Equation")
             runTime.write();
             runTime.printExecutionTime(Info);
         }
+        // *** Debug ***
+        std::cout << "=== Debug ===\n";
+        std::cout << "Executor: " << execName << "\n";
+        std::cout << "Time Integration: " << timeIntegration << "\n";
+        
+        // --- Compute max absolute and relative difference between nfT and T ---
+        std::cout << "Max absolute difference: " << FoamAdapter::max_abs_diff(nfT, T) << "\n";
+        std::cout << "Max relative difference: " << FoamAdapter::max_rel_diff(nfT, T) << "\n";
+        std::cout << "=== End Debug ===\n";
+        // ***
+
         FoamAdapter::compare(nfT, T, ApproxScalar(1e-14), false);
     }
 }

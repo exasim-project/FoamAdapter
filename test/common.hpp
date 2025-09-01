@@ -106,4 +106,32 @@ void compare(NFFIELD& a, OFFIELD& b, Compare comp, bool withBoundaries = true)
     }
 }
 
+
+template<typename NFFIELD, typename OFFIELD>
+double max_abs_diff(NFFIELD& a, OFFIELD& b){
+
+    auto aHost = a.internalVector().copyToHost();
+    auto bSpan = std::span(b.primitiveFieldRef().data(), b.size());
+
+    double maxAbsDiff = 0.0;
+    for (std::size_t i = 0; i < aHost.size(); ++i) {
+        double absDiff = std::abs(aHost.data()[i] - bSpan[i]);
+        if (absDiff > maxAbsDiff) maxAbsDiff = absDiff;
+    }
+    return maxAbsDiff;
 }
+
+template<typename NFFIELD, typename OFFIELD>
+double max_rel_diff(NFFIELD& a, OFFIELD& b){
+
+    auto aHost = a.internalVector().copyToHost();
+    auto bSpan = std::span(b.primitiveFieldRef().data(), b.size());
+
+    double maxRelDiff = 0.0;
+    for (std::size_t i = 0; i < aHost.size(); ++i) {
+        double relDiff = std::abs(aHost.data()[i] - bSpan[i]) / std::abs(bSpan[i]);
+        if (relDiff > maxRelDiff) maxRelDiff = relDiff;
+    }
+    return maxRelDiff;
+}
+} // end namespace FoamAdapter
