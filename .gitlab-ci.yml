@@ -31,9 +31,23 @@ variables:
   FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
   WM_PROJECT_DIR: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION"
 
-build-and-test-foamadapter:
+build-and-test-foamadapter-against-NeoN-main-branch:
   stage: build-and-test
   tags: ["nvidia-gpus"]
+    rules:
+    # Skip if triggered by NeoN pipeline
+    - if: '$NEON_COMMIT || $NEON_BRANCH'
+      when: never
+
+    # Skip if only doc/Markdown files changed
+    - changes:
+        - doc/**/*
+        - '*.md'
+      when: never
+
+    # Run for all other cases
+    - when: always
+
   before_script:
     # Add OpenFOAM executables to PATH
     - export PATH="$FOAM_APPBIN:$PATH"
@@ -70,7 +84,7 @@ build-and-test-foamadapter:
     # -------------------------
     # Step 1: Prepare NeoN
     # -------------------------
-    - echo "Cloning NeoN (main branch)..."
+    - echo "Normal FoamAdapter pipeline => Using NeoN branch=main"
     - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
 
     # -------------------------
