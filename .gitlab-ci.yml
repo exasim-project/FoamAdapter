@@ -61,7 +61,7 @@ variables:
   FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
   WM_PROJECT_DIR: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION"
 
-build-and-test-foamadapter-against-neon-main-branch:
+build-and-test-foamadapter:
   stage: build-and-test
   tags: ["nvidia-gpus"]
 
@@ -132,7 +132,7 @@ build-and-test-foamadapter-against-neon-main-branch:
     - ctest --preset develop --output-on-failure
 
 
-build-and-test-foamadapter-against-neon-any-branch:
+build-and-test-foamadapter-triggered:
   stage: build-and-test
   tags: ["nvidia-gpus"]
   rules:
