@@ -93,6 +93,12 @@ Neo\+N\+::\+Executor \mbox{\hyperlink{namespaceFoamAdapter_a3089a13fbddccb398fa4
 \item 
 \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} \mbox{\hyperlink{namespaceFoamAdapter_aa07b2f5c8b1055724f7c8b3a408c5574}{write}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} fvcc\+::\+Volume\+Field$<$ Neo\+N\+::\+Vec3 $>$ \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{vol\+Field}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Foam\+::fv\+Mesh \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{mesh}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} std\+::string \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{field\+Name}})
 \item 
+\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} \mbox{\hyperlink{namespaceFoamAdapter_a46e698646a94db94dd4f57ca77f699bd}{update\+Solver}} (Neo\+N\+::\+Dictionary \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{solver\+Dict}})
+\item 
+\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} \mbox{\hyperlink{namespaceFoamAdapter_a387368bb2d20ed59a7547204e2f3aaa2}{update\+Preconditioner}} (Neo\+N\+::\+Dictionary \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{solver\+Dict}})
+\item 
+Neo\+N\+::\+Dictionary \mbox{\hyperlink{namespaceFoamAdapter_adf5f68e388035bb188ca7ed993972a1a}{map\+Fv\+Solution}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::\+Dictionary \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{solver\+Dict}})
+\item 
 {\footnotesize template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ }\\Neo\+N\+::\+Vector$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \mbox{\hyperlink{namespaceFoamAdapter_a13b42389ef03dfeb668a50344c66743c}{diag}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} la\+::\+Linear\+System$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$ \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::la\+::\+Sparsity\+Pattern \&sparsity\+Pattern)
 \item 
 {\footnotesize template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ }\\Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \mbox{\hyperlink{namespaceFoamAdapter_a67a615e0cb1de634ffc9df635d48775e}{apply\+Operator}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} la\+::\+Linear\+System$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$ \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}})
@@ -288,6 +294,12 @@ Definition at line \mbox{\hyperlink{readers_8hpp_source_l00018}{18}} of file \mb
 
 Definition at line \mbox{\hyperlink{convert_8hpp_source_l00051}{51}} of file \mbox{\hyperlink{convert_8hpp_source}{convert.\+hpp}}.
 
+\Hypertarget{namespaceFoamAdapter_adf5f68e388035bb188ca7ed993972a1a}\label{namespaceFoamAdapter_adf5f68e388035bb188ca7ed993972a1a} 
+\index{FoamAdapter@{FoamAdapter}!mapFvSolution@{mapFvSolution}}
+\index{mapFvSolution@{mapFvSolution}!FoamAdapter@{FoamAdapter}}
+\doxysubsubsection{\texorpdfstring{mapFvSolution()}{mapFvSolution()}}
+{\footnotesize\ttfamily Neo\+N\+::\+Dictionary Foam\+Adapter\+::map\+Fv\+Solution (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::\+Dictionary \&}]{solver\+Dict }\end{DoxyParamCaption})}
+
 \Hypertarget{namespaceFoamAdapter_a735d5fda9dfb92f1b072e6b2dc2ead40}\label{namespaceFoamAdapter_a735d5fda9dfb92f1b072e6b2dc2ead40} 
 \index{FoamAdapter@{FoamAdapter}!operator\&@{operator\&}}
 \index{operator\&@{operator\&}!FoamAdapter@{FoamAdapter}}
@@ -365,6 +377,18 @@ Definition at line \mbox{\hyperlink{readers_8hpp_source_l00032}{32}} of file \mb
 \index{updateFaceVelocity@{updateFaceVelocity}!FoamAdapter@{FoamAdapter}}
 \doxysubsubsection{\texorpdfstring{updateFaceVelocity()}{updateFaceVelocity()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} Foam\+Adapter\+::update\+Face\+Velocity (\begin{DoxyParamCaption}\item[{nnfvcc\+::\+Surface\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ \&}]{phi,  }\item[{\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} nnfvcc\+::\+Surface\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ \&}]{predicted\+Phi,  }\item[{\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ \&}]{expr }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceFoamAdapter_a387368bb2d20ed59a7547204e2f3aaa2}\label{namespaceFoamAdapter_a387368bb2d20ed59a7547204e2f3aaa2} 
+\index{FoamAdapter@{FoamAdapter}!updatePreconditioner@{updatePreconditioner}}
+\index{updatePreconditioner@{updatePreconditioner}!FoamAdapter@{FoamAdapter}}
+\doxysubsubsection{\texorpdfstring{updatePreconditioner()}{updatePreconditioner()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} Foam\+Adapter\+::update\+Preconditioner (\begin{DoxyParamCaption}\item[{Neo\+N\+::\+Dictionary \&}]{solver\+Dict }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceFoamAdapter_a46e698646a94db94dd4f57ca77f699bd}\label{namespaceFoamAdapter_a46e698646a94db94dd4f57ca77f699bd} 
+\index{FoamAdapter@{FoamAdapter}!updateSolver@{updateSolver}}
+\index{updateSolver@{updateSolver}!FoamAdapter@{FoamAdapter}}
+\doxysubsubsection{\texorpdfstring{updateSolver()}{updateSolver()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} Foam\+Adapter\+::update\+Solver (\begin{DoxyParamCaption}\item[{Neo\+N\+::\+Dictionary \&}]{solver\+Dict }\end{DoxyParamCaption})}
 
 \Hypertarget{namespaceFoamAdapter_ab07cdffe2f504299318aad761dfd4b9b}\label{namespaceFoamAdapter_ab07cdffe2f504299318aad761dfd4b9b} 
 \index{FoamAdapter@{FoamAdapter}!updateVelocity@{updateVelocity}}

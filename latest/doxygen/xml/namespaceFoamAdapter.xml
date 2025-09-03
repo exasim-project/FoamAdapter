@@ -713,6 +713,60 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="39" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="39" declcolumn="6"/>
       </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a46e698646a94db94dd4f57ca77f699bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::updateSolver</definition>
+        <argsstring>(NeoN::Dictionary &amp;solverDict)</argsstring>
+        <name>updateSolver</name>
+        <qualifiedname>FoamAdapter::updateSolver</qualifiedname>
+        <param>
+          <type>NeoN::Dictionary &amp;</type>
+          <declname>solverDict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" line="16" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" declline="16" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a387368bb2d20ed59a7547204e2f3aaa2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::updatePreconditioner</definition>
+        <argsstring>(NeoN::Dictionary &amp;solverDict)</argsstring>
+        <name>updatePreconditioner</name>
+        <qualifiedname>FoamAdapter::updatePreconditioner</qualifiedname>
+        <param>
+          <type>NeoN::Dictionary &amp;</type>
+          <declname>solverDict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" line="18" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" declline="18" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1adf5f68e388035bb188ca7ed993972a1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::Dictionary</type>
+        <definition>NeoN::Dictionary FoamAdapter::mapFvSolution</definition>
+        <argsstring>(const NeoN::Dictionary &amp;solverDict)</argsstring>
+        <name>mapFvSolution</name>
+        <qualifiedname>FoamAdapter::mapFvSolution</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Dictionary &amp;</type>
+          <declname>solverDict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" line="20" column="18" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" declline="20" declcolumn="18"/>
+      </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a13b42389ef03dfeb668a50344c66743c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
