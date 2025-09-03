@@ -84,14 +84,12 @@ build-and-test-foamadapter:
     # -------------------------
     - echo "Default FoamAdapter CI pipeline => Use NeoN branch=main"
     - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-
     # -------------------------
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
     - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
     - cmake --build --preset develop
-
     # -------------------------
     # Step 3: Run Tests
     # -------------------------
@@ -107,6 +105,29 @@ build-and-test-foamadapter-triggered:
       when: always
 
   script:
+    # ----------------------------------
+    # Step 0: Select FoamAdapter branch
+    # ----------------------------------
+    - |
+      echo "NeoN triggered with branch=$NEON_BRANCH commit=$NEON_COMMIT"
+      # Default branch fallback
+      FOAMADAPTER_BRANCH="main"
+
+      if [ -n "$NEON_BRANCH" ]; then
+        echo "Checking if FoamAdapter branch $NEON_BRANCH exists..."
+        if git ls-remote --exit-code --heads origin "$NEON_BRANCH"; then
+          FOAMADAPTER_BRANCH="$NEON_BRANCH"
+          echo "Found matching FoamAdapter branch: $FOAMADAPTER_BRANCH"
+        else
+          echo "No matching branch, falling back to main"
+        fi
+      fi
+
+      echo "Using FoamAdapter branch: $FOAMADAPTER_BRANCH"
+
+      # Switch to that branch
+      git fetch origin "$FOAMADAPTER_BRANCH"
+      git checkout "$FOAMADAPTER_BRANCH"
     # -------------------------
     # Step 1: Prepare NeoN
     # -------------------------
