@@ -52,7 +52,6 @@ int main(int argc, char* argv[])
         std::cout << " fvSchemesDict: " << fvSchemesDict << "\n";
         NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
         auto& solverDict = fvSolutionDict.get<NeoN::Dictionary>("solvers");
-        std::cout << " solverDict: " << solverDict << "\n";
         solverDict.get<NeoN::Dictionary>("p") =
             FoamAdapter::mapFvSolution(solverDict.get<NeoN::Dictionary>("p"));
 
@@ -157,7 +156,7 @@ int main(int argc, char* argv[])
                         NeoN::dsl::imp::laplacian(nfrAUf, p) - NeoN::dsl::exp::div(phiHbyA),
                         p,
                         fvSchemesDict,
-                        solverDict.get<NeoN::Dictionary>("nfP")
+                        solverDict.get<NeoN::Dictionary>("p")
                     );
 
                     pEqn.assemble(t, dt);

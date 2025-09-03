@@ -33,8 +33,20 @@ solvers
 
     nfP
     {
-       solver          Ginkgo;
-       configFile      system/gko/config.mg.json;
+
+        solver          Ginkgo;
+        type            "solver::Cg";
+        preconditioner
+        {
+            type            "preconditioner::Jacobi"; // "preconditioner::Ic", "preconditioner::Ilu";
+            max_block_size  8;
+        }
+        criteria
+        {
+            iteration 500;
+            relative_residual_norm 1e-300;
+            absolute_residual_norm 1e-300;
+        }
     }
 
     U
