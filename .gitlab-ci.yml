@@ -82,7 +82,7 @@ build-and-test-foamadapter:
     # -------------------------
     # Step 1: Prepare NeoN
     # -------------------------
-    - echo "Normal FoamAdapter pipeline => Using NeoN branch=main"
+    - echo "Default FoamAdapter CI pipeline => Use NeoN branch=main"
     - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
 
     # -------------------------
@@ -110,7 +110,7 @@ build-and-test-foamadapter-triggered:
     # -------------------------
     # Step 1: Prepare NeoN
     # -------------------------
-    - echo "Triggered by NeoN => Building FoamAdapter with NeoN branch=$NEON_BRANCH commit=$NEON_COMMIT"
+    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH commit=$NEON_COMMIT"
     - |
       if [ -n "$NEON_COMMIT" ]; then
         git clone https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
