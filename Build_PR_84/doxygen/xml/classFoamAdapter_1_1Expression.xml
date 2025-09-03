@@ -281,9 +281,9 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="96" column="10" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="96" bodyend="127"/>
       </memberdef>
-      <memberdef kind="function" id="classFoamAdapter_1_1Expression_1a64c5b8b6cb311a71dbd4b9b148db4d91" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
-        <definition>void FoamAdapter::Expression&lt; ValueType, IndexType &gt;::solve</definition>
+      <memberdef kind="function" id="classFoamAdapter_1_1Expression_1a18ce364852da75332139d8053146df6a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>NeoN::la::SolverStats</type>
+        <definition>NeoN::la::SolverStats FoamAdapter::Expression&lt; ValueType, IndexType &gt;::solve</definition>
         <argsstring>(NeoN::scalar, NeoN::scalar)</argsstring>
         <name>solve</name>
         <qualifiedname>FoamAdapter::Expression::solve</qualifiedname>
@@ -299,7 +299,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="130" column="10" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="130" bodyend="153"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="130" column="27" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="130" bodyend="153"/>
       </memberdef>
       <memberdef kind="function" id="classFoamAdapter_1_1Expression_1a8ed934777e6059677c60d31b9c2f4c40" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
@@ -345,7 +345,7 @@
       <member refid="classFoamAdapter_1_1Expression_1ae749b759232256cbf291955529041049" prot="private" virt="non-virtual"><scope>FoamAdapter::Expression</scope><name>ls_</name></member>
       <member refid="classFoamAdapter_1_1Expression_1ae9f3b602670d5eaa20006448d2019ff3" prot="private" virt="non-virtual"><scope>FoamAdapter::Expression</scope><name>psi_</name></member>
       <member refid="classFoamAdapter_1_1Expression_1a8ed934777e6059677c60d31b9c2f4c40" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression</scope><name>setReference</name></member>
-      <member refid="classFoamAdapter_1_1Expression_1a64c5b8b6cb311a71dbd4b9b148db4d91" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression</scope><name>solve</name></member>
+      <member refid="classFoamAdapter_1_1Expression_1a18ce364852da75332139d8053146df6a" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression</scope><name>solve</name></member>
       <member refid="classFoamAdapter_1_1Expression_1a855cf32c23315ea3cc202e7bb1cd89d5" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression</scope><name>sparsityPattern</name></member>
       <member refid="classFoamAdapter_1_1Expression_1ac2d758fab6b59809217c93f8be7d86d9" prot="private" virt="non-virtual"><scope>FoamAdapter::Expression</scope><name>sparsityPattern_</name></member>
       <member refid="classFoamAdapter_1_1Expression_1a8b2c4ff8f856720be0d862b2092c4b9a" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression</scope><name>~Expression</name></member>
