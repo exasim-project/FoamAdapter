@@ -151,7 +151,6 @@ int main(int argc, char* argv[])
                 while (piso.correctNonOrthogonal())
                 {
                     // Pressure corrector
-
                     nffvcc::Expression<NeoN::scalar> pEqn(
                         NeoN::dsl::imp::laplacian(nfrAUf, p) - NeoN::dsl::exp::div(phiHbyA),
                         p,
@@ -165,7 +164,12 @@ int main(int argc, char* argv[])
                     {
                         pEqn.setReference(pRefCell, pRefValue);
                     }
-                    pEqn.solve(t, dt);
+                    Info << "Solve P" << endl;
+                    auto stats = pEqn.solve(t, dt);
+                    std::cout << " solver stats:\n"
+                              << "\t num iter: " << stats.numIter
+                              << "\n\t initial residual norm: " << stats.initResNorm
+                              << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
                     p.correctBoundaryConditions();
 
                     if (piso.finalNonOrthogonalIter())
