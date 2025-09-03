@@ -49,7 +49,6 @@ int main(int argc, char* argv[])
         auto [adjustTimeStep, maxCo, maxDeltaT] = FoamAdapter::timeControls(runTime);
 
         NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
-        std::cout << " fvSchemesDict: " << fvSchemesDict << "\n";
         NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
         auto& solverDict = fvSolutionDict.get<NeoN::Dictionary>("solvers");
         solverDict.get<NeoN::Dictionary>("p") =
