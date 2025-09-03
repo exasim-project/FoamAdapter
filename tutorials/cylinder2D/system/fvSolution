@@ -36,6 +36,7 @@ solvers
 
         solver          Ginkgo;
         type            "solver::Cg";
+	// configFile      system/gko/config.mg.json;
         preconditioner
         {
             type            "preconditioner::Jacobi"; // "preconditioner::Ic", "preconditioner::Ilu";
