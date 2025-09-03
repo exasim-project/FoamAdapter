@@ -58,61 +58,61 @@ TEST_CASE("Advection Equation")
 
     auto [execName, exec] = GENERATE(allAvailableExecutor());
 
-        Foam::scalar startTime = 0.0;
-        Foam::label startTimeIndex = 0;
-        runTime.setTime(startTime, startTimeIndex);
+    Foam::scalar startTime = 0.0;
+    Foam::label startTimeIndex = 0;
+    runTime.setTime(startTime, startTimeIndex);
 
-        // create mesh
-        std::unique_ptr<FoamAdapter::MeshAdapter> meshAdapterPtr =
-            FoamAdapter::createMesh(exec, runTime);
-        FoamAdapter::MeshAdapter& mesh = *meshAdapterPtr;
-        NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
+    // create mesh
+    std::unique_ptr<FoamAdapter::MeshAdapter> meshAdapterPtr =
+        FoamAdapter::createMesh(exec, runTime);
+    FoamAdapter::MeshAdapter& mesh = *meshAdapterPtr;
+    NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
-        Foam::volScalarField T(
-            Foam::IOobject(
-                "T",
-                runTime.timeName(),
-                mesh,
-                Foam::IOobject::MUST_READ,
-                Foam::IOobject::AUTO_WRITE
-            ),
-            mesh
+    Foam::volScalarField T(
+        Foam::IOobject(
+            "T",
+            runTime.timeName(),
+            mesh,
+            Foam::IOobject::MUST_READ,
+            Foam::IOobject::AUTO_WRITE
+        ),
+        mesh
+    );
+
+    Foam::volVectorField U(
+        Foam::IOobject(
+            "U",
+            runTime.timeName(),
+            mesh,
+            Foam::IOobject::MUST_READ,
+            Foam::IOobject::AUTO_WRITE
+        ),
+        mesh
+    );
+
+    Foam::surfaceScalarField phi("phi", Foam::linearInterpolate(U) & mesh.Sf());
+
+    initFields(T, U, phi);
+
+    // Copies of initial U and phi for use when flow is periodic
+    Foam::surfaceScalarField phi0 = phi;
+    Foam::volVectorField U0 = U;
+
+    fvcc::VolumeField<NeoN::scalar>& nfT =
+        vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
+            FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
+                .exec = exec,
+                .nfMesh = nfMesh,
+                .foamField = T,
+                .name = "nfT"
+            }
         );
+    auto nfPhi0 = FoamAdapter::constructSurfaceField(exec, nfMesh, phi0);
+    auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, phi);
 
-        Foam::volVectorField U(
-            Foam::IOobject(
-                "U",
-                runTime.timeName(),
-                mesh,
-                Foam::IOobject::MUST_READ,
-                Foam::IOobject::AUTO_WRITE
-            ),
-            mesh
-        );
-
-        Foam::surfaceScalarField phi("phi", Foam::linearInterpolate(U) & mesh.Sf());
-
-        initFields(T, U, phi);
-
-        // Copies of initial U and phi for use when flow is periodic
-        Foam::surfaceScalarField phi0 = phi;
-        Foam::volVectorField U0 = U;
-
-        fvcc::VolumeField<NeoN::scalar>& nfT =
-            vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
-                    .exec = exec,
-                    .nfMesh = nfMesh,
-                    .foamField = T,
-                    .name = "nfT"
-                }
-            );
-        auto nfPhi0 = FoamAdapter::constructSurfaceField(exec, nfMesh, phi0);
-        auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, phi);
-
-        NeoN::Dictionary controlDict = FoamAdapter::convert(runTime.controlDict());
-        NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
-        Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
+    NeoN::Dictionary controlDict = FoamAdapter::convert(runTime.controlDict());
+    NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
+    Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
 
 
     SECTION("Scalar advection with " + execName + " and " + "forwardEuler")
@@ -165,69 +165,68 @@ TEST_CASE("Advection Equation")
                 T.write(); // for some reason T was not written
             }
 
-            //runTime.write();
-            //runTime.printExecutionTime(Info);
+            // runTime.write();
+            // runTime.printExecutionTime(Info);
         }
         FoamAdapter::compare(nfT, T, ApproxScalar(1e-10), false);
     }
 
-   std::string timeIntegration = "backwardEuler";
-           NeoN::Dictionary fvSolutionDict {
-               {{"solver", std::string {"Ginkgo"}},
-                {"type", "solver::Bicgstab"},
-                {"preconditioner",
-                 NeoN::Dictionary {{{"type", "preconditioner::Jacobi"}, {"max_block_size", 1}}}},
-                {"criteria",
-                 NeoN::Dictionary {{{"iteration", 20}, {"relative_residual_norm", 1e-14}}}}}
-           };
+    std::string timeIntegration = "backwardEuler";
+    NeoN::Dictionary fvSolutionDict {
+        {{"solver", std::string {"Ginkgo"}},
+         {"type", "solver::Bicgstab"},
+         {"preconditioner",
+          NeoN::Dictionary {{{"type", "preconditioner::Jacobi"}, {"max_block_size", 1}}}},
+         {"criteria", NeoN::Dictionary {{{"iteration", 20}, {"relative_residual_norm", 1e-14}}}}}
+    };
 
-   SECTION("Scalar advection with " + execName + " and " + timeIntegration)
-   {
-       fvSchemesDict.get<NeoN::Dictionary>("ddtSchemes").insert("type", timeIntegration);
+    SECTION("Scalar advection with " + execName + " and " + timeIntegration)
+    {
+        fvSchemesDict.get<NeoN::Dictionary>("ddtSchemes").insert("type", timeIntegration);
 
-       while (runTime.run())
-       {
-           Foam::scalar t = runTime.time().value();
-           Foam::scalar dt = runTime.deltaT().value();
-           runTime++;
+        while (runTime.run())
+        {
+            Foam::scalar t = runTime.time().value();
+            Foam::scalar dt = runTime.deltaT().value();
+            runTime++;
 
-           auto& nfOldT = fvcc::oldTime(nfT);
-           nfOldT.internalVector() = nfT.internalVector();
+            auto& nfOldT = fvcc::oldTime(nfT);
+            nfOldT.internalVector() = nfT.internalVector();
 
-           Foam::scalar pi = Foam::constant::mathematical::pi;
-           U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
-           phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+            Foam::scalar pi = Foam::constant::mathematical::pi;
+            U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
+            phi = phi0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
 
-           nfPhi.internalVector() =
-               nfPhi0.internalVector() * std::cos(pi * (t + 0.5 * dt) / endTime);
+            nfPhi.internalVector() =
+                nfPhi0.internalVector() * std::cos(pi * (t + 0.5 * dt) / endTime);
 
-	   FoamAdapter::compare(nfT, T, ApproxScalar(1e-04), false);
+            FoamAdapter::compare(nfT, T, ApproxScalar(1e-04), false);
 
-           // advance Foam fields in time
-           {
-               Foam::fvScalarMatrix TEqn(fvm::ddt(T) + fvm::div(phi, T));
-               TEqn.solve();
-           }
+            // advance Foam fields in time
+            {
+                Foam::fvScalarMatrix TEqn(fvm::ddt(T) + fvm::div(phi, T));
+                TEqn.solve();
+            }
 
-           // advance FoamAdapter fields in time
-           {
-               NeoN::dsl::Expression eqnSys(
-                   NeoN::dsl::imp::ddt(nfT) + NeoN::dsl::imp::div(nfPhi, nfT)
-               );
-               NeoN::dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
-           }
+            // advance FoamAdapter fields in time
+            {
+                NeoN::dsl::Expression eqnSys(
+                    NeoN::dsl::imp::ddt(nfT) + NeoN::dsl::imp::div(nfPhi, nfT)
+                );
+                NeoN::dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
+            }
 
-           // for debugging with paraview
-           if (runTime.outputTime())
-           {
-               write(nfT.internalVector(), mesh, "nfTImp_" + execName);
-               T.write(); // for some reason T was not written
-           }
+            // for debugging with paraview
+            if (runTime.outputTime())
+            {
+                write(nfT.internalVector(), mesh, "nfTImp_" + execName);
+                T.write(); // for some reason T was not written
+            }
 
-           //runTime.write();
-           //runTime.printExecutionTime(Info);
-       }
+            // runTime.write();
+            // runTime.printExecutionTime(Info);
+        }
 
-       FoamAdapter::compare(nfT, T, ApproxScalar(1e-8), false);
-   }
+        FoamAdapter::compare(nfT, T, ApproxScalar(1e-8), false);
+    }
 }
