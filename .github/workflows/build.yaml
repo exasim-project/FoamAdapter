@@ -71,6 +71,7 @@ jobs:
          CXX=${{matrix.compiler.CXX}} \
          cmake --preset develop \
            -DFOAMADAPTER_DEVEL_TOOLS=OFF \
+           -DFOAMADAPTER_BUILD_BENCHMARKS=OFF \
            -DFOAMADAPTER_ENABLE_MPI_WITH_THREAD_SUPPORT=OFF
          cmake --build  --preset develop
 
