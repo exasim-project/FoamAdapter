@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: true # Recursively clone submodules
 
     - name: Add repos
       run: |
@@ -33,9 +31,11 @@ jobs:
     - name: Create Compilation Database
       run: |
         source /usr/lib/openfoam/openfoam2406/etc/bashrc || true
+        CC=clang \
+        CXX=clang++ \
         cmake --preset develop \
           -DFOAMADAPTER_DEVEL_TOOLS=OFF \
-          -DCMAKE_CXX_COMPILER=clang++-16 \
+          -DFOAMADAPTER_BUILD_BENCHMARKS=OFF \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DFOAMADAPTER_ENABLE_MPI_WITH_THREAD_SUPPORT=OFF \
           -DFOAMADAPTER_ENABLE_IWYU=ON
