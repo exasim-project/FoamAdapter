@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2406                                 |
+|  \\    /   O peration     | Version:  v2306                                 |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -9,44 +9,46 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    object      p;
+    class       dictionary;
+    object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 -2 0 0 0 0];
+application     laplacianFoam;
 
-internalField   uniform 0.0;
+startFrom       startTime;
 
-boundaryField
+startTime       0;
+
+stopAt          endTime;
+
+endTime         3;
+
+deltaT          0.005;
+
+writeControl    runTime;
+
+writeInterval   10000;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  16;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   16;
+
+runTimeModifiable true;
+
+profiling
 {
-
-    cylinder
-    {
-        type            zeroGradient;
-    }
-    upper_wall
-    {
-        type            zeroGradient;
-    }
-    inlet
-    {
-        type            zeroGradient;
-    }
-    outlet
-    {
-        type            fixedValue;
-        value           uniform 0.0;
-    }
-    lower_wall
-    {
-        type            zeroGradient;
-    }
-    defaultFaces
-    {
-        type            empty;
-    }
+    active      true;
+    cpuInfo     true;
+    memInfo     true;
+    sysInfo     true;
 }
-
-
 // ************************************************************************* //

@@ -48,51 +48,46 @@ int main(int argc, char* argv[])
 
         auto [adjustTimeStep, maxCo, maxDeltaT] = FoamAdapter::timeControls(runTime);
 
-        // Foam::scalar coNum = Foam::calculateCoNum(phi);
-        // if (adjustTimeStep)
-        // {
-        //     Foam::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
-        // }
-
-
         NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
         NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
         auto& solverDict = fvSolutionDict.get<NeoN::Dictionary>("solvers");
+        solverDict.get<NeoN::Dictionary>("p") =
+            FoamAdapter::mapFvSolution(solverDict.get<NeoN::Dictionary>("p"));
+
 
         Info << "creating FoamAdapter mesh" << endl;
         NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
 
         Info << "creating FoamAdapter pressure fields" << endl;
-        fvcc::VolumeField<NeoN::scalar>& nfp =
+        fvcc::VolumeField<NeoN::scalar>& p =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
-                    .foamField = p,
-                    .name = "nfp"
+                    .foamField = ofp,
+                    .name = "p"
                 }
             );
 
         Info << "creating FoamAdapter velocity fields" << endl;
-        fvcc::VolumeField<NeoN::Vec3>& nfU =
+        fvcc::VolumeField<NeoN::Vec3>& U =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::Vec3>>(
                 FoamAdapter::CreateFromFoamField<Foam::volVectorField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
-                    .foamField = U,
-                    .name = "nfU"
+                    .foamField = ofU,
+                    .name = "U"
                 }
             );
 
         auto nuBCs = fvcc::createCalculatedBCs<fvcc::SurfaceBoundary<NeoN::scalar>>(nfMesh);
-        fvcc::SurfaceField<NeoN::scalar> nfNu(exec, "nfNu", nfMesh, nuBCs);
-        NeoN::fill(nfNu.internalVector(), nu.value());
-        NeoN::fill(nfNu.boundaryData().value(), nu.value());
+        fvcc::SurfaceField<NeoN::scalar> nu(exec, "nu", nfMesh, nuBCs);
+        NeoN::fill(nu.internalVector(), viscosity.value());
+        NeoN::fill(nu.boundaryData().value(), viscosity.value());
 
         NeoN::scalar endTime = controlDict.get<NeoN::scalar>("endTime");
 
-        Foam::surfaceScalarField flux("flux", phi);
-        auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, phi);
+        auto phi = FoamAdapter::constructSurfaceField(exec, nfMesh, ofphi);
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -103,12 +98,12 @@ int main(int argc, char* argv[])
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
-            auto& nfOldU = fvcc::oldTime(nfU);
-            nfOldU.internalVector() = nfU.internalVector();
+            auto& oldU = fvcc::oldTime(U);
+            oldU.internalVector() = U.internalVector();
             auto [adjustTimeStep, maxCo, maxDeltaT] = FoamAdapter::timeControls(runTime);
-            auto coNum = fvcc::computeCoNum(nfPhi, dt);
-            Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
-            Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
+            auto coNum = fvcc::computeCoNum(phi, dt);
+            // Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
+            // Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (adjustTimeStep)
             {
                 FoamAdapter::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
@@ -117,22 +112,22 @@ int main(int argc, char* argv[])
             Foam::Info << "Time = " << runTime.timeName() << Foam::nl << Foam::endl;
 
             // Momentum predictor
-            nffvcc::Expression<NeoN::Vec3> UEqn2(
-                NeoN::dsl::imp::ddt(nfU) + NeoN::dsl::imp::div(nfPhi, nfU)
-                    - NeoN::dsl::imp::laplacian(nfNu, nfU),
-                nfU,
+            nffvcc::Expression<NeoN::Vec3> UEqn(
+                NeoN::dsl::imp::ddt(U) + NeoN::dsl::imp::div(phi, U)
+                    - NeoN::dsl::imp::laplacian(nu, U),
+                U,
                 fvSchemesDict,
-                solverDict.get<NeoN::Dictionary>("nfU")
+                solverDict.get<NeoN::Dictionary>("U")
             );
 
-            UEqn2.assemble(t, dt);
+            UEqn.assemble(t, dt);
 
             // --- PISO loop
             while (piso.correct())
             {
                 Info << "PISO loop" << endl;
-                auto [nfrAU, nfHbyA] = nffvcc::discreteMomentumFields(UEqn2);
-                nffvcc::constrainHbyA(nfHbyA, nfU, nfp);
+                auto [rAU, HbyA] = nffvcc::discreteMomentumFields(UEqn);
+                nffvcc::constrainHbyA(HbyA, U, p);
 
                 nnfvcc::SurfaceField<NeoN::scalar> nfrAUf =
                     nnfvcc::SurfaceInterpolation<NeoN::scalar>(
@@ -140,11 +135,11 @@ int main(int argc, char* argv[])
                         nfMesh,
                         NeoN::TokenList({std::string("linear")})
                     )
-                        .interpolate(nfrAU);
-                nfrAUf.name = "nfrAUf";
+                        .interpolate(rAU);
+                nfrAUf.name = "rAUf";
 
                 // TODO: + fvc::interpolate(rAU) * fvc::ddtCorr(U, phi)
-                auto nfPhiHbyA = nffvcc::flux(nfHbyA);
+                auto phiHbyA = nffvcc::flux(HbyA);
 
                 // TODO:
                 // Foam::adjustPhi(phiHbyA, U, p);
@@ -156,41 +151,45 @@ int main(int argc, char* argv[])
                 while (piso.correctNonOrthogonal())
                 {
                     // Pressure corrector
-
-                    nffvcc::Expression<NeoN::scalar> pEqn2(
-                        NeoN::dsl::imp::laplacian(nfrAUf, nfp) - NeoN::dsl::exp::div(nfPhiHbyA),
-                        nfp,
+                    nffvcc::Expression<NeoN::scalar> pEqn(
+                        NeoN::dsl::imp::laplacian(nfrAUf, p) - NeoN::dsl::exp::div(phiHbyA),
+                        p,
                         fvSchemesDict,
-                        solverDict.get<NeoN::Dictionary>("nfP")
+                        solverDict.get<NeoN::Dictionary>("p")
                     );
 
-                    pEqn2.assemble(t, dt);
+                    pEqn.assemble(t, dt);
 
-                    if (p.needReference() && pRefCell >= 0)
+                    if (ofp.needReference() && pRefCell >= 0)
                     {
-                        pEqn2.setReference(pRefCell, pRefValue);
+                        pEqn.setReference(pRefCell, pRefValue);
                     }
-                    pEqn2.solve(t, dt);
-                    nfp.correctBoundaryConditions();
+                    Info << "Solve P" << endl;
+                    auto stats = pEqn.solve(t, dt);
+                    std::cout << " solver stats:\n"
+                              << "\t num iter: " << stats.numIter
+                              << "\n\t initial residual norm: " << stats.initResNorm
+                              << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
+                    p.correctBoundaryConditions();
 
                     if (piso.finalNonOrthogonalIter())
                     {
-                        nffvcc::updateFaceVelocity(nfPhi, nfPhiHbyA, pEqn2);
+                        nffvcc::updateFaceVelocity(phi, phiHbyA, pEqn);
                     }
                 }
                 // TODO:
                 // #include "continuityErrs.H"
 
-                nffvcc::updateVelocity(nfU, nfHbyA, nfrAU, nfp);
-                nfU.correctBoundaryConditions();
+                nffvcc::updateVelocity(U, HbyA, rAU, p);
+                U.correctBoundaryConditions();
             }
 
             runTime.write();
             if (runTime.outputTime())
             {
-                Info << "writing nfp field" << endl;
-                write(nfp.internalVector(), mesh, "nfp");
-                write(nfU.internalVector(), mesh, "nfU");
+                Info << "writing p field" << endl;
+                write(p.internalVector(), mesh, "p");
+                write(U.internalVector(), mesh, "U");
             }
 
             runTime.printExecutionTime(Info);
