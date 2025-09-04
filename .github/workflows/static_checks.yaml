@@ -2,8 +2,9 @@ name: Static checks
 run-name: Static checks
 
 on:
-    pull_request:
-      types: [opened, synchronize]
+  pull_request:
+    types: [opened, synchronize, labeled, unlabeled, reopened]
+
 jobs:
   build-compilation-db:
     name: Build with IWYU
@@ -119,6 +120,9 @@ jobs:
   changelog:
     name: Changelog check
     runs-on: ubuntu-24.04
+    if: >
+      github.event_name != 'pull_request' ||
+      !contains(toJson(github.event.pull_request.labels.*.name), 'skip-changelog')
     steps:
     - uses: dangoslen/changelog-enforcer@v3
       with:
