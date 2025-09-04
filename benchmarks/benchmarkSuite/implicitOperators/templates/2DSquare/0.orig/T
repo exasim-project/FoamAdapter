@@ -9,48 +9,44 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       dictionary;
-    object      controlDict;
+    class       volScalarField;
+    object      p;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     icoFoam;
+dimensions      [0 0 0 1 0 0 0];
 
-executor        Serial;
+internalField   uniform 0.0;
 
-startFrom       startTime;
+boundaryField
+{
+    top
+    {
+        type            fixedValue;
+        value           uniform 10.5; // 10.0 will be converted to an int
+    }
 
-startTime       0;
+    bottom
+    {
+        type            fixedValue;
+        value           uniform 1.5; // 1.0 will be converted to an int
+    }
 
-stopAt          endTime;
+    sides
+    {
+        type            zeroGradient;
+    }
 
-endTime         1;
+    fixedWalls
+    {
+        type            zeroGradient;
+    }
 
-deltaT          1e-4;
-
-writeControl    adjustable;
-
-writeInterval   0.1;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  16;
-
-writeCompression off;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  yes;
-
-maxCo           0.2;
-
-maxDeltaT       1;
+    frontAndBack
+    {
+        type            empty;
+    }
+}
 
 
 // ************************************************************************* //
