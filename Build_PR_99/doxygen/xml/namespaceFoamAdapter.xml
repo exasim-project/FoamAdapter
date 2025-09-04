@@ -1,0 +1,995 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespaceFoamAdapter" kind="namespace" language="C++">
+    <compoundname>FoamAdapter</compoundname>
+    <innerclass refid="classFoamAdapter_1_1CreateFromFoamField" prot="public">FoamAdapter::CreateFromFoamField</innerclass>
+    <innerclass refid="classFoamAdapter_1_1Expression" prot="public">FoamAdapter::Expression</innerclass>
+    <innerclass refid="classFoamAdapter_1_1MeshAdapter" prot="public">FoamAdapter::MeshAdapter</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map" prot="public">FoamAdapter::type_map</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4" prot="public">FoamAdapter::type_map&lt; Foam::Field&lt; Foam::scalar &gt; &gt;</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1vector_01_4_01_4" prot="public">FoamAdapter::type_map&lt; Foam::Field&lt; Foam::vector &gt; &gt;</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvPatc84c721f1ce67dda1a84935358fd6b93b" prot="public">FoamAdapter::type_map&lt; Foam::GeometricField&lt; Foam::scalar, Foam::fvPatchField, Foam::volMesh &gt; &gt;</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvsPat756d0aeb63964d1abaea395b02a0e053" prot="public">FoamAdapter::type_map&lt; Foam::GeometricField&lt; Foam::scalar, Foam::fvsPatchField, Foam::surfaceMesh &gt; &gt;</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvPatc633bc7b0f65abec47b539ca21b4b1f2a" prot="public">FoamAdapter::type_map&lt; Foam::GeometricField&lt; Foam::vector, Foam::fvPatchField, Foam::volMesh &gt; &gt;</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvsPat33ea648659ace0398495b22704eafd68" prot="public">FoamAdapter::type_map&lt; Foam::GeometricField&lt; Foam::vector, Foam::fvsPatchField, Foam::surfaceMesh &gt; &gt;</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam_1_1label_01_4_01_4" prot="public">FoamAdapter::type_map&lt; Foam::List&lt; Foam::label &gt; &gt;</innerclass>
+    <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam_1_1scalar_01_4_01_4" prot="public">FoamAdapter::type_map&lt; Foam::List&lt; Foam::scalar &gt; &gt;</innerclass>
+    <innernamespace refid="namespaceFoamAdapter_1_1detail">FoamAdapter::detail</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceFoamAdapter_1a54bbeabff5f4044f250027a13ebe295d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::constrainHbyA</definition>
+        <argsstring>(nnfvcc::VolumeField&lt; Vec3 &gt; &amp;HbyA, const nnfvcc::VolumeField&lt; Vec3 &gt; &amp;U, const nnfvcc::VolumeField&lt; scalar &gt; &amp;p)</argsstring>
+        <name>constrainHbyA</name>
+        <qualifiedname>FoamAdapter::constrainHbyA</qualifiedname>
+        <param>
+          <type>nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <declname>HbyA</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <declname>U</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt; &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="20" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="20" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a0ab83d9f57643ab6599fed6c3a318f4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt;, nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &gt;</type>
+        <definition>std::tuple&lt; nnfvcc::VolumeField&lt; scalar &gt;, nnfvcc::VolumeField&lt; Vec3 &gt; &gt; FoamAdapter::discreteMomentumFields</definition>
+        <argsstring>(const Expression&lt; Vec3 &gt; &amp;expr)</argsstring>
+        <name>discreteMomentumFields</name>
+        <qualifiedname>FoamAdapter::discreteMomentumFields</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <declname>expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="27" column="1" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="27" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a678aeff6603442623c3cb8c784435ecb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::updateFaceVelocity</definition>
+        <argsstring>(nnfvcc::SurfaceField&lt; scalar &gt; &amp;phi, const nnfvcc::SurfaceField&lt; scalar &gt; &amp;predictedPhi, const Expression&lt; scalar &gt; &amp;expr)</argsstring>
+        <name>updateFaceVelocity</name>
+        <qualifiedname>FoamAdapter::updateFaceVelocity</qualifiedname>
+        <param>
+          <type>nnfvcc::SurfaceField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt; &amp;</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> nnfvcc::SurfaceField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt; &amp;</type>
+          <declname>predictedPhi</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt; &amp;</type>
+          <declname>expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="29" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="29" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1ab07cdffe2f504299318aad761dfd4b9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::updateVelocity</definition>
+        <argsstring>(nnfvcc::VolumeField&lt; Vec3 &gt; &amp;U, const nnfvcc::VolumeField&lt; Vec3 &gt; &amp;HbyA, nnfvcc::VolumeField&lt; scalar &gt; &amp;rAU, nnfvcc::VolumeField&lt; scalar &gt; &amp;p)</argsstring>
+        <name>updateVelocity</name>
+        <qualifiedname>FoamAdapter::updateVelocity</qualifiedname>
+        <param>
+          <type>nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <declname>U</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <declname>HbyA</declname>
+        </param>
+        <param>
+          <type>nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt; &amp;</type>
+          <declname>rAU</declname>
+        </param>
+        <param>
+          <type>nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt; &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="35" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="35" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1aeb9d6048345debcb9e018bb2e75436b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>nnfvcc::SurfaceField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt;</type>
+        <definition>nnfvcc::SurfaceField&lt; scalar &gt; FoamAdapter::flux</definition>
+        <argsstring>(const nnfvcc::VolumeField&lt; Vec3 &gt; &amp;volField)</argsstring>
+        <name>flux</name>
+        <qualifiedname>FoamAdapter::flux</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <declname>volField</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="46" column="22" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="46" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a9f22c54b08a010fb0c71f78f7b1b8167" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NT</type>
+          </param>
+          <param>
+            <type>typename OT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">bool</ref></type>
+        <definition>bool FoamAdapter::operator==</definition>
+        <argsstring>(const NeoN::Vector&lt; NT &gt; &amp;nf, const Foam::Field&lt; OT &gt; &amp;of)</argsstring>
+        <name>operator==</name>
+        <qualifiedname>FoamAdapter::operator==</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Vector&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">NT</ref> &gt; &amp;</type>
+          <declname>nf</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::Field&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">OT</ref> &gt; &amp;</type>
+          <declname>of</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="21" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="21" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1ad1fb93c62a9f4dcc22f47fc524c9a80e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NT</type>
+          </param>
+          <param>
+            <type>typename OT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">bool</ref></type>
+        <definition>bool FoamAdapter::operator==</definition>
+        <argsstring>(fvcc::VolumeField&lt; NT &gt; &amp;nf, const Foam::GeometricField&lt; OT, Foam::fvPatchField, Foam::volMesh &gt; &amp;of)</argsstring>
+        <name>operator==</name>
+        <qualifiedname>FoamAdapter::operator==</qualifiedname>
+        <param>
+          <type>fvcc::VolumeField&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">NT</ref> &gt; &amp;</type>
+          <declname>nf</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::GeometricField&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">OT</ref>, Foam::fvPatchField, Foam::volMesh &gt; &amp;</type>
+          <declname>of</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="24" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="24" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a82089b04dc2e3a6ff1c1743b4136905f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NT</type>
+          </param>
+          <param>
+            <type>typename OT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">bool</ref></type>
+        <definition>bool FoamAdapter::operator==</definition>
+        <argsstring>(const fvcc::SurfaceField&lt; NT &gt; &amp;nf, const Foam::GeometricField&lt; OT, Foam::fvsPatchField, Foam::surfaceMesh &gt; &amp;of)</argsstring>
+        <name>operator==</name>
+        <qualifiedname>FoamAdapter::operator==</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> fvcc::SurfaceField&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">NT</ref> &gt; &amp;</type>
+          <declname>nf</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::GeometricField&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">OT</ref>, Foam::fvsPatchField, Foam::surfaceMesh &gt; &amp;</type>
+          <declname>of</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" line="30" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/comparison.hpp" declline="30" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a25a465bba7f6725729af83a99c22f9f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::Vec3</type>
+        <definition>NeoN::Vec3 FoamAdapter::convert</definition>
+        <argsstring>(const Foam::vector &amp;Type)</argsstring>
+        <name>convert</name>
+        <qualifiedname>FoamAdapter::convert</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::vector &amp;</type>
+          <declname>Type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="12" column="12" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" declline="12" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1aee0c7d6b59cb2426b9196bf7a12cce96" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::scalar</type>
+        <definition>NeoN::scalar FoamAdapter::convert</definition>
+        <argsstring>(const Foam::scalar &amp;Type)</argsstring>
+        <name>convert</name>
+        <qualifiedname>FoamAdapter::convert</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::scalar &amp;</type>
+          <declname>Type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="14" column="14" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" declline="14" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a4d39c614e40b11ff2e03c5c3f2304c2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FoamAdapter::convert</definition>
+        <argsstring>(const Foam::word &amp;Type)</argsstring>
+        <name>convert</name>
+        <qualifiedname>FoamAdapter::convert</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::word &amp;</type>
+          <declname>Type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="16" column="13" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" declline="16" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a2c4e8563b875c7a9b4b86f4092eeeca9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::TokenList</type>
+        <definition>NeoN::TokenList FoamAdapter::convert</definition>
+        <argsstring>(const Foam::ITstream &amp;Type)</argsstring>
+        <name>convert</name>
+        <qualifiedname>FoamAdapter::convert</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::ITstream &amp;</type>
+          <declname>Type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="18" column="17" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" declline="18" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1ad14d39dcbead5b34c045920efd83738a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::label</type>
+        <definition>NeoN::label FoamAdapter::convert</definition>
+        <argsstring>(const Foam::label &amp;Type)</argsstring>
+        <name>convert</name>
+        <qualifiedname>FoamAdapter::convert</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::label &amp;</type>
+          <declname>Type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="20" column="13" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" declline="20" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1aba72ce1f4736bf0d7dcc14596fa7bff9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::Dictionary</type>
+        <definition>NeoN::Dictionary FoamAdapter::convert</definition>
+        <argsstring>(const Foam::dictionary &amp;dict)</argsstring>
+        <name>convert</name>
+        <qualifiedname>FoamAdapter::convert</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::dictionary &amp;</type>
+          <declname>dict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="22" column="18" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" declline="22" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool FoamAdapter::checkEntryType</definition>
+        <argsstring>(const Foam::entry &amp;entry)</argsstring>
+        <name>checkEntryType</name>
+        <qualifiedname>FoamAdapter::checkEntryType</qualifiedname>
+        <param>
+          <type>const Foam::entry &amp;</type>
+          <declname>entry</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="25" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" bodystart="25" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a001fc933f3c84a6aa35c1ca0791faf78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">bool</ref></type>
+        <definition>bool FoamAdapter::insert</definition>
+        <argsstring>(NeoN::Dictionary &amp;neoDict, const Foam::entry &amp;entry)</argsstring>
+        <name>insert</name>
+        <qualifiedname>FoamAdapter::insert</qualifiedname>
+        <param>
+          <type>NeoN::Dictionary &amp;</type>
+          <declname>neoDict</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::entry &amp;</type>
+          <declname>entry</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="51" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" bodystart="51" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a5bc0bbc6691462c5f7bdd97f7afb44dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Foam::vector</type>
+        <definition>Foam::vector FoamAdapter::convert</definition>
+        <argsstring>(const NeoN::Vec3 &amp;Type)</argsstring>
+        <name>convert</name>
+        <qualifiedname>FoamAdapter::convert</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Vec3 &amp;</type>
+          <declname>Type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" line="65" column="14" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/convert.hpp" declline="65" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a02bea90fb07cdc6d164c2b4c1718fc08" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FoamType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">auto</ref></type>
+        <definition>auto FoamAdapter::fromFoamField</definition>
+        <argsstring>(const NeoN::Executor &amp;exec, const FoamType &amp;field)</argsstring>
+        <name>fromFoamField</name>
+        <qualifiedname>FoamAdapter::fromFoamField</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Executor &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FoamType</ref> &amp;</type>
+          <declname>field</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" line="18" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" bodystart="18" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1aede9b3b7c2b995b24825529cfe2c2386" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FoamType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">auto</ref></type>
+        <definition>auto FoamAdapter::readVolBoundaryConditions</definition>
+        <argsstring>(const NeoN::UnstructuredMesh &amp;nfMesh, const FoamType &amp;ofVolField)</argsstring>
+        <name>readVolBoundaryConditions</name>
+        <qualifiedname>FoamAdapter::readVolBoundaryConditions</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::UnstructuredMesh &amp;</type>
+          <declname>nfMesh</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FoamType</ref> &amp;</type>
+          <declname>ofVolField</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" line="32" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" bodystart="32" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a2a4e77b9a673744f7c1149e6288e00db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FoamType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">auto</ref></type>
+        <definition>auto FoamAdapter::constructFrom</definition>
+        <argsstring>(const NeoN::Executor exec, const NeoN::UnstructuredMesh &amp;nfMesh, const FoamType &amp;in)</argsstring>
+        <name>constructFrom</name>
+        <qualifiedname>FoamAdapter::constructFrom</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Executor</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::UnstructuredMesh &amp;</type>
+          <declname>nfMesh</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FoamType</ref> &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" line="111" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" bodystart="111" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1ad7849fbeb06f57b55857d3a36a5acd26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FoamType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">auto</ref></type>
+        <definition>auto FoamAdapter::readSurfaceBoundaryConditions</definition>
+        <argsstring>(const NeoN::UnstructuredMesh &amp;uMesh, const FoamType &amp;surfaceField)</argsstring>
+        <name>readSurfaceBoundaryConditions</name>
+        <qualifiedname>FoamAdapter::readSurfaceBoundaryConditions</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::UnstructuredMesh &amp;</type>
+          <declname>uMesh</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FoamType</ref> &amp;</type>
+          <declname>surfaceField</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" line="129" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" bodystart="129" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a98726de082da7d5212dae976ce88f510" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FoamType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">auto</ref></type>
+        <definition>auto FoamAdapter::constructSurfaceField</definition>
+        <argsstring>(const NeoN::Executor exec, const NeoN::UnstructuredMesh &amp;nfMesh, const FoamType &amp;in)</argsstring>
+        <name>constructSurfaceField</name>
+        <qualifiedname>FoamAdapter::constructSurfaceField</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Executor</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::UnstructuredMesh &amp;</type>
+          <declname>nfMesh</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FoamType</ref> &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" line="176" column="6" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp" bodystart="176" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">bool</ref>, Foam::scalar, Foam::scalar &gt;</type>
+        <definition>std::tuple&lt; bool, Foam::scalar, Foam::scalar &gt; FoamAdapter::timeControls</definition>
+        <argsstring>(const Foam::Time &amp;runTime)</argsstring>
+        <name>timeControls</name>
+        <qualifiedname>FoamAdapter::timeControls</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::Time &amp;</type>
+          <declname>runTime</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="14" column="12" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="14" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a52be9ed969f57da51a090c9df132990d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::setDeltaT</definition>
+        <argsstring>(Foam::Time &amp;runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT)</argsstring>
+        <name>setDeltaT</name>
+        <qualifiedname>FoamAdapter::setDeltaT</qualifiedname>
+        <param>
+          <type>Foam::Time &amp;</type>
+          <declname>runTime</declname>
+        </param>
+        <param>
+          <type>Foam::scalar</type>
+          <declname>maxCo</declname>
+        </param>
+        <param>
+          <type>Foam::scalar</type>
+          <declname>CoNum</declname>
+        </param>
+        <param>
+          <type>Foam::scalar</type>
+          <declname>maxDeltaT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="16" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="16" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::Executor</type>
+        <definition>NeoN::Executor FoamAdapter::createExecutor</definition>
+        <argsstring>(const Foam::dictionary &amp;dict)</argsstring>
+        <name>createExecutor</name>
+        <qualifiedname>FoamAdapter::createExecutor</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::dictionary &amp;</type>
+          <declname>dict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="18" column="16" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="18" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::write</definition>
+        <argsstring>(NeoN::scalarVector &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <name>write</name>
+        <qualifiedname>FoamAdapter::write</qualifiedname>
+        <param>
+          <type>NeoN::scalarVector &amp;</type>
+          <declname>sf</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvMesh &amp;</type>
+          <declname>mesh</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> std::string</type>
+          <declname>fieldName</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="33" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="33" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a8ad8cc5431b3fde26ae90f6a760ff452" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::write</definition>
+        <argsstring>(NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <name>write</name>
+        <qualifiedname>FoamAdapter::write</qualifiedname>
+        <param>
+          <type>NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;</type>
+          <declname>sf</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvMesh &amp;</type>
+          <declname>mesh</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> std::string</type>
+          <declname>fieldName</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="35" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="35" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1ab50ddf2a52315c0dca39d480c4cbb4a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::write</definition>
+        <argsstring>(const fvcc::VolumeField&lt; NeoN::scalar &gt; &amp;volField, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <name>write</name>
+        <qualifiedname>FoamAdapter::write</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> fvcc::VolumeField&lt; NeoN::scalar &gt; &amp;</type>
+          <declname>volField</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvMesh &amp;</type>
+          <declname>mesh</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> std::string</type>
+          <declname>fieldName</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="37" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="37" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1aa07b2f5c8b1055724f7c8b3a408c5574" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::write</definition>
+        <argsstring>(const fvcc::VolumeField&lt; NeoN::Vec3 &gt; &amp;volField, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <name>write</name>
+        <qualifiedname>FoamAdapter::write</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> fvcc::VolumeField&lt; NeoN::Vec3 &gt; &amp;</type>
+          <declname>volField</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvMesh &amp;</type>
+          <declname>mesh</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> std::string</type>
+          <declname>fieldName</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="39" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="39" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a46e698646a94db94dd4f57ca77f699bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::updateSolver</definition>
+        <argsstring>(NeoN::Dictionary &amp;solverDict)</argsstring>
+        <name>updateSolver</name>
+        <qualifiedname>FoamAdapter::updateSolver</qualifiedname>
+        <param>
+          <type>NeoN::Dictionary &amp;</type>
+          <declname>solverDict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" line="16" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" declline="16" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a387368bb2d20ed59a7547204e2f3aaa2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::updatePreconditioner</definition>
+        <argsstring>(NeoN::Dictionary &amp;solverDict)</argsstring>
+        <name>updatePreconditioner</name>
+        <qualifiedname>FoamAdapter::updatePreconditioner</qualifiedname>
+        <param>
+          <type>NeoN::Dictionary &amp;</type>
+          <declname>solverDict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" line="18" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" declline="18" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1adf5f68e388035bb188ca7ed993972a1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::Dictionary</type>
+        <definition>NeoN::Dictionary FoamAdapter::mapFvSolution</definition>
+        <argsstring>(const NeoN::Dictionary &amp;solverDict)</argsstring>
+        <name>mapFvSolution</name>
+        <qualifiedname>FoamAdapter::mapFvSolution</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Dictionary &amp;</type>
+          <declname>solverDict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" line="20" column="18" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/compatibility/fvSolution.hpp" declline="20" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a13b42389ef03dfeb668a50344c66743c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ValueType</type>
+          </param>
+          <param>
+            <type>typename IndexType</type>
+            <defval>NeoN::localIdx</defval>
+          </param>
+        </templateparamlist>
+        <type>NeoN::Vector&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">ValueType</ref> &gt;</type>
+        <definition>NeoN::Vector&lt; ValueType &gt; FoamAdapter::diag</definition>
+        <argsstring>(const la::LinearSystem&lt; ValueType, IndexType &gt; &amp;ls, const NeoN::la::SparsityPattern &amp;sparsityPattern)</argsstring>
+        <name>diag</name>
+        <qualifiedname>FoamAdapter::diag</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> la::LinearSystem&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">ValueType</ref>, <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">IndexType</ref> &gt; &amp;</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::la::SparsityPattern &amp;</type>
+          <declname>sparsityPattern</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="185" column="14" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="185" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ValueType</type>
+          </param>
+          <param>
+            <type>typename IndexType</type>
+            <defval>NeoN::localIdx</defval>
+          </param>
+        </templateparamlist>
+        <type>NeoN::finiteVolume::cellCentred::VolumeField&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">ValueType</ref> &gt;</type>
+        <definition>NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; FoamAdapter::applyOperator</definition>
+        <argsstring>(const la::LinearSystem&lt; ValueType, IndexType &gt; &amp;ls, const NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; &amp;psi)</argsstring>
+        <name>applyOperator</name>
+        <qualifiedname>FoamAdapter::applyOperator</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> la::LinearSystem&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">ValueType</ref>, <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">IndexType</ref> &gt; &amp;</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::finiteVolume::cellCentred::VolumeField&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">ValueType</ref> &gt; &amp;</type>
+          <declname>psi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="208" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="208" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a735d5fda9dfb92f1b072e6b2dc2ead40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ValueType</type>
+          </param>
+          <param>
+            <type>typename IndexType</type>
+            <defval>NeoN::localIdx</defval>
+          </param>
+        </templateparamlist>
+        <type>NeoN::finiteVolume::cellCentred::VolumeField&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">ValueType</ref> &gt;</type>
+        <definition>NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; FoamAdapter::operator&amp;</definition>
+        <argsstring>(const Expression&lt; ValueType, IndexType &gt; expr, const NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; &amp;psi)</argsstring>
+        <name>operator&amp;</name>
+        <qualifiedname>FoamAdapter::operator&amp;</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">ValueType</ref>, <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">IndexType</ref> &gt;</type>
+          <declname>expr</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::finiteVolume::cellCentred::VolumeField&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">ValueType</ref> &gt; &amp;</type>
+          <declname>psi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="245" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="245" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a756cc6e6886d3830b69f190c6144d45d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; NeoN::localIdx &gt;</type>
+        <definition>std::vector&lt; NeoN::localIdx &gt; FoamAdapter::computeOffset</definition>
+        <argsstring>(const Foam::fvMesh &amp;mesh)</argsstring>
+        <name>computeOffset</name>
+        <qualifiedname>FoamAdapter::computeOffset</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvMesh &amp;</type>
+          <declname>mesh</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" line="19" column="13" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" declline="19" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a350e30b195d83112881719b760db48af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">int32_t</ref></type>
+        <definition>int32_t FoamAdapter::computeNBoundaryFaces</definition>
+        <argsstring>(const Foam::fvMesh &amp;mesh)</argsstring>
+        <name>computeNBoundaryFaces</name>
+        <qualifiedname>FoamAdapter::computeNBoundaryFaces</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvMesh &amp;</type>
+          <declname>mesh</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" line="21" column="9" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" declline="21" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1ab204c114163c8f7c5363ea1ce677bc57" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FieldT</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FieldT</ref></type>
+        <definition>FieldT FoamAdapter::flatBCField</definition>
+        <argsstring>(const Foam::fvMesh &amp;mesh, std::function&lt; FieldT(const Foam::fvPatch &amp;)&gt; f)</argsstring>
+        <name>flatBCField</name>
+        <qualifiedname>FoamAdapter::flatBCField</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvMesh &amp;</type>
+          <declname>mesh</declname>
+        </param>
+        <param>
+          <type>std::function&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FieldT</ref>(<ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvPatch &amp;)&gt;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" line="24" column="8" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" declline="24" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a3211f53f1673aa91a630ab089ceae7d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>NeoN::UnstructuredMesh</type>
+        <definition>NeoN::UnstructuredMesh FoamAdapter::readOpenFOAMMesh</definition>
+        <argsstring>(const NeoN::Executor exec, const Foam::fvMesh &amp;mesh)</argsstring>
+        <name>readOpenFOAMMesh</name>
+        <qualifiedname>FoamAdapter::readOpenFOAMMesh</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Executor</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::fvMesh &amp;</type>
+          <declname>mesh</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" line="26" column="24" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" declline="26" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a51e665d621ee4cf402e9427637c25cea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="classFoamAdapter_1_1MeshAdapter" kindref="compound">MeshAdapter</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; MeshAdapter &gt; FoamAdapter::createMesh</definition>
+        <argsstring>(const NeoN::Executor &amp;exec, const Foam::Time &amp;runTime)</argsstring>
+        <name>createMesh</name>
+        <qualifiedname>FoamAdapter::createMesh</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Executor &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::Time &amp;</type>
+          <declname>runTime</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" line="91" column="17" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" declline="91" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a3218439d4f85ce028cfd1575954d1109" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; Foam::fvMesh &gt;</type>
+        <definition>std::unique_ptr&lt; Foam::fvMesh &gt; FoamAdapter::createMesh</definition>
+        <argsstring>(const Foam::Time &amp;runTime)</argsstring>
+        <name>createMesh</name>
+        <qualifiedname>FoamAdapter::createMesh</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::Time &amp;</type>
+          <declname>runTime</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" line="93" column="17" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp" declline="93" declcolumn="17"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="14" column="1"/>
+  </compounddef>
+</doxygen>
