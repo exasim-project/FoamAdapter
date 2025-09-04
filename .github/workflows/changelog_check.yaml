@@ -9,7 +9,7 @@ jobs:
   changelog:
     name: Changelog check
     runs-on: ubuntu-24.04
-    if: !contains(toJson(github.event.pull_request.labels.*.name), 'skip-changelog')
+    if: "!contains(toJson(github.event.pull_request.labels.*.name), 'skip-changelog')"
     steps:
       - uses: actions/checkout@v4
       - uses: dangoslen/changelog-enforcer@v3
