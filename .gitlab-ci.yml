@@ -56,6 +56,13 @@ variables:
     - which simpleFoam || echo "simpleFoam not found!"
     - find $FOAM_LIBBIN -name "libPstream.so"
 
+    # Install pre-commit
+    - pip3 install --user --break-system-packages pre-commit
+    - export PATH="$HOME/.local/bin:$PATH"
+
+    # Install pre-commit
+    - pip3 install --user --break-system-packages foamlib
+
     # Show tool versions for debugging
     - cmake --version
     - clang++ --version || g++ --version
@@ -81,10 +88,7 @@ build-and-test-with-neon-main:
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-    - |
-      cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
-      -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
-      -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=ON
     - cmake --build --preset develop
     # -------------------------
     # Step 3: Run Tests
@@ -92,33 +96,7 @@ build-and-test-with-neon-main:
     - echo "Running FoamAdapter tests..."
     - ctest --preset develop --output-on-failure
 
-
-build-and-test-with-neon-feature:
-  <<: *build-foamadapter-common
-  rules:
-    # Run only when triggered via API from NeoN GitHub CI
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
-      when: always
-    # Skip in all other cases
-    - when: never
-
-  script:
     # -------------------------
-    # Step 1: Prepare NeoN
+    # Step 4: Execute Benchmarks
     # -------------------------
-    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH"
-    - git clone --depth 1 --single-branch --branch $NEON_BRANCH https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-    # -------------------------
-    # Step 2: Build FoamAdapter
-    # -------------------------
-    - echo "Building FoamAdapter against NeoN..."
-    - |
-      cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
-       -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
-       -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
-    - cmake --build --preset develop
-    # -------------------------
-    # Step 3: Run Tests
-    # -------------------------
-    - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
+    - ./build/develop/bin/benchmarks/benchmarkSuite/runAll.sh
