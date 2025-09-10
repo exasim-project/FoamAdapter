@@ -65,18 +65,11 @@ variables:
 build-and-test-foamadapter:
   <<: *build-foamadapter-common
   rules:
-    # Skip if triggered by NeoN pipeline
-    - if: '$NEON_COMMIT || $NEON_BRANCH'
-      when: never
-
-    # Skip if only doc/Markdown files changed
-    - changes:
-        - doc/**/*
-        - '*.md'
-      when: never
-
-    # Run for all other cases
-    - when: always
+    # Run only when triggered via API
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+      when: always
+    # Skip in all other cases
+    - when: never
 
   script:
     # -------------------------
@@ -146,8 +139,7 @@ build-and-test-foamadapter-triggered:
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
-
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF
     - cmake --build --preset develop
     # -------------------------
     # Step 3: Run Tests
