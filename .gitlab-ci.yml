@@ -60,6 +60,9 @@ build-and-test-foamadapter:
     - pip3 install --user --break-system-packages pre-commit
     - export PATH="$HOME/.local/bin:$PATH"
 
+    # Install pre-commit
+    - pip3 install --user --break-system-packages foamlib
+
     # Show tool versions for debugging
     - cmake --version
     - clang++ --version || g++ --version
@@ -77,7 +80,7 @@ build-and-test-foamadapter:
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=ON
     - cmake --build --preset develop
 
     # -------------------------
@@ -85,3 +88,8 @@ build-and-test-foamadapter:
     # -------------------------
     - echo "Running FoamAdapter tests..."
     - ctest --preset develop --output-on-failure
+
+    # -------------------------
+    # Step 4: Execute Benchmarks
+    # -------------------------
+    - ./build/develop/bin/benchmarks/benchmarkSuite/runAll.sh
