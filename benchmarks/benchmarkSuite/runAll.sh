@@ -7,29 +7,29 @@ current_dir=$(pwd)
 run_benchmark() {
     local benchmark_dir="$1"
     echo "Running benchmark: $benchmark_dir"
-    
+
     # Save the current directory
     local start_dir="$current_dir"
-    
+
     # Navigate to the benchmark directory
     cd "$benchmark_dir" || { echo "Failed to cd to $benchmark_dir"; return 1; }
-    
+
     # Execute the benchmark commands
     echo "Creating study..."
     python createStudy.py
-    
+
     echo "Running benchmark..."
     ./runAll.sh
-    
+
     echo "Gathering results..."
     python gatherResults.py
-    
+
     echo "Plotting results..."
     python plotResults.py
-    
+
     # Return to the original directory
     cd "$start_dir" || { echo "Failed to return to $start_dir"; return 1; }
-    
+
     echo "Completed benchmark: $benchmark_dir"
 }
 
@@ -40,4 +40,3 @@ benchmarks=("dsl" "explicitOperators" "implicitOperators")
 for benchmark in "${benchmarks[@]}"; do
     run_benchmark "$current_dir/$benchmark"
 done
-
