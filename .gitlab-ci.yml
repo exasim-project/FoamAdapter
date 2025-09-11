@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
 #
 # SPDX-License-Identifier: Unlicense
-image: chihtaw/cuda-openfoam:v2412
+image: chihtaw/cuda-openfoam-foamlib:v2412
 
 stages:
   - build-and-test
@@ -56,6 +56,9 @@ variables:
     - which simpleFoam || echo "simpleFoam not found!"
     - find $FOAM_LIBBIN -name "libPstream.so"
 
+    # Install pre-commit and foamlib
+    - export PATH="$HOME/.local/bin:$PATH"
+
     # Show tool versions for debugging
     - cmake --version
     - clang++ --version || g++ --version
@@ -88,7 +91,7 @@ build-and-test-foamadapter:
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=ON
     - cmake --build --preset develop
     # -------------------------
     # Step 3: Run Tests
@@ -153,4 +156,9 @@ build-and-test-foamadapter-triggered:
     # Step 3: Run Tests
     # -------------------------
     - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
+    - ctest --preset develop --output-on-failure -R adapter
+
+    # -------------------------
+    # Step 4: Execute Benchmarks
+    # -------------------------
+    - ./build/develop/bin/benchmarks/benchmarkSuite/runAll.sh

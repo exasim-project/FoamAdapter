@@ -114,7 +114,10 @@ TEST_CASE("DivOperator")
                 NeoN::fill(nfDivT.boundaryData().value(), 0.0);
                 fvcc::GaussGreenDiv<NeoN::scalar>(exec, nfMesh, scheme)
                     .div(nfDivT, nfPhi, nfT, dsl::Coeff(1.0));
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
@@ -210,7 +213,10 @@ TEST_CASE("LaplacianOperator")
                 NeoN::fill(nfLapT.boundaryData().value(), 0.0);
                 fvcc::GaussGreenLaplacian<NeoN::scalar>(exec, nfMesh, scheme)
                     .laplacian(nfLapT, nfGamma, nfT, dsl::Coeff(1.0));
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
@@ -278,7 +284,10 @@ TEST_CASE("GradOperator")
                 NeoN::fill(nfGradT.internalVector(), NeoN::Vec3(0, 0, 0));
                 NeoN::fill(nfGradT.boundaryData().value(), NeoN::Vec3(0, 0, 0));
                 fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
@@ -317,6 +326,10 @@ TEST_CASE("FaceInterpolation")
 
         SECTION("with Allocation")
         {
+            // warmup
+            Foam::IStringStream istmp("linear");
+            Foam::fvc::interpolate(ofT, ofPhi, istmp);
+
             BENCHMARK(std::string("OpenFOAM"))
             {
                 Foam::IStringStream is("linear");
@@ -362,11 +375,14 @@ TEST_CASE("FaceInterpolation")
         {
             NeoN::TokenList scheme({std::string("linear")});
 
+            // warmup
+            fvcc::SurfaceInterpolation<NeoN::scalar>(exec, nfMesh, scheme).interpolate(nfPhi, nfT);
+
             BENCHMARK(std::string(execName))
             {
-                // fvcc::SurfaceField<NeoN::scalar> Tf =
-                fvcc::SurfaceInterpolation<NeoN::scalar>(exec, nfMesh, scheme)
-                    .interpolate(nfPhi, nfT);
+                fvcc::SurfaceField<NeoN::scalar> Tf =
+                    fvcc::SurfaceInterpolation<NeoN::scalar>(exec, nfMesh, scheme)
+                        .interpolate(nfPhi, nfT);
                 return;
             };
         }
@@ -379,11 +395,12 @@ TEST_CASE("FaceInterpolation")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(nfTf.internalVector(), 0.0);
-                NeoN::fill(nfTf.boundaryData().value(), 0.0);
                 fvcc::SurfaceInterpolation<NeoN::scalar>(exec, nfMesh, scheme)
                     .interpolate(nfPhi, nfT, nfTf);
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
@@ -407,6 +424,11 @@ TEST_CASE("FaceNormalGradient")
 
         SECTION("with Allocation")
         {
+            // warmup
+            Foam::IStringStream istmp("uncorrected");
+            auto tmp = Foam::fv::snGradScheme<Foam::scalar>::New(mesh, istmp);
+            tmp->snGrad(ofT);
+
             BENCHMARK(std::string("OpenFOAM"))
             {
                 Foam::IStringStream is("uncorrected");
@@ -434,6 +456,8 @@ TEST_CASE("FaceNormalGradient")
         SECTION("with Allocation")
         {
             NeoN::TokenList scheme({std::string("uncorrected")});
+            // warmup
+            fvcc::FaceNormalGradient<NeoN::scalar>(exec, nfMesh, scheme).faceNormalGrad(nfT);
 
             BENCHMARK(std::string(execName))
             {
@@ -456,11 +480,12 @@ TEST_CASE("FaceNormalGradient")
 
             BENCHMARK(std::string(execName))
             {
-                NeoN::fill(faceGradT.internalVector(), 0.0);
-                NeoN::fill(faceGradT.boundaryData().value(), 0.0);
                 fvcc::FaceNormalGradient<NeoN::scalar>(exec, nfMesh, scheme)
                     .faceNormalGrad(nfT, faceGradT);
-                Kokkos::fence();
+                if (execName == "GPUExecutor")
+                {
+                    Kokkos::fence();
+                }
                 return;
             };
         }
