@@ -25,7 +25,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
     Foam::argList& args = *argsPtr;
 
     runTime.setDeltaT(1e-3);
-    // runTime++;
+    runTime++;
 
     SECTION("OpenFOAM")
     {
