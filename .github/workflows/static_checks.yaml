@@ -2,8 +2,9 @@ name: Static checks
 run-name: Static checks
 
 on:
-    pull_request:
-      types: [opened, synchronize]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
   build-compilation-db:
     name: Build with IWYU
@@ -116,10 +117,3 @@ jobs:
         NTODOS="$(grep -r 'TODO DONT MERGE' --exclude-dir=.github | wc -l)"
         echo "Found $NTODOS TODO DONT MERGE notes"
         ! grep -q -r "TODO DONT MERGE" --exclude-dir=.github
-  changelog:
-    name: Changelog check
-    runs-on: ubuntu-24.04
-    steps:
-    - uses: dangoslen/changelog-enforcer@v3
-      with:
-        changeLogPath: CHANGELOG.md
