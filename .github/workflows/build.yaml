@@ -7,11 +7,7 @@ on:
       - dev
       - main
   pull_request:
-    types:
-      - synchronize
-      - open
-  schedule:
-    - cron: "* 0 * * 0"
+    types: [opened, synchronize, reopened, labeled, unlabeled]
 
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
@@ -24,6 +20,8 @@ concurrency:
 jobs:
   build:
     name: Build FoamAdapter
+    runs-on: ubuntu-latest
+    if: "!contains(toJson(github.event.pull_request.labels.*.name), 'Skip-build')"
     strategy:
       fail-fast: false
       matrix:
@@ -32,7 +30,6 @@ jobs:
             CXX: clang++
           - CC: gcc
             CXX: g++
-    runs-on: ubuntu-24.04
     steps:
      - name: Checkout to repository
        uses: actions/checkout@v4
