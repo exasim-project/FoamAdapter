@@ -92,6 +92,65 @@ build-and-test-with-neon-main:
     - echo "Running FoamAdapter tests..."
     - ctest --preset develop --output-on-failure
 
+
+build-and-test-foamadapter-triggered:
+  <<: *build-foamadapter-common
+  rules:
+    # Run only if NeoN pipeline triggered this one (the variables are passed from NeoN pipeline)
+    - if: '$NEON_COMMIT || $NEON_BRANCH'
+      when: always
+
+  script:
+    # ----------------------------------
+    # Step 0: Select FoamAdapter branch
+    # ----------------------------------
+    - |
+      echo "NeoN triggered with branch=$NEON_BRANCH commit=$NEON_COMMIT"
+      # Default branch fallback
+      FOAMADAPTER_BRANCH="main"
+
+      if [ -n "$NEON_BRANCH" ]; then
+        echo "Checking if FoamAdapter branch $NEON_BRANCH exists..."
+        if git ls-remote --exit-code --heads origin "$NEON_BRANCH"; then
+          FOAMADAPTER_BRANCH="$NEON_BRANCH"
+          echo "Found matching FoamAdapter branch: $FOAMADAPTER_BRANCH"
+        else
+          echo "No matching branch, falling back to main"
+        fi
+      fi
+
+      echo "Using FoamAdapter branch: $FOAMADAPTER_BRANCH"
+
+      # Switch to that branch
+      git fetch origin "$FOAMADAPTER_BRANCH"
+      git checkout "$FOAMADAPTER_BRANCH"
+    # -------------------------
+    # Step 1: Prepare NeoN
+    # -------------------------
+    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH commit=$NEON_COMMIT"
+    - |
+      if [ -n "$NEON_COMMIT" ]; then
+        git clone https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+        cd ../NeoN
+        git fetch origin $NEON_COMMIT --depth 1
+        git checkout $NEON_COMMIT
+        cd -
+      else
+        git clone --depth 1 --branch ${NEON_BRANCH:-main} https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+      fi
+    # -------------------------
+    # Step 2: Build FoamAdapter
+    # -------------------------
+    - echo "Building FoamAdapter against NeoN..."
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=89 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+
+    - cmake --build --preset develop
+    # -------------------------
+    # Step 3: Run Tests
+    # -------------------------
+    - echo "Running FoamAdapter tests..."
+    - ctest --preset develop --output-on-failure -R adapter
+
     # -------------------------
     # Step 4: Execute Benchmarks
     # -------------------------
