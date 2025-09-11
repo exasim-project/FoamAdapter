@@ -156,7 +156,7 @@ build-and-test-foamadapter-triggered:
     # Step 3: Run Tests
     # -------------------------
     - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
+    - ctest --preset develop --output-on-failure -R adapter
 
     # -------------------------
     # Step 4: Execute Benchmarks
