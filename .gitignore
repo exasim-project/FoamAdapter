@@ -118,3 +118,8 @@ benchmarks/benchmarkSuite/dsl/cases
 tutorials/cylinder2D/0.*
 benchmarks/benchmarkSuite/*Operators/
 build-*/
+
+#python 
+*.pyc
+*.pyo
+__pycache__/
