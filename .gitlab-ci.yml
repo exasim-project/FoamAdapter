@@ -56,12 +56,9 @@ variables:
     - which simpleFoam || echo "simpleFoam not found!"
     - find $FOAM_LIBBIN -name "libPstream.so"
 
-    # Install pre-commit
-    - pip3 install --user --break-system-packages pre-commit
+    # Install pre-commit and foamlib
+    - pip3 install --user --break-system-packages pre-commit foamlib
     - export PATH="$HOME/.local/bin:$PATH"
-
-    # Install pre-commit
-    - pip3 install --user --break-system-packages foamlib
 
     # Show tool versions for debugging
     - cmake --version
