@@ -57,7 +57,7 @@ variables:
     - find $FOAM_LIBBIN -name "libPstream.so"
 
     # Install pre-commit and foamlib
-    - pip3 install --user --break-system-packages pre-commit foamlib
+    - pip3 install --user --break-system-packages foamlib
     - export PATH="$HOME/.local/bin:$PATH"
 
     # Show tool versions for debugging
