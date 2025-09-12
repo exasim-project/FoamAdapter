@@ -66,7 +66,7 @@ build-and-test-foamadapter-with-neon-main:
   <<: *build-foamadapter-common
   rules:
     # Run only when triggered via API from FoamAdapter GitHub CI
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_COMMIT == null && $NEON_BRANCH == null
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
       when: always
     # Skip in all other cases
     - when: never
@@ -94,7 +94,7 @@ build-and-test-foamadapter-with-neon-features:
   <<: *build-foamadapter-common
   rules:
     # Run only when triggered via API from NeoN GitHub CI
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_COMMIT != null && $NEON_BRANCH != null
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
       when: always
     # Skip in all other cases
     - when: never
