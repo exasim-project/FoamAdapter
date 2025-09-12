@@ -108,7 +108,8 @@ build-and-test-foamadapter-with-neon-features:
 
     # Switch to that branch
     - git fetch origin "$FOAMADAPTER_BRANCH"
-    - git checkout "$FOAMADAPTER_BRANCH"
+    - git checkout -B "$FOAMADAPTER_BRANCH" "origin/$FOAMADAPTER_BRANCH"
+
     # -------------------------
     # Step 1: Prepare NeoN
     # -------------------------
