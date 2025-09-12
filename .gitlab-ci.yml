@@ -116,7 +116,7 @@ build-and-test-foamadapter-with-neon-features:
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF
+    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
     - cmake --build --preset develop
     # -------------------------
     # Step 3: Run Tests
