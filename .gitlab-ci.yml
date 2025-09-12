@@ -106,10 +106,6 @@ build-and-test-foamadapter-with-neon-features:
     - echo "NeoN triggered with branch=$NEON_BRANCH commit=$NEON_COMMIT"
     - echo "Using FoamAdapter branch=$FOAMADAPTER_BRANCH"
 
-    # Switch to that branch
-    - git fetch origin "$FOAMADAPTER_BRANCH"
-    - git checkout -B "$FOAMADAPTER_BRANCH" origin/$FOAMADAPTER_BRANCH
-
     # -------------------------
     # Step 1: Prepare NeoN
     # -------------------------
