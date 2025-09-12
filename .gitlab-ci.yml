@@ -66,7 +66,7 @@ build-and-test-foamadapter:
   <<: *build-foamadapter-common
   rules:
     # Run only when triggered via API
-    - if: $CI_PIPELINE_SOURCE == "trigger"
+    - if: '$CI_PIPELINE_SOURCE == "trigger" && !$NEON_COMMIT && !$NEON_BRANCH'
       when: always
     # Skip in all other cases
     - when: never
@@ -94,7 +94,7 @@ build-and-test-foamadapter-triggered:
   <<: *build-foamadapter-common
   rules:
     # Run only if NeoN pipeline triggered this one (the variables are passed from NeoN pipeline)
-    - if: '$NEON_COMMIT || $NEON_BRANCH'
+    - if: '$NEON_COMMIT && $NEON_BRANCH'
       when: always
 
   script:
