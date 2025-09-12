@@ -62,11 +62,11 @@ variables:
     - nvidia-smi
     - nvcc --version
 
-build-and-test-foamadapter:
+build-and-test-foamadapter-with-neon-main:
   <<: *build-foamadapter-common
   rules:
-    # Run only when triggered via API
-    - if: $CI_PIPELINE_SOURCE == "trigger" && !$NEON_COMMIT && !$NEON_BRANCH
+    # Run only when triggered via API from FoamAdapter GitHub CI
+    - if: '$CI_PIPELINE_SOURCE == "trigger" && !NEON_COMMIT && !NEON_BRANCH'
       when: always
     # Skip in all other cases
     - when: never
@@ -90,12 +90,14 @@ build-and-test-foamadapter:
     - ctest --preset develop --output-on-failure
 
 
-build-and-test-foamadapter-triggered:
+build-and-test-foamadapter-with-neon-features:
   <<: *build-foamadapter-common
   rules:
-    # Run only if NeoN pipeline triggered this one (the variables are passed from NeoN pipeline)
-    - if: '$NEON_COMMIT && $NEON_BRANCH'
+    # Run only when triggered via API from NeoN GitHub CI
+    - if: '$CI_PIPELINE_SOURCE == "trigger" && NEON_COMMIT && NEON_BRANCH'
       when: always
+    # Skip in all other cases
+    - when: never
 
   script:
     # ----------------------------------
