@@ -66,7 +66,7 @@ build-and-test-foamadapter:
   <<: *build-foamadapter-common
   rules:
     # Run only when triggered via API
-    - if: '$CI_PIPELINE_SOURCE == "trigger" && !$NEON_COMMIT && !$NEON_BRANCH'
+    - if: $CI_PIPELINE_SOURCE == "trigger" && !$NEON_COMMIT && !$NEON_BRANCH
       when: always
     # Skip in all other cases
     - when: never
