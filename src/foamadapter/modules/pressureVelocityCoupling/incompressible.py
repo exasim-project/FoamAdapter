@@ -1,3 +1,4 @@
+from typing import Literal, Optional
 from pybFoam import (
     volScalarField,
     volVectorField,
@@ -28,7 +29,8 @@ from ...inputs_files.case_inputs import Registry, FileSpec
 
 ControlDict = create_model(
     "controlDict",
-    maxCo=(float, Field(..., description="Maximum Courant number")),
+    maxCo=(Optional[float], Field(default=None, description="Maximum Courant number")),
+    adjustTimeStep=(Literal["yes", "no"], Field(default="no", description="Adjust time step")),
     __base__=ControlDictBase,
 )
 
@@ -123,3 +125,76 @@ class PimpleAlgorithm:
         # Optionally include continuityErrs()
         self.U.assign(HbyA - rAU * fvc.grad(self.p))
         self.U.correctBoundaryConditions()
+
+
+    # def pressure_correction(self, pimple) -> None:
+    #     """
+    #     Correct the solution based on the PIMPLE algorithm (with buoyancy, MRF, and non-orthogonal corrections).
+    #     """
+    #     # Reciprocal of UEqn diagonal
+    #     rAU = volScalarField(Word("rAU"), 1.0 / self.UEqn.A())
+    #     rAUf = surfaceScalarField(Word("rAUf"), fvc.interpolate(rAU))
+
+    #     # Momentum predictor HbyA
+    #     HbyA = volVectorField(constrainHbyA(rAU * self.UEqn.H(), self.U, self.p_rgh))
+
+    #     # Buoyancy flux
+    #     phig = surfaceScalarField(
+    #         Word("phig"),
+    #         -rAUf * self.ghf * fvc.snGrad(self.rhok) * self.mesh.magSf(),
+    #     )
+
+    #     # Flux based on HbyA, temporal correction, and buoyancy
+    #     phiHbyA = surfaceScalarField(
+    #         Word("phiHbyA"),
+    #         fvc.flux(HbyA)
+    #         + self.MRF.zeroFilter(rAUf * fvc.ddtCorr(self.U, self.phi))
+    #         + phig,
+    #     )
+
+    #     self.MRF.makeRelative(phiHbyA)
+
+    #     # Update pressure boundary conditions to ensure flux consistency
+    #     constrainPressure(self.p_rgh, self.U, phiHbyA, rAUf, self.MRF)
+
+    #     while pimple.correctNonOrthogonal():
+    #         p_rghEqn = fvScalarMatrix(
+    #             fvm.laplacian(rAUf, self.p_rgh) == fvc.div(phiHbyA)
+    #         )
+
+    #         p_rghEqn.setReference(self.pRefCell, self.pRefValue, False)
+    #         p_rghEqn.solve(self.p_rgh.select(pimple.finalInnerIter()))
+
+    #         if pimple.finalNonOrthogonalIter():
+    #             # Conservative fluxes
+    #             self.phi.assign(phiHbyA - p_rghEqn.flux())
+
+    #     # Explicit relaxation for momentum corrector
+    #     self.p_rgh.relax()
+
+    #     # Correct momentum source with buoyancy & pressure correction
+    #     self.U.assign(
+    #         HbyA + rAU * fvc.reconstruct((phig - p_rghEqn.flux()) / rAUf)
+    #     )
+    #     self.U.correctBoundaryConditions()
+    #     self.fvOptions.correct(self.U)
+
+    #     # Correct face velocities if mesh is moving
+    #     fvc.correctUf(self.Uf, self.U, self.phi)
+
+    #     # Make fluxes relative to mesh motion
+    #     fvc.makeRelative(self.phi, self.U)
+
+    #     # Continuity errors (optional include)
+    #     continuityErrs(self.phi, self.U, self.p_rgh)
+
+    #     # Reconstruct physical pressure
+    #     self.p.assign(self.p_rgh + self.rhok * self.gh)
+
+    #     if self.p_rgh.needReference():
+    #         self.p += dimensionedScalar(
+    #             Word("p"),
+    #             self.p.dimensions(),
+    #             self.pRefValue - getRefCellValue(self.p, self.pRefCell),
+    #         )
+    #         self.p_rgh.assign(self.p - self.rhok * self.gh)
