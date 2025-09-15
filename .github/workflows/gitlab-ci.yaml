@@ -5,6 +5,9 @@ on:
     branches: [dev, main]
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
+  schedule:
+    - cron: '00 8 * * 0'  # Runs at 10 AM CEST (08:00 UTC) every Sunday
+  workflow_dispatch:      # Optional: allows manual trigger
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -124,6 +127,12 @@ jobs:
             local PIPELINE_ID=$2
             local SUCCESS_STATUSES=("success")
             local FAILURE_STATUSES=("failed" "canceled" "skipped")
+
+            # Construct pipeline URL
+            local pipeline_url="https://${{ env.LRZ_HOST }}/${{ env.LRZ_GROUP }}/$PROJECT/-/pipelines/$PIPELINE_ID"
+
+            # Print clickable link in logs
+            echo "Monitoring LRZ GitLab CI pipeline: $pipeline_url"
 
             for i in $(seq 1 $MAX_WAIT_MINUTES); do
               status=$(curl -s \
