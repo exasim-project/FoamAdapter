@@ -106,7 +106,7 @@ build-and-test-with-neon-feature:
     # -------------------------
     # Step 1: Prepare NeoN
     # -------------------------
-    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH
+    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH"
     - git clone --depth 1 --single-branch --branch $NEON_BRANCH https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
     # -------------------------
     # Step 2: Build FoamAdapter
