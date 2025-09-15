@@ -142,11 +142,7 @@ jobs:
                  echo "$PROJECT CI pipeline finished with status: $status"
                  return 1
                   ;;
-               *)
-                 echo "$PROJECT CI pipeline still running..."
-                  ;;
               esac
-
               sleep 60
             done
 
