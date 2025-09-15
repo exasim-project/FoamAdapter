@@ -62,7 +62,7 @@ variables:
     - nvidia-smi
     - nvcc --version
 
-build-and-test-foamadapter-with-neon-main:
+build-and-test-with-neon-main:
   <<: *build-foamadapter-common
   rules:
     # Run only when triggered via API from FoamAdapter GitHub CI
@@ -76,12 +76,15 @@ build-and-test-foamadapter-with-neon-main:
     # Step 1: Prepare NeoN
     # -------------------------
     - echo "Default FoamAdapter CI pipeline => Use NeoN branch=main"
-    - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+    - git clone --depth 1 --single-branch --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
     # -------------------------
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+    - |
+      cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
+      -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
+      -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
     - cmake --build --preset develop
     # -------------------------
     # Step 3: Run Tests
@@ -90,7 +93,7 @@ build-and-test-foamadapter-with-neon-main:
     - ctest --preset develop --output-on-failure
 
 
-build-and-test-foamadapter-with-neon-features:
+build-and-test-with-neon-feature:
   <<: *build-foamadapter-common
   rules:
     # Run only when triggered via API from NeoN GitHub CI
@@ -100,23 +103,19 @@ build-and-test-foamadapter-with-neon-features:
     - when: never
 
   script:
-    # ----------------------------------
-    # Step 0: Select FoamAdapter branch
-    # ----------------------------------
-    - echo "NeoN triggered with branch=$NEON_BRANCH commit=$NEON_COMMIT"
-    - echo "Using FoamAdapter branch=$FOAMADAPTER_BRANCH"
-
     # -------------------------
     # Step 1: Prepare NeoN
     # -------------------------
-    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH commit=$NEON_COMMIT"
-    - git clone --depth 1 --branch $NEON_BRANCH https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-    # - git clone --depth 1 --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH
+    - git clone --depth 1 --single-branch --branch $NEON_BRANCH https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
     # -------------------------
     # Step 2: Build FoamAdapter
     # -------------------------
     - echo "Building FoamAdapter against NeoN..."
-    - cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+    - |
+      cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
+       -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
+       -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
     - cmake --build --preset develop
     # -------------------------
     # Step 3: Run Tests

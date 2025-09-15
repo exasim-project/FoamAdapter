@@ -50,10 +50,10 @@ jobs:
           git reset --hard origin/${{ steps.branch.outputs.branch }}
           git push --force lrz HEAD:refs/heads/${{ steps.branch.outputs.branch }}
 
-      - name: Cancel running/pending LRZ GitLab pipelines
+      - name: Cancel running/pending LRZ GitLab CI pipelines
         run: |
           BRANCH=${{ steps.branch.outputs.branch }}
-          echo "Canceling running/pending pipelines for branch $BRANCH"
+          echo "Canceling running/pending CI pipelines for branch $BRANCH"
 
           response=$(curl -s -w "%{http_code}" -o response.json \
             --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}" \
@@ -74,21 +74,21 @@ jobs:
 
           pipeline_ids=$(jq -r '.[] | select(.status=="running" or .status=="pending") | .id' response.json)
           if [ -z "$pipeline_ids" ]; then
-            echo "No running/pending pipelines to cancel"
+            echo "No running/pending CI pipelines to cancel"
           else
             for id in $pipeline_ids; do
-              echo "Canceling pipeline $id"
+              echo "Canceling CI pipeline $id"
               curl -s --request POST \
                 --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}" \
                 "https://${{ env.LRZ_HOST }}/api/v4/projects/${{ env.LRZ_GROUP }}%2F${{ env.REPO_NAME }}/pipelines/$id/cancel"
             done
           fi
 
-      - name: Trigger LRZ GitLab pipeline
+      - name: Trigger LRZ GitLab CI pipeline
         id: trigger
         run: |
           BRANCH=${{ steps.branch.outputs.branch }}
-          echo "Triggering new pipeline on branch $BRANCH"
+          echo "Triggering new CI pipeline on branch $BRANCH"
 
           response=$(curl -s --request POST \
             --form "token=${{ secrets.LRZ_GITLAB_TRIGGER_TOKEN }}" \
@@ -99,13 +99,13 @@ jobs:
           echo "$response" | jq .
           pipeline_id=$(echo "$response" | jq -r '.id')
           if [ "$pipeline_id" = "null" ] || [ -z "$pipeline_id" ]; then
-            echo "Failed to trigger LRZ pipeline"
+            echo "Failed to trigger LRZ CI pipeline"
             exit 1
           fi
 
           echo "pipeline_id=$pipeline_id" >> $GITHUB_OUTPUT
 
-      - name: Wait for LRZ GitLab pipeline
+      - name: Wait for LRZ GitLab CI pipeline
         run: |
           pipeline_id=${{ steps.trigger.outputs.pipeline_id }}
           echo "Waiting for LRZ pipeline $pipeline_id to finish..."
@@ -119,24 +119,24 @@ jobs:
               "https://${{ env.LRZ_HOST }}/api/v4/projects/${{ env.LRZ_GROUP }}%2F${{ env.REPO_NAME }}/pipelines/$pipeline_id" \
               | jq -r '.status')
 
-            echo "[$i] Pipeline status: $status"
+            echo "[$i] CI pipeline status: $status"
 
             case "$status" in
               ${SUCCESS_STATUSES[*]})
-                echo "LRZ pipeline succeeded"
+                echo "LRZ CI pipeline succeeded"
                 exit 0
                 ;;
               ${FAILURE_STATUSES[*]})
-                echo "LRZ pipeline finished with status: $status"
+                echo "LRZ CI pipeline finished with status: $status"
                 exit 1
                 ;;
               *)
-                echo "LRZ pipeline still running..."
+                echo "LRZ CI pipeline still running..."
                 ;;
             esac
 
             sleep 60
           done
 
-          echo "Timed out after 24h waiting for LRZ pipeline"
+          echo "Timed out after 24h waiting for LRZ CI pipeline"
           exit 1
