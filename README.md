@@ -31,3 +31,6 @@ The repository is structured in the following way:
 - *tests* demonstrating that FoamAdapter and OpenFOAM deliver identical results are provided by this repository in the test folder.
 - *examples* provides examples of how FoamAdapter can be used for writing applications
 - *tutorials* provides tutorial cases which can be run like typical OpenFOAM cases
+
+
+Testing the workflow
