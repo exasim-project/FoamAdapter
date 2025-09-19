@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
 #
 # SPDX-License-Identifier: Unlicense
-image: chihtaw/cuda-openfoam:v2412
 
 stages:
   - build-and-test
@@ -33,7 +32,6 @@ variables:
 
 .build-foamadapter-common: &build-foamadapter-common
   stage: build-and-test
-  tags: ["nvidia-h100-gpus"]
   before_script:
     # Add OpenFOAM executables to PATH
     - export PATH="$FOAM_APPBIN:$PATH"
@@ -59,11 +57,18 @@ variables:
     # Show tool versions for debugging
     - cmake --version
     - clang++ --version || g++ --version
+
+.build-and-test-common-nv:
+  <<: *build-foamadapter-common
+  tags: ["nvidia-h100-gpus"]
+  image: chihtaw/cuda-openfoam:v2412
+  before_script:
     - nvidia-smi
     - nvcc --version
 
-build-and-test-with-neon-main:
-  <<: *build-foamadapter-common
+# Run on NVIDIA GPUs
+build-and-test-with-neon-main-nv:
+  extends: .build-and-test-common-nv
   rules:
     # Run only when triggered via API from FoamAdapter GitHub CI
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
@@ -92,9 +97,9 @@ build-and-test-with-neon-main:
     - echo "Running FoamAdapter tests..."
     - ctest --preset develop --output-on-failure
 
-
-build-and-test-with-neon-feature:
-  <<: *build-foamadapter-common
+# Run on NVIDIA GPUs
+build-and-test-with-neon-feature-nv:
+  extends: .build-and-test-common-nv
   rules:
     # Run only when triggered via API from NeoN GitHub CI
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
