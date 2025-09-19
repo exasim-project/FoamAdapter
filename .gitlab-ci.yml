@@ -56,10 +56,6 @@ variables:
     - which simpleFoam || echo "simpleFoam not found!"
     - find $FOAM_LIBBIN -name "libPstream.so"
 
-    # Install pre-commit and foamlib
-    - pip install --user foamlib
-    - export PATH="$HOME/.local/bin:$PATH"
-
     # Show tool versions for debugging
     - cmake --version
     - clang++ --version || g++ --version
