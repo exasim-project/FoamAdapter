@@ -39,7 +39,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "FOAMADAPTER_BUILD_TESTS": "ON",
-        "FOAMADAPTER_BUILD_BENCHMARKS": "ON",
+        "FOAMADAPTER_BUILD_BENCHMARKS": "OFF",
         "FOAMADAPTER_BUILD_EXAMPLES": "ON",
         "Kokkos_ENABLE_DEBUG": "OFF",
         "Kokkos_ENABLE_DEBUG_BOUNDS_CHECK": "ON"
