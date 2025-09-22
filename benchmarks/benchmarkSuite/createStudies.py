@@ -1,4 +1,5 @@
 # %%
+# create 2DSquare and 3DCube benchmark cases
 
 from pathlib import Path
 from foamlib.preprocessing.parameter_study import record_generator
