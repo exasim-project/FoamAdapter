@@ -14,18 +14,11 @@ run_benchmark() {
     # Navigate to the benchmark directory
     cd "$benchmark_dir" || { echo "Failed to cd to $benchmark_dir"; return 1; }
 
-    # Execute the benchmark commands
-    echo "Creating study..."
-    python createStudy.py
-
     echo "Running benchmark..."
     ./runAll.sh
 
     echo "Gathering results..."
-    python gatherResults.py
-
-    echo "Plotting results..."
-    python plotResults.py
+    python ../gatherResults.py
 
     # Return to the original directory
     cd "$start_dir" || { echo "Failed to return to $start_dir"; return 1; }
@@ -33,9 +26,12 @@ run_benchmark() {
     echo "Completed benchmark: $benchmark_dir"
 }
 
-# Define benchmarks to run
-benchmarks=("dsl" "explicitOperators" "implicitOperators")
+# Execute the benchmark commands
+echo "Creating study..."
+python createStudies.py
 
+# Define benchmarks to run
+benchmarks=("explicitOperators" "implicitOperators" "dsl")
 # Run each benchmark
 for benchmark in "${benchmarks[@]}"; do
     run_benchmark "$current_dir/$benchmark"

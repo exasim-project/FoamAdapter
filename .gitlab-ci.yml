@@ -120,7 +120,8 @@ build-and-profile-with-neon-main:
     # Step 3: Run Tests
     # -------------------------
     - echo "Running FoamAdapter tests..."
-    - ./build/profiling/bin/benchmarks/benchmarkSuite/runAll.sh
+    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
+    - ./benchmarks/benchmarkSuite/runAll.sh
 
 
 build-and-test-with-neon-feature:
