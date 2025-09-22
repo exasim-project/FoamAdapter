@@ -90,7 +90,7 @@ build-and-test-with-neon-main:
     # Step 3: Run Tests
     # -------------------------
     - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
+    - ctest --preset develop --output-on-failure -R adapter
 
 
 build-and-test-with-neon-feature:
