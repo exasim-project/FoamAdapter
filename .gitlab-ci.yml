@@ -90,7 +90,37 @@ build-and-test-with-neon-main:
     # Step 3: Run Tests
     # -------------------------
     - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure -R adapter
+    - ctest --preset develop --output-on-failure
+
+build-and-profile-with-neon-main:
+  <<: *build-foamadapter-common
+  rules:
+    # Run only when triggered via API from FoamAdapter GitHub CI
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
+      when: always
+    # Skip in all other cases
+    - when: never
+
+  script:
+    # -------------------------
+    # Step 1: Prepare NeoN
+    # -------------------------
+    - echo "Default FoamAdapter CI pipeline => Use NeoN branch=main"
+    - git clone --depth 1 --single-branch --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+    # -------------------------
+    # Step 2: Build FoamAdapter
+    # -------------------------
+    - echo "Building FoamAdapter against NeoN..."
+    - |
+      cmake --preset profiling -DFOAMADAPTER_NEON_DIR=../NeoN \
+      -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
+      -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+    - cmake --build --preset profiling
+    # -------------------------
+    # Step 3: Run Tests
+    # -------------------------
+    - echo "Running FoamAdapter tests..."
+    - ./build/profiling/bin/benchmarks/benchmarkSuite/runAll.sh
 
 
 build-and-test-with-neon-feature:
