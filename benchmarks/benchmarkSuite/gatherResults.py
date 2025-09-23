@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-import pandas as pd
 import os
 
 from foamlib.postprocessing.load_tables import datafile, load_tables
@@ -19,7 +18,7 @@ def normalize_group(group):
 
 
 # save per test case
-def save_test_results(df: pd.DataFrame, test_case: str):
+def save_test_results(df, test_case: str):
     test_case_df = df[df["test_case"] == test_case]
     if not test_case_df.empty:
         test_case_df = test_case_df.groupby(group_keys).apply(
@@ -42,8 +41,12 @@ if __name__ == "__main__":
     benchmark_results = load_tables(
         source=file, dir_name=cases, reader_fn=read_catch2_benchmark
     )
-    for test_case in benchmark_results["test_case"].unique():
-        save_test_results(benchmark_results, test_case)
+    if benchmark_results:
+        for test_case in benchmark_results["test_case"].unique():
+            save_test_results(benchmark_results, test_case)
+    else:
+        print(f"Failed to postprocess {cases}")
+
 
 
 # %%

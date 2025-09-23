@@ -7,6 +7,11 @@ restore0Dir
 
 runApplication blockMesh
 
+bench_implicitOperators
+bench_implicitOperators --reporter xml -o result.xml
 runApplication bench_implicitOperators --reporter xml -o result.xml
+
+cat result.xml
+
 
 #------------------------------------------------------------------------------
