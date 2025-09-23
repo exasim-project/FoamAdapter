@@ -2,9 +2,31 @@
 #
 # SPDX-License-Identifier: Unlicense
 
-stages:
-  - build-and-test
+# Available GPUs and corresponding Docker images
+.use-nvidia-gpu:
+  tags: ["nvidia-h100-gpus"]
+  image: chihtaw/cuda-openfoam:v2412
 
+.use-amd-gpu:
+  tags: ["amd-gpus"]
+  image: chihtaw/rocm-v6.4.1-openfoam:v2412
+
+# Job rules to determine if the pipeline was triggered from FoamAdapter or NeoN CI
+.trigger-from-foamadapter:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
+      when: always
+
+    - when: never
+
+.trigger-from-neon:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
+      when: always
+
+    - when: never
+
+# Common OpenFOAM environment variables
 variables:
   FOAM_INST_DIR: /usr/local/app/openfoam
   WM_PROJECT: OpenFOAM
@@ -30,8 +52,8 @@ variables:
   FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
   WM_PROJECT_DIR: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION"
 
+# Common before_script steps for building FoamAdapter
 .build-foamadapter-common:
-  stage: build-and-test
   before_script:
     # Add OpenFOAM executables to PATH
     - export PATH="$FOAM_APPBIN:$PATH"
@@ -57,24 +79,6 @@ variables:
     # Show tool versions for debugging
     - cmake --version
     - clang++ --version || g++ --version
-
-.use-nvidia-gpu:
-  tags: ["nvidia-h100-gpus"]
-  image: chihtaw/cuda-openfoam:v2412
-
-.trigger-from-foamadapter:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
-      when: always
-
-    - when: never
-
-.trigger-from-neon:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
-      when: always
-
-    - when: never
 
 # Run only when triggered via API from FoamAdapter GitHub CI
 build-and-test-with-neon-main-nv:
@@ -107,14 +111,10 @@ build-and-test-with-neon-main-nv:
 
 # Run only when triggered via API from FoamAdapter GitHub CI
 build-and-test-with-neon-main-amd:
-  extends: .build-foamadapter-common
-  tags: ["amd-gpus"]
-  image: chihtaw/rocm-v6.4.1-openfoam:v2412
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
-      when: always
-
-    - when: never
+  extends:
+    - .build-foamadapter-common
+    - .use-amd-gpu
+    - .trigger-from-foamadapter
   script:
     # Set ROCm environment
     - export PATH=/opt/rocm/bin:$PATH
