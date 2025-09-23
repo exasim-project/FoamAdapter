@@ -80,100 +80,36 @@ variables:
     - cmake --version
     - clang++ --version || g++ --version
 
-# Run only when triggered via API from FoamAdapter GitHub CI
-build-and-test-with-neon-main-nv:
-  extends: 
+# Build and test FoamAdapter with the main branch of NeoN
+build-and-test-with-neon-main-nvidia:
+  extends:
     - .build-foamadapter-common
     - .use-nvidia-gpu
     - .trigger-from-foamadapter
   script:
-    - nvidia-smi
-    - nvcc --version
-    # -------------------------
-    # Step 1: Prepare NeoN
-    # -------------------------
-    - echo "Default FoamAdapter CI pipeline => Use NeoN branch=main"
-    - git clone --depth 1 --single-branch --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-    # -------------------------
-    # Step 2: Build FoamAdapter
-    # -------------------------
-    - echo "Building FoamAdapter against NeoN..."
-    - |
-      cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
-      -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
-      -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
-    - cmake --build --preset develop
-    # -------------------------
-    # Step 3: Run Tests
-    # -------------------------
-    - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
+    - ./ci/build-and-test.sh nvidia
 
-# Run only when triggered via API from FoamAdapter GitHub CI
 build-and-test-with-neon-main-amd:
   extends:
     - .build-foamadapter-common
     - .use-amd-gpu
     - .trigger-from-foamadapter
   script:
-    # Set ROCm environment
-    - export PATH=/opt/rocm/bin:$PATH
-    - export LD_LIBRARY_PATH=/opt/rocm/lib:/opt/rocm/lib64:$LD_LIBRARY_PATH
-    - export HIPCC_CXX=/usr/bin/g++
+    - ./ci/build-and-test.sh amd
 
-    - echo "=== AMD GPU and compiler driver info ==="
-    - rocminfo | grep "AMD"
-    - hipcc --version
-    # -------------------------
-    # Step 1: Prepare NeoN
-    # -------------------------
-    - echo "Default FoamAdapter CI pipeline => Use NeoN branch=main"
-    - git clone --depth 1 --single-branch --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-    # -------------------------
-    # Step 2: Build FoamAdapter
-    # -------------------------
-    - echo "Building FoamAdapter against NeoN..."
-    - |
-      cmake --preset develop \
-        -DFOAMADAPTER_NEON_DIR=../NeoN \
-        -DCMAKE_C_COMPILER=gcc \
-        -DCMAKE_CXX_COMPILER=hipcc \
-        -DCMAKE_HIP_ARCHITECTURES=gfx90a \
-        -DKokkos_ARCH_AMD_GFX90A=ON \
-        -DNeoN_WITH_THREADS=OFF \
-        -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
-    - cmake --build --preset develop
-    # -------------------------
-    # Step 3: Run Tests
-    # -------------------------
-    - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
-
-# Run only when triggered via API from NeoN GitHub CI
-build-and-test-with-neon-feature-nv:
+# Build and test FoamAdapter with a feature branch of NeoN
+build-and-test-with-neon-feature-nvidia:
   extends:
     - .build-foamadapter-common
     - .use-nvidia-gpu
     - .trigger-from-neon
   script:
-    - nvidia-smi
-    - nvcc --version
-    # -------------------------
-    # Step 1: Prepare NeoN
-    # -------------------------
-    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH"
-    - git clone --depth 1 --single-branch --branch $NEON_BRANCH https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-    # -------------------------
-    # Step 2: Build FoamAdapter
-    # -------------------------
-    - echo "Building FoamAdapter against NeoN..."
-    - |
-      cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
-       -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
-       -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
-    - cmake --build --preset develop
-    # -------------------------
-    # Step 3: Run Tests
-    # -------------------------
-    - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
+    - ./ci/build-and-test.sh nvidia $NEON_BRANCH
+
+build-and-test-with-neon-feature-amd:
+  extends:
+    - .build-foamadapter-common
+    - .use-amd-gpu
+    - .trigger-from-neon
+  script:
+    - ./ci/build-and-test.sh amd $NEON_BRANCH
