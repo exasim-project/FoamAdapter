@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
 #
 # SPDX-License-Identifier: Unlicense
-image: chihtaw/cuda-openfoam:v2412
+image: chihtaw/cuda-openfoam-foamlib:v2412
 
 stages:
   - build-and-test
@@ -117,7 +117,7 @@ build-and-profile-with-neon-main:
       -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
     - cmake --build --preset profiling
     # -------------------------
-    # Step 3: Run Tests
+    # Step 3: Run Benchmarks
     # -------------------------
     - echo "Running FoamAdapter tests..."
     - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
