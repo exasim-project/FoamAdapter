@@ -92,6 +92,50 @@ build-and-test-with-neon-main-nv:
     - echo "Running FoamAdapter tests..."
     - ctest --preset develop --output-on-failure
 
+# Run only when triggered via API from FoamAdapter GitHub CI
+build-and-test-with-neon-main-amd:
+  extends: .build-foamadapter-common
+  tags: ["amd-gpus"]
+  image: chihtaw/rocm-v6.4.1-openfoam:v2412
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
+      when: always
+
+    - when: never
+  script:
+    # Set ROCm environment
+    - export PATH=/opt/rocm/bin:$PATH
+    - export LD_LIBRARY_PATH=/opt/rocm/lib:/opt/rocm/lib64:$LD_LIBRARY_PATH
+    - export HIPCC_CXX=/usr/bin/g++
+
+    - echo "=== AMD GPU and compiler driver info ==="
+    - rocminfo | grep "AMD"
+    - hipcc --version
+    # -------------------------
+    # Step 1: Prepare NeoN
+    # -------------------------
+    - echo "Default FoamAdapter CI pipeline => Use NeoN branch=main"
+    - git clone --depth 1 --single-branch --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
+    # -------------------------
+    # Step 2: Build FoamAdapter
+    # -------------------------
+    - echo "Building FoamAdapter against NeoN..."
+    - |
+      cmake --preset develop \
+        -DFOAMADAPTER_NEON_DIR=../NeoN \
+        -DCMAKE_C_COMPILER=gcc \
+        -DCMAKE_CXX_COMPILER=hipcc \
+        -DCMAKE_HIP_ARCHITECTURES=gfx90a \
+        -DKokkos_ARCH_AMD_GFX90A=ON \
+        -DNeoN_WITH_THREADS=OFF \
+        -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+    - cmake --build --preset develop
+    # -------------------------
+    # Step 3: Run Tests
+    # -------------------------
+    - echo "Running FoamAdapter tests..."
+    - ctest --preset develop --output-on-failure
+
 # Run only when triggered via API from NeoN GitHub CI
 build-and-test-with-neon-feature-nv:
   extends: .build-foamadapter-common
