@@ -18,7 +18,7 @@ run_benchmark() {
     ./runAll.sh
 
     echo "Gathering results..."
-    python ../gatherResults.py
+    python3 ../gatherResults.py
 
     # Return to the original directory
     cd "$start_dir" || { echo "Failed to return to $start_dir"; return 1; }
@@ -28,7 +28,7 @@ run_benchmark() {
 
 # Execute the benchmark commands
 echo "Creating study..."
-python createStudies.py
+python3 createStudies.py
 
 # Define benchmarks to run
 benchmarks=("explicitOperators" "implicitOperators" "dsl")
