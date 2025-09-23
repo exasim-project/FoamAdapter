@@ -12,7 +12,8 @@ echo "=== FoamAdapter CI: GPU vendor=$GPU_VENDOR, NeoN branch=$NEON_BRANCH ==="
 # -------------------------
 if [[ "$GPU_VENDOR" == "nvidia" ]]; then
     echo "=== NVIDIA GPU and compiler driver info ==="
-    nvidia-smi || { echo "nvidia-smi not found"; exit 1; }
+    nvidia-smi --query-gpu=gpu_name,memory.total,driver_version --format=csv \
+     || { echo "nvidia-smi not found"; exit 1; }
     nvcc --version || { echo "nvcc not found"; exit 1; }
 
 elif [[ "$GPU_VENDOR" == "amd" ]]; then
