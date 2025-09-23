@@ -94,7 +94,7 @@ build-and-test-with-neon-main-nv:
 
 # Run only when triggered via API from NeoN GitHub CI
 build-and-test-with-neon-feature-nv:
-  extends: .build-and-test-common-nv
+  extends: .build-foamadapter-common
   tags: ["nvidia-h100-gpus"]
   image: chihtaw/cuda-openfoam:v2412
   rules:
