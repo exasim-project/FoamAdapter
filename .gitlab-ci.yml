@@ -62,16 +62,26 @@ variables:
   tags: ["nvidia-h100-gpus"]
   image: chihtaw/cuda-openfoam:v2412
 
-# Run only when triggered via API from FoamAdapter GitHub CI
-build-and-test-with-neon-main-nv:
-  extends: 
-    - .build-foamadapter-common
-    - .use-nvidia-gpu
+.trigger-from-foamadapter:
   rules:
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
       when: always
 
     - when: never
+
+.trigger-from-neon:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
+      when: always
+
+    - when: never
+
+# Run only when triggered via API from FoamAdapter GitHub CI
+build-and-test-with-neon-main-nv:
+  extends: 
+    - .build-foamadapter-common
+    - .use-nvidia-gpu
+    - .trigger-from-foamadapter
   script:
     - nvidia-smi
     - nvcc --version
@@ -144,11 +154,7 @@ build-and-test-with-neon-feature-nv:
   extends:
     - .build-foamadapter-common
     - .use-nvidia-gpu
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
-      when: always
-
-    - when: never
+    - .trigger-from-neon
   script:
     - nvidia-smi
     - nvcc --version
