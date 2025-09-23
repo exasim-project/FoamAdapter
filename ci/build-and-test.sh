@@ -12,9 +12,8 @@ echo "=== FoamAdapter CI: GPU vendor=$GPU_VENDOR, NeoN branch=$NEON_BRANCH ==="
 # -------------------------
 if [[ "$GPU_VENDOR" == "nvidia" ]]; then
     echo "=== NVIDIA GPU and compiler driver info ==="
-    nvidia-smi --query-gpu=gpu_name,memory.total,driver_version --format=csv \
-     || { echo "nvidia-smi not found"; exit 1; }
-    nvcc --version || { echo "nvcc not found"; exit 1; }
+    nvidia-smi --query-gpu=gpu_name,memory.total,driver_version --format=csv
+    nvcc --version
 
 elif [[ "$GPU_VENDOR" == "amd" ]]; then
     # Set ROCm environment
@@ -23,8 +22,8 @@ elif [[ "$GPU_VENDOR" == "amd" ]]; then
     export HIPCC_CXX=/usr/bin/g++
 
     echo "=== AMD GPU and compiler driver info ==="
-    rocminfo | grep "AMD" || { echo "rocminfo not available"; exit 1; }
-    hipcc --version || { echo "hipcc not found"; exit 1; }
+    rocminfo | grep "AMD"
+    hipcc --version
 else
     echo "Unsupported GPU vendor: $GPU_VENDOR"
     exit 1
