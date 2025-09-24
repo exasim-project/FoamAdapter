@@ -24,9 +24,8 @@ if [[ "$GPU_VENDOR" == "nvidia" ]]; then
     nvcc --version
 
 elif [[ "$GPU_VENDOR" == "amd" ]]; then
-    # Set ROCm environment
+    # Set up environment
     export PATH=/opt/rocm/bin:$PATH
-    # export LD_LIBRARY_PATH=/opt/rocm/lib:/opt/rocm/lib64:$LD_LIBRARY_PATH
     export HIPCC_CXX=/usr/bin/g++
 
     echo "=== AMD GPU info ==="
