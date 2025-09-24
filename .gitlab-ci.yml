@@ -3,33 +3,21 @@
 # SPDX-License-Identifier: Unlicense
 
 # Available GPUs and corresponding Docker images
-.use-nvidia-gpu:
+.use-nvidia-gpu-and-image:
   tags: ["nvidia-h100-gpus"]
   image: chihtaw/cuda-openfoam:v2412
+  variables:
+    FOAM_INST_DIR: /usr/local/app/openfoam
 
-.use-amd-gpu:
+.use-amd-gpu-and-image:
   tags: ["amd-gpus"]
   image: chihtaw/rocm-v6.4.1-openfoam:v2412
-
-# Job rules to determine if the pipeline was triggered from FoamAdapter or NeoN CI
-.trigger-from-foamadapter:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
-      when: always
-
-    - when: never
-
-.trigger-from-neon:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
-      when: always
-
-    - when: never
+  variables:
+    FOAM_INST_DIR: /workspace/openfoam
 
 # Common OpenFOAM environment variables
 .openfoam-env-setup:
   variables:
-    FOAM_INST_DIR: /usr/local/app/openfoam
     WM_PROJECT: OpenFOAM
     WM_PROJECT_VERSION: v2412
     WM_OPTIONS: linux64GccDPInt32Opt
@@ -75,19 +63,34 @@
     - which simpleFoam || echo "simpleFoam not found!"
     - find $FOAM_LIBBIN -name "libPstream.so"
 
+# Job rules to determine if the pipeline was triggered from FoamAdapter or NeoN CI
+.trigger-from-foamadapter:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
+      when: always
+
+    - when: never
+
+.trigger-from-neon:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
+      when: always
+
+    - when: never
+
 # Build and test FoamAdapter with the main branch of NeoN
 build-and-test-with-neon-main-nvidia:
   extends:
+    - .use-nvidia-gpu-and-image
     - .openfoam-env-setup
-    - .use-nvidia-gpu
     - .trigger-from-foamadapter
   script:
     - ./ci/build-and-test.sh nvidia
 
 build-and-test-with-neon-main-amd:
   extends:
+    - .use-amd-gpu-and-image
     - .openfoam-env-setup
-    - .use-amd-gpu
     - .trigger-from-foamadapter
   script:
     - ./ci/build-and-test.sh amd
@@ -95,16 +98,16 @@ build-and-test-with-neon-main-amd:
 # Build and test FoamAdapter with a feature branch of NeoN
 build-and-test-with-neon-feature-nvidia:
   extends:
+    - .use-nvidia-gpu-and-image
     - .openfoam-env-setup
-    - .use-nvidia-gpu
     - .trigger-from-neon
   script:
     - ./ci/build-and-test.sh nvidia $NEON_BRANCH
 
 build-and-test-with-neon-feature-amd:
   extends:
+    - .use-amd-gpu-and-image
     - .openfoam-env-setup
-    - .use-amd-gpu
     - .trigger-from-neon
   script:
     - ./ci/build-and-test.sh amd $NEON_BRANCH
