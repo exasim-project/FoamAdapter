@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
 #
 # SPDX-License-Identifier: Unlicense
-image: chihtaw/cuda-openfoam-foamlib-pandas:v2412
+image: chihtaw/cuda-openfoam-foamlib:v2412
 
 stages:
   - build-and-test
@@ -63,9 +63,9 @@ variables:
     - clang++ --version || g++ --version
     - nvidia-smi
     - nvcc --version
-    - export PYTHONPATH=/root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
+    #    - export PYTHONPATH=/root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
+    - pip install defusedxml --user 
     - python3 -c 'import foamlib; print(foamlib.__version__)'
-    - ls -la /root/.local/lib/python3.12/site-packages/pandas/__init__.py
     - python3 -c 'import pandas as pd; print(pd.__version__)'
 
 build-and-test-with-neon-main:
