@@ -63,7 +63,7 @@ variables:
     - clang++ --version || g++ --version
     - nvidia-smi
     - nvcc --version
-    - export PYTHONPATH=/root/.local/:/root/.local/lib/
+    - export PYTHONPATH=/root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
     - python3 -c 'import foamlib; print(foamlib.__version__)'
     - ls -la /root/.local/lib/python3.12/site-packages/pandas/__init__.py
     - python3 -c 'import pandas as pd; print(pd.__version__)'
