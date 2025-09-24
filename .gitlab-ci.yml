@@ -64,6 +64,7 @@ variables:
     - nvidia-smi
     - nvcc --version
     - python3 -c 'import foamlib; print(foamlib.__version__)'
+    - ls -la /root/.local/lib/python3.12/site-packages/pandas/__init__.py
     - python3 -c 'import pandas as pd; print(pd.__version__)'
 
 build-and-test-with-neon-main:
