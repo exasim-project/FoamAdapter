@@ -26,7 +26,7 @@ if [[ "$GPU_VENDOR" == "nvidia" ]]; then
 elif [[ "$GPU_VENDOR" == "amd" ]]; then
     # Set ROCm environment
     export PATH=/opt/rocm/bin:$PATH
-    export LD_LIBRARY_PATH=/opt/rocm/lib:/opt/rocm/lib64:$LD_LIBRARY_PATH
+    # export LD_LIBRARY_PATH=/opt/rocm/lib:/opt/rocm/lib64:$LD_LIBRARY_PATH
     export HIPCC_CXX=/usr/bin/g++
 
     echo "=== AMD GPU info ==="
@@ -59,7 +59,6 @@ if [[ "$GPU_VENDOR" == "nvidia" ]]; then
 elif [[ "$GPU_VENDOR" == "amd" ]]; then
     cmake --preset develop \
         -DFOAMADAPTER_NEON_DIR=../NeoN \
-        -DCMAKE_C_COMPILER=gcc \
         -DCMAKE_CXX_COMPILER=hipcc \
         -DCMAKE_HIP_ARCHITECTURES=gfx90a \
         -DKokkos_ARCH_AMD_GFX90A=ON \
