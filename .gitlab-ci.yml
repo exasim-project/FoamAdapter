@@ -64,7 +64,7 @@ variables:
     - nvidia-smi
     - nvcc --version
     #    - export PYTHONPATH=/root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
-    - pip install defusedxml --user 
+    - pip install defusedxml --user --break-system-package 
     - python3 -c 'import foamlib; print(foamlib.__version__)'
     - python3 -c 'import pandas as pd; print(pd.__version__)'
 
