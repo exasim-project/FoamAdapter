@@ -50,6 +50,7 @@ variables:
     - export MANPATH="$FOAM_ETC/man:$MANPATH"
 
     # Debugging info
+    - whoami
     - echo "PATH=$PATH"
     - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
     - echo "CMAKE_LIBRARY_PATH=$CMAKE_LIBRARY_PATH"
@@ -62,6 +63,7 @@ variables:
     - clang++ --version || g++ --version
     - nvidia-smi
     - nvcc --version
+    - python3 -c 'import foamlib; print(foamlib.__version__)'
     - python3 -c 'import pandas as pd; print(pd.__version__)'
 
 build-and-test-with-neon-main:
