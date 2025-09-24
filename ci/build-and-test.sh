@@ -9,12 +9,14 @@ echo "=== GPU vendor=$GPU_VENDOR, NeoN branch=$NEON_BRANCH ==="
 # -------------------------
 # Step 0: GPU/Compiler/Tool Info
 # -------------------------
+echo "=== Tool versions ==="
 cmake --version
-clang++ --version || g++ --version
+g++ --version || clang++ --version
 
 if [[ "$GPU_VENDOR" == "nvidia" ]]; then
-    echo "=== NVIDIA GPU and compiler driver info ==="
+    echo "=== NVIDIA GPU info ==="
     nvidia-smi --query-gpu=gpu_name,memory.total,driver_version --format=csv
+    echo "=== NVIDIA compiler driver info ==="
     nvcc --version
 
 elif [[ "$GPU_VENDOR" == "amd" ]]; then
@@ -23,8 +25,9 @@ elif [[ "$GPU_VENDOR" == "amd" ]]; then
     export LD_LIBRARY_PATH=/opt/rocm/lib:/opt/rocm/lib64:$LD_LIBRARY_PATH
     export HIPCC_CXX=/usr/bin/g++
 
-    echo "=== AMD GPU and compiler driver info ==="
+    echo "=== AMD GPU info ==="
     rocminfo | grep "AMD"
+    echo "=== AMD compiler driver info ==="
     hipcc --version
 else
     echo "Unsupported GPU vendor: $GPU_VENDOR"
