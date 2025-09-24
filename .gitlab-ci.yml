@@ -27,33 +27,32 @@
     - when: never
 
 # Common OpenFOAM environment variables
-variables:
-  FOAM_INST_DIR: /usr/local/app/openfoam
-  WM_PROJECT: OpenFOAM
-  WM_PROJECT_VERSION: v2412
-  WM_OPTIONS: linux64GccDPInt32Opt
-  WM_COMPILER_TYPE: system
-  WM_COMPILER: Gcc
-  WM_PRECISION_OPTION: DP
-  WM_LABEL_SIZE: 32
-  WM_COMPILE_OPTION: Opt
-  WM_OSTYPE: POSIX
-  WM_ARCH: linux64
-  WM_ARCH_OPTION: 64
-  WM_LINK_LANGUAGE: c++
-  WM_LABEL_OPTION: Int32
-  WM_MPLIB: SYSTEMOPENMPI
-  MPI_BUFFER_SIZE: 20000000
+.openfoam-env-setup:
+  variables:
+    FOAM_INST_DIR: /usr/local/app/openfoam
+    WM_PROJECT: OpenFOAM
+    WM_PROJECT_VERSION: v2412
+    WM_OPTIONS: linux64GccDPInt32Opt
+    WM_COMPILER_TYPE: system
+    WM_COMPILER: Gcc
+    WM_PRECISION_OPTION: DP
+    WM_LABEL_SIZE: 32
+    WM_COMPILE_OPTION: Opt
+    WM_OSTYPE: POSIX
+    WM_ARCH: linux64
+    WM_ARCH_OPTION: 64
+    WM_LINK_LANGUAGE: c++
+    WM_LABEL_OPTION: Int32
+    WM_MPLIB: SYSTEMOPENMPI
+    MPI_BUFFER_SIZE: 20000000
 
-  # Derived OpenFOAM environment paths
-  FOAM_ETC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/etc"
-  FOAM_SRC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/src"
-  FOAM_LIBBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/lib"
-  FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
-  WM_PROJECT_DIR: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION"
+    # Derived OpenFOAM environment paths
+    FOAM_ETC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/etc"
+    FOAM_SRC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/src"
+    FOAM_LIBBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/lib"
+    FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
+    WM_PROJECT_DIR: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION"
 
-# Common before_script steps for building FoamAdapter
-.build-foamadapter-common:
   before_script:
     # Add OpenFOAM executables to PATH
     - export PATH="$FOAM_APPBIN:$PATH"
@@ -76,14 +75,10 @@ variables:
     - which simpleFoam || echo "simpleFoam not found!"
     - find $FOAM_LIBBIN -name "libPstream.so"
 
-    # Show tool versions for debugging
-    - cmake --version
-    - clang++ --version || g++ --version
-
 # Build and test FoamAdapter with the main branch of NeoN
 build-and-test-with-neon-main-nvidia:
   extends:
-    - .build-foamadapter-common
+    - .openfoam-env-setup
     - .use-nvidia-gpu
     - .trigger-from-foamadapter
   script:
@@ -91,7 +86,7 @@ build-and-test-with-neon-main-nvidia:
 
 build-and-test-with-neon-main-amd:
   extends:
-    - .build-foamadapter-common
+    - .openfoam-env-setup
     - .use-amd-gpu
     - .trigger-from-foamadapter
   script:
@@ -100,7 +95,7 @@ build-and-test-with-neon-main-amd:
 # Build and test FoamAdapter with a feature branch of NeoN
 build-and-test-with-neon-feature-nvidia:
   extends:
-    - .build-foamadapter-common
+    - .openfoam-env-setup
     - .use-nvidia-gpu
     - .trigger-from-neon
   script:
@@ -108,7 +103,7 @@ build-and-test-with-neon-feature-nvidia:
 
 build-and-test-with-neon-feature-amd:
   extends:
-    - .build-foamadapter-common
+    - .openfoam-env-setup
     - .use-amd-gpu
     - .trigger-from-neon
   script:

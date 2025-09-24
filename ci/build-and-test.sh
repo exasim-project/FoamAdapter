@@ -5,11 +5,13 @@ set -euo pipefail
 GPU_VENDOR=${1:?Error: GPU vendor (nvidia|amd) must be specified}
 NEON_BRANCH=${2:-main} # Default to 'main' if not provided
 
-echo "=== FoamAdapter CI: GPU vendor=$GPU_VENDOR, NeoN branch=$NEON_BRANCH ==="
+echo "=== GPU vendor=$GPU_VENDOR, NeoN branch=$NEON_BRANCH ==="
+# -------------------------
+# Step 0: GPU/Compiler/Tool Info
+# -------------------------
+cmake --version
+clang++ --version || g++ --version
 
-# -------------------------
-# Step 0: GPU/Compiler Info
-# -------------------------
 if [[ "$GPU_VENDOR" == "nvidia" ]]; then
     echo "=== NVIDIA GPU and compiler driver info ==="
     nvidia-smi --query-gpu=gpu_name,memory.total,driver_version --format=csv
@@ -32,14 +34,14 @@ fi
 # -------------------------
 # Step 1: Prepare NeoN
 # -------------------------
-echo "Cloning NeoN (branch=$NEON_BRANCH)..."
+echo "=== Cloning NeoN (branch=$NEON_BRANCH) ==="
 git clone --depth 1 --single-branch --branch "$NEON_BRANCH" \
     https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
 
 # -------------------------
-# Step 2: Build FoamAdapter
+# Step 2: Configure and build FoamAdapter
 # -------------------------
-echo "Building FoamAdapter against NeoN..."
+echo "=== Configuring FoamAdapter against NeoN ==="
 
 if [[ "$GPU_VENDOR" == "nvidia" ]]; then
     cmake --preset develop \
@@ -58,10 +60,11 @@ elif [[ "$GPU_VENDOR" == "amd" ]]; then
         -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
 fi
 
+echo "=== Building FoamAdapter against NeoN ==="
 cmake --build --preset develop
 
 # -------------------------
 # Step 3: Run Tests
 # -------------------------
-echo "Running FoamAdapter tests..."
+echo "=== Running FoamAdapter tests ==="
 ctest --preset develop --output-on-failure
