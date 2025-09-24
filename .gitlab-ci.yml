@@ -11,7 +11,7 @@
 
 .use-amd-gpu-and-image:
   tags: ["amd-gpus"]
-  image: chihtaw/rocm-v6.4.1-openfoam:v2412
+  image: chihtaw/neon-rocm:6.4.1-complete
   variables:
     FOAM_INST_DIR: /workspace/openfoam
 
