@@ -54,6 +54,7 @@ variables:
     - echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
     - echo "CMAKE_LIBRARY_PATH=$CMAKE_LIBRARY_PATH"
     - which simpleFoam || echo "simpleFoam not found!"
+    - which python3
     - find $FOAM_LIBBIN -name "libPstream.so"
 
     # Show tool versions for debugging
