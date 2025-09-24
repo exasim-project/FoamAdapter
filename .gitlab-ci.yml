@@ -61,6 +61,7 @@ variables:
     - clang++ --version || g++ --version
     - nvidia-smi
     - nvcc --version
+    - python3 -c 'import pandas as pd; print(pd.__version__)'
 
 build-and-test-with-neon-main:
   <<: *build-foamadapter-common
