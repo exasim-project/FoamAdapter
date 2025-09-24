@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
 #
 # SPDX-License-Identifier: Unlicense
-image: chihtaw/cuda-openfoam-foamlib:v2412
+image: chihtaw/cuda-openfoam-foamlib-pandas:v2412
 
 stages:
   - build-and-test
