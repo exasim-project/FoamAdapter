@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  trigger-lrz-ci:
+  build-and-test:
     name: Trigger and run CI on GPU (${{ github.event.repository.name }})
     runs-on: ubuntu-latest
     timeout-minutes: 1440 # 24 hours
