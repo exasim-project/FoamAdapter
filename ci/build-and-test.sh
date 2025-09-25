@@ -29,7 +29,7 @@ elif [[ "$GPU_VENDOR" == "amd" ]]; then
     export HIPCC_CXX=/usr/bin/g++
 
     echo "=== AMD GPU info ==="
-    rocminfo | grep "AMD"
+    rocminfo | grep "Marketing Name.*AMD"
     echo "=== AMD compiler driver info ==="
     hipcc --version
 else
