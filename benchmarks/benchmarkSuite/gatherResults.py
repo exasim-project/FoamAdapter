@@ -45,7 +45,7 @@ if __name__ == "__main__":
         for test_case in benchmark_results["test_case"].unique():
             save_test_results(benchmark_results, test_case)
     else:
-        print(f"Failed to postprocess {cases}") 
+        print(f"Failed to postprocess {cases}")
 
 
 

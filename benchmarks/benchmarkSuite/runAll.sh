@@ -17,7 +17,7 @@ run_benchmark() {
     echo "Running benchmark..."
     ./runAll.sh
 
-    echo "Gathering results..."
+    echo "Gathering results..." $1
     python3 ../gatherResults.py
 
     # Return to the original directory
