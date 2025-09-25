@@ -128,6 +128,7 @@ build-and-profile-with-neon-main:
     - echo "Running FoamAdapter tests..."
     - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
     - ./benchmarks/benchmarkSuite/runAll.sh
+    - find benchmarks/benchmarkSuite/ -name '*xml'
     - find benchmarks/benchmarkSuite/ -name '*csv'
 
 
