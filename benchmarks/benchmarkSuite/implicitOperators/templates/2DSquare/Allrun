@@ -9,4 +9,7 @@ runApplication blockMesh
 
 runApplication bench_implicitOperators --reporter xml -o result.xml
 
+cat result.xml
+
+
 #------------------------------------------------------------------------------
