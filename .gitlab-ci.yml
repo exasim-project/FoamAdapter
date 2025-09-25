@@ -8,18 +8,19 @@
   image: chihtaw/cuda-openfoam:v2412
   variables:
     FOAM_INST_DIR: /usr/local/app/openfoam
+    WM_PROJECT_VERSION: v2412
 
 .use-amd-gpu-and-image:
   tags: ["amd-gpus"]
   image: chihtaw/rocm-openfoam:6.4.1-v2412
   variables:
     FOAM_INST_DIR: /workspace/openfoam
+    WM_PROJECT_VERSION: v2412
 
 # Common OpenFOAM environment variables
 .openfoam-env-setup:
   variables:
     WM_PROJECT: OpenFOAM
-    WM_PROJECT_VERSION: v2412
     WM_OPTIONS: linux64GccDPInt32Opt
     WM_COMPILER_TYPE: system
     WM_COMPILER: Gcc
