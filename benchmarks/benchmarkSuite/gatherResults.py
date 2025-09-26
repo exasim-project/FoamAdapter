@@ -41,10 +41,10 @@ if __name__ == "__main__":
     benchmark_results = load_tables(
         source=file, dir_name=cases, reader_fn=read_catch2_benchmark
     )
-    if benchmark_results:
+    try:
         for test_case in benchmark_results["test_case"].unique():
             save_test_results(benchmark_results, test_case)
-    else:
+    except:
         print(f"Failed to postprocess {cases}")
 
 

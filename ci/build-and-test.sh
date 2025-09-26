@@ -8,6 +8,7 @@ set -euo pipefail
 # Argument parsing
 GPU_VENDOR=${1:?Error: GPU vendor (nvidia|amd) must be specified}
 NEON_BRANCH=${2:-main} # Default to 'main' if not provided
+PRESET=${3:-develop} # Default to 'develop' if not provided
 
 echo "=== GPU vendor=$GPU_VENDOR, NeoN branch=$NEON_BRANCH ==="
 # -------------------------
@@ -50,26 +51,24 @@ git clone --depth 1 --single-branch --branch "$NEON_BRANCH" \
 echo "=== Configuring FoamAdapter against NeoN ==="
 
 if [[ "$GPU_VENDOR" == "nvidia" ]]; then
-    cmake --preset develop \
+    cmake --preset $PRESET \
         -DFOAMADAPTER_NEON_DIR=../NeoN \
         -DCMAKE_CUDA_ARCHITECTURES=90 \
-        -DNeoN_WITH_THREADS=OFF \
-        -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+        -DNeoN_WITH_THREADS=OFF 
 elif [[ "$GPU_VENDOR" == "amd" ]]; then
-    cmake --preset develop \
+    cmake --preset $PRESET \
         -DFOAMADAPTER_NEON_DIR=../NeoN \
         -DCMAKE_CXX_COMPILER=hipcc \
         -DCMAKE_HIP_ARCHITECTURES=gfx90a \
         -DKokkos_ARCH_AMD_GFX90A=ON \
-        -DNeoN_WITH_THREADS=OFF \
-        -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
+        -DNeoN_WITH_THREADS=OFF 
 fi
 
 echo "=== Building FoamAdapter against NeoN ==="
-cmake --build --preset develop
+cmake --build --preset $PRESET
 
 # -------------------------
 # Step 3: Run Tests
 # -------------------------
 echo "=== Running FoamAdapter tests ==="
-ctest --preset develop --output-on-failure
+ctest --preset $PRESET -R adapter --output-on-failure

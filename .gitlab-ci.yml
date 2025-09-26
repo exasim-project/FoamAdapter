@@ -5,8 +5,9 @@
 # Available GPUs and corresponding Docker images
 .use-nvidia-gpu-and-image:
   tags: ["nvidia-h100-gpus"]
-  image: chihtaw/cuda-openfoam:v2412
+  image: chihtaw/cuda-openfoam-foamlib:v2412
   variables:
+    PYTHONPATH: /root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
     FOAM_INST_DIR: /usr/local/app/openfoam
     WM_PROJECT_VERSION: v2412
 
@@ -14,6 +15,7 @@
   tags: ["amd-gpus"]
   image: chihtaw/rocm-openfoam:6.4.1-v2412
   variables:
+    PYTHONPATH: /root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
     FOAM_INST_DIR: /workspace/openfoam
     WM_PROJECT_VERSION: v2412
 
@@ -64,6 +66,12 @@
     - which simpleFoam || echo "simpleFoam not found!"
     - find $FOAM_LIBBIN -name "libPstream.so"
 
+# Common profiling setup
+# For now some python modules need to be installed, can be removed once available in container
+.profiling-env-setup: &profiling-env-setup
+    - pip install defusedxml pydantic --user --break-system-package
+    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
+
 # Job rules to determine if the pipeline was triggered from FoamAdapter or NeoN CI
 .trigger-from-foamadapter:
   rules:
@@ -88,6 +96,22 @@ build-and-test-with-neon-main-nvidia:
   script:
     - ./ci/build-and-test.sh nvidia
 
+build-and-profile-with-neon-main-nvidia:
+  extends:
+    - .use-nvidia-gpu-and-image
+    - .openfoam-env-setup
+    - .trigger-from-foamadapter
+  script:
+    - *profiling-env-setup
+    - ./ci/build-and-test.sh nvidia main profiling
+    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
+    - ls $PWD/build/profiling/bin/benchmarks
+    - which bench_dsl
+    - ./benchmarks/benchmarkSuite/runAll.sh
+    - find benchmarks/benchmarkSuite/ -name '*xml'
+    - find benchmarks/benchmarkSuite/ -name '*csv'
+
+
 build-and-test-with-neon-main-amd:
   extends:
     - .use-amd-gpu-and-image
@@ -95,6 +119,22 @@ build-and-test-with-neon-main-amd:
     - .trigger-from-foamadapter
   script:
     - ./ci/build-and-test.sh amd
+
+build-and-profile-with-neon-main-amd:
+  extends:
+    - .use-amd-gpu-and-image
+    - .openfoam-env-setup
+    - .trigger-from-foamadapter
+  script:
+    - *profiling-env-setup
+    - ls $FOAM_LIBBIN
+    - ./ci/build-and-test.sh amd main profiling
+    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
+    - ls $PWD/build/profiling/bin/benchmarks
+    - which bench_dsl
+    - ./benchmarks/benchmarkSuite/runAll.sh
+    - find benchmarks/benchmarkSuite/ -name '*xml'
+    - find benchmarks/benchmarkSuite/ -name '*csv'
 
 # Build and test FoamAdapter with a feature branch of NeoN
 build-and-test-with-neon-feature-nvidia:
