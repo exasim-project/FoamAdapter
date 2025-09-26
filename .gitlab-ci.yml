@@ -1,39 +1,47 @@
 # SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
 #
 # SPDX-License-Identifier: Unlicense
-image: chihtaw/cuda-openfoam:v2412
 
-stages:
-  - build-and-test
-
-variables:
-  FOAM_INST_DIR: /usr/local/app/openfoam
-  WM_PROJECT: OpenFOAM
-  WM_PROJECT_VERSION: v2412
-  WM_OPTIONS: linux64GccDPInt32Opt
-  WM_COMPILER_TYPE: system
-  WM_COMPILER: Gcc
-  WM_PRECISION_OPTION: DP
-  WM_LABEL_SIZE: 32
-  WM_COMPILE_OPTION: Opt
-  WM_OSTYPE: POSIX
-  WM_ARCH: linux64
-  WM_ARCH_OPTION: 64
-  WM_LINK_LANGUAGE: c++
-  WM_LABEL_OPTION: Int32
-  WM_MPLIB: SYSTEMOPENMPI
-  MPI_BUFFER_SIZE: 20000000
-
-  # Derived OpenFOAM environment paths
-  FOAM_ETC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/etc"
-  FOAM_SRC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/src"
-  FOAM_LIBBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/lib"
-  FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
-  WM_PROJECT_DIR: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION"
-
-.build-foamadapter-common: &build-foamadapter-common
-  stage: build-and-test
+# Available GPUs and corresponding Docker images
+.use-nvidia-gpu-and-image:
   tags: ["nvidia-h100-gpus"]
+  image: chihtaw/cuda-openfoam:v2412
+  variables:
+    FOAM_INST_DIR: /usr/local/app/openfoam
+    WM_PROJECT_VERSION: v2412
+
+.use-amd-gpu-and-image:
+  tags: ["amd-gpus"]
+  image: chihtaw/rocm-openfoam:6.4.1-v2412
+  variables:
+    FOAM_INST_DIR: /workspace/openfoam
+    WM_PROJECT_VERSION: v2412
+
+# Common OpenFOAM environment variables
+.openfoam-env-setup:
+  variables:
+    WM_PROJECT: OpenFOAM
+    WM_OPTIONS: linux64GccDPInt32Opt
+    WM_COMPILER_TYPE: system
+    WM_COMPILER: Gcc
+    WM_PRECISION_OPTION: DP
+    WM_LABEL_SIZE: 32
+    WM_COMPILE_OPTION: Opt
+    WM_OSTYPE: POSIX
+    WM_ARCH: linux64
+    WM_ARCH_OPTION: 64
+    WM_LINK_LANGUAGE: c++
+    WM_LABEL_OPTION: Int32
+    WM_MPLIB: SYSTEMOPENMPI
+    MPI_BUFFER_SIZE: 20000000
+
+    # Derived OpenFOAM environment paths
+    FOAM_ETC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/etc"
+    FOAM_SRC: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/src"
+    FOAM_LIBBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/lib"
+    FOAM_APPBIN: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/platforms/$WM_OPTIONS/bin"
+    WM_PROJECT_DIR: "$FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION"
+
   before_script:
     # Add OpenFOAM executables to PATH
     - export PATH="$FOAM_APPBIN:$PATH"
@@ -56,69 +64,51 @@ variables:
     - which simpleFoam || echo "simpleFoam not found!"
     - find $FOAM_LIBBIN -name "libPstream.so"
 
-    # Show tool versions for debugging
-    - cmake --version
-    - clang++ --version || g++ --version
-    - nvidia-smi
-    - nvcc --version
-
-build-and-test-with-neon-main:
-  <<: *build-foamadapter-common
+# Job rules to determine if the pipeline was triggered from FoamAdapter or NeoN CI
+.trigger-from-foamadapter:
   rules:
-    # Run only when triggered via API from FoamAdapter GitHub CI
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
       when: always
-    # Skip in all other cases
+
     - when: never
 
-  script:
-    # -------------------------
-    # Step 1: Prepare NeoN
-    # -------------------------
-    - echo "Default FoamAdapter CI pipeline => Use NeoN branch=main"
-    - git clone --depth 1 --single-branch --branch main https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-    # -------------------------
-    # Step 2: Build FoamAdapter
-    # -------------------------
-    - echo "Building FoamAdapter against NeoN..."
-    - |
-      cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
-      -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
-      -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
-    - cmake --build --preset develop
-    # -------------------------
-    # Step 3: Run Tests
-    # -------------------------
-    - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
-
-
-build-and-test-with-neon-feature:
-  <<: *build-foamadapter-common
+.trigger-from-neon:
   rules:
-    # Run only when triggered via API from NeoN GitHub CI
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
       when: always
-    # Skip in all other cases
+
     - when: never
 
+# Build and test FoamAdapter with the main branch of NeoN
+build-and-test-with-neon-main-nvidia:
+  extends:
+    - .use-nvidia-gpu-and-image
+    - .openfoam-env-setup
+    - .trigger-from-foamadapter
   script:
-    # -------------------------
-    # Step 1: Prepare NeoN
-    # -------------------------
-    - echo "Triggered by NeoN CI pipeline => Use NeoN branch=$NEON_BRANCH"
-    - git clone --depth 1 --single-branch --branch $NEON_BRANCH https://gitlab-ce.lrz.de/greole/neon.git ../NeoN
-    # -------------------------
-    # Step 2: Build FoamAdapter
-    # -------------------------
-    - echo "Building FoamAdapter against NeoN..."
-    - |
-      cmake --preset develop -DFOAMADAPTER_NEON_DIR=../NeoN \
-       -DCMAKE_CUDA_ARCHITECTURES=90 -DNeoN_WITH_THREADS=OFF \
-       -DFOAMADAPTER_BUILD_BENCHMARKS=OFF
-    - cmake --build --preset develop
-    # -------------------------
-    # Step 3: Run Tests
-    # -------------------------
-    - echo "Running FoamAdapter tests..."
-    - ctest --preset develop --output-on-failure
+    - ./ci/build-and-test.sh nvidia
+
+build-and-test-with-neon-main-amd:
+  extends:
+    - .use-amd-gpu-and-image
+    - .openfoam-env-setup
+    - .trigger-from-foamadapter
+  script:
+    - ./ci/build-and-test.sh amd
+
+# Build and test FoamAdapter with a feature branch of NeoN
+build-and-test-with-neon-feature-nvidia:
+  extends:
+    - .use-nvidia-gpu-and-image
+    - .openfoam-env-setup
+    - .trigger-from-neon
+  script:
+    - ./ci/build-and-test.sh nvidia $NEON_BRANCH
+
+build-and-test-with-neon-feature-amd:
+  extends:
+    - .use-amd-gpu-and-image
+    - .openfoam-env-setup
+    - .trigger-from-neon
+  script:
+    - ./ci/build-and-test.sh amd $NEON_BRANCH

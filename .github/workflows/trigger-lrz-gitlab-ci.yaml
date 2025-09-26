@@ -14,19 +14,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  trigger-lrz-ci:
+  build-and-test:
     name: Trigger and run CI on GPU (${{ github.event.repository.name }})
     runs-on: ubuntu-latest
-    timeout-minutes: 1440   # 24 hours max runtime
+    timeout-minutes: 1440 # 24 hours
 
-    # Skip if PR has Skip-build label
+    # Only run if the 'Skip-build' label is not present on a PR
     if: "!contains(toJson(github.event.pull_request.labels.*.name), 'Skip-build')"
 
     env:
       LRZ_GROUP: greole
       LRZ_HOST: gitlab-ce.lrz.de
       REPO_NAME: ${{ github.event.repository.name }}
-      MAX_WAIT_MINUTES: 1440  # 24 hours
+      MAX_WAIT_MINUTES: 1440
+      LRZ_GITLAB_PROJECT_TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}
+      LRZ_GITLAB_TRIGGER_TOKEN: ${{ secrets.LRZ_GITLAB_TRIGGER_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -48,20 +50,20 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote add lrz https://oauth2:${{ secrets.GITLAB_PROJECT_TOKEN }}@${{ env.LRZ_HOST }}/${{ env.LRZ_GROUP }}/${{ env.REPO_NAME }}.git
+          git remote add lrz https://oauth2:${LRZ_GITLAB_PROJECT_TOKEN}@${LRZ_HOST}/${LRZ_GROUP}/${REPO_NAME}.git
           git fetch origin ${{ steps.branch.outputs.branch }}
           git checkout -B ${{ steps.branch.outputs.branch }} origin/${{ steps.branch.outputs.branch }}
           git reset --hard origin/${{ steps.branch.outputs.branch }}
           git push --force lrz HEAD:refs/heads/${{ steps.branch.outputs.branch }}
 
-      - name: Cancel running/pending LRZ GitLab CI pipelines (only when NEON_BRANCH=null)
+      - name: Cancel running/pending LRZ GitLab CI pipelines
         run: |
           BRANCH=${{ steps.branch.outputs.branch }}
           echo "Checking running/pending CI pipelines for branch $BRANCH"
 
           response=$(curl -s -w "%{http_code}" -o response.json \
-            --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}" \
-            "https://${{ env.LRZ_HOST }}/api/v4/projects/${{ env.LRZ_GROUP }}%2F${{ env.REPO_NAME }}/pipelines?ref=$BRANCH&order_by=id&sort=desc")
+            --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
+            "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines?ref=$BRANCH&order_by=id&sort=desc")
           http_code="${response:(-3)}"
 
           if [[ "$http_code" != "200" ]]; then
@@ -83,16 +85,16 @@ jobs:
             for id in $pipeline_ids; do
               echo "Checking pipeline $id for NEON_BRANCH"
               vars=$(curl -s \
-                --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}" \
-                "https://${{ env.LRZ_HOST }}/api/v4/projects/${{ env.LRZ_GROUP }}%2F${{ env.REPO_NAME }}/pipelines/$id/variables")
+                --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
+                "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/$id/variables")
 
               neon_branch=$(echo "$vars" | jq -r '.[] | select(.key=="NEON_BRANCH") | .value' || true)
 
               if [ "$neon_branch" == "null" ]; then
                 echo "Canceling pipeline $id (NEON_BRANCH is null)"
                 curl -s --request POST \
-                 --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}" \
-                 "https://${{ env.LRZ_HOST }}/api/v4/projects/${{ env.LRZ_GROUP }}%2F${{ env.REPO_NAME }}/pipelines/$id/cancel"
+                 --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
+                 "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/$id/cancel"
               else
                echo "Keeping pipeline $id (NEON_BRANCH=$neon_branch)"
               fi
@@ -106,9 +108,9 @@ jobs:
           echo "Triggering new CI pipeline on branch $BRANCH"
 
           response=$(curl -s --request POST \
-            --form "token=${{ secrets.LRZ_GITLAB_TRIGGER_TOKEN }}" \
+            --form "token=${LRZ_GITLAB_TRIGGER_TOKEN}" \
             --form "ref=$BRANCH" \
-            "https://${{ env.LRZ_HOST }}/api/v4/projects/${{ env.LRZ_GROUP }}%2F${{ env.REPO_NAME }}/trigger/pipeline")
+            "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/trigger/pipeline")
 
           echo "$response" | jq .
           pipeline_id=$(echo "$response" | jq -r '.id')
@@ -121,41 +123,35 @@ jobs:
 
       - name: Wait for LRZ GitLab CI pipeline
         run: |
-          wait_pipeline() {
-            local PROJECT=$1
-            local PIPELINE_ID=$2
-            local SUCCESS_STATUSES=("success")
-            local FAILURE_STATUSES=("failed" "canceled" "skipped")
+          set -euo pipefail
 
-            # Construct pipeline URL
-            local pipeline_url="https://${{ env.LRZ_HOST }}/${{ env.LRZ_GROUP }}/$PROJECT/-/pipelines/$PIPELINE_ID"
+          PIPELINE_ID="${{ steps.trigger.outputs.pipeline_id }}"
 
-            # Print clickable link in logs
-            echo "Monitoring LRZ GitLab CI pipeline: $pipeline_url"
+          # Construct pipeline URL
+          pipeline_url="https://${LRZ_HOST}/${LRZ_GROUP}/${REPO_NAME}/-/pipelines/${PIPELINE_ID}"
+          echo "Monitoring LRZ GitLab CI pipeline: $pipeline_url"
 
-            for i in $(seq 1 $MAX_WAIT_MINUTES); do
-              status=$(curl -s \
-               --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}" \
-               "https://${{ env.LRZ_HOST }}/api/v4/projects/${{ env.LRZ_GROUP }}%2F${{ env.REPO_NAME }}/pipelines/$PIPELINE_ID" \
-                | jq -r '.status')
+          for i in $(seq 1 "${MAX_WAIT_MINUTES}"); do
+            status=$(curl -s \
+             --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
+              "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/${PIPELINE_ID}" \
+             | jq -r '.status')
 
-              echo "[$i] $PROJECT pipeline status: $status"
+            echo "[$i] $REPO_NAME pipeline status: $status"
 
-             case "$status" in
-               ${SUCCESS_STATUSES[*]})
-                  echo "$PROJECT CI pipeline succeeded"
-                 return 0
-                 ;;
-                ${FAILURE_STATUSES[*]})
-                 echo "$PROJECT CI pipeline finished with status: $status"
-                 return 1
-                  ;;
-              esac
-              sleep 60
-            done
+            case "$status" in
+              success)
+                echo "$REPO_NAME CI pipeline succeeded"
+                exit 0
+                ;;
+              failed|canceled|skipped)
+              echo "$REPO_NAME CI pipeline finished with status: $status"
+              exit 1
+              ;;
+            esac
 
-            echo "Timed out after $MAX_WAIT_MINUTES minutes waiting for $PROJECT CI pipeline"
-            return 1
-          }
+            sleep 60
+          done
 
-          wait_pipeline "${{ env.REPO_NAME }}" "${{ steps.trigger.outputs.pipeline_id }}"
+          echo "Timed out after $MAX_WAIT minutes waiting for $REPO_NAME CI pipeline"
+          exit 1
