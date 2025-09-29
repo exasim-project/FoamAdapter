@@ -9,43 +9,45 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    object      p;
+    class       dictionary;
+    object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 1 0 0 0];
-
-internalField   uniform 0.0;
-
-boundaryField
+ddtSchemes
 {
-    top
-    {
-        type            fixedValue;
-        value           uniform 10.5; // 10.0 will be converted to an int
-    }
+    default         Euler;
+    type            backwardEuler;
+}
 
-    bottom
-    {
-        type            fixedValue;
-        value           uniform 1.5; // 1.0 will be converted to an int
-    }
+gradSchemes
+{
+    default         Gauss linear;
+    grad(p)         Gauss linear;
+}
 
-    sides
-    {
-        type            zeroGradient;
-    }
+divSchemes
+{
+    default         none;
+    div(phi,T)      Gauss upwind;
+}
 
-    fixedWalls
-    {
-        type            zeroGradient;
-    }
+laplacianSchemes
+{
+    //default               none;
+    laplacian(kappa,T)      Gauss linear uncorrected;
+    laplacian(kappa,nfT)    Gauss linear uncorrected;
+    laplacian(Gamma,T)      Gauss linear uncorrected;
+}
 
-    frontAndBack
-    {
-        type            empty;
-    }
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         uncorrected;
 }
 
 

@@ -24,9 +24,6 @@ TEST_CASE("advection–diffusion-equation_scalar")
     Foam::Time& runTime = *timePtr;
     Foam::argList& args = *argsPtr;
 
-    runTime.setDeltaT(1e-3);
-    runTime++;
-
     SECTION("OpenFOAM")
     {
         std::unique_ptr<Foam::fvMesh> meshPtr = FoamAdapter::createMesh(runTime);
@@ -88,8 +85,6 @@ TEST_CASE("advection–diffusion-equation_scalar")
         std::unique_ptr<FoamAdapter::MeshAdapter> meshPtr = FoamAdapter::createMesh(exec, runTime);
         FoamAdapter::MeshAdapter& mesh = *meshPtr;
         const auto& nfMesh = mesh.nfMesh();
-        // linear interpolation hardcoded for now
-
 
         auto ofT = randomScalarField(runTime, mesh, "T");
         nnfvcc::VolumeField<NeoN::scalar>& nfT =

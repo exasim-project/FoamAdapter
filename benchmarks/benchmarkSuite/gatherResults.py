@@ -1,9 +1,8 @@
 # %%
-from __future__ import annotations
+import os
+import sys
 
 from pathlib import Path
-import os
-
 from foamlib.postprocessing.load_tables import datafile, load_tables
 from foamlib.postprocessing.table_reader import read_catch2_benchmark
 
@@ -27,7 +26,7 @@ def save_test_results(df, test_case: str):
         test_case_df.to_csv(results / f"{test_case}.csv", index=False)
 
 if __name__ == "__main__":
-    root = Path(os.getcwd())
+    root = Path(os.getcwd()) / sys.argv[1]
     results = root / "results"
     results.mkdir(exist_ok=True)
 
@@ -44,9 +43,7 @@ if __name__ == "__main__":
     try:
         for test_case in benchmark_results["test_case"].unique():
             save_test_results(benchmark_results, test_case)
-    except:
-        print(f"Failed to postprocess {cases}")
-
-
+    except Exception as e:
+        print(f"Failed to postprocess {cases}, {e}")
 
 # %%

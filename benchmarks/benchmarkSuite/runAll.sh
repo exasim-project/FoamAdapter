@@ -5,28 +5,14 @@ current_dir=$(pwd)
 
 # run benchmarks
 run_benchmark() {
-    local benchmark_dir="$1"
-    echo "Running benchmark: $benchmark_dir"
-
-    # Save the current directory
-    local start_dir="$current_dir"
-
-    # Navigate to the benchmark directory
-    cd "$benchmark_dir" || { echo "Failed to cd to $benchmark_dir"; return 1; }
-
-    echo "Running benchmark..."
-    for dir in .
-    do
-        .$dir/runAll.sh
-    done
+    echo "Running $2 benchmarks in: $1"
+    # mkdir -p $1/results
+    find $1 -name "Allrun" -exec {} bench_$2 \;
 
     echo "Gathering results..." $1
-    python3 ../gatherResults.py
+    python3 gatherResults.py $1
 
-    # Return to the original directory
-    cd "$start_dir" || { echo "Failed to return to $start_dir"; return 1; }
-
-    echo "Completed benchmark: $benchmark_dir"
+    echo "Completed benchmark: $1"
 }
 
 # Execute the benchmark commands
@@ -37,5 +23,5 @@ python3 createStudies.py
 benchmarks=("explicitOperators" "implicitOperators" "dsl")
 # Run each benchmark
 for benchmark in "${benchmarks[@]}"; do
-    run_benchmark "$current_dir/$benchmark"
+    run_benchmark "$current_dir/$benchmark" $benchmark
 done

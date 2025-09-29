@@ -9,5 +9,5 @@ benchmarks=("dsl" "explicitOperators" "implicitOperators")
 
 # Run each benchmark
 for benchmark in "${benchmarks[@]}"; do
-    rm -r "$current_dir/$benchmark/Cases"
+    rm -rf "$current_dir/$benchmark"
 done
