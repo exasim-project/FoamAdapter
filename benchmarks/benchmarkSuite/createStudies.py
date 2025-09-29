@@ -16,10 +16,9 @@ def create_cases(root, case):
         output_folder=case_path / "Cases",
     )
 
-    template_case = root / "templates/2DSquare"
     study_square = record_generator(
-        records=build_records("2DSquare", [8, 16, 32, 64, 128, 256, 512, 1024]),
-        template_case=template_case,
+        records=build_records("2DSquare", [8, 16, 32, 64, 128, 256, 512]),
+        template_case=root / "templates/2DSquare",
         output_folder=case_path / "Cases"
     )
 
