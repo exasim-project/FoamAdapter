@@ -15,7 +15,10 @@ run_benchmark() {
     cd "$benchmark_dir" || { echo "Failed to cd to $benchmark_dir"; return 1; }
 
     echo "Running benchmark..."
-    ./runAll.sh
+    for dir in .
+    do
+        .$dir/runAll.sh
+    done
 
     echo "Gathering results..." $1
     python3 ../gatherResults.py
