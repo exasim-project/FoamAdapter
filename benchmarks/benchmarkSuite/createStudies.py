@@ -11,14 +11,14 @@ def create_cases(root, case):
     case_path = root/case
     case_path.mkdir(parents=True, exist_ok=True)
     study_cube = record_generator(
-        records=build_records("3DCube", [10, 20, 50, 100, 200]),
+        records=build_records("3DCube", [8, 16, 32, 64, 128]),
         template_case=root / "templates/3DCube",
         output_folder=case_path / "Cases",
     )
 
     template_case = root / "templates/2DSquare"
     study_square = record_generator(
-        records=build_records("2DSquare", [10, 20, 50, 100, 200, 500, 1000, 2000]),
+        records=build_records("2DSquare", [8, 16, 32, 64, 128, 256, 512, 1024]),
         template_case=template_case,
         output_folder=case_path / "Cases"
     )
