@@ -22,7 +22,6 @@ namespace dsl = NeoN::dsl;
 TEST_CASE("DivOperator")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     SECTION("OpenFOAM")
     {
@@ -130,7 +129,6 @@ TEST_CASE("DivOperator")
 TEST_CASE("LaplacianOperator")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     SECTION("OpenFOAM")
     {
@@ -228,7 +226,6 @@ TEST_CASE("LaplacianOperator")
 TEST_CASE("GradOperator")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     SECTION("OpenFOAM")
     {
@@ -300,7 +297,6 @@ TEST_CASE("GradOperator")
 TEST_CASE("FaceInterpolation")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     SECTION("OpenFOAM")
     {
@@ -413,7 +409,6 @@ TEST_CASE("FaceInterpolation")
 TEST_CASE("FaceNormalGradient")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     SECTION("OpenFOAM")
     {

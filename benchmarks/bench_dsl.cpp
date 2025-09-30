@@ -22,7 +22,6 @@ namespace dsl = NeoN::dsl;
 TEST_CASE("advection–diffusion-equation_scalar")
 {
     Foam::Time& runTime = *timePtr;
-    Foam::argList& args = *argsPtr;
 
     SECTION("OpenFOAM")
     {
