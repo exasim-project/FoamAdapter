@@ -5,15 +5,17 @@
 # Available GPUs and corresponding Docker images
 .use-nvidia-gpu-and-image:
   tags: ["nvidia-h100-gpus"]
-  image: chihtaw/cuda-openfoam:v2412
+  image: chihtaw/cuda-openfoam-benchmark:v2412
   variables:
+    PYTHONPATH: /root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
     FOAM_INST_DIR: /usr/local/app/openfoam
     WM_PROJECT_VERSION: v2412
 
 .use-amd-gpu-and-image:
   tags: ["amd-gpus"]
-  image: chihtaw/rocm-openfoam:6.4.1-v2412
+  image: chihtaw/rocm-openfoam-benchmark:6.4.1-v2412
   variables:
+    PYTHONPATH: /root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
     FOAM_INST_DIR: /workspace/openfoam
     WM_PROJECT_VERSION: v2412
 
@@ -69,14 +71,12 @@
   rules:
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null
       when: always
-
     - when: never
 
 .trigger-from-neon:
   rules:
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null
       when: always
-
     - when: never
 
 # Build and test FoamAdapter with the main branch of NeoN
@@ -88,6 +88,20 @@ build-and-test-with-neon-main-nvidia:
   script:
     - ./ci/build-and-test.sh nvidia
 
+build-and-profile-with-neon-main-nvidia:
+  extends:
+    - .use-nvidia-gpu-and-image
+    - .openfoam-env-setup
+    - .trigger-from-foamadapter
+  script:
+    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
+    - ./ci/build-and-test.sh nvidia main profiling
+    - ./benchmarks/benchmarkSuite/cleanAll.sh
+    - ./benchmarks/benchmarkSuite/runAll.sh
+    # Check for produced results
+    - find benchmarks/benchmarkSuite/ -name '*csv'
+
+
 build-and-test-with-neon-main-amd:
   extends:
     - .use-amd-gpu-and-image
@@ -95,6 +109,19 @@ build-and-test-with-neon-main-amd:
     - .trigger-from-foamadapter
   script:
     - ./ci/build-and-test.sh amd
+
+build-and-profile-with-neon-main-amd:
+  extends:
+    - .use-amd-gpu-and-image
+    - .openfoam-env-setup
+    - .trigger-from-foamadapter
+  script:
+    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
+    - ./ci/build-and-test.sh amd main profiling
+    - ./benchmarks/benchmarkSuite/cleanAll.sh
+    - ./benchmarks/benchmarkSuite/runAll.sh
+    # Check for produced results
+    - find benchmarks/benchmarkSuite/ -name '*csv'
 
 # Build and test FoamAdapter with a feature branch of NeoN
 build-and-test-with-neon-feature-nvidia:
