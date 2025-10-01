@@ -28,7 +28,7 @@ FoamAdapter uses CMake to build, thus the standard CMake procedure should work, 
 Building with CMake Presets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Additionally, we provide several CMake presets to set commonly required flags if you compile NeoN in combination with Kokkos.
+Additionally, we provide several CMake presets to set commonly required flags.
 
    .. code-block:: bash
 
