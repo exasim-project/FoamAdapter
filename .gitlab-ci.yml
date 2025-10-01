@@ -162,13 +162,13 @@ build-and-test-with-neon-feature-amd:
 benchmark-foamadapter-nvidia:
   extends:
     - .benchmark-foamadapter-common
-    - .use-nvidia-gpu
+    - .use-nvidia-gpu-and-image
   script:
     - ./ci/benchmark.sh nvidia
 
 benchmark-foamadapter-amd:
   extends:
     - .benchmark-foamadapter-common
-    - .use-amd-gpu
+    - .use-amd-gpu-and-image
   script:
     - ./ci/benchmark.sh amd
