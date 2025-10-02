@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 # ---------------------------------------------------------------------------------------
+# SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
+#
+# SPDX-License-Identifier: Unlicense
+# ---------------------------------------------------------------------------------------
 # Cancel running/pending LRZ GitLab CI pipelines on TUM COMA cluster for a given branch.
 # Only cancel if the pipeline does not have the NEON_BRANCH variable set.
 #

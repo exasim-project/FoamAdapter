@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# ---------------------------------------------------------------------------------------
+# SPDX-FileCopyrightText: 2023 - 2025 NeoN authors
+#
+# SPDX-License-Identifier: Unlicense
 # --------------------------------------------------------------------------------------------
 # Monitor the status of a LRZ GitLab CI pipeline on TUM COMA cluster for a given pipeline ID.
 #

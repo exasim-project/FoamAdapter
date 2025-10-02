@@ -61,17 +61,17 @@ jobs:
 
       - name: Cancel running/pending LRZ GitLab CI pipelines
         run: |
-          .github/scripts/cancel_triggered_pipelines.sh ${{ steps.branch.outputs.branch }}
+          ./ci/github/cancel_triggered_pipelines.sh ${{ steps.branch.outputs.branch }}
 
       - name: Trigger LRZ GitLab CI pipeline
         id: trigger
         run: |
-          .github/scripts/trigger_pipeline.sh ${{ steps.branch.outputs.branch }}
+          ./ci/github/trigger_pipeline.sh ${{ steps.branch.outputs.branch }}
 
 
       - name: Wait for LRZ GitLab CI pipeline
         run: |
-          .github/scripts/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
+          ./ci/github/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
 
   benchmark:
     name: Benchmark FoamAdapter on GPU
@@ -96,15 +96,15 @@ jobs:
 
       - name: Cancel running/pending LRZ GitLab CI pipelines
         run: |
-          .github/scripts/cancel_triggered_pipelines.sh "${BRANCH}"
+          ./ci/github/cancel_triggered_pipelines.sh "${BRANCH}"
 
       - name: Trigger LRZ GitLab CI pipeline for benchmarking
         id: trigger
         run: |
-          .github/scripts/trigger_pipeline.sh \
+          ./ci/github/trigger_pipeline.sh \
             "${BRANCH}" \
             "variables[BENCHMARK]=true"
 
       - name: Wait for LRZ GitLab CI pipeline for benchmarking
         run: |
-          .github/scripts/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
+          ./ci/github/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
