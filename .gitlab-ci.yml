@@ -94,7 +94,7 @@ build-and-test-with-neon-main-nvidia:
     - .openfoam-env-setup
     - .trigger-from-foamadapter-for-testing
   script:
-    - ./ci/build-and-test.sh nvidia
+    - ./ci/lrz-gitlab/build-and-test.sh nvidia
 
 build-and-test-with-neon-main-amd:
   extends:
@@ -102,7 +102,7 @@ build-and-test-with-neon-main-amd:
     - .openfoam-env-setup
     - .trigger-from-foamadapter-for-testing
   script:
-    - ./ci/build-and-test.sh amd
+    - ./ci/lrz-gitlab/build-and-test.sh amd
 
 
 # --- Benchmark FoamAdapter with the main branch of NeoN ---
@@ -112,7 +112,7 @@ benchmark-with-neon-main-nvidia:
     - .openfoam-env-setup
     - .trigger-from-foamadapter-for-benchmarking
   script:
-    - ./ci/build-and-test.sh nvidia main profiling
+    - ./ci/lrz-gitlab/build-and-test.sh nvidia main profiling
     - ./benchmarks/benchmarkSuite/cleanAll.sh
     - ./benchmarks/benchmarkSuite/runAll.sh
     # Check for produced results
@@ -125,7 +125,7 @@ benchmark-with-neon-main-amd:
     - .trigger-from-foamadapter-for-benchmarking
   script:
     - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
-    - ./ci/build-and-test.sh amd main profiling
+    - ./ci/lrz-gitlab/build-and-test.sh amd main profiling
     - ./benchmarks/benchmarkSuite/cleanAll.sh
     - ./benchmarks/benchmarkSuite/runAll.sh
     # Check for produced results
@@ -139,7 +139,7 @@ build-and-test-with-neon-feature-nvidia:
     - .openfoam-env-setup
     - .trigger-from-neon-for-testing
   script:
-    - ./ci/build-and-test.sh nvidia $NEON_BRANCH
+    - ./ci/lrz-gitlab/build-and-test.sh nvidia $NEON_BRANCH
 
 build-and-test-with-neon-feature-amd:
   extends:
@@ -147,4 +147,4 @@ build-and-test-with-neon-feature-amd:
     - .openfoam-env-setup
     - .trigger-from-neon-for-testing
   script:
-    - ./ci/build-and-test.sh amd $NEON_BRANCH
+    - ./ci/lrz-gitlab/build-and-test.sh amd $NEON_BRANCH
