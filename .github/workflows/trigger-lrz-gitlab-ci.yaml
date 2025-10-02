@@ -69,3 +69,39 @@ jobs:
       - name: Wait for LRZ GitLab CI pipeline
         run: |
           .github/scripts/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
+
+    benchmark:
+    name: Benchmark FoamAdapter on GPU
+    runs-on: ubuntu-latest
+    timeout-minutes: 1440 # 24 hours
+
+    needs: [build-and-test]
+    if: contains(toJson(github.event.pull_request.labels), 'benchmark')
+
+    env:
+      LRZ_GROUP: greole
+      LRZ_HOST: gitlab-ce.lrz.de
+      REPO_NAME: ${{ github.event.repository.name }}
+      BRANCH: ${{ needs.build-and-test.outputs.branch }}
+      LRZ_GITLAB_PROJECT_TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}
+      LRZ_GITLAB_TRIGGER_TOKEN: ${{ secrets.LRZ_GITLAB_TRIGGER_TOKEN }}
+      MAX_WAIT_MINUTES: 1440
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cancel running/pending LRZ GitLab CI pipelines
+        run: |
+          .github/scripts/cancel_triggered_pipelines.sh "${BRANCH}"
+
+      - name: Trigger LRZ GitLab CI pipeline for benchmarking
+        id: trigger
+        run: |
+          .github/scripts/trigger_pipeline.sh \
+            "${BRANCH}" \
+            "variables[BENCHMARK]=true"
+
+      - name: Wait for LRZ GitLab CI pipeline for benchmarking
+        run: |
+          .github/scripts/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}

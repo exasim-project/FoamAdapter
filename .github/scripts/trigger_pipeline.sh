@@ -19,14 +19,20 @@ fi
 BRANCH=$1
 GROUP="${LRZ_GROUP:?LRZ_GROUP not set}"
 PROJECT="${REPO_NAME:?REPO_NAME not set}"
-TOKEN="${LRZ_GITLAB_TRIGGER_TOKEN:?LRZ_GITLAB_TRIGGER_TOKEN not set}"
+TRIGGER_TOKEN="${LRZ_GITLAB_TRIGGER_TOKEN:?LRZ_GITLAB_TRIGGER_TOKEN not set}"
 HOST="${LRZ_HOST:?LRZ_HOST not set}"
+shift 1
+VARIABLES="$@"     # Optional extra variables in the form: "variables[KEY]=VALUE"
 
 echo "Triggering new CI pipeline on branch $BRANCH in project: $GROUP/$PROJECT"
 
-response=$(curl -s --request POST \
-  --form "token=${TOKEN}" \
-  --form "ref=$BRANCH" \
+# Prepare curl form data for variables
+FORM_DATA="--form ref=$BRANCH --form token=$TRIGGER_TOKEN"
+for var in $VARIABLES; do
+  FORM_DATA="$FORM_DATA --form $var"
+done
+
+response=$(curl -s --request POST $FORM_DATA \
   "https://${HOST}/api/v4/projects/${GROUP}%2F${PROJECT}/trigger/pipeline")
 
 echo "$response" | jq .

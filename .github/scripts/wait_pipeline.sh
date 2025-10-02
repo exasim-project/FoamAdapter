@@ -19,7 +19,7 @@ fi
 PIPELINE_ID=$1
 GROUP="${LRZ_GROUP:?LRZ_GROUP not set}"
 PROJECT="${REPO_NAME:?REPO_NAME not set}"
-TOKEN="${LRZ_GITLAB_PROJECT_TOKEN:?LRZ_GITLAB_PROJECT_TOKEN not set}"
+PROJECT_TOKEN="${LRZ_GITLAB_PROJECT_TOKEN:?LRZ_GITLAB_PROJECT_TOKEN not set}"
 HOST="${LRZ_HOST:?LRZ_HOST not set}"
 WAIT_MINUTES="${MAX_WAIT_MINUTES:-60}"
 
@@ -28,7 +28,7 @@ echo "Monitoring LRZ GitLab CI pipeline: $pipeline_url"
 
 for i in $(seq 1 "$WAIT_MINUTES"); do
   status=$(curl -s \
-    --header "PRIVATE-TOKEN: ${TOKEN}" \
+    --header "PRIVATE-TOKEN: ${PROJECT_TOKEN}" \
     "https://${HOST}/api/v4/projects/${GROUP}%2F${PROJECT}/pipelines/${PIPELINE_ID}" \
     | jq -r '.status')
 
