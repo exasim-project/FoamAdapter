@@ -79,7 +79,14 @@
       when: always
     - when: never
 
-# Build and test FoamAdapter with the main branch of NeoN
+.benchmark-foamadapter-common:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null && $BENCHMARK == "true"
+      when: always
+    - when: never
+
+
+# --- Build and test FoamAdapter with the main branch of NeoN ---
 build-and-test-with-neon-main-nvidia:
   extends:
     - .use-nvidia-gpu-and-image
@@ -87,20 +94,6 @@ build-and-test-with-neon-main-nvidia:
     - .trigger-from-foamadapter
   script:
     - ./ci/build-and-test.sh nvidia
-
-build-and-profile-with-neon-main-nvidia:
-  extends:
-    - .use-nvidia-gpu-and-image
-    - .openfoam-env-setup
-    - .trigger-from-foamadapter
-  script:
-    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
-    - ./ci/build-and-test.sh nvidia main profiling
-    - ./benchmarks/benchmarkSuite/cleanAll.sh
-    - ./benchmarks/benchmarkSuite/runAll.sh
-    # Check for produced results
-    - find benchmarks/benchmarkSuite/ -name '*csv'
-
 
 build-and-test-with-neon-main-amd:
   extends:
@@ -110,11 +103,26 @@ build-and-test-with-neon-main-amd:
   script:
     - ./ci/build-and-test.sh amd
 
-build-and-profile-with-neon-main-amd:
+
+# --- Benchmark FoamAdapter with the main branch of NeoN ---
+benchmark-with-neon-main-nvidia:
+  extends:
+    - .use-nvidia-gpu-and-image
+    - .openfoam-env-setup
+    - .benchmark-foamadapter-common
+  script:
+    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
+    - ./ci/build-and-test.sh nvidia main profiling
+    - ./benchmarks/benchmarkSuite/cleanAll.sh
+    - ./benchmarks/benchmarkSuite/runAll.sh
+    # Check for produced results
+    - find benchmarks/benchmarkSuite/ -name '*csv'
+
+benchmark-with-neon-main-amd:
   extends:
     - .use-amd-gpu-and-image
     - .openfoam-env-setup
-    - .trigger-from-foamadapter
+    - .benchmark-foamadapter-common
   script:
     - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
     - ./ci/build-and-test.sh amd main profiling
@@ -123,7 +131,8 @@ build-and-profile-with-neon-main-amd:
     # Check for produced results
     - find benchmarks/benchmarkSuite/ -name '*csv'
 
-# Build and test FoamAdapter with a feature branch of NeoN
+
+# --- Build and test FoamAdapter with a feature branch of NeoN ---
 build-and-test-with-neon-feature-nvidia:
   extends:
     - .use-nvidia-gpu-and-image
