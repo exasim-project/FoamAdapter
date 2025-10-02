@@ -68,35 +68,4 @@ jobs:
 
       - name: Wait for LRZ GitLab CI pipeline
         run: |
-          set -euo pipefail
-
-          PIPELINE_ID="${{ steps.trigger.outputs.pipeline_id }}"
-
-          # Construct pipeline URL
-          pipeline_url="https://${LRZ_HOST}/${LRZ_GROUP}/${REPO_NAME}/-/pipelines/${PIPELINE_ID}"
-          echo "Monitoring LRZ GitLab CI pipeline: $pipeline_url"
-
-          for i in $(seq 1 "${MAX_WAIT_MINUTES}"); do
-            status=$(curl -s \
-             --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
-              "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/${PIPELINE_ID}" \
-             | jq -r '.status')
-
-            echo "[$i] $REPO_NAME pipeline status: $status"
-
-            case "$status" in
-              success)
-                echo "$REPO_NAME CI pipeline succeeded"
-                exit 0
-                ;;
-              failed|canceled|skipped)
-              echo "$REPO_NAME CI pipeline finished with status: $status"
-              exit 1
-              ;;
-            esac
-
-            sleep 60
-          done
-
-          echo "Timed out after $MAX_WAIT minutes waiting for $REPO_NAME CI pipeline"
-          exit 1
+          .github/scripts/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
