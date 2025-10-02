@@ -55,7 +55,7 @@ else
 
     neon_branch=$(echo "$vars" | jq -r '.[] | select(.key=="NEON_BRANCH") | .value' || true)
 
-    if [ -z "$neon_branch" ] || [ "$neon_branch" == "null" ]; then
+    if [ -z "$neon_branch" ]; then
       echo "Canceling pipeline $id (NEON_BRANCH is null)"
       curl -s --request POST \
         --header "PRIVATE-TOKEN: ${TOKEN}" \
