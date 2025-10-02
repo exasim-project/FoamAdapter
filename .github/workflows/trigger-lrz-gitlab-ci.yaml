@@ -63,22 +63,8 @@ jobs:
       - name: Trigger LRZ GitLab CI pipeline
         id: trigger
         run: |
-          BRANCH=${{ steps.branch.outputs.branch }}
-          echo "Triggering new CI pipeline on branch $BRANCH"
+          ./trigger_pipeline.sh ${{ steps.branch.outputs.branch }}
 
-          response=$(curl -s --request POST \
-            --form "token=${LRZ_GITLAB_TRIGGER_TOKEN}" \
-            --form "ref=$BRANCH" \
-            "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/trigger/pipeline")
-
-          echo "$response" | jq .
-          pipeline_id=$(echo "$response" | jq -r '.id')
-          if [ "$pipeline_id" = "null" ] || [ -z "$pipeline_id" ]; then
-            echo "Failed to trigger LRZ CI pipeline"
-            exit 1
-          fi
-
-          echo "pipeline_id=$pipeline_id" >> $GITHUB_OUTPUT
 
       - name: Wait for LRZ GitLab CI pipeline
         run: |
