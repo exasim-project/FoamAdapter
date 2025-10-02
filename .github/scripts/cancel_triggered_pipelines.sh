@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
-# ------------------------------------------------------------------------
-# Cancel running/pending GitLab CI pipelines for a given branch.
+# ---------------------------------------------------------------------------------------
+# Cancel running/pending LRZ GitLab CI pipelines on TUM COMA cluster for a given branch.
 # Only cancel if the pipeline does not have the NEON_BRANCH variable set.
 #
+# Uses environment variables defined in the GitHub Actions job:
+#   LRZ_GROUP, LRZ_HOST, REPO_NAME, LRZ_GITLAB_PROJECT_TOKEN
+#
 # Usage:
-#   ./cancel_gitlab_pipelines.sh <branch>
-# ------------------------------------------------------------------------
+#   .github/scripts/cancel_pipelines.sh <branch>
+# ---------------------------------------------------------------------------------------
 
 set -euo pipefail
 

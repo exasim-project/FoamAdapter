@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# ------------------------------------------------------------------------
-# Wait for a GitLab CI pipeline to finish.
+# --------------------------------------------------------------------------------------------
+# Monitor the status of a LRZ GitLab CI pipeline on TUM COMA cluster for a given pipeline ID.
+#
 # Uses environment variables defined in the GitHub Actions job:
 #   LRZ_GROUP, LRZ_HOST, REPO_NAME, MAX_WAIT_MINUTES, LRZ_GITLAB_PROJECT_TOKEN
 #
 # Usage:
-#   ./wait_gitlab_pipeline.sh <pipeline_id>
-# ------------------------------------------------------------------------
+#   .github/scripts/wait_pipeline.sh <pipeline_id>
+# --------------------------------------------------------------------------------------------
 
 set -euo pipefail
 
