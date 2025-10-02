@@ -58,7 +58,7 @@ jobs:
 
       - name: Cancel running/pending LRZ GitLab CI pipelines
         run: |
-          ./cancel_gitlab_pipelines.sh ${{ steps.branch.outputs.branch }}
+          .github/scripts/cancel_gitlab_pipelines.sh ${{ steps.branch.outputs.branch }}
 
       - name: Trigger LRZ GitLab CI pipeline
         id: trigger
