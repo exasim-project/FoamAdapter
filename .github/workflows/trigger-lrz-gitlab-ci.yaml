@@ -70,7 +70,7 @@ jobs:
         run: |
           .github/scripts/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
 
-    benchmark:
+  benchmark:
     name: Benchmark FoamAdapter on GPU
     runs-on: ubuntu-latest
     timeout-minutes: 1440 # 24 hours
