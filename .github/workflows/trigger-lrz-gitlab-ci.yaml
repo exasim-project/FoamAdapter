@@ -63,7 +63,7 @@ jobs:
       - name: Trigger LRZ GitLab CI pipeline
         id: trigger
         run: |
-          ./trigger_pipeline.sh ${{ steps.branch.outputs.branch }}
+          .github/scripts/trigger_pipeline.sh ${{ steps.branch.outputs.branch }}
 
 
       - name: Wait for LRZ GitLab CI pipeline
