@@ -58,48 +58,7 @@ jobs:
 
       - name: Cancel running/pending LRZ GitLab CI pipelines
         run: |
-          BRANCH=${{ steps.branch.outputs.branch }}
-          echo "Checking running/pending CI pipelines for branch $BRANCH"
-
-          response=$(curl -s -w "%{http_code}" -o response.json \
-            --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
-            "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines?ref=$BRANCH&order_by=id&sort=desc")
-          http_code="${response:(-3)}"
-
-          if [[ "$http_code" != "200" ]]; then
-            echo "GitLab API request failed with HTTP status $http_code"
-            cat response.json
-            exit 1
-          fi
-
-          if ! jq -e 'type=="array"' response.json >/dev/null 2>&1; then
-            echo "Unexpected response from GitLab API (not a JSON array)"
-            cat response.json
-            exit 1
-          fi
-
-          pipeline_ids=$(jq -r '.[] | select(.status=="running" or .status=="pending") | .id' response.json)
-          if [ -z "$pipeline_ids" ]; then
-            echo "No running/pending CI pipelines to check"
-          else
-            for id in $pipeline_ids; do
-              echo "Checking pipeline $id for NEON_BRANCH"
-              vars=$(curl -s \
-                --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
-                "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/$id/variables")
-
-              neon_branch=$(echo "$vars" | jq -r '.[] | select(.key=="NEON_BRANCH") | .value' || true)
-
-              if [ -z "$neon_branch" ]; then
-                echo "Canceling pipeline $id (NEON_BRANCH is null)"
-                curl -s --request POST \
-                 --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
-                 "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/$id/cancel"
-              else
-               echo "Keeping pipeline $id (NEON_BRANCH=$neon_branch)"
-              fi
-           done
-          fi
+          ./cancel_gitlab_pipelines.sh ${{ steps.branch.outputs.branch }}
 
       - name: Trigger LRZ GitLab CI pipeline
         id: trigger
