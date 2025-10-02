@@ -88,7 +88,11 @@ build_and_benchmark() {
     cmake --build --preset profiling
 
     echo ">>> Running benchmarks..."
-    ctest --preset profiling
+    ./benchmarks/benchmarkSuite/cleanAll.sh
+    ./benchmarks/benchmarkSuite/runAll.sh
+
+    # Check for produced results
+    find benchmarks/benchmarkSuite/ -name '*csv'
 
     pushd build/profiling/bin/benchmarks >/dev/null
     python3 ../../../../scripts/catch2json.py

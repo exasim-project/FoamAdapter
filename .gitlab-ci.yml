@@ -79,10 +79,28 @@
       when: always
     - when: never
 
-# Common configuration for all benchmark jobs
-.benchmark-foamadapter-common:
+# Configuration for benchmarking FoamAdapter with the main branch of NeoN
+.benchmark-foamadapter-with-neon-main:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "trigger" && $BENCHMARK == "true"
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null && $BENCHMARK == "true"
+      when: always
+    # Skip in all other cases
+    - when: never
+
+  variables:
+    RESULTS_DIR: "benchmark-results"
+    RUN_IDENTIFIER: "${CI_PIPELINE_ID}"
+    REPO_NAME: "NeoFOAM-BenchmarkData"
+    TARGET_REPO: "github.com/exasim-project/${REPO_NAME}.git"
+    TARGET_BRANCH: "ci-benchmarks"
+
+  before_script:
+    - pip3 install --user --break-system-packages xmltodict
+
+# Configuration for benchmarking FoamAdapter with the feature branch of NeoN
+.benchmark-foamadapter-with-neon-feature:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH != null && $BENCHMARK == "true"
       when: always
     # Skip in all other cases
     - when: never
@@ -118,7 +136,6 @@ build-and-profile-with-neon-main-nvidia:
     - ./benchmarks/benchmarkSuite/runAll.sh
     # Check for produced results
     - find benchmarks/benchmarkSuite/ -name '*csv'
-
 
 build-and-test-with-neon-main-amd:
   extends:
@@ -158,17 +175,37 @@ build-and-test-with-neon-feature-amd:
   script:
     - ./ci/build-and-test.sh amd $NEON_BRANCH
 
-# benchmark jobs for FoamAdapter
-benchmark-foamadapter-nvidia:
+# benchmark jobs for FoamAdapter with the main branch of NeoN
+benchmark-foamadapter-with-neon-main-nvidia:
   extends:
-    - .benchmark-foamadapter-common
+    - .benchmark-foamadapter-with-neon-main
     - .use-nvidia-gpu-and-image
+    - .trigger-from-foamadapter
   script:
     - ./ci/benchmark.sh nvidia
 
-benchmark-foamadapter-amd:
+benchmark-foamadapter-with-neon-main-amd:
   extends:
-    - .benchmark-foamadapter-common
+    - .benchmark-foamadapter-with-neon-main
     - .use-amd-gpu-and-image
+    - .trigger-from-foamadapter
   script:
     - ./ci/benchmark.sh amd
+
+# benchmark jobs for FoamAdapter with a feature branch of NeoN
+benchmark-foamadapter-with-neon-feature-nvidia:
+  extends:
+    - .benchmark-foamadapter-with-neon-feature
+    - .use-nvidia-gpu-and-image
+    - .trigger-from-neon
+  script:
+    - ./ci/benchmark.sh nvidia
+
+benchmark-foamadapter-with-neon-feature-amd:
+  extends:
+    - .benchmark-foamadapter-with-neon-feature
+    - .use-amd-gpu-and-image
+    - .trigger-from-neon
+  script:
+    - ./ci/benchmark.sh amd
+

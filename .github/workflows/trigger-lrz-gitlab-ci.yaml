@@ -155,3 +155,48 @@ jobs:
 
           echo "Timed out after $MAX_WAIT minutes waiting for $REPO_NAME CI pipeline"
           exit 1
+  
+  benchmark:
+    name: Benchmark FoamAdapter on GPU
+    runs-on: ubuntu-latest
+    timeout-minutes: 1440 # 24 hours
+
+    needs: [build-and-test]
+    if: contains(toJson(github.event.pull_request.labels), 'benchmark')
+
+    env:
+      LRZ_GROUP: greole
+      LRZ_HOST: gitlab-ce.lrz.de
+      REPO_NAME: ${{ github.event.repository.name }}
+      BRANCH: ${{ needs.build-and-test.outputs.branch }}
+      FOAMADAPTER_PROJECT_TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}
+      FOAMADAPTER_TRIGGER_TOKEN: ${{ secrets.LRZ_GITLAB_TRIGGER_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cancel running/pending FoamAdapter LRZ CI pipelines
+        run: |
+          .github/scripts/cancel_triggered_pipelines.sh \
+            "${{ env.REPO_NAME }}" \
+            "${BRANCH}" \
+            "${FOAMADAPTER_PROJECT_TOKEN}"
+
+      - name: Trigger FoamAdapter LRZ GitLab CI pipeline for benchmarking
+        id: trigger-foamAdapter
+        run: |
+          .github/scripts/trigger_pipeline.sh \
+            "${{ env.REPO_NAME }}" \
+            "${BRANCH}" \
+            "${FOAMADAPTER_PROJECT_TOKEN}" \
+            "${FOAMADAPTER_TRIGGER_TOKEN}" \
+            "variables[FOAMADAPTER_BRANCH]=${BRANCH}" \
+            "variables[BENCHMARK]=true"
+
+      - name: Wait for FoamAdapter LRZ GitLab CI pipeline for benchmarking
+        run: |
+          .github/scripts/wait_pipeline.sh \
+            "${{ env.REPO_NAME }}" \
+            "${{ steps.trigger-foamAdapter.outputs.pipeline_id }}" \
+            "${FOAMADAPTER_PROJECT_TOKEN}"
