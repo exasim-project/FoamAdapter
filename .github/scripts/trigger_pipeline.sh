@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# ------------------------------------------------------------------------
-# Trigger a new LRZ GitLab CI pipeline for a given branch.
+# -----------------------------------------------------------------------------
+# Trigger a new LRZ GitLab CI pipeline on TUM COMA cluster for a given branch.
 #
 # Uses environment variables defined in the GitHub Actions job:
 #   LRZ_GROUP, LRZ_HOST, REPO_NAME, LRZ_GITLAB_TRIGGER_TOKEN
 #
 # Usage:
 #   .github/scripts/trigger_pipeline.sh <branch>
-# ------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 set -euo pipefail
 
