@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1440 # 24 hours
 
+    outputs:
+      branch: ${{ steps.branch.outputs.branch }}
+
     # Only run if the 'Skip-build' label is not present on a PR
     if: "!contains(toJson(github.event.pull_request.labels.*.name), 'Skip-build')"
 
@@ -58,100 +61,50 @@ jobs:
 
       - name: Cancel running/pending LRZ GitLab CI pipelines
         run: |
-          BRANCH=${{ steps.branch.outputs.branch }}
-          echo "Checking running/pending CI pipelines for branch $BRANCH"
-
-          response=$(curl -s -w "%{http_code}" -o response.json \
-            --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
-            "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines?ref=$BRANCH&order_by=id&sort=desc")
-          http_code="${response:(-3)}"
-
-          if [[ "$http_code" != "200" ]]; then
-            echo "GitLab API request failed with HTTP status $http_code"
-            cat response.json
-            exit 1
-          fi
-
-          if ! jq -e 'type=="array"' response.json >/dev/null 2>&1; then
-            echo "Unexpected response from GitLab API (not a JSON array)"
-            cat response.json
-            exit 1
-          fi
-
-          pipeline_ids=$(jq -r '.[] | select(.status=="running" or .status=="pending") | .id' response.json)
-          if [ -z "$pipeline_ids" ]; then
-            echo "No running/pending CI pipelines to check"
-          else
-            for id in $pipeline_ids; do
-              echo "Checking pipeline $id for NEON_BRANCH"
-              vars=$(curl -s \
-                --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
-                "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/$id/variables")
-
-              neon_branch=$(echo "$vars" | jq -r '.[] | select(.key=="NEON_BRANCH") | .value' || true)
-
-              if [ -z "$neon_branch" ]; then
-                echo "Canceling pipeline $id (NEON_BRANCH is null)"
-                curl -s --request POST \
-                 --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
-                 "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/$id/cancel"
-              else
-               echo "Keeping pipeline $id (NEON_BRANCH=$neon_branch)"
-              fi
-           done
-          fi
+          ./ci/github/cancel_triggered_pipelines.sh ${{ steps.branch.outputs.branch }}
 
       - name: Trigger LRZ GitLab CI pipeline
         id: trigger
         run: |
-          BRANCH=${{ steps.branch.outputs.branch }}
-          echo "Triggering new CI pipeline on branch $BRANCH"
+          ./ci/github/trigger_pipeline.sh ${{ steps.branch.outputs.branch }}
 
-          response=$(curl -s --request POST \
-            --form "token=${LRZ_GITLAB_TRIGGER_TOKEN}" \
-            --form "ref=$BRANCH" \
-            "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/trigger/pipeline")
-
-          echo "$response" | jq .
-          pipeline_id=$(echo "$response" | jq -r '.id')
-          if [ "$pipeline_id" = "null" ] || [ -z "$pipeline_id" ]; then
-            echo "Failed to trigger LRZ CI pipeline"
-            exit 1
-          fi
-
-          echo "pipeline_id=$pipeline_id" >> $GITHUB_OUTPUT
 
       - name: Wait for LRZ GitLab CI pipeline
         run: |
-          set -euo pipefail
+          ./ci/github/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
 
-          PIPELINE_ID="${{ steps.trigger.outputs.pipeline_id }}"
+  benchmark:
+    name: Benchmark FoamAdapter on GPU
+    runs-on: ubuntu-latest
+    timeout-minutes: 1440 # 24 hours
 
-          # Construct pipeline URL
-          pipeline_url="https://${LRZ_HOST}/${LRZ_GROUP}/${REPO_NAME}/-/pipelines/${PIPELINE_ID}"
-          echo "Monitoring LRZ GitLab CI pipeline: $pipeline_url"
+    needs: [build-and-test]
+    if: contains(toJson(github.event.pull_request.labels), 'benchmark')
 
-          for i in $(seq 1 "${MAX_WAIT_MINUTES}"); do
-            status=$(curl -s \
-             --header "PRIVATE-TOKEN: ${LRZ_GITLAB_PROJECT_TOKEN}" \
-              "https://${LRZ_HOST}/api/v4/projects/${LRZ_GROUP}%2F${REPO_NAME}/pipelines/${PIPELINE_ID}" \
-             | jq -r '.status')
+    env:
+      LRZ_GROUP: greole
+      LRZ_HOST: gitlab-ce.lrz.de
+      REPO_NAME: ${{ github.event.repository.name }}
+      BRANCH: ${{ needs.build-and-test.outputs.branch }}
+      LRZ_GITLAB_PROJECT_TOKEN: ${{ secrets.GITLAB_PROJECT_TOKEN }}
+      LRZ_GITLAB_TRIGGER_TOKEN: ${{ secrets.LRZ_GITLAB_TRIGGER_TOKEN }}
+      MAX_WAIT_MINUTES: 1440
 
-            echo "[$i] $REPO_NAME pipeline status: $status"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            case "$status" in
-              success)
-                echo "$REPO_NAME CI pipeline succeeded"
-                exit 0
-                ;;
-              failed|canceled|skipped)
-              echo "$REPO_NAME CI pipeline finished with status: $status"
-              exit 1
-              ;;
-            esac
+      - name: Cancel running/pending LRZ GitLab CI pipelines
+        run: |
+          ./ci/github/cancel_triggered_pipelines.sh "${BRANCH}"
 
-            sleep 60
-          done
+      - name: Trigger LRZ GitLab CI pipeline for benchmarking
+        id: trigger
+        run: |
+          ./ci/github/trigger_pipeline.sh \
+            "${BRANCH}" \
+            "variables[BENCHMARK]=true"
 
-          echo "Timed out after $MAX_WAIT minutes waiting for $REPO_NAME CI pipeline"
-          exit 1
+      - name: Wait for LRZ GitLab CI pipeline for benchmarking
+        run: |
+          ./ci/github/wait_pipeline.sh ${{ steps.trigger.outputs.pipeline_id }}
