@@ -35,6 +35,7 @@ int main(int argc, char* argv[])
 
 #include "createFields.H"
 
+        // TODO have central place for the mapper
         auto& solverDict = rt.fvSolutionDict.get<NeoN::Dictionary>("solvers");
         solverDict.get<NeoN::Dictionary>("p") =
             nf::mapFvSolution(solverDict.get<NeoN::Dictionary>("p"));
