@@ -5,6 +5,7 @@
 #include <tuple>
 
 #include "NeoN/NeoN.hpp"
+#include "FoamAdapter/datastructures/runTime.hpp"
 
 #include "fvc.H"
 
@@ -17,5 +18,9 @@ void setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam
 
 NeoN::Executor createExecutor(const Foam::dictionary& dict);
 
+/* @brief create the commonly required objects for a simulation
+ * @return a tuple of the executor, the controlDict, the schemesDict, the  solutionDict
+ */
+runTime createAdapterRunTime(const Foam::Time& runTime);
 
 } // namespace Foam
