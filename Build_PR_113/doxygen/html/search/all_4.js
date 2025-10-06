@@ -6,5 +6,7 @@ var searchData=
   ['foamadapter_3a_3adetail_3',['detail',['../namespaceFoamAdapter_1_1detail.html',1,'FoamAdapter']]],
   ['foamfield_4',['foamField',['../classFoamAdapter_1_1CreateFromFoamField.html#a87674da7ed26e1bdd5a14f48896deb0e',1,'FoamAdapter::CreateFromFoamField']]],
   ['fromfoamfield_5',['fromFoamField',['../namespaceFoamAdapter.html#a02bea90fb07cdc6d164c2b4c1718fc08',1,'FoamAdapter']]],
-  ['fvsolution_2ehpp_6',['fvSolution.hpp',['../fvSolution_8hpp.html',1,'']]]
+  ['fvschemesdict_6',['fvSchemesDict',['../structFoamAdapter_1_1runTime.html#affcaf9e3c07888056572630a68340bce',1,'FoamAdapter::runTime']]],
+  ['fvsolution_2ehpp_7',['fvSolution.hpp',['../fvSolution_8hpp.html',1,'']]],
+  ['fvsolutiondict_8',['fvSolutionDict',['../structFoamAdapter_1_1runTime.html#a1eec9ba763afc0f89d6e9d2f7b814a2a',1,'FoamAdapter::runTime']]]
 ];
