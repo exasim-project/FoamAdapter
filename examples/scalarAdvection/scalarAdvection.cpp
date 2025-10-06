@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2023 FoamAdapter authors
+// SPDX-FileCopyrightText: 2023-2025 FoamAdapter authors
 
 #include "NeoN/NeoN.hpp"
 
@@ -10,10 +10,10 @@
 using Foam::Info;
 using Foam::endl;
 using Foam::nl;
-namespace fvc = Foam::fvc;
 
 namespace dsl = NeoN::dsl;
 namespace fvcc = NeoN::finiteVolume::cellCentred;
+namespace nf = FoamAdapter;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -25,50 +25,28 @@ int main(int argc, char* argv[])
 #include "setRootCase.H"
 #include "createTime.H"
 
-        NeoN::Database db;
-
-        fvcc::VectorCollection& VectorCollection =
-            fvcc::VectorCollection::instance(db, "VectorCollection");
-
-        NeoN::Dictionary controlDict = FoamAdapter::convert(runTime.controlDict());
-        NeoN::Executor exec = FoamAdapter::createExecutor(runTime.controlDict());
-
-        std::unique_ptr<FoamAdapter::MeshAdapter> meshPtr = FoamAdapter::createMesh(exec, runTime);
-        FoamAdapter::MeshAdapter& mesh = *meshPtr;
+        auto rt = nf::createAdapterRunTime(runTime);
+        auto& mesh = rt.mesh;
 
 #include "createControl.H"
-
-        auto [adjustTimeStep, maxCo, maxDeltaT] = FoamAdapter::timeControls(runTime);
-
 #include "createFields.H"
 
-        // Foam::scalar coNum = fvcc::computeCoNum(phi);
-        // if (adjustTimeStep)
-        // {
-        //     FoamAdapter::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
-        // }
-
-
-        NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
-        NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
-
-        Info << "creating FoamAdapter mesh" << endl;
-        NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
-
         Info << "creating FoamAdapter fields" << endl;
+        fvcc::VectorCollection& VectorCollection =
+            fvcc::VectorCollection::instance(rt.db, "VectorCollection");
         fvcc::VolumeField<NeoN::scalar>& nfT =
             VectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
                 FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
-                    .exec = exec,
-                    .nfMesh = nfMesh,
+                    .exec = rt.exec,
+                    .nfMesh = rt.nfMesh,
                     .foamField = T,
                     .name = "nfT"
                 }
             );
-        auto nfPhi0 = FoamAdapter::constructSurfaceField(exec, nfMesh, phi0);
-        auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, phi);
+        auto nfPhi0 = FoamAdapter::constructSurfaceField(rt.exec, rt.nfMesh, phi0);
+        auto nfPhi = FoamAdapter::constructSurfaceField(rt.exec, rt.nfMesh, phi);
 
-        Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
+        Foam::scalar endTime = rt.controlDict.get<Foam::scalar>("endTime");
 
         while (runTime.run())
         {
@@ -78,7 +56,7 @@ int main(int argc, char* argv[])
             auto& nfOldT = fvcc::oldTime(nfT);
             nfOldT.internalVector() = nfT.internalVector();
 
-            if (controlDict.get<int>("setFields"))
+            if (rt.controlDict.get<int>("setFields"))
             {
                 Foam::scalar pi = Foam::constant::mathematical::pi;
                 U = U0 * Foam::cos(pi * (t + 0.5 * dt) / endTime);
@@ -88,31 +66,26 @@ int main(int argc, char* argv[])
                     nfPhi0.internalVector() * std::cos(pi * (t + 0.5 * dt) / endTime);
             }
 
-
-            std::tie(adjustTimeStep, maxCo, maxDeltaT) = FoamAdapter::timeControls(runTime);
             auto coNum = fvcc::computeCoNum(nfPhi, dt);
             Foam::Info << "max(phi) : " << max(phi).value() << Foam::endl;
             Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
-            if (adjustTimeStep)
+            if (rt.adjustTimeStep)
             {
-                FoamAdapter::setDeltaT(runTime, maxCo, coNum, maxDeltaT);
+                FoamAdapter::setDeltaT(runTime, rt.maxCo, coNum, rt.maxDeltaT);
             }
             runTime++;
 
             Info << "Time = " << runTime.timeName() << endl;
-
             {
-                NeoN::dsl::Expression eqnSys(
-                    NeoN::dsl::imp::ddt(nfT) + NeoN::dsl::imp::div(nfPhi, nfT)
-                );
+                dsl::Expression eqnSys(dsl::imp::ddt(nfT) + dsl::imp::div(nfPhi, nfT));
 
-                NeoN::dsl::solve(eqnSys, nfT, t, dt, fvSchemesDict, fvSolutionDict);
+                dsl::solve(eqnSys, nfT, t, dt, rt.fvSchemesDict, rt.fvSolutionDict);
             }
 
             if (runTime.outputTime())
             {
                 Foam::Info << "writing nfT field" << Foam::endl;
-                FoamAdapter::write(nfT.internalVector(), mesh, "nfT");
+                FoamAdapter::write(nfT.internalVector(), rt.mesh, "nfT");
             }
 
             runTime.write();
