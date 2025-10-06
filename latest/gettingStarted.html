@@ -262,7 +262,7 @@ cmake<span class="w"> </span>--install<span class="w"> </span>.
 </div></blockquote>
 <section id="building-with-cmake-presets">
 <h2>Building with CMake Presets<a class="headerlink" href="#building-with-cmake-presets" title="Link to this heading">¶</a></h2>
-<p>Additionally, we provide several CMake presets to set commonly required flags if you compile NeoFoam in combination with Kokkos.</p>
+<p>Additionally, we provide several CMake presets to set commonly required flags.</p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--list-presets<span class="w"> </span><span class="c1"># To list existing presets</span>
 </pre></div>
@@ -280,12 +280,12 @@ cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class=
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
 <p>The following tools are used in the development of this project:</p>
-<p>required tools for documentation:</p>
+<p>The required tools for documentation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>doxygen
 pip<span class="w"> </span>install<span class="w"> </span>pre-commit<span class="w"> </span>sphinx<span class="w"> </span>furo<span class="w"> </span>breathe<span class="w"> </span>sphinx-sitemap
 </pre></div>
 </div>
-<p>required tools for compilation (ubuntu latest 24.04):</p>
+<p>The required tools for compilation (ubuntu latest 24.04):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
 ninja-build<span class="w"> </span><span class="se">\</span>
@@ -300,7 +300,12 @@ build-essential
 </section>
 <section id="run-test-case">
 <h2>Run test case<a class="headerlink" href="#run-test-case" title="Link to this heading">¶</a></h2>
-<p>Run</p>
+<p>To build these test cases, the CMake preset <cite>profiling</cite> should be used during config and build step for FoamAdapter.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--preset<span class="w"> </span>profiling
+cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class="w"> </span>profiling
+</pre></div>
+</div>
+<p>Then go to the <cite>tutorials</cite> directory and use the predefined script <cite>Allrun</cite> in the directory of each test case to run the chosen test case.</p>
 </section>
 </section>
 
