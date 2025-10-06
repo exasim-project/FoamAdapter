@@ -68,11 +68,9 @@ int main(int argc, char* argv[])
 
             TEqn.solve();
 
-            NeoN::dsl::Expression nfTEqn(
-                NeoN::dsl::imp::ddt(nfT) - NeoN::dsl::imp::laplacian(nfKappa, nfT)
-            );
+            dsl::Expression nfTEqn(dsl::imp::ddt(nfT) - dsl::imp::laplacian(nfKappa, nfT));
 
-            NeoN::dsl::solve(
+            dsl::solve(
                 nfTEqn,
                 nfT,
                 t,

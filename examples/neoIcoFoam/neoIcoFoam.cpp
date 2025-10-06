@@ -11,9 +11,8 @@
 using Foam::Info;
 using Foam::endl;
 using Foam::nl;
-namespace fvc = Foam::fvc;
-namespace fvm = Foam::fvm;
 
+namespace fvc = Foam::fvc;
 namespace dsl = NeoN::dsl;
 namespace nnfvcc = NeoN::finiteVolume::cellCentred;
 namespace nf = FoamAdapter;
@@ -95,8 +94,7 @@ int main(int argc, char* argv[])
 
             // Momentum predictor
             nf::Expression<NeoN::Vec3> UEqn(
-                NeoN::dsl::imp::ddt(U) + NeoN::dsl::imp::div(phi, U)
-                    - NeoN::dsl::imp::laplacian(nu, U),
+                dsl::imp::ddt(U) + dsl::imp::div(phi, U) - dsl::imp::laplacian(nu, U),
                 U,
                 rt.fvSchemesDict,
                 rt.fvSolutionDict.get<NeoN::Dictionary>("U")
