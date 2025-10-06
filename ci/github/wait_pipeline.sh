@@ -10,7 +10,7 @@
 #   LRZ_GROUP, LRZ_HOST, REPO_NAME, MAX_WAIT_MINUTES, LRZ_GITLAB_PROJECT_TOKEN
 #
 # Usage:
-#   .github/scripts/wait_pipeline.sh <pipeline_id>
+#   ./ci/github/scripts/wait_pipeline.sh <pipeline_id>
 # --------------------------------------------------------------------------------------------
 
 set -euo pipefail

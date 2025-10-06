@@ -11,7 +11,7 @@
 #   LRZ_GROUP, LRZ_HOST, REPO_NAME, LRZ_GITLAB_PROJECT_TOKEN
 #
 # Usage:
-#   .github/scripts/cancel_triggered_pipelines.sh <branch>
+#   ./ci/github/scripts/cancel_triggered_pipelines.sh <branch>
 # ---------------------------------------------------------------------------------------
 
 set -euo pipefail

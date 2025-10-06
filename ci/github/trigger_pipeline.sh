@@ -10,7 +10,7 @@
 #   LRZ_GROUP, LRZ_HOST, REPO_NAME, LRZ_GITLAB_TRIGGER_TOKEN
 #
 # Usage:
-#   .github/scripts/trigger_pipeline.sh <branch>
+#   ./ci/github/scripts/trigger_pipeline.sh <branch>
 # -----------------------------------------------------------------------------
 
 set -euo pipefail
