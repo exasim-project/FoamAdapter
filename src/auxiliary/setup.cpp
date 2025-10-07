@@ -95,10 +95,8 @@ NeoN::Executor createExecutor(const Foam::dictionary& dict)
     return createExecutor(execName);
 }
 
-FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in)
+FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in, const NeoN::Executor exec)
 {
-    std::cout << __FILE__ << ":"
-              << "Creating FoamAdapter runTime\n";
     auto exec = createExecutor(in.controlDict());
     return createAdapterRunTime(in, exec);
 }

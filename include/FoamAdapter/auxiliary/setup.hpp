@@ -19,6 +19,8 @@ void setDeltaT(Foam::Time& ofRunTime, RunTime& nfRunTime, Foam::scalar coNum);
 
 NeoN::Executor createExecutor(const Foam::dictionary& dict);
 
+RunTime createAdapterRunTime(const Foam::Time& runTime, const NeoN::Executor exec);
+
 /* @brief create the commonly required objects for a simulation
  * @return a tuple of the executor, the controlDict, the schemesDict, the  solutionDict*/
 RunTime createAdapterRunTime(const Foam::Time& runTime, const NeoN::Executor exec);
@@ -26,5 +28,7 @@ RunTime createAdapterRunTime(const Foam::Time& runTime, const NeoN::Executor exe
 /* @brief create a struct holding the commonly required objects for a simulation
  * @return the RunTime instance*/
 RunTime createAdapterRunTime(const Foam::Time& runTime);
+
+>>>>>>> a7c7017 (wip refactor solver)
 
 } // namespace Foam

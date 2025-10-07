@@ -64,10 +64,6 @@ int main(int argc, char* argv[])
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
-            Foam::fvScalarMatrix TEqn(Foam::fvm::ddt(T) - Foam::fvm::laplacian(kappa, T));
-
-            TEqn.solve();
-
             dsl::Expression nfTEqn(dsl::imp::ddt(nfT) - dsl::imp::laplacian(nfKappa, nfT));
 
             dsl::solve(

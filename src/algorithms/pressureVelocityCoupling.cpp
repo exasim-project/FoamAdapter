@@ -17,7 +17,6 @@ void constrainHbyA(
     const nnfvcc::VolumeField<scalar>& p
 )
 {
-    const auto pIn = p.internalVector().view();
     auto HbyAin = HbyA.internalVector().view();
     auto [HbyABcValue, UBcValue] = views(HbyA.boundaryData().value(), U.boundaryData().value());
 
@@ -37,18 +36,21 @@ void constrainHbyA(
     }
 }
 
-std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
-discreteMomentumFields(const Expression<Vec3>& expr)
+nnfvcc::VolumeField<scalar> computeRAU(const PDESolver<Vec3>& expr)
 {
-    const nnfvcc::VolumeField<Vec3>& U = expr.getVector();
+    // TODO this assumes an assembled matrix
+    // force assembly if not assembled
+    const auto& U = expr.getField();
     const auto& mesh = U.mesh();
     const auto& sparsityPattern = expr.sparsityPattern();
     const auto& ls = expr.linearSystem();
-    const auto vol = mesh.cellVolumes().view();
-    const auto values = ls.matrix().values().view();
-    const auto rhs = ls.rhs().view();
-    const auto diagOffset = sparsityPattern.diagOffset().view();
-    const auto rowPtrs = ls.matrix().rowOffs().view();
+
+    const auto [vol, values, diagOffset, rowPtrs] = views(
+        mesh.cellVolumes(),
+        ls.matrix().values(),
+        sparsityPattern.diagOffset(),
+        ls.matrix().rowOffs()
+    );
 
     auto rABCs = nnfvcc::createExtrapolatedBCs<nnfvcc::VolumeBoundary<scalar>>(mesh);
     auto rAU = nnfvcc::VolumeField<scalar>(expr.exec(), "rAU", mesh, rABCs);
@@ -59,24 +61,40 @@ discreteMomentumFields(const Expression<Vec3>& expr)
         return vol[celli] / (values[rowPtrs[celli] + diagOffsetCelli][0]);
     });
 
+    return rAU;
+}
+
+std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
+discreteMomentumFields(const PDESolver<Vec3>& expr)
+{
+    const auto& U = expr.getField();
+    const auto& mesh = U.mesh();
+    const auto& sparsityPattern = expr.sparsityPattern();
+    const auto& ls = expr.linearSystem();
+
+    const auto [vol, values, diagOffset, rowPtrs] = views(
+        mesh.cellVolumes(),
+        ls.matrix().values(),
+        sparsityPattern.diagOffset(),
+        ls.matrix().rowOffs()
+    );
+
+    auto rAU = computeRAU(expr);
     auto OffDiagonalSourceBCs = nnfvcc::createExtrapolatedBCs<nnfvcc::VolumeBoundary<Vec3>>(mesh);
     auto HbyA = nnfvcc::VolumeField<Vec3>(expr.exec(), "HbyA", mesh, OffDiagonalSourceBCs);
     NeoN::fill(HbyA.internalVector(), NeoN::zero<Vec3>());
     const auto nInternalFaces = mesh.nInternalFaces();
-
     const auto exec = U.exec();
-    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalU, internalRAU] = views(
+
+    const auto [owner, neighbour, ownOffs, neiOffs, internalU] = views(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
-        mesh.boundaryMesh().faceCells(),
         sparsityPattern.ownerOffset(),
         sparsityPattern.neighbourOffset(),
-        U.internalVector(),
-        rAU.internalVector()
+        U.internalVector()
     );
 
     auto internalHbyA = HbyA.internalVector().view();
-
     NeoN::parallelFor(
         exec,
         {0, nInternalFaces},
@@ -95,6 +113,7 @@ discreteMomentumFields(const Expression<Vec3>& expr)
         }
     );
 
+    const auto [rhs, internalRAU] = views(ls.rhs(), rAU.internalVector());
     NeoN::parallelFor(
         exec,
         {0, internalHbyA.size()},
@@ -114,11 +133,11 @@ discreteMomentumFields(const Expression<Vec3>& expr)
 void updateFaceVelocity(
     nnfvcc::SurfaceField<scalar>& phi,
     const nnfvcc::SurfaceField<scalar>& predictedPhi,
-    const Expression<scalar>& expr
+    const PDESolver<scalar>& expr
 )
 {
     const auto& mesh = phi.mesh();
-    const auto& p = expr.getVector();
+    const auto& p = expr.getField();
     const auto sparsityPattern = expr.sparsityPattern();
     const auto nInternalFaces = mesh.nInternalFaces();
     const auto exec = phi.exec();

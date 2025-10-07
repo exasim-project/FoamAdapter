@@ -14,7 +14,14 @@ using Vec3 = NeoN::Vec3;
 namespace FoamAdapter
 {
 
-/* @brief
+/* @brief ensure that the HbyA does not violate boundary velocity constraint
+ * See https://openfoamwiki.net/index.php/SimpleFoam for details
+ * Cite:
+ *
+ * The velocity at the boundary face should satisfy following equation:
+ * \bold{u}|_{bf}  =   \frac{\bold {H[u] }}{a_P }|_{bf} -  \frac{\nabla p{}}{a_P }|_{bf}
+ * The subscript bf denoted that the quantity is evaluated at the boundary face. The function constrainHbyA ensures that the field <math>  \frac{\bold {H[u] }}{a_P }|_{bf} </math>
+ * does not violate the above equation. The boundary condition fixedFluxExtrapolatedPressure sets the pressure gradient in order that the above equation is satisfied. If we cannot modify the velocity, the function sets the field <math> \frac{\bold {H[u] }}{a_P }|_{bf}  = \bold{u}|_{bf} </math> in order that the field  <math>  \frac{\bold {H[u] }}{a_P }|_{bf} </math> does not contradict the zero gradient boundary condition which should be applied for the pressure if the velocity is fixed.
  *
  */
 void constrainHbyA(
@@ -23,15 +30,37 @@ void constrainHbyA(
     const nnfvcc::VolumeField<scalar>& p
 );
 
-std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
-discreteMomentumFields(const Expression<Vec3>& expr);
+/* @brief given a ... this function computes rAU
+*
+* where rAU  - inverse of the system matrix diagonal
+*
+* @return a tuple containing rAU and HbyA
+*/
+nnfvcc::VolumeField<scalar> computeRAU(const PDESolver<Vec3>& expr);
 
+/* @brief given a ... this function computes rAU and HbyA
+*
+* where rAU  - inverse of the system matrix diagonal
+*       HbyA - offdiagonal entries divided by diagonal
+*
+* @return a tuple containing rAU and HbyA
+*/
+std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
+discreteMomentumFields(const PDESolver<Vec3>& expr);
+
+/* @brief
+*
+* @note assumes an assembled system matrix
+*/
 void updateFaceVelocity(
     nnfvcc::SurfaceField<scalar>& phi,
     const nnfvcc::SurfaceField<scalar>& predictedPhi,
-    const Expression<scalar>& expr
+    const PDESolver<scalar>& expr
 );
 
+  /* @brief
+   *
+   */
 void updateVelocity(
     nnfvcc::VolumeField<Vec3>& U,
     const nnfvcc::VolumeField<Vec3>& HbyA,
