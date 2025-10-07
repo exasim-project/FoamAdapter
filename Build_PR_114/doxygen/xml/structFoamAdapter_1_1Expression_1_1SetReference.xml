@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structFoamAdapter_1_1Expression_1_1SetReference" kind="struct" language="C++" prot="public">
+    <compoundname>FoamAdapter::Expression::SetReference</compoundname>
+    <includes refid="expression_8hpp" local="no">expression.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">typename</ref> <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FunctorValueType</ref></type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structFoamAdapter_1_1Expression_1_1SetReference_1af539ccd61f7089dcd1c49d8206387779" prot="public" static="no" mutable="no">
+        <type>NeoN::localIdx</type>
+        <definition>NeoN::localIdx FoamAdapter::Expression&lt; ValueType, IndexType &gt;::SetReference&lt; FunctorValueType &gt;::pRefCell_</definition>
+        <argsstring></argsstring>
+        <name>pRefCell_</name>
+        <qualifiedname>FoamAdapter::Expression::SetReference::pRefCell_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="76" column="24" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structFoamAdapter_1_1Expression_1_1SetReference_1adb379b10d2f7e0a05059c1d27ffce708" prot="public" static="no" mutable="no">
+        <type>NeoN::scalar</type>
+        <definition>NeoN::scalar FoamAdapter::Expression&lt; ValueType, IndexType &gt;::SetReference&lt; FunctorValueType &gt;::pRefValue_</definition>
+        <argsstring></argsstring>
+        <name>pRefValue_</name>
+        <qualifiedname>FoamAdapter::Expression::SetReference::pRefValue_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="77" column="22" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="77" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structFoamAdapter_1_1Expression_1_1SetReference_1ad3b6eaaf8601464b00871bee426edb22" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>FoamAdapter::Expression&lt; ValueType, IndexType &gt;::SetReference&lt; FunctorValueType &gt;::SetReference</definition>
+        <argsstring>(NeoN::localIdx pRefCell, NeoN::scalar pRefValue)</argsstring>
+        <name>SetReference</name>
+        <qualifiedname>FoamAdapter::Expression::SetReference::SetReference</qualifiedname>
+        <param>
+          <type>NeoN::localIdx</type>
+          <declname>pRefCell</declname>
+        </param>
+        <param>
+          <type>NeoN::scalar</type>
+          <declname>pRefValue</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="79" column="9" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="79" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="structFoamAdapter_1_1Expression_1_1SetReference_1a54f424bf9d39524be6ef189f52797ea1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <definition>void FoamAdapter::Expression&lt; ValueType, IndexType &gt;::SetReference&lt; FunctorValueType &gt;::operator()</definition>
+        <argsstring>(NeoN::la::LinearSystem&lt; FunctorValueType, NeoN::localIdx &gt; &amp;ls)</argsstring>
+        <name>operator()</name>
+        <qualifiedname>FoamAdapter::Expression::SetReference::operator()</qualifiedname>
+        <param>
+          <type>NeoN::la::LinearSystem&lt; <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">FunctorValueType</ref>, NeoN::localIdx &gt; &amp;</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="83" column="14" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="83" bodyend="101"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="74" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="74" bodyend="102"/>
+    <listofallmembers>
+      <member refid="structFoamAdapter_1_1Expression_1_1SetReference_1a54f424bf9d39524be6ef189f52797ea1" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression::SetReference</scope><name>operator()</name></member>
+      <member refid="structFoamAdapter_1_1Expression_1_1SetReference_1af539ccd61f7089dcd1c49d8206387779" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression::SetReference</scope><name>pRefCell_</name></member>
+      <member refid="structFoamAdapter_1_1Expression_1_1SetReference_1adb379b10d2f7e0a05059c1d27ffce708" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression::SetReference</scope><name>pRefValue_</name></member>
+      <member refid="structFoamAdapter_1_1Expression_1_1SetReference_1ad3b6eaaf8601464b00871bee426edb22" prot="public" virt="non-virtual"><scope>FoamAdapter::Expression::SetReference</scope><name>SetReference</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

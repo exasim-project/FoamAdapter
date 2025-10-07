@@ -1,0 +1,217 @@
+\doxysection{expression.\+hpp}
+\hypertarget{expression_8hpp_source}{}\label{expression_8hpp_source}\index{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp@{/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp}}
+\mbox{\hyperlink{expression_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00001}00001\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ GPL-\/3.0-\/or-\/later}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00002}00002\ \textcolor{comment}{//\ SPDX-\/FileCopyrightText:\ 2025\ FoamAdapter\ authors}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00003}00003\ \textcolor{comment}{//\ TODO:\ move\ to\ cellCenred\ dsl?}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00005}00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}NeoN/NeoN.hpp"{}}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{runTime_8hpp}{FoamAdapter/datastructures/runTime.hpp}}"{}}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00010}00010\ \textcolor{keyword}{namespace\ }dsl\ =\ NeoN::dsl;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00012}00012\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceFoamAdapter}{FoamAdapter}}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00013}00013\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00015}00015\ \textcolor{comment}{/*@brief\ extends\ expression\ by\ giving\ access\ to\ assembled\ matrix}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00016}00016\ \textcolor{comment}{\ *\ @note\ used\ in\ neoIcoFOAM\ directly\ instead\ of\ dsl::expression}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00017}00017\ \textcolor{comment}{\ *\ TODO:\ implement\ flag\ if\ matrix\ is\ assembled\ or\ not\ -\/>\ if\ not\ assembled\ call\ assemble}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00018}00018\ \textcolor{comment}{\ *\ for\ dependent\ operations\ like\ discrete\ momentum\ fields}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00019}00019\ \textcolor{comment}{\ *\ needs\ storage\ for\ assembled\ matrix?\ and\ whether\ update\ is\ needed\ like\ for\ rAU\ and\ HbyA}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00020}00020\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00021}00021\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ValueType,\ \textcolor{keyword}{typename}\ IndexType\ =\ NeoN::localIdx>}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00022}\mbox{\hyperlink{classFoamAdapter_1_1Expression}{00022}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00023}00023\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00024}00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00026}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a5fe3280e76e7ab4fb157dd5feac60bfc}{00026}}\ \ \ \ \ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a5fe3280e76e7ab4fb157dd5feac60bfc}{Expression}}(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00027}00027\ \ \ \ \ \ \ \ \ dsl::Expression<ValueType>\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00028}00028\ \ \ \ \ \ \ \ \ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00029}00029\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{runTime}}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00030}00030\ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00031}00031\ \ \ \ \ \ \ \ \ :\ psi\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}})}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00032}00032\ \ \ \ \ \ \ \ \ ,\ expr\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}})}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00033}00033\ \ \ \ \ \ \ \ \ ,\ runTime\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{runTime}})}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00034}00034\ \ \ \ \ \ \ \ \ ,\ sparsityPattern\_(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{NeoN}}::\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{la}}::\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{SparsityPattern}}::\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{readOrCreate}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.mesh())}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00037}00037\ \ \ \ \ \ \ \ \ ,\ ls\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{NeoN}}::\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{la}}::\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{createEmptyLinearSystem}}<}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ValueType}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{NeoN}}::\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{localIdx}}>(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.mesh(),sparsityPattern\_))}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00040}00040\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00041}00041\ \ \ \ \ \ \ \ \ expr\_.read(runTime\_.\mbox{\hyperlink{structFoamAdapter_1_1RunTime_aa26f4fc2282444bc102496f85c57f879}{fvSchemesDict}});}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00042}00042\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00044}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a20227f6f2989729b84237dbae9c8a71d}{00044}}\ \ \ \ \ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a20227f6f2989729b84237dbae9c8a71d}{Expression}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}})}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00045}00045\ \ \ \ \ \ \ \ \ :\ psi\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}}.psi\_)}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00046}00046\ \ \ \ \ \ \ \ \ ,\ expr\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}}.expr\_)}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00047}00047\ \ \ \ \ \ \ \ \ ,\ runTime\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}}.runTime\_)}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00048}00048\ \ \ \ \ \ \ \ \ ,\ ls\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}}.ls\_)}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00049}00049\ \ \ \ \ \ \ \ \ ,\ sparsityPattern\_(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}}.sparsityPattern\_)\ \{\};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00051}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a8b2c4ff8f856720be0d862b2092c4b9a}{00051}}\ \ \ \ \ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a8b2c4ff8f856720be0d862b2092c4b9a}{\string~Expression}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00053}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a16c7d18b9f295ae6ceb255def5c6d5fd}{00053}}\ \ \ \ \ [[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{nodiscard}}]]\ NeoN::la::LinearSystem<ValueType,\ IndexType>\&\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a16c7d18b9f295ae6ceb255def5c6d5fd}{linearSystem}}()\ \{\ \textcolor{keywordflow}{return}\ ls\_;\ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00054}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a855cf32c23315ea3cc202e7bb1cd89d5}{00054}}\ \ \ \ \ [[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{nodiscard}}]]\ \textcolor{keyword}{const}\ \ NeoN::la::SparsityPattern\&\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a855cf32c23315ea3cc202e7bb1cd89d5}{sparsityPattern}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00055}00055\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sparsityPattern\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00057}00057\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00059}\mbox{\hyperlink{classFoamAdapter_1_1Expression_adb716afa4a18c7222f6b1408cdae32b1}{00059}}\ \ \ \ \ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\&\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_adb716afa4a18c7222f6b1408cdae32b1}{getVector}}()\ \{\ \textcolor{keywordflow}{return}\ this-\/>psi\_;\ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00061}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a009f1ff42847bf2d7595792930041e6b}{00061}}\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\&\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a009f1ff42847bf2d7595792930041e6b}{getVector}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00062}00062\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ this-\/>psi\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00064}00064\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00066}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a1531aefa9f947598726d237b7a810414}{00066}}\ \ \ \ \ [[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{nodiscard}}]]\ \textcolor{keyword}{const}\ NeoN::la::LinearSystem<ValueType,\ IndexType>\&\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a1531aefa9f947598726d237b7a810414}{linearSystem}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00067}00067\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ls\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00069}00069\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00071}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a350c68b8ce406f1027e73f688deb4af4}{00071}}\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::Executor\&\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a350c68b8ce406f1027e73f688deb4af4}{exec}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ls\_.exec();\ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00073}00073\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ FunctorValueType>}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00074}\mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference}{00074}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference}{SetReference}}\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00076}\mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_af539ccd61f7089dcd1c49d8206387779}{00076}}\ \ \ \ \ \ \ \ \ NeoN::localIdx\ \mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_af539ccd61f7089dcd1c49d8206387779}{pRefCell\_}};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00077}\mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_adb379b10d2f7e0a05059c1d27ffce708}{00077}}\ \ \ \ \ \ \ \ \ NeoN::scalar\ \mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_adb379b10d2f7e0a05059c1d27ffce708}{pRefValue\_}};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00079}\mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_ad3b6eaaf8601464b00871bee426edb22}{00079}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_ad3b6eaaf8601464b00871bee426edb22}{SetReference}}(NeoN::localIdx\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{pRefCell}},\ NeoN::scalar\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{pRefValue}}):}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_af539ccd61f7089dcd1c49d8206387779}{pRefCell\_}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{pRefCell}}),\mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_adb379b10d2f7e0a05059c1d27ffce708}{pRefValue\_}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{pRefValue}})\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00081}00081\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00083}\mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_a54f424bf9d39524be6ef189f52797ea1}{00083}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_a54f424bf9d39524be6ef189f52797ea1}{operator()}}(NeoN::la::LinearSystem<FunctorValueType,\ NeoN::localIdx>\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}})\{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagOffset}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.sparsityPattern().diagOffset().view();}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowOffs}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.matrix().rowOffs().view();}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00087}00087\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rhs}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.rhs().view();}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{values}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.matrix().values().view();}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00090}00090\ \ \ \ \ \ \ \ \ NeoN::parallelFor(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.exec(),}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \{pRefCell\_,\ pRefCell\_\ +\ 1\},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{KOKKOS\_LAMBDA}}(\textcolor{keyword}{const}\ std::size\_t\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{refCelli}})\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagIdx}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowOffs}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{refCelli}}]\ +\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagOffset}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{refCelli}}];}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagValue}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{values}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagIdx}}];}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rhs}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{refCelli}}]\ +=\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagValue}}\ *\ \mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference_adb379b10d2f7e0a05059c1d27ffce708}{pRefValue\_}};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{values}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagIdx}}]\ +=\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagValue}};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00099}00099\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00101}00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00102}00102\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00104}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a653dd3c9f333fde6b2af0b1f9150d19d}{00104}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a653dd3c9f333fde6b2af0b1f9150d19d}{setReference}}(NeoN::localIdx\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{pRefCell}},\ NeoN::scalar\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{pRefValue}})\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00105}00105\ \ \ \ \ \ \ \ \ needReference\_\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00106}00106\ \ \ \ \ \ \ \ \ pRefCell\_\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{pRefCell}};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00107}00107\ \ \ \ \ \ \ \ \ pRefValue\_\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{pRefValue}};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00108}00108\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00110}00110\ \ \ \ \ \textcolor{comment}{//\ TODO\ unify\ with\ dsl/solver.hpp}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00111}\mbox{\hyperlink{classFoamAdapter_1_1Expression_a4fb07c37a5aa1cfee93213a024007fe4}{00111}}\ \ \ \ \ NeoN::la::SolverStats\ \mbox{\hyperlink{classFoamAdapter_1_1Expression_a4fb07c37a5aa1cfee93213a024007fe4}{solve}}()}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00112}00112\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00113}00113\ \ \ \ \ \ \ \ \ std::vector<NeoN::dsl::OpFunctor<ValueType>>\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{functs}}\ =\ needReference\_\ ?\ std::vector<NeoN::dsl::OpFunctor<ValueType>>\{\}\ :\ std::vector<NeoN::dsl::OpFunctor<ValueType>>\{\};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00115}00115\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{stats}}\ =\ \ NeoN::dsl::solve(expr\_,}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ psi\_,}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00117}00117\ \ \ \ \ \ \ \ \ runTime\_.\mbox{\hyperlink{structFoamAdapter_1_1RunTime_ae5965b4f1cf14cc8d7c6d2a00148c4b5}{t}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00118}00118\ \ \ \ \ \ \ \ \ runTime\_.\mbox{\hyperlink{structFoamAdapter_1_1RunTime_a0f9b142b1c4951e919e1b750f93ebc14}{dt}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00119}00119\ \ \ \ \ \ \ \ \ runTime\_.\mbox{\hyperlink{structFoamAdapter_1_1RunTime_aa26f4fc2282444bc102496f85c57f879}{fvSchemesDict}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00120}00120\ \ \ \ \ \ \ \ \ runTime\_.\mbox{\hyperlink{structFoamAdapter_1_1RunTime_ab23e48dafc6eee85ecfb0c8d36c96710}{fvSolutionDict}}.get<NeoN::Dictionary>(psi\_.name),}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{functs}});}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00123}00123\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ solver\ stats:\(\backslash\)n"{}}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\(\backslash\)t\ num\ iter:\ "{}}\ <<\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{stats}}.numIter}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n\(\backslash\)t\ initial\ residual\ norm:\ "{}}\ <<\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{stats}}.initResNorm}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n\(\backslash\)t\ final\ residual\ norm:\ "{}}\ <<\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{stats}}.finalResNorm\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00127}00127\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00128}00128\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00129}00129\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00131}00131\ \ \ \ \ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\&\ psi\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00132}00132\ \ \ \ \ NeoN::dsl::Expression<ValueType>\ expr\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00133}00133\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\&\ runTime\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00134}00134\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::la::SparsityPattern\&\ sparsityPattern\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00135}00135\ \ \ \ \ NeoN::la::LinearSystem<ValueType,\ IndexType>\ ls\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00136}00136\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00137}00137\ \ \ \ \ \textcolor{keywordtype}{bool}\ needReference\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00138}00138\ \ \ \ \ NeoN::localIdx\ pRefCell\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00139}00139\ \ \ \ \ NeoN::scalar\ pRefValue\_;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00140}00140\ \};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00142}00142\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ValueType,\ \textcolor{keyword}{typename}\ IndexType\ =\ NeoN::localIdx>}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00143}\mbox{\hyperlink{namespaceFoamAdapter_a13b42389ef03dfeb668a50344c66743c}{00143}}\ NeoN::Vector<ValueType>\ \mbox{\hyperlink{namespaceFoamAdapter_a13b42389ef03dfeb668a50344c66743c}{diag}}(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00144}00144\ \ \ \ \ \textcolor{keyword}{const}\ la::LinearSystem<ValueType,\ IndexType>\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00145}00145\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::la::SparsityPattern\&\ sparsityPattern}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00146}00146\ )}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00147}00147\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00148}00148\ \ \ \ \ NeoN::Vector<ValueType>\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagonal}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.exec(),\ sparsityPattern.diagOffset().size(),\ 0.0);}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00149}00149\ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagView}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagonal}}.view();}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00151}00151\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagOffset}}\ =\ sparsityPattern.diagOffset().view();}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00152}00152\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ [\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{matrix}},\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{b}}]\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.view();}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00153}00153\ \ \ \ \ NeoN::parallelFor(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00154}00154\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.exec(),}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00155}00155\ \ \ \ \ \ \ \ \ \{0,\ diagOffset.size()\},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00156}00156\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{KOKKOS\_LAMBDA}}(\textcolor{keyword}{const}\ std::size\_t\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{celli}})\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagOffsetCelli}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagOffset}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{celli}}];}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagView}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{celli}}]\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{matrix}}.values[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{matrix}}.rowOffs[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{celli}}]\ +\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagOffsetCelli}}];}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00159}00159\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00160}00160\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00161}00161\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{diagonal}};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00162}00162\ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00165}00165\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ValueType,\ \textcolor{keyword}{typename}\ IndexType\ =\ NeoN::localIdx>}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00166}\mbox{\hyperlink{namespaceFoamAdapter_a67a615e0cb1de634ffc9df635d48775e}{00166}}\ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\ \mbox{\hyperlink{namespaceFoamAdapter_a67a615e0cb1de634ffc9df635d48775e}{applyOperator}}(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00167}00167\ \ \ \ \ \textcolor{keyword}{const}\ la::LinearSystem<ValueType,\ IndexType>\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00168}00168\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00169}00169\ )}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00170}00170\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00171}00171\ \ \ \ \ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{resultVector}}(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00172}00172\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.exec(),}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00173}00173\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}ls\_"{}}\ +\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.name,}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00174}00174\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.mesh(),}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00175}00175\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.internalVector(),}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00176}00176\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.boundaryData(),}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00177}00177\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.boundaryConditions()}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00178}00178\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00180}00180\ \ \ \ \ \textcolor{keyword}{auto}\ [\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{result}},\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{x}}]\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{views}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{resultVector}}.internalVector(),\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}.internalVector());}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00181}00181\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ [\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{matrix}},\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{b}}]\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ls}}.view();}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00183}00183\ \ \ \ \ NeoN::parallelFor(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00184}00184\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{resultVector}}.exec(),}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00185}00185\ \ \ \ \ \ \ \ \ \{0,\ result.size()\},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00186}00186\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{KOKKOS\_LAMBDA}}(\textcolor{keyword}{const}\ std::size\_t\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowi}})\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{IndexType}}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowStart}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{matrix}}.rowOffs[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowi}}];}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{IndexType}}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowEnd}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{matrix}}.rowOffs[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowi}}\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{ValueType}}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{sum}}\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{IndexType}}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{coli}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowStart}};\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{coli}}\ <\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowEnd}};\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{coli}}++)}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{sum}}\ +=\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{matrix}}.values[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{coli}}]\ *\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{x}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{matrix}}.colIdxs[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{coli}}]];}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{result}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowi}}]\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{sum}}\ -\/\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{b}}[\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{rowi}}];}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00195}00195\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00196}00196\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00198}00198\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{resultVector}};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00199}00199\ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00200}00200\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00201}00201\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00202}00202\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ValueType,\ \textcolor{keyword}{typename}\ IndexType\ =\ NeoN::localIdx>}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00203}\mbox{\hyperlink{namespaceFoamAdapter_a735d5fda9dfb92f1b072e6b2dc2ead40}{00203}}\ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\ \mbox{\hyperlink{namespaceFoamAdapter_a735d5fda9dfb92f1b072e6b2dc2ead40}{operator\&}}(}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00204}00204\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression<ValueType,\ IndexType>}}\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}},}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00205}00205\ \ \ \ \ \textcolor{keyword}{const}\ NeoN::finiteVolume::cellCentred::VolumeField<ValueType>\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00206}00206\ )}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00207}00207\ \{}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00208}00208\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceFoamAdapter_a67a615e0cb1de634ffc9df635d48775e}{applyOperator}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}}.linearSystem(),\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}});}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00209}00209\ \}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00211}00211\ \}}
+
+\end{DoxyCode}
