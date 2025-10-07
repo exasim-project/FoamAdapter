@@ -18,9 +18,12 @@ void setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam
 
 NeoN::Executor createExecutor(const Foam::dictionary& dict);
 
+RunTime createAdapterRunTime(const Foam::Time& runTime, const NeoN::Executor exec);
+
 /* @brief create the commonly required objects for a simulation
  * @return a tuple of the executor, the controlDict, the schemesDict, the  solutionDict
  */
-runTime createAdapterRunTime(const Foam::Time& runTime);
+RunTime createAdapterRunTime(const Foam::Time& runTime);
+
 
 } // namespace Foam

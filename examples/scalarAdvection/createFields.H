@@ -24,7 +24,6 @@ Foam::volVectorField
       ),
       mesh);
 
-
 if (rt.controlDict.get<int>("setFields"))
 {
     Foam::scalar spread = 0.05;
@@ -38,7 +37,6 @@ if (rt.controlDict.get<int>("setFields"))
         U[celli].x() = -Foam::sin(2.0 * pi * y) * Foam::pow(Foam::sin(pi * x), 2.0);
         U[celli].y() = Foam::sin(2.0 * pi * x) * Foam::pow(Foam::sin(pi * y), 2.0);
         U[celli].z() = 0.0;
-
 
         // initialize T
         T[celli] = std::exp(

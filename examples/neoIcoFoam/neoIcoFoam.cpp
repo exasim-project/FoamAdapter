@@ -96,16 +96,20 @@ int main(int argc, char* argv[])
             nf::Expression<NeoN::Vec3> UEqn(
                 dsl::imp::ddt(U) + dsl::imp::div(phi, U) - dsl::imp::laplacian(nu, U),
                 U,
-                rt.fvSchemesDict,
-                rt.fvSolutionDict.get<NeoN::Dictionary>("U")
+                rt
             );
 
-            UEqn.assemble(t, dt);
-
-            // if (piso.momentumPredictor())
-            // {
-            //     solve(UEqn == -fvc::grad(p));
-            // }
+            // NOTE since computing rAU and HbyA requires an assembled system matrix we explicitly
+            // trigger assembly here. In the future we might add a flag to the equation signaling
+            // whether assembly has been done.
+            if (piso.momentumPredictor())
+            {
+                // UEqn.solve(-fvc::grad(p));
+            }
+            else
+            {
+                UEqn.assemble();
+            }
 
             // --- PISO loop
             while (piso.correct())
@@ -138,22 +142,16 @@ int main(int argc, char* argv[])
                     nf::Expression<NeoN::scalar> pEqn(
                         NeoN::dsl::imp::laplacian(nfrAUf, p) - NeoN::dsl::exp::div(phiHbyA),
                         p,
-                        rt.fvSchemesDict,
-                        rt.fvSolutionDict.get<NeoN::Dictionary>("p")
+                        rt
+                        // rt.fvSolutionDict.get<NeoN::Dictionary>("p")
                     );
-
-                    pEqn.assemble(rt.t, rt.dt);
 
                     if (ofp.needReference() && pRefCell >= 0)
                     {
                         pEqn.setReference(pRefCell, pRefValue);
                     }
-                    Info << "Solve P" << endl;
-                    auto stats = pEqn.solve(t, dt);
-                    std::cout << " solver stats:\n"
-                              << "\t num iter: " << stats.numIter
-                              << "\n\t initial residual norm: " << stats.initResNorm
-                              << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
+
+                    auto stats = pEqn.solve();
                     p.correctBoundaryConditions();
 
                     if (piso.finalNonOrthogonalIter())

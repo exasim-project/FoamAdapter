@@ -20,7 +20,7 @@ namespace FoamAdapter
     /* @brief A struct holding typical runTime information
      *
      */
-    struct runTime {
+    struct RunTime {
         NeoN::Database db;
         std::unique_ptr<MeshAdapter> meshPtr;
         MeshAdapter& mesh;
