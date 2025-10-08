@@ -54,19 +54,19 @@
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00050}00050\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00051}\mbox{\hyperlink{namespaceFoamAdapter_a001fc933f3c84a6aa35c1ca0791faf78}{00051}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceFoamAdapter_a001fc933f3c84a6aa35c1ca0791faf78}{insert}}(NeoN::Dictionary\&\ neoDict,\ \textcolor{keyword}{const}\ Foam::entry\&\ entry)}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00052}00052\ \{}
-\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00053}00053\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{checkEntryType<T>}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{entry}}))}
+\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00053}00053\ \ \ \ \ \textcolor{keywordflow}{if}\ (checkEntryType<T>(entry))}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00054}00054\ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00055}00055\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{keyword}}\ =\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{entry}}.keyword();}
-\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00056}00056\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{neoDict}}.insert(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{keyword}},\ \mbox{\hyperlink{namespaceFoamAdapter_a25a465bba7f6725729af83a99c22f9f2}{convert}}(\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{entry}}.get<\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{T}}>()));}
+\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00055}00055\ \ \ \ \ \ \ \ \ std::string\ keyword\ =\ entry.keyword();}
+\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00056}00056\ \ \ \ \ \ \ \ \ neoDict.insert(keyword,\ \mbox{\hyperlink{namespaceFoamAdapter_a25a465bba7f6725729af83a99c22f9f2}{convert}}(entry.get<T>()));}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00057}00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00058}00058\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00059}00059\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00060}00060\ \}}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00061}00061\ }
-\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00062}00062\ NeoN::TokenList\ \mbox{\hyperlink{namespaceFoamAdapter_a25a465bba7f6725729af83a99c22f9f2}{convert}}(\textcolor{keyword}{const}\ Foam::ITstream\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{stream}});}
+\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00062}00062\ NeoN::TokenList\ \mbox{\hyperlink{namespaceFoamAdapter_a25a465bba7f6725729af83a99c22f9f2}{convert}}(\textcolor{keyword}{const}\ Foam::ITstream\&\ stream);}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00063}00063\ }
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00064}00064\ \textcolor{comment}{//\ To\ Foam}}
-\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00065}\mbox{\hyperlink{namespaceFoamAdapter_a5bc0bbc6691462c5f7bdd97f7afb44dc}{00065}}\ Foam::vector\ \mbox{\hyperlink{namespaceFoamAdapter_a25a465bba7f6725729af83a99c22f9f2}{convert}}(\textcolor{keyword}{const}\ NeoN::Vec3\&\ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Type}});}
+\DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00065}\mbox{\hyperlink{namespaceFoamAdapter_a5bc0bbc6691462c5f7bdd97f7afb44dc}{00065}}\ Foam::vector\ \mbox{\hyperlink{namespaceFoamAdapter_a25a465bba7f6725729af83a99c22f9f2}{convert}}(\textcolor{keyword}{const}\ NeoN::Vec3\&\ Type);}
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00066}00066\ }
 \DoxyCodeLine{\Hypertarget{convert_8hpp_source_l00067}00067\ \};\ \textcolor{comment}{//\ namespace\ FoamAdapter}}
 

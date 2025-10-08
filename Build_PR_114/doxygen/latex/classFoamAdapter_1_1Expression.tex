@@ -12,32 +12,34 @@ struct \mbox{\hyperlink{structFoamAdapter_1_1Expression_1_1SetReference}{Set\+Re
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classFoamAdapter_1_1Expression_a5fe3280e76e7ab4fb157dd5feac60bfc}{Expression}} (dsl\+::\+Expression$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}}, Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{psi}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{Run\+Time}} \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{run\+Time}})
+\mbox{\hyperlink{classFoamAdapter_1_1Expression_a12e4c8ac5f3f70fbb35c4ff4576ccee6}{Expression}} (dsl\+::\+Expression$<$ Value\+Type $>$ expr, Volume\+Field \&psi, const \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{Run\+Time}} \&run\+Time)
 \item 
-\mbox{\hyperlink{classFoamAdapter_1_1Expression_a20227f6f2989729b84237dbae9c8a71d}{Expression}} (\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}} \&\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{expr}})
+\mbox{\hyperlink{classFoamAdapter_1_1Expression_a20227f6f2989729b84237dbae9c8a71d}{Expression}} (const \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}} \&expr)
 \item 
-\mbox{\hyperlink{classFoamAdapter_1_1Expression_a8b2c4ff8f856720be0d862b2092c4b9a}{\texorpdfstring{$\sim$}{\string~}\+Expression}} ()=\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{default}}
+\mbox{\hyperlink{classFoamAdapter_1_1Expression_a8b2c4ff8f856720be0d862b2092c4b9a}{\texorpdfstring{$\sim$}{\string~}\+Expression}} ()=default
 \item 
-Neo\+N\+::la\+::\+Linear\+System$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a16c7d18b9f295ae6ceb255def5c6d5fd}{linear\+System}} ()
+Volume\+Field \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a81d5718d028b71ee22ff2a259d4d30dc}{get\+Field}} ()
 \item 
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::la\+::\+Sparsity\+Pattern \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a855cf32c23315ea3cc202e7bb1cd89d5}{sparsity\+Pattern}} () \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}}
+const Volume\+Field \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a0ce11c16c1f569c2a3c87348d8c124b4}{get\+Field}} () const
 \item 
-Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_adb716afa4a18c7222f6b1408cdae32b1}{get\+Vector}} ()
+const Neo\+N\+::la\+::\+Sparsity\+Pattern \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a855cf32c23315ea3cc202e7bb1cd89d5}{sparsity\+Pattern}} () const
 \item 
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a009f1ff42847bf2d7595792930041e6b}{get\+Vector}} () \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}}
+Neo\+N\+::la\+::\+Linear\+System$<$ Value\+Type, Index\+Type $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a16c7d18b9f295ae6ceb255def5c6d5fd}{linear\+System}} ()
 \item 
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::la\+::\+Linear\+System$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a1531aefa9f947598726d237b7a810414}{linear\+System}} () \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}}
+const Neo\+N\+::la\+::\+Linear\+System$<$ Value\+Type, Index\+Type $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a1531aefa9f947598726d237b7a810414}{linear\+System}} () const
 \item 
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::\+Executor \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a350c68b8ce406f1027e73f688deb4af4}{exec}} () \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}}
+Neo\+N\+::la\+::\+Linear\+System$<$ Value\+Type, Index\+Type $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a6024ec042022f9f5ea7cfd0abf9c9df7}{assemble}} ()
 \item 
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} \mbox{\hyperlink{classFoamAdapter_1_1Expression_a653dd3c9f333fde6b2af0b1f9150d19d}{set\+Reference}} (Neo\+N\+::local\+Idx \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{p\+Ref\+Cell}}, Neo\+N\+::scalar \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{p\+Ref\+Value}})
+const Neo\+N\+::\+Executor \& \mbox{\hyperlink{classFoamAdapter_1_1Expression_a350c68b8ce406f1027e73f688deb4af4}{exec}} () const
+\item 
+void \mbox{\hyperlink{classFoamAdapter_1_1Expression_a653dd3c9f333fde6b2af0b1f9150d19d}{set\+Reference}} (Neo\+N\+::local\+Idx p\+Ref\+Cell, Neo\+N\+::scalar p\+Ref\+Value)
 \item 
 Neo\+N\+::la\+::\+Solver\+Stats \mbox{\hyperlink{classFoamAdapter_1_1Expression_a4fb07c37a5aa1cfee93213a024007fe4}{solve}} ()
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-\subsubsection*{template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} = Neo\+N\+::local\+Idx$>$\newline
+\subsubsection*{template$<$typename Value\+Type, typename Index\+Type = Neo\+N\+::local\+Idx$>$\newline
 class Foam\+Adapter\+::\+Expression$<$ Value\+Type, Index\+Type $>$}
 
 
@@ -46,125 +48,136 @@ Definition at line \mbox{\hyperlink{expression_8hpp_source_l00022}{22}} of file 
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\Hypertarget{classFoamAdapter_1_1Expression_a5fe3280e76e7ab4fb157dd5feac60bfc}\label{classFoamAdapter_1_1Expression_a5fe3280e76e7ab4fb157dd5feac60bfc} 
+\Hypertarget{classFoamAdapter_1_1Expression_a12e4c8ac5f3f70fbb35c4ff4576ccee6}\label{classFoamAdapter_1_1Expression_a12e4c8ac5f3f70fbb35c4ff4576ccee6} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!Expression@{Expression}}
 \index{Expression@{Expression}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{Expression()}{Expression()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::\+Expression (\begin{DoxyParamCaption}\item[{dsl\+::\+Expression$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$}]{expr,  }\item[{Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \&}]{psi,  }\item[{\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{Run\+Time}} \&}]{run\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::\+Expression (\begin{DoxyParamCaption}\item[{dsl\+::\+Expression$<$ Value\+Type $>$}]{expr,  }\item[{Volume\+Field \&}]{psi,  }\item[{const \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{Run\+Time}} \&}]{run\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00026}{26}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00029}{29}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{classFoamAdapter_1_1Expression_a20227f6f2989729b84237dbae9c8a71d}\label{classFoamAdapter_1_1Expression_a20227f6f2989729b84237dbae9c8a71d} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!Expression@{Expression}}
 \index{Expression@{Expression}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{Expression()}{Expression()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::\+Expression (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$ \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::\+Expression (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}$<$ Value\+Type, Index\+Type $>$ \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00044}{44}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00047}{47}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{classFoamAdapter_1_1Expression_a8b2c4ff8f856720be0d862b2092c4b9a}\label{classFoamAdapter_1_1Expression_a8b2c4ff8f856720be0d862b2092c4b9a} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!````~Expression@{\texorpdfstring{$\sim$}{\string~}Expression}}
 \index{````~Expression@{\texorpdfstring{$\sim$}{\string~}Expression}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Expression()}{\string~Expression()}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::\texorpdfstring{$\sim$}{\string~}\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::\texorpdfstring{$\sim$}{\string~}\mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
 
 
 
 \doxysubsection{Member Function Documentation}
+\Hypertarget{classFoamAdapter_1_1Expression_a6024ec042022f9f5ea7cfd0abf9c9df7}\label{classFoamAdapter_1_1Expression_a6024ec042022f9f5ea7cfd0abf9c9df7} 
+\index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!assemble@{assemble}}
+\index{assemble@{assemble}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
+\doxysubsubsection{\texorpdfstring{assemble()}{assemble()}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+Neo\+N\+::la\+::\+Linear\+System$<$ Value\+Type, Index\+Type $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::assemble (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00075}{75}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+
 \Hypertarget{classFoamAdapter_1_1Expression_a350c68b8ce406f1027e73f688deb4af4}\label{classFoamAdapter_1_1Expression_a350c68b8ce406f1027e73f688deb4af4} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!exec@{exec}}
 \index{exec@{exec}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{exec()}{exec()}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::\+Executor \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::exec (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+const Neo\+N\+::\+Executor \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::exec (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00071}{71}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00081}{81}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
-\Hypertarget{classFoamAdapter_1_1Expression_adb716afa4a18c7222f6b1408cdae32b1}\label{classFoamAdapter_1_1Expression_adb716afa4a18c7222f6b1408cdae32b1} 
-\index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!getVector@{getVector}}
-\index{getVector@{getVector}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
-\doxysubsubsection{\texorpdfstring{getVector()}{getVector()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::get\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-
-
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00059}{59}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
-
-\Hypertarget{classFoamAdapter_1_1Expression_a009f1ff42847bf2d7595792930041e6b}\label{classFoamAdapter_1_1Expression_a009f1ff42847bf2d7595792930041e6b} 
-\index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!getVector@{getVector}}
-\index{getVector@{getVector}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
-\doxysubsubsection{\texorpdfstring{getVector()}{getVector()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::get\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+\Hypertarget{classFoamAdapter_1_1Expression_a81d5718d028b71ee22ff2a259d4d30dc}\label{classFoamAdapter_1_1Expression_a81d5718d028b71ee22ff2a259d4d30dc} 
+\index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!getField@{getField}}
+\index{getField@{getField}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
+\doxysubsubsection{\texorpdfstring{getField()}{getField()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+Volume\+Field \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::get\+Field (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00061}{61}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00056}{56}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+
+\Hypertarget{classFoamAdapter_1_1Expression_a0ce11c16c1f569c2a3c87348d8c124b4}\label{classFoamAdapter_1_1Expression_a0ce11c16c1f569c2a3c87348d8c124b4} 
+\index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!getField@{getField}}
+\index{getField@{getField}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
+\doxysubsubsection{\texorpdfstring{getField()}{getField()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+const Volume\+Field \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::get\+Field (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00058}{58}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{classFoamAdapter_1_1Expression_a16c7d18b9f295ae6ceb255def5c6d5fd}\label{classFoamAdapter_1_1Expression_a16c7d18b9f295ae6ceb255def5c6d5fd} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!linearSystem@{linearSystem}}
 \index{linearSystem@{linearSystem}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{linearSystem()}{linearSystem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-Neo\+N\+::la\+::\+Linear\+System$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::linear\+System (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+Neo\+N\+::la\+::\+Linear\+System$<$ Value\+Type, Index\+Type $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::linear\+System (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00053}{53}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00068}{68}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{classFoamAdapter_1_1Expression_a1531aefa9f947598726d237b7a810414}\label{classFoamAdapter_1_1Expression_a1531aefa9f947598726d237b7a810414} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!linearSystem@{linearSystem}}
 \index{linearSystem@{linearSystem}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{linearSystem()}{linearSystem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::la\+::\+Linear\+System$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::linear\+System (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+const Neo\+N\+::la\+::\+Linear\+System$<$ Value\+Type, Index\+Type $>$ \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::linear\+System (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00066}{66}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00070}{70}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{classFoamAdapter_1_1Expression_a653dd3c9f333fde6b2af0b1f9150d19d}\label{classFoamAdapter_1_1Expression_a653dd3c9f333fde6b2af0b1f9150d19d} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!setReference@{setReference}}
 \index{setReference@{setReference}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{setReference()}{setReference()}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{void}} \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::set\+Reference (\begin{DoxyParamCaption}\item[{Neo\+N\+::local\+Idx}]{p\+Ref\+Cell,  }\item[{Neo\+N\+::scalar}]{p\+Ref\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+void \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::set\+Reference (\begin{DoxyParamCaption}\item[{Neo\+N\+::local\+Idx}]{p\+Ref\+Cell,  }\item[{Neo\+N\+::scalar}]{p\+Ref\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00104}{104}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00115}{115}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{classFoamAdapter_1_1Expression_a4fb07c37a5aa1cfee93213a024007fe4}\label{classFoamAdapter_1_1Expression_a4fb07c37a5aa1cfee93213a024007fe4} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!solve@{solve}}
 \index{solve@{solve}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{solve()}{solve()}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-Neo\+N\+::la\+::\+Solver\+Stats \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+Neo\+N\+::la\+::\+Solver\+Stats \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00111}{111}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00122}{122}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{classFoamAdapter_1_1Expression_a855cf32c23315ea3cc202e7bb1cd89d5}\label{classFoamAdapter_1_1Expression_a855cf32c23315ea3cc202e7bb1cd89d5} 
 \index{FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}!sparsityPattern@{sparsityPattern}}
 \index{sparsityPattern@{sparsityPattern}!FoamAdapter::Expression$<$ ValueType, IndexType $>$@{FoamAdapter::Expression$<$ ValueType, IndexType $>$}}
 \doxysubsubsection{\texorpdfstring{sparsityPattern()}{sparsityPattern()}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}} , \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{typename}} \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}}  = Neo\+N\+::local\+Idx$>$ \\
-\mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{const}} Neo\+N\+::la\+::\+Sparsity\+Pattern \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Value\+Type}}, \mbox{\hyperlink{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}{Index\+Type}} $>$\+::sparsity\+Pattern (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Index\+Type  = Neo\+N\+::local\+Idx$>$ \\
+const Neo\+N\+::la\+::\+Sparsity\+Pattern \& \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Foam\+Adapter\+::\+Expression}}$<$ Value\+Type, Index\+Type $>$\+::sparsity\+Pattern (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00054}{54}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00063}{63}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 
 

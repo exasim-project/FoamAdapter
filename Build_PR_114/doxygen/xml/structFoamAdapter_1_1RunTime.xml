@@ -103,7 +103,7 @@
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/runTime.hpp" line="30" column="22" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/runTime.hpp" bodystart="30" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structFoamAdapter_1_1RunTime_1ac9a3f635b6f6104e474386c4761e7386" prot="public" static="no" mutable="no">
-        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">bool</ref></type>
+        <type>bool</type>
         <definition>bool FoamAdapter::RunTime::adjustTimeStep</definition>
         <argsstring></argsstring>
         <name>adjustTimeStep</name>

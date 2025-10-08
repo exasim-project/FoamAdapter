@@ -10,22 +10,24 @@
     <member refid="classFoamAdapter_1_1CreateFromFoamField_1ab1ac60fdb56c3a2cfef5fb71162f09c5" kind="function"><name>operator()</name></member>
   </compound>
   <compound refid="classFoamAdapter_1_1Expression" kind="class"><name>FoamAdapter::Expression</name>
-    <member refid="classFoamAdapter_1_1Expression_1ae9f3b602670d5eaa20006448d2019ff3" kind="variable"><name>psi_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a7917dd8a628a6f31e9687665238ba654" kind="variable"><name>expr_</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1ab44df57ad5332bf2175516a9f482ba6d" kind="typedef"><name>VolumeField</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1a84ef45e5193a61c0a1d4a12494f4bb99" kind="variable"><name>psi_</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1aa9db9fee102366444c7d36952e42af16" kind="variable"><name>expr_</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a9e9a5051707454ae6e20accb3b5d0087" kind="variable"><name>runTime_</name></member>
     <member refid="classFoamAdapter_1_1Expression_1ac2d758fab6b59809217c93f8be7d86d9" kind="variable"><name>sparsityPattern_</name></member>
     <member refid="classFoamAdapter_1_1Expression_1ae749b759232256cbf291955529041049" kind="variable"><name>ls_</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a643038f7994223fcedc283e5933617ad" kind="variable"><name>needReference_</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a2b89c32573b0ef5db15d21a3a77c550b" kind="variable"><name>pRefCell_</name></member>
     <member refid="classFoamAdapter_1_1Expression_1ab6fe2c8fd03041c6d4905327ae91708e" kind="variable"><name>pRefValue_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a5fe3280e76e7ab4fb157dd5feac60bfc" kind="function"><name>Expression</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1a12e4c8ac5f3f70fbb35c4ff4576ccee6" kind="function"><name>Expression</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a20227f6f2989729b84237dbae9c8a71d" kind="function"><name>Expression</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a8b2c4ff8f856720be0d862b2092c4b9a" kind="function"><name>~Expression</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a16c7d18b9f295ae6ceb255def5c6d5fd" kind="function"><name>linearSystem</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1a81d5718d028b71ee22ff2a259d4d30dc" kind="function"><name>getField</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1a0ce11c16c1f569c2a3c87348d8c124b4" kind="function"><name>getField</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a855cf32c23315ea3cc202e7bb1cd89d5" kind="function"><name>sparsityPattern</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1adb716afa4a18c7222f6b1408cdae32b1" kind="function"><name>getVector</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a009f1ff42847bf2d7595792930041e6b" kind="function"><name>getVector</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1a16c7d18b9f295ae6ceb255def5c6d5fd" kind="function"><name>linearSystem</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a1531aefa9f947598726d237b7a810414" kind="function"><name>linearSystem</name></member>
+    <member refid="classFoamAdapter_1_1Expression_1a6024ec042022f9f5ea7cfd0abf9c9df7" kind="function"><name>assemble</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a350c68b8ce406f1027e73f688deb4af4" kind="function"><name>exec</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a653dd3c9f333fde6b2af0b1f9150d19d" kind="function"><name>setReference</name></member>
     <member refid="classFoamAdapter_1_1Expression_1a4fb07c37a5aa1cfee93213a024007fe4" kind="function"><name>solve</name></member>

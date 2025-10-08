@@ -12,17 +12,17 @@
             <type>class SrcField</type>
           </param>
         </templateparamlist>
-        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
+        <type>void</type>
         <definition>void FoamAdapter::detail::copy_impl</definition>
         <argsstring>(DestField &amp;dest, const SrcField src)</argsstring>
         <name>copy_impl</name>
         <qualifiedname>FoamAdapter::detail::copy_impl</qualifiedname>
         <param>
-          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">DestField</ref> &amp;</type>
+          <type>DestField &amp;</type>
           <declname>dest</declname>
         </param>
         <param>
-          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> <ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">SrcField</ref></type>
+          <type>const SrcField</type>
           <declname>src</declname>
         </param>
         <briefdescription>
