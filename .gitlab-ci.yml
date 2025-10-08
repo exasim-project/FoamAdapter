@@ -70,7 +70,6 @@
 .trigger-from-foamadapter-for-testing:
   rules:
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null && $BENCHMARK != "true"
-
       when: always
     - when: never
 
@@ -85,7 +84,6 @@
     - if: $CI_PIPELINE_SOURCE == "trigger" && $NEON_BRANCH == null && $BENCHMARK == "true"
       when: always
     - when: never
-
 
 # --- Build and test FoamAdapter with the main branch of NeoN ---
 build-and-test-with-neon-main-nvidia:
@@ -104,7 +102,6 @@ build-and-test-with-neon-main-amd:
   script:
     - ./ci/lrz-gitlab/build-and-test.sh amd
 
-
 # --- Benchmark FoamAdapter with the main branch of NeoN ---
 benchmark-with-neon-main-nvidia:
   extends:
@@ -112,11 +109,8 @@ benchmark-with-neon-main-nvidia:
     - .openfoam-env-setup
     - .trigger-from-foamadapter-for-benchmarking
   script:
-    - ./ci/lrz-gitlab/build-and-test.sh nvidia main profiling
-    - ./benchmarks/benchmarkSuite/cleanAll.sh
-    - ./benchmarks/benchmarkSuite/runAll.sh
-    # Check for produced results
-    - find benchmarks/benchmarkSuite/ -name '*csv'
+    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
+    - ./ci/lrz-gitlab/benchmark.sh nvidia main profiling
 
 benchmark-with-neon-main-amd:
   extends:
@@ -125,12 +119,7 @@ benchmark-with-neon-main-amd:
     - .trigger-from-foamadapter-for-benchmarking
   script:
     - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
-    - ./ci/lrz-gitlab/build-and-test.sh amd main profiling
-    - ./benchmarks/benchmarkSuite/cleanAll.sh
-    - ./benchmarks/benchmarkSuite/runAll.sh
-    # Check for produced results
-    - find benchmarks/benchmarkSuite/ -name '*csv'
-
+    - ./ci/lrz-gitlab/benchmark.sh amd main profiling
 
 # --- Build and test FoamAdapter with a feature branch of NeoN ---
 build-and-test-with-neon-feature-nvidia:
