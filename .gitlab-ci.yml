@@ -5,7 +5,7 @@
 # Available GPUs and corresponding Docker images
 .use-nvidia-gpu-and-image:
   tags: ["nvidia-h100-gpus"]
-  image: chihtaw/cuda-openfoam-benchmark:v2412
+  image: chihtaw/cuda-openfoam-ginkgo:v2412
   variables:
     PYTHONPATH: /root/.local/:/root/.local/lib/:/root/.local/lib/python3.12:/root/.local/lib/python3.12/site-packages
     FOAM_INST_DIR: /usr/local/app/openfoam
