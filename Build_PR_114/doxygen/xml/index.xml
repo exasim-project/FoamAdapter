@@ -130,6 +130,7 @@
     <member refid="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" kind="function"><name>timeControls</name></member>
     <member refid="namespaceFoamAdapter_1a52be9ed969f57da51a090c9df132990d" kind="function"><name>setDeltaT</name></member>
     <member refid="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" kind="function"><name>createExecutor</name></member>
+    <member refid="namespaceFoamAdapter_1aa01e57f3dd55859d173c40d5cf9b6ec4" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a1e6126cd9e3f712de59ed532a20591b3" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1a8ad8cc5431b3fde26ae90f6a760ff452" kind="function"><name>write</name></member>
