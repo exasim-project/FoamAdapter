@@ -43,6 +43,24 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="27" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="27" declcolumn="6"/>
       </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1aec2f4e1c957ad84fb49c15585d0da474" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt;</type>
+        <definition>nnfvcc::VolumeField&lt; scalar &gt; FoamAdapter::computeRAU</definition>
+        <argsstring>(const Expression&lt; Vec3 &gt; &amp;expr)</argsstring>
+        <name>computeRAU</name>
+        <qualifiedname>FoamAdapter::computeRAU</qualifiedname>
+        <param>
+          <type>const <ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <declname>expr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="39" column="21" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="39" declcolumn="21"/>
+      </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a0ab83d9f57643ab6599fed6c3a318f4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt;, nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &gt;</type>
         <definition>std::tuple&lt; nnfvcc::VolumeField&lt; scalar &gt;, nnfvcc::VolumeField&lt; Vec3 &gt; &gt; FoamAdapter::discreteMomentumFields</definition>
@@ -59,7 +77,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="41" column="1" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="41" declcolumn="1"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="49" column="1" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="49" declcolumn="1"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a678aeff6603442623c3cb8c784435ecb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -85,7 +103,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="47" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="47" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="55" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="55" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1ab07cdffe2f504299318aad761dfd4b9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -115,7 +133,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="56" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="56" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="64" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="64" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1aeb9d6048345debcb9e018bb2e75436b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>nnfvcc::SurfaceField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt;</type>
@@ -133,7 +151,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="67" column="22" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="67" declcolumn="22"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="75" column="22" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="75" declcolumn="22"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a9f22c54b08a010fb0c71f78f7b1b8167" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>

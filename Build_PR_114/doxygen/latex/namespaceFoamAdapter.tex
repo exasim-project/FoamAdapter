@@ -39,6 +39,8 @@ struct \mbox{\hyperlink{structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam
 \item 
 void \mbox{\hyperlink{namespaceFoamAdapter_a54bbeabff5f4044f250027a13ebe295d}{constrain\+HbyA}} (nnfvcc\+::\+Volume\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_ae261b7f2859c508a432e8a334ad179d2}{Vec3}} $>$ \&HbyA, const nnfvcc\+::\+Volume\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_ae261b7f2859c508a432e8a334ad179d2}{Vec3}} $>$ \&U, const nnfvcc\+::\+Volume\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ \&p)
 \item 
+nnfvcc\+::\+Volume\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ \mbox{\hyperlink{namespaceFoamAdapter_aec2f4e1c957ad84fb49c15585d0da474}{compute\+RAU}} (const \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_ae261b7f2859c508a432e8a334ad179d2}{Vec3}} $>$ \&expr)
+\item 
 std\+::tuple$<$ nnfvcc\+::\+Volume\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$, nnfvcc\+::\+Volume\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_ae261b7f2859c508a432e8a334ad179d2}{Vec3}} $>$ $>$ \mbox{\hyperlink{namespaceFoamAdapter_a0ab83d9f57643ab6599fed6c3a318f4a}{discrete\+Momentum\+Fields}} (const \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_ae261b7f2859c508a432e8a334ad179d2}{Vec3}} $>$ \&expr)
 \item 
 void \mbox{\hyperlink{namespaceFoamAdapter_a678aeff6603442623c3cb8c784435ecb}{update\+Face\+Velocity}} (nnfvcc\+::\+Surface\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ \&phi, const nnfvcc\+::\+Surface\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ \&predicted\+Phi, const \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ \&expr)
@@ -159,6 +161,12 @@ Definition at line \mbox{\hyperlink{convert_8hpp_source_l00025}{25}} of file \mb
 \index{computeOffset@{computeOffset}!FoamAdapter@{FoamAdapter}}
 \doxysubsubsection{\texorpdfstring{computeOffset()}{computeOffset()}}
 {\footnotesize\ttfamily std\+::vector$<$ Neo\+N\+::local\+Idx $>$ Foam\+Adapter\+::compute\+Offset (\begin{DoxyParamCaption}\item[{const Foam\+::fv\+Mesh \&}]{mesh }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceFoamAdapter_aec2f4e1c957ad84fb49c15585d0da474}\label{namespaceFoamAdapter_aec2f4e1c957ad84fb49c15585d0da474} 
+\index{FoamAdapter@{FoamAdapter}!computeRAU@{computeRAU}}
+\index{computeRAU@{computeRAU}!FoamAdapter@{FoamAdapter}}
+\doxysubsubsection{\texorpdfstring{computeRAU()}{computeRAU()}}
+{\footnotesize\ttfamily nnfvcc\+::\+Volume\+Field$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_acc912e7a5a44b028589fda3fd76ba7ea}{scalar}} $>$ Foam\+Adapter\+::compute\+RAU (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression}}$<$ \mbox{\hyperlink{pressureVelocityCoupling_8hpp_ae261b7f2859c508a432e8a334ad179d2}{Vec3}} $>$ \&}]{expr }\end{DoxyParamCaption})}
 
 \Hypertarget{namespaceFoamAdapter_a54bbeabff5f4044f250027a13ebe295d}\label{namespaceFoamAdapter_a54bbeabff5f4044f250027a13ebe295d} 
 \index{FoamAdapter@{FoamAdapter}!constrainHbyA@{constrainHbyA}}

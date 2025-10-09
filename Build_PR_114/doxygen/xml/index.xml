@@ -106,6 +106,7 @@
   </compound>
   <compound refid="namespaceFoamAdapter" kind="namespace"><name>FoamAdapter</name>
     <member refid="namespaceFoamAdapter_1a54bbeabff5f4044f250027a13ebe295d" kind="function"><name>constrainHbyA</name></member>
+    <member refid="namespaceFoamAdapter_1aec2f4e1c957ad84fb49c15585d0da474" kind="function"><name>computeRAU</name></member>
     <member refid="namespaceFoamAdapter_1a0ab83d9f57643ab6599fed6c3a318f4a" kind="function"><name>discreteMomentumFields</name></member>
     <member refid="namespaceFoamAdapter_1a678aeff6603442623c3cb8c784435ecb" kind="function"><name>updateFaceVelocity</name></member>
     <member refid="namespaceFoamAdapter_1ab07cdffe2f504299318aad761dfd4b9b" kind="function"><name>updateVelocity</name></member>
