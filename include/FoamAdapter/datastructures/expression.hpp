@@ -179,7 +179,7 @@ NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
     const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi
 )
 {
-    NeoN::finiteVolume::cellCentred::VolumeField<ValueType> resultVector(
+    NeoN::finiteVolume::cellCentred::VolumeField<ValueType> res(
         psi.exec(),
         "ls_" + psi.name,
         psi.mesh(),
@@ -188,25 +188,9 @@ NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
         psi.boundaryConditions()
     );
 
-    auto [result, x] = views(resultVector.internalVector(), psi.internalVector());
-    const auto [matrix, b] = ls.view();
-
-    NeoN::parallelFor(
-        resultVector.exec(),
-        {0, result.size()},
-        KOKKOS_LAMBDA(const std::size_t rowi) {
-            IndexType rowStart = matrix.rowOffs[rowi];
-            IndexType rowEnd = matrix.rowOffs[rowi + 1];
-            ValueType sum = 0.0;
-            for (IndexType coli = rowStart; coli < rowEnd; coli++)
-            {
-                sum += matrix.values[coli] * x[matrix.colIdxs[coli]];
-            }
-            result[rowi] = sum - b[rowi];
-        }
-    );
-
-    return resultVector;
+    NeoN::la::computeResidual(
+            ls.matrix(), ls.rhs(), psi.internalVector(), res.internalVector());
+    return res;
 }
 
 
