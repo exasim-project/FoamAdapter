@@ -193,7 +193,7 @@ NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
     const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi
 )
 {
-    NeoN::finiteVolume::cellCentred::VolumeField<ValueType> resultVector(
+    NeoN::finiteVolume::cellCentred::VolumeField<ValueType> res(
         psi.exec(),
         "ls_" + psi.name,
         psi.mesh(),
@@ -201,7 +201,8 @@ NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
         psi.boundaryData(),
         psi.boundaryConditions()
     );
-    NeoN::la::computeResidual(ls.matrix(), ls.rhs(), psi.internalVector(), res.internalVector());
+    NeoN::la::computeResidual(
+            ls.matrix(), ls.rhs(), psi.internalVector(), res.internalVector());
     return res;
 }
 
