@@ -111,7 +111,7 @@ TEST_CASE("PressureVelocityCoupling")
 
     SECTION("discreteMomentumFields " + execName)
     {
-        nf::Expression<NeoN::Vec3> nfUEqn(
+        nf::PDESolver<NeoN::Vec3> nfUEqn(
             dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
             nfU,
             rt
@@ -240,7 +240,7 @@ TEST_CASE("PressureVelocityCoupling")
             auto nfPhi0 = FoamAdapter::constructSurfaceField(rt.exec, rt.nfMesh, ofPhi0);
             nfPhi0.name = "nfPhi0";
 
-            nf::Expression<NeoN::scalar> pEqn(
+            nf::PDESolver<NeoN::scalar> pEqn(
                 dsl::imp::laplacian(nfrAUf, nfp) - dsl::exp::div(nfPhi),
                 nfp,
                 rt

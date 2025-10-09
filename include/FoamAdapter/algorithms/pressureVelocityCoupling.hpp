@@ -36,7 +36,7 @@ void constrainHbyA(
 *
 * @return a tuple containing rAU and HbyA
 */
-nnfvcc::VolumeField<scalar> computeRAU(const Expression<Vec3>& expr);
+nnfvcc::VolumeField<scalar> computeRAU(const PDESolver<Vec3>& expr);
 
 /* @brief given a ... this function computes rAU and HbyA
 *
@@ -46,7 +46,7 @@ nnfvcc::VolumeField<scalar> computeRAU(const Expression<Vec3>& expr);
 * @return a tuple containing rAU and HbyA
 */
 std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
-discreteMomentumFields(const Expression<Vec3>& expr);
+discreteMomentumFields(const PDESolver<Vec3>& expr);
 
 /* @brief
 *
@@ -55,7 +55,7 @@ discreteMomentumFields(const Expression<Vec3>& expr);
 void updateFaceVelocity(
     nnfvcc::SurfaceField<scalar>& phi,
     const nnfvcc::SurfaceField<scalar>& predictedPhi,
-    const Expression<scalar>& expr
+    const PDESolver<scalar>& expr
 );
 
   /* @brief

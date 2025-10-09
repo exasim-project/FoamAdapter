@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
             auto& oldU = fvcc::oldTime(U);
             oldU.internalVector() = U.internalVector();
 
-            // TODO sync runTime
+            // FIXME TODO sync runTime
             auto t = runTime.time().value();
             auto dt = runTime.deltaT().value();
 
@@ -93,21 +93,20 @@ int main(int argc, char* argv[])
             }
 
             // Momentum predictor
-            nf::Expression<NeoN::Vec3> UEqn(
+            nf::PDESolver<NeoN::Vec3> UEqn(
                 dsl::imp::ddt(U) + dsl::imp::div(phi, U) - dsl::imp::laplacian(nu, U),
                 U,
                 rt
             );
 
-            // NOTE since computing rAU and HbyA requires an assembled system matrix we explicitly
-            // trigger assembly here. In the future we might add a flag to the equation signaling
-            // whether assembly has been done.
             if (piso.momentumPredictor())
             {
-                // UEqn.solve(-fvc::grad(p));
+                UEqn.solve(dsl::exp::grad(p));
             }
             else
             {
+                // NOTE since computing rAU and HbyA requires an assembled system matrix we
+                // explicitly trigger assembly here.
                 UEqn.assemble();
             }
 
@@ -139,11 +138,10 @@ int main(int argc, char* argv[])
                 while (piso.correctNonOrthogonal())
                 {
                     // Pressure corrector
-                    nf::Expression<NeoN::scalar> pEqn(
+                    nf::PDESolver<NeoN::scalar> pEqn(
                         NeoN::dsl::imp::laplacian(nfrAUf, p) - NeoN::dsl::exp::div(phiHbyA),
                         p,
                         rt
-                        // rt.fvSolutionDict.get<NeoN::Dictionary>("p")
                     );
 
                     if (ofp.needReference() && pRefCell >= 0)

@@ -19,48 +19,40 @@ namespace FoamAdapter
  * needs storage for assembled matrix? and whether update is needed like for rAU and HbyA
  */
 template<typename ValueType, typename IndexType = NeoN::localIdx>
-class Expression
+class PDESolver
 {
     using VolumeField = NeoN::finiteVolume::cellCentred::VolumeField<ValueType>;
 
 public:
 
 
-    Expression(
-        dsl::Expression<ValueType> expr,
-        VolumeField& psi,
-        const RunTime& runTime
-    )
+    PDESolver(dsl::Expression<ValueType> expr, VolumeField& psi, const RunTime& runTime)
         : psi_(psi)
         , expr_(expr)
         , runTime_(runTime)
-        , sparsityPattern_(
-              NeoN::la::SparsityPattern::readOrCreate(psi.mesh())
-          )
-        , ls_(NeoN::la::createEmptyLinearSystem<
-              ValueType,
-              NeoN::localIdx>(psi.mesh(), sparsityPattern_))
+        , sparsityPattern_(NeoN::la::SparsityPattern::readOrCreate(psi.mesh()))
+        , ls_(NeoN::la::createEmptyLinearSystem<ValueType, NeoN::localIdx>(
+              psi.mesh(),
+              sparsityPattern_
+          ))
     {
         expr_.read(runTime_.fvSchemesDict);
     };
 
-    Expression(const Expression& expr)
+    PDESolver(const PDESolver& expr)
         : psi_(expr.psi_)
         , expr_(expr.expr_)
         , runTime_(expr.runTime_)
         , ls_(expr.ls_)
         , sparsityPattern_(expr.sparsityPattern_) {};
 
-    ~Expression() = default;
+    ~PDESolver() = default;
 
     VolumeField& getField() { return this->psi_; }
 
-    const VolumeField& getField() const
-    {
-        return this->psi_;
-    }
+    const VolumeField& getField() const { return this->psi_; }
 
-    [[nodiscard]] const  NeoN::la::SparsityPattern& sparsityPattern() const
+    [[nodiscard]] const NeoN::la::SparsityPattern& sparsityPattern() const
     {
         return sparsityPattern_;
     }
@@ -74,7 +66,7 @@ public:
 
     NeoN::la::LinearSystem<ValueType, IndexType>& assemble()
     {
-        expr_.assemble(runTime_.t, runTime_.dt, ls_);
+        expr_.assemble(runTime_.t, runTime_.dt, sparsityPattern_, ls_);
         return ls_;
     }
 
@@ -82,37 +74,42 @@ public:
 
 
     template<typename FunctorValueType>
-    struct SetReference {
+    struct SetReference : public NeoN::dsl::OpFunctor<ValueType>
+    {
 
         NeoN::localIdx pRefCell_;
         NeoN::scalar pRefValue_;
 
-        SetReference(NeoN::localIdx pRefCell, NeoN::scalar pRefValue):
-            pRefCell_(pRefCell),pRefValue_(pRefValue) {
-        }
+        SetReference(NeoN::localIdx pRefCell, NeoN::scalar pRefValue)
+            : pRefCell_(pRefCell)
+            , pRefValue_(pRefValue)
+        {}
 
-        void operator()(NeoN::la::LinearSystem<FunctorValueType, NeoN::localIdx>& ls){
+        virtual void operator()(
+                const NeoN::la::SparsityPattern& sp,
+                NeoN::la::LinearSystem<FunctorValueType, NeoN::localIdx>& ls
+                )
+        {
+            const auto diagOffset = sp.diagOffset().view();
+            const auto rowOffs = ls.matrix().rowOffs().view();
+            auto rhs = ls.rhs().view();
+            auto values = ls.matrix().values().view();
 
-        const auto diagOffset = ls.sparsityPattern().diagOffset().view();
-        const auto rowOffs = ls.matrix().rowOffs().view();
-        auto rhs = ls.rhs().view();
-        auto values = ls.matrix().values().view();
-
-        NeoN::parallelFor(
-            ls.exec(),
-            {pRefCell_, pRefCell_ + 1},
-            KOKKOS_LAMBDA(const std::size_t refCelli) {
-                auto diagIdx = rowOffs[refCelli] + diagOffset[refCelli];
-                auto diagValue = values[diagIdx];
-                rhs[refCelli] += diagValue * pRefValue_;
-                values[diagIdx] += diagValue;
-            }
-        );
-
+            NeoN::parallelFor(
+                ls.exec(),
+                {pRefCell_, pRefCell_ + 1},
+                KOKKOS_LAMBDA(const std::size_t refCelli) {
+                    auto diagIdx = rowOffs[refCelli] + diagOffset[refCelli];
+                    auto diagValue = values[diagIdx];
+                    rhs[refCelli] += diagValue * pRefValue_;
+                    values[diagIdx] += diagValue;
+                }
+            );
         }
     };
 
-    void setReference(NeoN::localIdx pRefCell, NeoN::scalar pRefValue) {
+    void setReference(NeoN::localIdx pRefCell, NeoN::scalar pRefValue)
+    {
         needReference_ = true;
         pRefCell_ = pRefCell;
         pRefValue_ = pRefValue;
@@ -121,20 +118,37 @@ public:
     // TODO unify with dsl/solver.hpp
     NeoN::la::SolverStats solve()
     {
-        // std::vector<NeoN::dsl::OpFunctor<ValueType>> functs = needReference_ ? std::vector<NeoN::dsl::OpFunctor<ValueType>>{} : std::vector<NeoN::dsl::OpFunctor<ValueType>>{};
+        // Only if ValueType is scalar
+        auto functs = std::vector<NeoN::dsl::OpFunctor<ValueType>> {};
 
-        // auto stats =  NeoN::dsl::solve(expr_,
-        //                                psi_,
-        // runTime_.t,
-        // runTime_.dt,
-        // runTime_.fvSchemesDict,
-        // runTime_.fvSolutionDict.get<NeoN::Dictionary>(psi_.name),
-        // functs);
+        if constexpr (std::is_same_v<ValueType, NeoN::scalar>) {
+            functs = needReference_ ? std::vector<NeoN::dsl::OpFunctor<ValueType>> {}
+                            : std::vector<NeoN::dsl::OpFunctor<ValueType>> {SetReference<ValueType>(pRefCell_, pRefValue_)};
+        }
 
-        // std::cout << " solver stats:\n"
-        //             << "\t num iter: " << stats.numIter
-        //             << "\n\t initial residual norm: " << stats.initResNorm
-        //             << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
+        // FIXME TODO this will create the sparsity pattern and potentially the ls
+        // again even if it has been created already
+        auto solverDict = runTime_.fvSolutionDict.get<NeoN::Dictionary>("solvers");
+        auto stats = NeoN::dsl::solve(
+            expr_,
+            psi_,
+            runTime_.t,
+            runTime_.dt,
+            runTime_.fvSchemesDict,
+            solverDict.get<NeoN::Dictionary>(psi_.name),
+            //mapFvSolution(solverDict.get<NeoN::Dictionary>(psi_.name)),
+            functs
+        );
+
+        std::cout << __FILE__ << ":" << __LINE__ << " solver stats:\n"
+                  << "\t num iter: " << stats.numIter
+                  << "\n\t initial residual norm: " << stats.initResNorm
+                  << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
+    }
+
+    NeoN::la::SolverStats solve(dsl::SpatialOperator<NeoN::Vec3>&& rhs) {
+        expr_.addOperator(-1.0 * rhs);
+        solve();
     }
 
 private:
@@ -188,15 +202,14 @@ NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
         psi.boundaryConditions()
     );
 
-    NeoN::la::computeResidual(
-            ls.matrix(), ls.rhs(), psi.internalVector(), res.internalVector());
+    NeoN::la::computeResidual(ls.matrix(), ls.rhs(), psi.internalVector(), res.internalVector());
     return res;
 }
 
 
 template<typename ValueType, typename IndexType = NeoN::localIdx>
 NeoN::finiteVolume::cellCentred::VolumeField<ValueType> operator&(
-    const Expression<ValueType, IndexType> expr,
+    const PDESolver<ValueType, IndexType> expr,
     const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi
 )
 {

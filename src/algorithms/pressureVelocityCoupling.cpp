@@ -36,7 +36,7 @@ void constrainHbyA(
     }
 }
 
-nnfvcc::VolumeField<scalar> computeRAU(const Expression<Vec3>& expr)
+nnfvcc::VolumeField<scalar> computeRAU(const PDESolver<Vec3>& expr)
 {
     // TODO this assumes an assembled matrix
     // force assembly if not assembled
@@ -65,7 +65,7 @@ nnfvcc::VolumeField<scalar> computeRAU(const Expression<Vec3>& expr)
 }
 
 std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
-discreteMomentumFields(const Expression<Vec3>& expr)
+discreteMomentumFields(const PDESolver<Vec3>& expr)
 {
     const auto& U = expr.getField();
     const auto& mesh = U.mesh();
@@ -133,7 +133,7 @@ discreteMomentumFields(const Expression<Vec3>& expr)
 void updateFaceVelocity(
     nnfvcc::SurfaceField<scalar>& phi,
     const nnfvcc::SurfaceField<scalar>& predictedPhi,
-    const Expression<scalar>& expr
+    const PDESolver<scalar>& expr
 )
 {
     const auto& mesh = phi.mesh();

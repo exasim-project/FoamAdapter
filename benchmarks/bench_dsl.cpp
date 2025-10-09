@@ -22,29 +22,24 @@ namespace dsl = NeoN::dsl;
 TEST_CASE("advection–diffusion-equation_scalar")
 {
     Foam::Time& runTime = *timePtr;
+    Foam::fvMesh& mesh = *meshPtr;
 
-    auto constructOFFields =
-        [](const Foam::fvMesh& mesh)
+    auto ofT = randomScalarField(runTime, mesh, "T");
+    Foam::surfaceScalarField ofPhi(
+        Foam::IOobject("phi", "0", mesh, Foam::IOobject::NO_READ, Foam::IOobject::AUTO_WRITE),
+        mesh,
+        Foam::dimensionedScalar("phi", Foam::dimensionSet(0, 3, -1, 0, 0), 0.0)
+    );
+    forAll(ofPhi, facei)
     {
-        auto ofT = randomScalarField(runTime, mesh, "T");
-        Foam::surfaceScalarField ofPhi(
-            Foam::IOobject("phi", "0", mesh, Foam::IOobject::NO_READ, Foam::IOobject::AUTO_WRITE),
-            mesh,
-            Foam::dimensionedScalar("phi", Foam::dimensionSet(0, 3, -1, 0, 0), 0.0)
-        );
-        forAll(ofPhi, facei)
-        {
-            ofPhi[facei] = facei;
-        }
-
-        Foam::surfaceScalarField ofGamma(
-            Foam::IOobject("Gamma", "0", mesh, Foam::IOobject::NO_READ, Foam::IOobject::AUTO_WRITE),
-            mesh,
-            Foam::dimensionedScalar("phi", Foam::dimensionSet(0, 2, -1, 0, 0), 0.0)
-        );
-
-        return std::make_tuple(ofT, ofPhi, ofGamma);
+        ofPhi[facei] = facei;
     }
+
+    Foam::surfaceScalarField ofGamma(
+        Foam::IOobject("Gamma", "0", mesh, Foam::IOobject::NO_READ, Foam::IOobject::AUTO_WRITE),
+        mesh,
+        Foam::dimensionedScalar("phi", Foam::dimensionSet(0, 2, -1, 0, 0), 0.0)
+    );
 
     SECTION("OpenFOAM")
     {
