@@ -7,7 +7,7 @@ The main repository is hosted on **GitHub**, and GPU-based workflows are delegat
 to **LRZ GitLab**, where jobs are executed on both **NVIDIA** and **AMD** GPUs.
 The CI architecture for FoamAdapter is illustrated below.
 
-.. figure:: _static/ci/ci_setup_overview.png
+.. figure:: _static/ci/ci_overview.png
    :align: center
    :alt: Overview of the CI architecture for FoamAdapter
    :width: 90%
