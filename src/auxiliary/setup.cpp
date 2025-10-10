@@ -92,4 +92,36 @@ NeoN::Executor createExecutor(const Foam::dictionary& dict)
     return createExecutor(execName);
 }
 
+FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in, const NeoN::Executor exec)
+{
+    std::cout << __FILE__ << ":"
+              << "Creating FoamAdapter runTime\n";
+    auto [adjustTimeStep, maxCo, maxDeltaT] = timeControls(in);
+    std::unique_ptr<MeshAdapter> meshPtr = createMesh(exec, in);
+    MeshAdapter& mesh = *meshPtr;
+
+    auto& nfMesh = mesh.nfMesh();
+    return FoamAdapter::RunTime {
+        .db = NeoN::Database(),
+        .meshPtr = std::move(meshPtr),
+        .mesh = mesh,
+        .nfMesh = mesh.nfMesh(),
+        .exec = exec,
+        .t = in.time().value(),
+        .dt = in.deltaT().value(),
+        .adjustTimeStep = adjustTimeStep,
+        .maxCo = maxCo,
+        .maxDeltaT = maxDeltaT,
+        .controlDict = convert(in.controlDict()),
+        .fvSolutionDict = convert(mesh.solutionDict()),
+        .fvSchemesDict = convert(mesh.schemesDict())
+    };
+}
+
+FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in)
+{
+    auto exec = createExecutor(in.controlDict());
+    return createAdapterRunTime(in, exec);
+}
+
 }
