@@ -46,7 +46,7 @@
     <member refid="classFoamAdapter_1_1PDESolver_1a3329ce27b2f393b13af7fd732e431901" kind="function"><name>exec</name></member>
     <member refid="classFoamAdapter_1_1PDESolver_1a598c12950466b251b83849cca906c8a5" kind="function"><name>setReference</name></member>
     <member refid="classFoamAdapter_1_1PDESolver_1a99f902362c4f6b16ef8539c72032bb26" kind="function"><name>solve</name></member>
-    <member refid="classFoamAdapter_1_1PDESolver_1ae2ac0ab8e0bf8b8626b526da711c5a42" kind="function"><name>solve</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a4ea6ee144ff50d822460b04e961dd880" kind="function"><name>solve</name></member>
   </compound>
   <compound refid="structFoamAdapter_1_1RunTime" kind="struct"><name>FoamAdapter::RunTime</name>
     <member refid="structFoamAdapter_1_1RunTime_1ae5d5a978e4027b18ac01b25abcdcd999" kind="variable"><name>db</name></member>

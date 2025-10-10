@@ -855,7 +855,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="167" column="14" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="167" bodyend="186"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="168" column="14" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="168" bodyend="187"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -886,7 +886,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="190" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="190" bodyend="206"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="191" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="191" bodyend="207"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1ae9a1e4d59d70d0d025f38cf80b964bf1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -917,7 +917,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="210" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="210" bodyend="216"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="211" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="211" bodyend="217"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a756cc6e6886d3830b69f190c6144d45d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::vector&lt; NeoN::localIdx &gt;</type>
