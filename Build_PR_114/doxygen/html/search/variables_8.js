@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['prefcell_5f_0',['pRefCell_',['../structFoamAdapter_1_1Expression_1_1SetReference.html#af539ccd61f7089dcd1c49d8206387779',1,'FoamAdapter::Expression::SetReference']]],
-  ['prefvalue_5f_1',['pRefValue_',['../structFoamAdapter_1_1Expression_1_1SetReference.html#adb379b10d2f7e0a05059c1d27ffce708',1,'FoamAdapter::Expression::SetReference']]]
+  ['prefcell_5f_0',['pRefCell_',['../structFoamAdapter_1_1PDESolver_1_1SetReference.html#a3889bb614c28806145995a767cc2d162',1,'FoamAdapter::PDESolver::SetReference']]],
+  ['prefvalue_5f_1',['pRefValue_',['../structFoamAdapter_1_1PDESolver_1_1SetReference.html#a46a354ba29700cf6251c2925f8ea5255',1,'FoamAdapter::PDESolver::SetReference']]]
 ];

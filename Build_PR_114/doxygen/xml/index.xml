@@ -9,29 +9,6 @@
     <member refid="classFoamAdapter_1_1CreateFromFoamField_1a42bdc86ceec3e7f5a6ecaee3087f87a7" kind="variable"><name>subCycleIndex</name></member>
     <member refid="classFoamAdapter_1_1CreateFromFoamField_1ab1ac60fdb56c3a2cfef5fb71162f09c5" kind="function"><name>operator()</name></member>
   </compound>
-  <compound refid="classFoamAdapter_1_1Expression" kind="class"><name>FoamAdapter::Expression</name>
-    <member refid="classFoamAdapter_1_1Expression_1ab44df57ad5332bf2175516a9f482ba6d" kind="typedef"><name>VolumeField</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a84ef45e5193a61c0a1d4a12494f4bb99" kind="variable"><name>psi_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1aa9db9fee102366444c7d36952e42af16" kind="variable"><name>expr_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a9e9a5051707454ae6e20accb3b5d0087" kind="variable"><name>runTime_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1ac2d758fab6b59809217c93f8be7d86d9" kind="variable"><name>sparsityPattern_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1ae749b759232256cbf291955529041049" kind="variable"><name>ls_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a643038f7994223fcedc283e5933617ad" kind="variable"><name>needReference_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a2b89c32573b0ef5db15d21a3a77c550b" kind="variable"><name>pRefCell_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1ab6fe2c8fd03041c6d4905327ae91708e" kind="variable"><name>pRefValue_</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a12e4c8ac5f3f70fbb35c4ff4576ccee6" kind="function"><name>Expression</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a20227f6f2989729b84237dbae9c8a71d" kind="function"><name>Expression</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a8b2c4ff8f856720be0d862b2092c4b9a" kind="function"><name>~Expression</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a81d5718d028b71ee22ff2a259d4d30dc" kind="function"><name>getField</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a0ce11c16c1f569c2a3c87348d8c124b4" kind="function"><name>getField</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a855cf32c23315ea3cc202e7bb1cd89d5" kind="function"><name>sparsityPattern</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a16c7d18b9f295ae6ceb255def5c6d5fd" kind="function"><name>linearSystem</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a1531aefa9f947598726d237b7a810414" kind="function"><name>linearSystem</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a6024ec042022f9f5ea7cfd0abf9c9df7" kind="function"><name>assemble</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a350c68b8ce406f1027e73f688deb4af4" kind="function"><name>exec</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a653dd3c9f333fde6b2af0b1f9150d19d" kind="function"><name>setReference</name></member>
-    <member refid="classFoamAdapter_1_1Expression_1a4fb07c37a5aa1cfee93213a024007fe4" kind="function"><name>solve</name></member>
-  </compound>
   <compound refid="classFoamAdapter_1_1MeshAdapter" kind="class"><name>FoamAdapter::MeshAdapter</name>
     <member refid="classFoamAdapter_1_1MeshAdapter_1ab0b515251235effaa7476e4bd97dfcbc" kind="typedef"><name>word</name></member>
     <member refid="classFoamAdapter_1_1MeshAdapter_1a6c56c1cdbd4a7a66003a1eded9837af2" kind="variable"><name>nfMesh_</name></member>
@@ -46,6 +23,30 @@
     <member refid="classFoamAdapter_1_1MeshAdapter_1a05e872a8e76a491cf191887032c65ac2" kind="function"><name>nfMesh</name></member>
     <member refid="classFoamAdapter_1_1MeshAdapter_1a4b9a8243377dd4ccdb55b52e21305d5a" kind="function"><name>nfMesh</name></member>
     <member refid="classFoamAdapter_1_1MeshAdapter_1a4df45052e509fd4d52fc6120ae02c525" kind="function"><name>exec</name></member>
+  </compound>
+  <compound refid="classFoamAdapter_1_1PDESolver" kind="class"><name>FoamAdapter::PDESolver</name>
+    <member refid="classFoamAdapter_1_1PDESolver_1a31e4dfa4d38269177ce33b55eb12d6bd" kind="typedef"><name>VolumeField</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a77daeacd19f663935df720cb399113f5" kind="variable"><name>psi_</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a19065654f8ef71a50f5e34c437b0a463" kind="variable"><name>expr_</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1ae62db181c0d5ff5b1daf486a4fe0b3d5" kind="variable"><name>runTime_</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a458596ca1b7f6b6a09fa5cdc27f81d8a" kind="variable"><name>sparsityPattern_</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a1fba0125033f6f82a07ade1c9d6ec04c" kind="variable"><name>ls_</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a564b7a3bc9fe7165496abd2a8da93c7b" kind="variable"><name>needReference_</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a77aee666a83894dddbadd05d36879f7d" kind="variable"><name>pRefCell_</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a0065ac801083efa88bfa6f92ef10875e" kind="variable"><name>pRefValue_</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a811245d56b6aeace081eecfb4705935d" kind="function"><name>PDESolver</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a66ea4cf1544b19dc4b85cbd648339ad4" kind="function"><name>PDESolver</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1ad1b1411b4c9dafa3af5db57b8a63d772" kind="function"><name>~PDESolver</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a6742356899c5ad7183053196aaa07463" kind="function"><name>getField</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a1a16a48f6a6de5290dbb57188a2e6b99" kind="function"><name>getField</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a6fdf76bf239ca49b3cea5e3192a15ad8" kind="function"><name>sparsityPattern</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1ac35b64b2d576f9889564e4597be2906e" kind="function"><name>linearSystem</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a5952a2749774464c282bda15df63a3e7" kind="function"><name>linearSystem</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a5c43f1d9dcf9da6d4666bb2c244d4972" kind="function"><name>assemble</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a3329ce27b2f393b13af7fd732e431901" kind="function"><name>exec</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a598c12950466b251b83849cca906c8a5" kind="function"><name>setReference</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1a99f902362c4f6b16ef8539c72032bb26" kind="function"><name>solve</name></member>
+    <member refid="classFoamAdapter_1_1PDESolver_1ae2ac0ab8e0bf8b8626b526da711c5a42" kind="function"><name>solve</name></member>
   </compound>
   <compound refid="structFoamAdapter_1_1RunTime" kind="struct"><name>FoamAdapter::RunTime</name>
     <member refid="structFoamAdapter_1_1RunTime_1ae5d5a978e4027b18ac01b25abcdcd999" kind="variable"><name>db</name></member>
@@ -62,11 +63,11 @@
     <member refid="structFoamAdapter_1_1RunTime_1ab23e48dafc6eee85ecfb0c8d36c96710" kind="variable"><name>fvSolutionDict</name></member>
     <member refid="structFoamAdapter_1_1RunTime_1aa26f4fc2282444bc102496f85c57f879" kind="variable"><name>fvSchemesDict</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1Expression_1_1SetReference" kind="struct"><name>FoamAdapter::Expression::SetReference</name>
-    <member refid="structFoamAdapter_1_1Expression_1_1SetReference_1af539ccd61f7089dcd1c49d8206387779" kind="variable"><name>pRefCell_</name></member>
-    <member refid="structFoamAdapter_1_1Expression_1_1SetReference_1adb379b10d2f7e0a05059c1d27ffce708" kind="variable"><name>pRefValue_</name></member>
-    <member refid="structFoamAdapter_1_1Expression_1_1SetReference_1ad3b6eaaf8601464b00871bee426edb22" kind="function"><name>SetReference</name></member>
-    <member refid="structFoamAdapter_1_1Expression_1_1SetReference_1a54f424bf9d39524be6ef189f52797ea1" kind="function"><name>operator()</name></member>
+  <compound refid="structFoamAdapter_1_1PDESolver_1_1SetReference" kind="struct"><name>FoamAdapter::PDESolver::SetReference</name>
+    <member refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a3889bb614c28806145995a767cc2d162" kind="variable"><name>pRefCell_</name></member>
+    <member refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a46a354ba29700cf6251c2925f8ea5255" kind="variable"><name>pRefValue_</name></member>
+    <member refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a099c97ef8bee51fc13c6a55badaa8ad5" kind="function"><name>SetReference</name></member>
+    <member refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1ac42674accaea9ddcdd0c40e74a3c90a5" kind="function"><name>operator()</name></member>
   </compound>
   <compound refid="structFoamAdapter_1_1type__map" kind="struct"><name>FoamAdapter::type_map</name>
   </compound>
@@ -106,9 +107,9 @@
   </compound>
   <compound refid="namespaceFoamAdapter" kind="namespace"><name>FoamAdapter</name>
     <member refid="namespaceFoamAdapter_1a54bbeabff5f4044f250027a13ebe295d" kind="function"><name>constrainHbyA</name></member>
-    <member refid="namespaceFoamAdapter_1aec2f4e1c957ad84fb49c15585d0da474" kind="function"><name>computeRAU</name></member>
-    <member refid="namespaceFoamAdapter_1a0ab83d9f57643ab6599fed6c3a318f4a" kind="function"><name>discreteMomentumFields</name></member>
-    <member refid="namespaceFoamAdapter_1a678aeff6603442623c3cb8c784435ecb" kind="function"><name>updateFaceVelocity</name></member>
+    <member refid="namespaceFoamAdapter_1a3fcb65605aafdcc90b7315821bac79bb" kind="function"><name>computeRAU</name></member>
+    <member refid="namespaceFoamAdapter_1a3f31cf5e3f7cec8c725350be6371097c" kind="function"><name>discreteMomentumFields</name></member>
+    <member refid="namespaceFoamAdapter_1aa70aa24d844e3320ed61ec135b7048ef" kind="function"><name>updateFaceVelocity</name></member>
     <member refid="namespaceFoamAdapter_1ab07cdffe2f504299318aad761dfd4b9b" kind="function"><name>updateVelocity</name></member>
     <member refid="namespaceFoamAdapter_1aeb9d6048345debcb9e018bb2e75436b3" kind="function"><name>flux</name></member>
     <member refid="namespaceFoamAdapter_1a9f22c54b08a010fb0c71f78f7b1b8167" kind="function"><name>operator==</name></member>
@@ -142,7 +143,7 @@
     <member refid="namespaceFoamAdapter_1adf5f68e388035bb188ca7ed993972a1a" kind="function"><name>mapFvSolution</name></member>
     <member refid="namespaceFoamAdapter_1a13b42389ef03dfeb668a50344c66743c" kind="function"><name>diag</name></member>
     <member refid="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" kind="function"><name>applyOperator</name></member>
-    <member refid="namespaceFoamAdapter_1a735d5fda9dfb92f1b072e6b2dc2ead40" kind="function"><name>operator&amp;</name></member>
+    <member refid="namespaceFoamAdapter_1ae9a1e4d59d70d0d025f38cf80b964bf1" kind="function"><name>operator&amp;</name></member>
     <member refid="namespaceFoamAdapter_1a756cc6e6886d3830b69f190c6144d45d" kind="function"><name>computeOffset</name></member>
     <member refid="namespaceFoamAdapter_1a350e30b195d83112881719b760db48af" kind="function"><name>computeNBoundaryFaces</name></member>
     <member refid="namespaceFoamAdapter_1ab204c114163c8f7c5363ea1ce677bc57" kind="function"><name>flatBCField</name></member>
@@ -152,6 +153,10 @@
   </compound>
   <compound refid="namespaceFoamAdapter_1_1detail" kind="namespace"><name>FoamAdapter::detail</name>
     <member refid="namespaceFoamAdapter_1_1detail_1ad9dab6a1297b6b8e3625f548a83bdc25" kind="function"><name>copy_impl</name></member>
+  </compound>
+  <compound refid="namespaceNeoN" kind="namespace"><name>NeoN</name>
+  </compound>
+  <compound refid="namespaceNeoN_1_1dsl" kind="namespace"><name>NeoN::dsl</name>
   </compound>
   <compound refid="pressureVelocityCoupling_8hpp" kind="file"><name>pressureVelocityCoupling.hpp</name>
     <member refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kind="typedef"><name>scalar</name></member>

@@ -113,8 +113,8 @@
         </childnode>
       </node>
     </invincdepgraph>
-    <innerclass refid="classFoamAdapter_1_1Expression" prot="public">FoamAdapter::Expression</innerclass>
-    <innerclass refid="structFoamAdapter_1_1Expression_1_1SetReference" prot="public">FoamAdapter::Expression::SetReference</innerclass>
+    <innerclass refid="classFoamAdapter_1_1PDESolver" prot="public">FoamAdapter::PDESolver</innerclass>
+    <innerclass refid="structFoamAdapter_1_1PDESolver_1_1SetReference" prot="public">FoamAdapter::PDESolver::SetReference</innerclass>
     <innernamespace refid="namespaceFoamAdapter">FoamAdapter</innernamespace>
     <briefdescription>
     </briefdescription>
@@ -142,193 +142,203 @@
 <codeline lineno="19"><highlight class="comment"><sp/>*<sp/>needs<sp/>storage<sp/>for<sp/>assembled<sp/>matrix?<sp/>and<sp/>whether<sp/>update<sp/>is<sp/>needed<sp/>like<sp/>for<sp/>rAU<sp/>and<sp/>HbyA</highlight></codeline>
 <codeline lineno="20"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueType,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>IndexType<sp/>=<sp/>NeoN::localIdx&gt;</highlight></codeline>
-<codeline lineno="22" refid="classFoamAdapter_1_1Expression" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref></highlight></codeline>
+<codeline lineno="22" refid="classFoamAdapter_1_1PDESolver" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver</ref></highlight></codeline>
 <codeline lineno="23"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">VolumeField<sp/>=<sp/>NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;;</highlight></codeline>
 <codeline lineno="25"><highlight class="normal"></highlight></codeline>
 <codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
 <codeline lineno="27"><highlight class="normal"></highlight></codeline>
 <codeline lineno="28"><highlight class="normal"></highlight></codeline>
-<codeline lineno="29" refid="classFoamAdapter_1_1Expression_1a12e4c8ac5f3f70fbb35c4ff4576ccee6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classFoamAdapter_1_1Expression_1a12e4c8ac5f3f70fbb35c4ff4576ccee6" kindref="member">Expression</ref>(</highlight></codeline>
-<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dsl::Expression&lt;ValueType&gt;<sp/>expr,</highlight></codeline>
-<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VolumeField&amp;<sp/>psi,</highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structFoamAdapter_1_1RunTime" kindref="compound">RunTime</ref>&amp;<sp/>runTime</highlight></codeline>
-<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>)</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>psi_(psi)</highlight></codeline>
-<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>expr_(expr)</highlight></codeline>
-<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>runTime_(runTime)</highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>sparsityPattern_(</highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::la::SparsityPattern::readOrCreate(psi.mesh())</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>)</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>ls_(NeoN::la::createEmptyLinearSystem&lt;</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ValueType,</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::localIdx&gt;(psi.mesh(),<sp/>sparsityPattern_))</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>expr_.read(runTime_.<ref refid="structFoamAdapter_1_1RunTime_1aa26f4fc2282444bc102496f85c57f879" kindref="member">fvSchemesDict</ref>);</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
-<codeline lineno="46"><highlight class="normal"></highlight></codeline>
-<codeline lineno="47" refid="classFoamAdapter_1_1Expression_1a20227f6f2989729b84237dbae9c8a71d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classFoamAdapter_1_1Expression_1a20227f6f2989729b84237dbae9c8a71d" kindref="member">Expression</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&amp;<sp/>expr)</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>psi_(expr.psi_)</highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>expr_(expr.expr_)</highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>runTime_(expr.runTime_)</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>ls_(expr.ls_)</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>sparsityPattern_(expr.sparsityPattern_)<sp/>{};</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="54" refid="classFoamAdapter_1_1Expression_1a8b2c4ff8f856720be0d862b2092c4b9a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classFoamAdapter_1_1Expression_1a8b2c4ff8f856720be0d862b2092c4b9a" kindref="member">~Expression</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"></highlight></codeline>
-<codeline lineno="56" refid="classFoamAdapter_1_1Expression_1a81d5718d028b71ee22ff2a259d4d30dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>VolumeField&amp;<sp/><ref refid="classFoamAdapter_1_1Expression_1a81d5718d028b71ee22ff2a259d4d30dc" kindref="member">getField</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;psi_;<sp/>}</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"></highlight></codeline>
-<codeline lineno="58" refid="classFoamAdapter_1_1Expression_1a0ce11c16c1f569c2a3c87348d8c124b4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>VolumeField&amp;<sp/><ref refid="classFoamAdapter_1_1Expression_1a0ce11c16c1f569c2a3c87348d8c124b4" kindref="member">getField</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
-<codeline lineno="59"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;psi_;</highlight></codeline>
-<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="62"><highlight class="normal"></highlight></codeline>
-<codeline lineno="63" refid="classFoamAdapter_1_1Expression_1a855cf32c23315ea3cc202e7bb1cd89d5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><sp/>NeoN::la::SparsityPattern&amp;<sp/><ref refid="classFoamAdapter_1_1Expression_1a855cf32c23315ea3cc202e7bb1cd89d5" kindref="member">sparsityPattern</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
-<codeline lineno="64"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sparsityPattern_;</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"></highlight></codeline>
-<codeline lineno="68" refid="classFoamAdapter_1_1Expression_1a16c7d18b9f295ae6ceb255def5c6d5fd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/>NeoN::la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/><ref refid="classFoamAdapter_1_1Expression_1a16c7d18b9f295ae6ceb255def5c6d5fd" kindref="member">linearSystem</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls_;<sp/>}</highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight></codeline>
-<codeline lineno="70" refid="classFoamAdapter_1_1Expression_1a1531aefa9f947598726d237b7a810414" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/><ref refid="classFoamAdapter_1_1Expression_1a1531aefa9f947598726d237b7a810414" kindref="member">linearSystem</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
-<codeline lineno="71"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls_;</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="29" refid="classFoamAdapter_1_1PDESolver_1a811245d56b6aeace081eecfb4705935d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classFoamAdapter_1_1PDESolver_1a811245d56b6aeace081eecfb4705935d" kindref="member">PDESolver</ref>(dsl::Expression&lt;ValueType&gt;<sp/>expr,<sp/>VolumeField&amp;<sp/>psi,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structFoamAdapter_1_1RunTime" kindref="compound">RunTime</ref>&amp;<sp/>runTime)</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>psi_(psi)</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>expr_(expr)</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>runTime_(runTime)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>sparsityPattern_(NeoN::la::SparsityPattern::readOrCreate(psi.mesh()))</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>ls_(NeoN::la::createEmptyLinearSystem&lt;ValueType,<sp/>NeoN::localIdx&gt;(</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.mesh(),</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sparsityPattern_</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>))</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>expr_.read(runTime_.<ref refid="structFoamAdapter_1_1RunTime_1aa26f4fc2282444bc102496f85c57f879" kindref="member">fvSchemesDict</ref>);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="classFoamAdapter_1_1PDESolver_1a66ea4cf1544b19dc4b85cbd648339ad4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classFoamAdapter_1_1PDESolver_1a66ea4cf1544b19dc4b85cbd648339ad4" kindref="member">PDESolver</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver</ref>&amp;<sp/>expr)</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>psi_(expr.psi_)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>expr_(expr.expr_)</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>runTime_(expr.runTime_)</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>ls_(expr.ls_)</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>sparsityPattern_(expr.sparsityPattern_)<sp/>{};</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="classFoamAdapter_1_1PDESolver_1ad1b1411b4c9dafa3af5db57b8a63d772" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classFoamAdapter_1_1PDESolver_1ad1b1411b4c9dafa3af5db57b8a63d772" kindref="member">~PDESolver</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="classFoamAdapter_1_1PDESolver_1a6742356899c5ad7183053196aaa07463" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>VolumeField&amp;<sp/><ref refid="classFoamAdapter_1_1PDESolver_1a6742356899c5ad7183053196aaa07463" kindref="member">getField</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;psi_;<sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="classFoamAdapter_1_1PDESolver_1a1a16a48f6a6de5290dbb57188a2e6b99" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>VolumeField&amp;<sp/><ref refid="classFoamAdapter_1_1PDESolver_1a1a16a48f6a6de5290dbb57188a2e6b99" kindref="member">getField</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;psi_;<sp/>}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="classFoamAdapter_1_1PDESolver_1a6fdf76bf239ca49b3cea5e3192a15ad8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::la::SparsityPattern&amp;<sp/><ref refid="classFoamAdapter_1_1PDESolver_1a6fdf76bf239ca49b3cea5e3192a15ad8" kindref="member">sparsityPattern</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="56"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sparsityPattern_;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="classFoamAdapter_1_1PDESolver_1ac35b64b2d576f9889564e4597be2906e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/>NeoN::la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/><ref refid="classFoamAdapter_1_1PDESolver_1ac35b64b2d576f9889564e4597be2906e" kindref="member">linearSystem</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls_;<sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="classFoamAdapter_1_1PDESolver_1a5952a2749774464c282bda15df63a3e7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>[[nodiscard]]<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/><ref refid="classFoamAdapter_1_1PDESolver_1a5952a2749774464c282bda15df63a3e7" kindref="member">linearSystem</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="63"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls_;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="classFoamAdapter_1_1PDESolver_1a5c43f1d9dcf9da6d4666bb2c244d4972" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/><ref refid="classFoamAdapter_1_1PDESolver_1a5c43f1d9dcf9da6d4666bb2c244d4972" kindref="member">assemble</ref>()</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>expr_.assemble(runTime_.<ref refid="structFoamAdapter_1_1RunTime_1ae5965b4f1cf14cc8d7c6d2a00148c4b5" kindref="member">t</ref>,<sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1a0f9b142b1c4951e919e1b750f93ebc14" kindref="member">dt</ref>,<sp/>sparsityPattern_,<sp/>ls_);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls_;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="classFoamAdapter_1_1PDESolver_1a3329ce27b2f393b13af7fd732e431901" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::Executor&amp;<sp/><ref refid="classFoamAdapter_1_1PDESolver_1a3329ce27b2f393b13af7fd732e431901" kindref="member">exec</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls_.exec();<sp/>}</highlight></codeline>
 <codeline lineno="74"><highlight class="normal"></highlight></codeline>
-<codeline lineno="75" refid="classFoamAdapter_1_1Expression_1a6024ec042022f9f5ea7cfd0abf9c9df7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/><ref refid="classFoamAdapter_1_1Expression_1a6024ec042022f9f5ea7cfd0abf9c9df7" kindref="member">assemble</ref>()</highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>expr_.assemble(runTime_.<ref refid="structFoamAdapter_1_1RunTime_1ae5965b4f1cf14cc8d7c6d2a00148c4b5" kindref="member">t</ref>,<sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1a0f9b142b1c4951e919e1b750f93ebc14" kindref="member">dt</ref>,<sp/>ls_);</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls_;</highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="81" refid="classFoamAdapter_1_1Expression_1a350c68b8ce406f1027e73f688deb4af4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::Executor&amp;<sp/><ref refid="classFoamAdapter_1_1Expression_1a350c68b8ce406f1027e73f688deb4af4" kindref="member">exec</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls_.exec();<sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>FunctorValueType&gt;</highlight></codeline>
+<codeline lineno="77" refid="structFoamAdapter_1_1PDESolver_1_1SetReference" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structFoamAdapter_1_1PDESolver_1_1SetReference" kindref="compound">SetReference</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>NeoN::dsl::OpFunctor&lt;ValueType&gt;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a3889bb614c28806145995a767cc2d162" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::localIdx<sp/><ref refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a3889bb614c28806145995a767cc2d162" kindref="member">pRefCell_</ref>;</highlight></codeline>
+<codeline lineno="81" refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a46a354ba29700cf6251c2925f8ea5255" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::scalar<sp/><ref refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a46a354ba29700cf6251c2925f8ea5255" kindref="member">pRefValue_</ref>;</highlight></codeline>
 <codeline lineno="82"><highlight class="normal"></highlight></codeline>
-<codeline lineno="83"><highlight class="normal"></highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>FunctorValueType&gt;</highlight></codeline>
-<codeline lineno="85" refid="structFoamAdapter_1_1Expression_1_1SetReference" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structFoamAdapter_1_1Expression_1_1SetReference" kindref="compound">SetReference</ref><sp/>{</highlight></codeline>
-<codeline lineno="86"><highlight class="normal"></highlight></codeline>
-<codeline lineno="87" refid="structFoamAdapter_1_1Expression_1_1SetReference_1af539ccd61f7089dcd1c49d8206387779" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::localIdx<sp/><ref refid="structFoamAdapter_1_1Expression_1_1SetReference_1af539ccd61f7089dcd1c49d8206387779" kindref="member">pRefCell_</ref>;</highlight></codeline>
-<codeline lineno="88" refid="structFoamAdapter_1_1Expression_1_1SetReference_1adb379b10d2f7e0a05059c1d27ffce708" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::scalar<sp/><ref refid="structFoamAdapter_1_1Expression_1_1SetReference_1adb379b10d2f7e0a05059c1d27ffce708" kindref="member">pRefValue_</ref>;</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"></highlight></codeline>
-<codeline lineno="90" refid="structFoamAdapter_1_1Expression_1_1SetReference_1ad3b6eaaf8601464b00871bee426edb22" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structFoamAdapter_1_1Expression_1_1SetReference_1ad3b6eaaf8601464b00871bee426edb22" kindref="member">SetReference</ref>(NeoN::localIdx<sp/>pRefCell,<sp/>NeoN::scalar<sp/>pRefValue):</highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structFoamAdapter_1_1Expression_1_1SetReference_1af539ccd61f7089dcd1c49d8206387779" kindref="member">pRefCell_</ref>(pRefCell),<ref refid="structFoamAdapter_1_1Expression_1_1SetReference_1adb379b10d2f7e0a05059c1d27ffce708" kindref="member">pRefValue_</ref>(pRefValue)<sp/>{</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight></codeline>
-<codeline lineno="94" refid="structFoamAdapter_1_1Expression_1_1SetReference_1a54f424bf9d39524be6ef189f52797ea1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structFoamAdapter_1_1Expression_1_1SetReference_1a54f424bf9d39524be6ef189f52797ea1" kindref="member">operator()</ref>(NeoN::la::LinearSystem&lt;FunctorValueType,<sp/>NeoN::localIdx&gt;&amp;<sp/>ls){</highlight></codeline>
-<codeline lineno="95"><highlight class="normal"></highlight></codeline>
-<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagOffset<sp/>=<sp/>ls.sparsityPattern().diagOffset().view();</highlight></codeline>
-<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rowOffs<sp/>=<sp/>ls.matrix().rowOffs().view();</highlight></codeline>
-<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rhs<sp/>=<sp/>ls.rhs().view();</highlight></codeline>
-<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>values<sp/>=<sp/>ls.matrix().values().view();</highlight></codeline>
-<codeline lineno="100"><highlight class="normal"></highlight></codeline>
-<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::parallelFor(</highlight></codeline>
-<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ls.exec(),</highlight></codeline>
-<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{pRefCell_,<sp/>pRefCell_<sp/>+<sp/>1},</highlight></codeline>
-<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>KOKKOS_LAMBDA(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::size_t<sp/>refCelli)<sp/>{</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagIdx<sp/>=<sp/>rowOffs[refCelli]<sp/>+<sp/>diagOffset[refCelli];</highlight></codeline>
-<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagValue<sp/>=<sp/>values[diagIdx];</highlight></codeline>
-<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rhs[refCelli]<sp/>+=<sp/>diagValue<sp/>*<sp/><ref refid="structFoamAdapter_1_1Expression_1_1SetReference_1adb379b10d2f7e0a05059c1d27ffce708" kindref="member">pRefValue_</ref>;</highlight></codeline>
-<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>values[diagIdx]<sp/>+=<sp/>diagValue;</highlight></codeline>
-<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
-<codeline lineno="111"><highlight class="normal"></highlight></codeline>
-<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
-<codeline lineno="114"><highlight class="normal"></highlight></codeline>
-<codeline lineno="115" refid="classFoamAdapter_1_1Expression_1a653dd3c9f333fde6b2af0b1f9150d19d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classFoamAdapter_1_1Expression_1a653dd3c9f333fde6b2af0b1f9150d19d" kindref="member">setReference</ref>(NeoN::localIdx<sp/>pRefCell,<sp/>NeoN::scalar<sp/>pRefValue)<sp/>{</highlight></codeline>
-<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>needReference_<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pRefCell_<sp/>=<sp/>pRefCell;</highlight></codeline>
-<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pRefValue_<sp/>=<sp/>pRefValue;</highlight></codeline>
-<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"></highlight></codeline>
-<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO<sp/>unify<sp/>with<sp/>dsl/solver.hpp</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="122" refid="classFoamAdapter_1_1Expression_1a4fb07c37a5aa1cfee93213a024007fe4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::SolverStats<sp/><ref refid="classFoamAdapter_1_1Expression_1a4fb07c37a5aa1cfee93213a024007fe4" kindref="member">solve</ref>()</highlight></codeline>
-<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt;<sp/>functs<sp/>=<sp/>needReference_<sp/>?<sp/>std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt;{}<sp/>:<sp/>std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt;{};</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"></highlight></codeline>
-<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FIXME<sp/>TODO<sp/>this<sp/>will<sp/>create<sp/>the<sp/>sparsity<sp/>pattern<sp/>and<sp/>potentially<sp/>the<sp/>ls</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>again<sp/>even<sp/>if<sp/>it<sp/>has<sp/>been<sp/>created<sp/>already</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>stats<sp/>=<sp/><sp/>NeoN::dsl::solve(expr_,</highlight></codeline>
-<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi_,</highlight></codeline>
-<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1ae5965b4f1cf14cc8d7c6d2a00148c4b5" kindref="member">t</ref>,</highlight></codeline>
-<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1a0f9b142b1c4951e919e1b750f93ebc14" kindref="member">dt</ref>,</highlight></codeline>
-<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1aa26f4fc2282444bc102496f85c57f879" kindref="member">fvSchemesDict</ref>,</highlight></codeline>
-<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1ab23e48dafc6eee85ecfb0c8d36c96710" kindref="member">fvSolutionDict</ref>.get&lt;NeoN::Dictionary&gt;(psi_.name),</highlight></codeline>
-<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>functs);</highlight></codeline>
-<codeline lineno="135"><highlight class="normal"></highlight></codeline>
-<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>__FILE__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>__LINE__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>solver<sp/>stats:\n&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\t<sp/>num<sp/>iter:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>stats.numIter</highlight></codeline>
-<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n\t<sp/>initial<sp/>residual<sp/>norm:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>stats.initResNorm</highlight></codeline>
-<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n\t<sp/>final<sp/>residual<sp/>norm:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>stats.finalResNorm<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
-<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="83" refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a099c97ef8bee51fc13c6a55badaa8ad5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a099c97ef8bee51fc13c6a55badaa8ad5" kindref="member">SetReference</ref>(NeoN::localIdx<sp/>pRefCell,<sp/>NeoN::scalar<sp/>pRefValue)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a3889bb614c28806145995a767cc2d162" kindref="member">pRefCell_</ref>(pRefCell)</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/><ref refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a46a354ba29700cf6251c2925f8ea5255" kindref="member">pRefValue_</ref>(pRefValue)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1ac42674accaea9ddcdd0c40e74a3c90a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1ac42674accaea9ddcdd0c40e74a3c90a5" kindref="member">operator()</ref>(</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::la::SparsityPattern&amp;<sp/>sp,</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::la::LinearSystem&lt;FunctorValueType,<sp/>NeoN::localIdx&gt;&amp;<sp/>ls</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagOffset<sp/>=<sp/>sp.diagOffset().view();</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rowOffs<sp/>=<sp/>ls.matrix().rowOffs().view();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rhs<sp/>=<sp/>ls.rhs().view();</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>values<sp/>=<sp/>ls.matrix().values().view();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::parallelFor(</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ls.exec(),</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{pRefCell_,<sp/>pRefCell_<sp/>+<sp/>1},</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>KOKKOS_LAMBDA(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::size_t<sp/>refCelli)<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagIdx<sp/>=<sp/>rowOffs[refCelli]<sp/>+<sp/>diagOffset[refCelli];</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagValue<sp/>=<sp/>values[diagIdx];</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rhs[refCelli]<sp/>+=<sp/>diagValue<sp/>*<sp/><ref refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a46a354ba29700cf6251c2925f8ea5255" kindref="member">pRefValue_</ref>;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>values[diagIdx]<sp/>+=<sp/>diagValue;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="classFoamAdapter_1_1PDESolver_1a598c12950466b251b83849cca906c8a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classFoamAdapter_1_1PDESolver_1a598c12950466b251b83849cca906c8a5" kindref="member">setReference</ref>(NeoN::localIdx<sp/>pRefCell,<sp/>NeoN::scalar<sp/>pRefValue)</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>needReference_<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pRefCell_<sp/>=<sp/>pRefCell;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pRefValue_<sp/>=<sp/>pRefValue;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO<sp/>unify<sp/>with<sp/>dsl/solver.hpp</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119" refid="classFoamAdapter_1_1PDESolver_1a99f902362c4f6b16ef8539c72032bb26" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::SolverStats<sp/><ref refid="classFoamAdapter_1_1PDESolver_1a99f902362c4f6b16ef8539c72032bb26" kindref="member">solve</ref>()</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Only<sp/>if<sp/>ValueType<sp/>is<sp/>scalar</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>functs<sp/>=<sp/>std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt;<sp/>{};</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_same_v&lt;ValueType,<sp/>NeoN::scalar&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>functs<sp/>=<sp/>needReference_<sp/>?<sp/>std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt;<sp/>{}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt;<sp/>{SetReference&lt;ValueType&gt;(pRefCell_,<sp/>pRefValue_)};</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FIXME<sp/>TODO<sp/>this<sp/>will<sp/>create<sp/>the<sp/>sparsity<sp/>pattern<sp/>and<sp/>potentially<sp/>the<sp/>ls</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>again<sp/>even<sp/>if<sp/>it<sp/>has<sp/>been<sp/>created<sp/>already</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>solverDict<sp/>=<sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1ab23e48dafc6eee85ecfb0c8d36c96710" kindref="member">fvSolutionDict</ref>.get&lt;NeoN::Dictionary&gt;(</highlight><highlight class="stringliteral">&quot;solvers&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>stats<sp/>=<sp/>NeoN::dsl::solve(</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>expr_,</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi_,</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1ae5965b4f1cf14cc8d7c6d2a00148c4b5" kindref="member">t</ref>,</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1a0f9b142b1c4951e919e1b750f93ebc14" kindref="member">dt</ref>,</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>runTime_.<ref refid="structFoamAdapter_1_1RunTime_1aa26f4fc2282444bc102496f85c57f879" kindref="member">fvSchemesDict</ref>,</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceFoamAdapter_1adf5f68e388035bb188ca7ed993972a1a" kindref="member">mapFvSolution</ref>(solverDict.get&lt;NeoN::Dictionary&gt;(psi_.name)),</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>functs</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
 <codeline lineno="141"><highlight class="normal"></highlight></codeline>
-<codeline lineno="142"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="143"><highlight class="normal"></highlight></codeline>
-<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>VolumeField&amp;<sp/>psi_;</highlight></codeline>
-<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>dsl::Expression&lt;ValueType&gt;<sp/>expr_;</highlight></codeline>
-<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structFoamAdapter_1_1RunTime" kindref="compound">RunTime</ref>&amp;<sp/>runTime_;</highlight></codeline>
-<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::la::SparsityPattern&amp;<sp/>sparsityPattern_;</highlight></codeline>
-<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;<sp/>ls_;</highlight></codeline>
-<codeline lineno="149"><highlight class="normal"></highlight></codeline>
-<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>needReference_;</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::localIdx<sp/>pRefCell_;</highlight></codeline>
-<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::scalar<sp/>pRefValue_;</highlight></codeline>
-<codeline lineno="153"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>__FILE__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>__LINE__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>solver<sp/>stats:\n&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\t<sp/>num<sp/>iter:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>stats.numIter</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n\t<sp/>initial<sp/>residual<sp/>norm:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>stats.initResNorm</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n\t<sp/>final<sp/>residual<sp/>norm:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>stats.finalResNorm<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148" refid="classFoamAdapter_1_1PDESolver_1ae2ac0ab8e0bf8b8626b526da711c5a42" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::SolverStats<sp/><ref refid="classFoamAdapter_1_1PDESolver_1ae2ac0ab8e0bf8b8626b526da711c5a42" kindref="member">solve</ref>(dsl::SpatialOperator&lt;NeoN::Vec3&gt;&amp;<sp/>rhs)<sp/>{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>expr_.addExpression(-1.0<sp/>*<sp/>rhs);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classFoamAdapter_1_1PDESolver_1a99f902362c4f6b16ef8539c72032bb26" kindref="member">solve</ref>();</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
 <codeline lineno="154"><highlight class="normal"></highlight></codeline>
-<codeline lineno="155"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueType,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>IndexType<sp/>=<sp/>NeoN::localIdx&gt;</highlight></codeline>
-<codeline lineno="156" refid="namespaceFoamAdapter_1a13b42389ef03dfeb668a50344c66743c" refkind="member"><highlight class="normal">NeoN::Vector&lt;ValueType&gt;<sp/><ref refid="namespaceFoamAdapter_1a13b42389ef03dfeb668a50344c66743c" kindref="member">diag</ref>(</highlight></codeline>
-<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/>ls,</highlight></codeline>
-<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::la::SparsityPattern&amp;<sp/>sparsityPattern</highlight></codeline>
-<codeline lineno="159"><highlight class="normal">)</highlight></codeline>
-<codeline lineno="160"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::Vector&lt;ValueType&gt;<sp/>diagonal(ls.exec(),<sp/>sparsityPattern.diagOffset().size(),<sp/>0.0);</highlight></codeline>
-<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagView<sp/>=<sp/>diagonal.view();</highlight></codeline>
-<codeline lineno="163"><highlight class="normal"></highlight></codeline>
-<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagOffset<sp/>=<sp/>sparsityPattern.diagOffset().view();</highlight></codeline>
-<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[matrix,<sp/>b]<sp/>=<sp/>ls.view();</highlight></codeline>
-<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::parallelFor(</highlight></codeline>
-<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ls.exec(),</highlight></codeline>
-<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0,<sp/>diagOffset.size()},</highlight></codeline>
-<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>KOKKOS_LAMBDA(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::size_t<sp/>celli)<sp/>{</highlight></codeline>
-<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagOffsetCelli<sp/>=<sp/>diagOffset[celli];</highlight></codeline>
-<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>diagView[celli]<sp/>=<sp/>matrix.values[matrix.rowOffs[celli]<sp/>+<sp/>diagOffsetCelli];</highlight></codeline>
-<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
-<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>diagonal;</highlight></codeline>
-<codeline lineno="175"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="176"><highlight class="normal"></highlight></codeline>
-<codeline lineno="177"><highlight class="normal"></highlight></codeline>
-<codeline lineno="178"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueType,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>IndexType<sp/>=<sp/>NeoN::localIdx&gt;</highlight></codeline>
-<codeline lineno="179" refid="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" refkind="member"><highlight class="normal">NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;<sp/><ref refid="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" kindref="member">applyOperator</ref>(</highlight></codeline>
-<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/>ls,</highlight></codeline>
-<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;&amp;<sp/>psi</highlight></codeline>
-<codeline lineno="182"><highlight class="normal">)</highlight></codeline>
-<codeline lineno="183"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;<sp/>res(</highlight></codeline>
-<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.exec(),</highlight></codeline>
-<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;ls_&quot;</highlight><highlight class="normal"><sp/>+<sp/>psi.name,</highlight></codeline>
-<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.mesh(),</highlight></codeline>
-<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.internalVector(),</highlight></codeline>
-<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.boundaryData(),</highlight></codeline>
-<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.boundaryConditions()</highlight></codeline>
-<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
-<codeline lineno="192"><highlight class="normal"></highlight></codeline>
-<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::computeResidual(</highlight></codeline>
-<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ls.matrix(),<sp/>ls.rhs(),<sp/>psi.internalVector(),<sp/>res.internalVector());</highlight></codeline>
-<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
-<codeline lineno="196"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="197"><highlight class="normal"></highlight></codeline>
-<codeline lineno="198"><highlight class="normal"></highlight></codeline>
-<codeline lineno="199"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueType,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>IndexType<sp/>=<sp/>NeoN::localIdx&gt;</highlight></codeline>
-<codeline lineno="200" refid="namespaceFoamAdapter_1a735d5fda9dfb92f1b072e6b2dc2ead40" refkind="member"><highlight class="normal">NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;<sp/><ref refid="namespaceFoamAdapter_1a735d5fda9dfb92f1b072e6b2dc2ead40" kindref="member">operator&amp;</ref>(</highlight></codeline>
-<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression&lt;ValueType, IndexType&gt;</ref><sp/>expr,</highlight></codeline>
-<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;&amp;<sp/>psi</highlight></codeline>
-<codeline lineno="203"><highlight class="normal">)</highlight></codeline>
-<codeline lineno="204"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" kindref="member">applyOperator</ref>(expr.<ref refid="classFoamAdapter_1_1Expression_1a16c7d18b9f295ae6ceb255def5c6d5fd" kindref="member">linearSystem</ref>(),<sp/>psi);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>VolumeField&amp;<sp/>psi_;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>dsl::Expression&lt;ValueType&gt;<sp/>expr_;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structFoamAdapter_1_1RunTime" kindref="compound">RunTime</ref>&amp;<sp/>runTime_;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::la::SparsityPattern&amp;<sp/>sparsityPattern_;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;<sp/>ls_;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>needReference_;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::localIdx<sp/>pRefCell_;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::scalar<sp/>pRefValue_;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueType,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>IndexType<sp/>=<sp/>NeoN::localIdx&gt;</highlight></codeline>
+<codeline lineno="167" refid="namespaceFoamAdapter_1a13b42389ef03dfeb668a50344c66743c" refkind="member"><highlight class="normal">NeoN::Vector&lt;ValueType&gt;<sp/><ref refid="namespaceFoamAdapter_1a13b42389ef03dfeb668a50344c66743c" kindref="member">diag</ref>(</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/>ls,</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::la::SparsityPattern&amp;<sp/>sparsityPattern</highlight></codeline>
+<codeline lineno="170"><highlight class="normal">)</highlight></codeline>
+<codeline lineno="171"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::Vector&lt;ValueType&gt;<sp/>diagonal(ls.exec(),<sp/>sparsityPattern.diagOffset().size(),<sp/>0.0);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagView<sp/>=<sp/>diagonal.view();</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagOffset<sp/>=<sp/>sparsityPattern.diagOffset().view();</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[matrix,<sp/>b]<sp/>=<sp/>ls.view();</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::parallelFor(</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ls.exec(),</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0,<sp/>diagOffset.size()},</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>KOKKOS_LAMBDA(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::size_t<sp/>celli)<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>diagOffsetCelli<sp/>=<sp/>diagOffset[celli];</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>diagView[celli]<sp/>=<sp/>matrix.values[matrix.rowOffs[celli]<sp/>+<sp/>diagOffsetCelli];</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>diagonal;</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueType,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>IndexType<sp/>=<sp/>NeoN::localIdx&gt;</highlight></codeline>
+<codeline lineno="190" refid="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" refkind="member"><highlight class="normal">NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;<sp/><ref refid="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" kindref="member">applyOperator</ref>(</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>la::LinearSystem&lt;ValueType,<sp/>IndexType&gt;&amp;<sp/>ls,</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;&amp;<sp/>psi</highlight></codeline>
+<codeline lineno="193"><highlight class="normal">)</highlight></codeline>
+<codeline lineno="194"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;<sp/>res(</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.exec(),</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;ls_&quot;</highlight><highlight class="normal"><sp/>+<sp/>psi.name,</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.mesh(),</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.internalVector(),</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.boundaryData(),</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.boundaryConditions()</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::computeResidual(ls.matrix(),<sp/>ls.rhs(),<sp/>psi.internalVector(),<sp/>res.internalVector());</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
 <codeline lineno="206"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="207"><highlight class="normal"></highlight></codeline>
-<codeline lineno="208"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueType,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>IndexType<sp/>=<sp/>NeoN::localIdx&gt;</highlight></codeline>
+<codeline lineno="210" refid="namespaceFoamAdapter_1ae9a1e4d59d70d0d025f38cf80b964bf1" refkind="member"><highlight class="normal">NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;<sp/><ref refid="namespaceFoamAdapter_1ae9a1e4d59d70d0d025f38cf80b964bf1" kindref="member">operator&amp;</ref>(</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver&lt;ValueType, IndexType&gt;</ref><sp/>expr,</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>NeoN::finiteVolume::cellCentred::VolumeField&lt;ValueType&gt;&amp;<sp/>psi</highlight></codeline>
+<codeline lineno="213"><highlight class="normal">)</highlight></codeline>
+<codeline lineno="214"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" kindref="member">applyOperator</ref>(expr.<ref refid="classFoamAdapter_1_1PDESolver_1ac35b64b2d576f9889564e4597be2906e" kindref="member">linearSystem</ref>(),<sp/>psi);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal">}</highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp"/>
   </compounddef>

@@ -40,7 +40,7 @@
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00036}00036\ \textcolor{comment}{*}}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00037}00037\ \textcolor{comment}{*\ @return\ a\ tuple\ containing\ rAU\ and\ HbyA}}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00038}00038\ \textcolor{comment}{*/}}
-\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00039}\mbox{\hyperlink{namespaceFoamAdapter_aec2f4e1c957ad84fb49c15585d0da474}{00039}}\ nnfvcc::VolumeField<scalar>\ \mbox{\hyperlink{namespaceFoamAdapter_aec2f4e1c957ad84fb49c15585d0da474}{computeRAU}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression<Vec3>}}\&\ expr);}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00039}\mbox{\hyperlink{namespaceFoamAdapter_a3fcb65605aafdcc90b7315821bac79bb}{00039}}\ nnfvcc::VolumeField<scalar>\ \mbox{\hyperlink{namespaceFoamAdapter_a3fcb65605aafdcc90b7315821bac79bb}{computeRAU}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoamAdapter_1_1PDESolver}{PDESolver<Vec3>}}\&\ expr);}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00040}00040\ }
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00041}00041\ \textcolor{comment}{/*\ @brief\ given\ a\ ...\ this\ function\ computes\ rAU\ and\ HbyA}}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00042}00042\ \textcolor{comment}{*}}
@@ -50,16 +50,16 @@
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00046}00046\ \textcolor{comment}{*\ @return\ a\ tuple\ containing\ rAU\ and\ HbyA}}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00047}00047\ \textcolor{comment}{*/}}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00048}00048\ std::tuple<nnfvcc::VolumeField<scalar>,\ nnfvcc::VolumeField<Vec3>>}
-\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00049}\mbox{\hyperlink{namespaceFoamAdapter_a0ab83d9f57643ab6599fed6c3a318f4a}{00049}}\ \mbox{\hyperlink{namespaceFoamAdapter_a0ab83d9f57643ab6599fed6c3a318f4a}{discreteMomentumFields}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression<Vec3>}}\&\ expr);}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00049}\mbox{\hyperlink{namespaceFoamAdapter_a3f31cf5e3f7cec8c725350be6371097c}{00049}}\ \mbox{\hyperlink{namespaceFoamAdapter_a3f31cf5e3f7cec8c725350be6371097c}{discreteMomentumFields}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classFoamAdapter_1_1PDESolver}{PDESolver<Vec3>}}\&\ expr);}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00050}00050\ }
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00051}00051\ \textcolor{comment}{/*\ @brief}}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00052}00052\ \textcolor{comment}{*}}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00053}00053\ \textcolor{comment}{*\ @note\ assumes\ an\ assembled\ system\ matrix}}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00054}00054\ \textcolor{comment}{*/}}
-\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00055}\mbox{\hyperlink{namespaceFoamAdapter_a678aeff6603442623c3cb8c784435ecb}{00055}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoamAdapter_a678aeff6603442623c3cb8c784435ecb}{updateFaceVelocity}}(}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00055}\mbox{\hyperlink{namespaceFoamAdapter_aa70aa24d844e3320ed61ec135b7048ef}{00055}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoamAdapter_aa70aa24d844e3320ed61ec135b7048ef}{updateFaceVelocity}}(}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00056}00056\ \ \ \ \ nnfvcc::SurfaceField<scalar>\&\ phi,}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00057}00057\ \ \ \ \ \textcolor{keyword}{const}\ nnfvcc::SurfaceField<scalar>\&\ predictedPhi,}
-\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classFoamAdapter_1_1Expression}{Expression<scalar>}}\&\ expr}
+\DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classFoamAdapter_1_1PDESolver}{PDESolver<scalar>}}\&\ expr}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00059}00059\ );}
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00060}00060\ }
 \DoxyCodeLine{\Hypertarget{pressureVelocityCoupling_8hpp_source_l00061}00061\ \ \ \textcolor{comment}{/*\ @brief}}

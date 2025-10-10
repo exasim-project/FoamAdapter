@@ -88,9 +88,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFoamAdapter_1_1CreateFromFoamField.html">CreateFromFoamField</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a VectorDocument from an existing Foam Field.  <a href="classFoamAdapter_1_1CreateFromFoamField.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFoamAdapter_1_1MeshAdapter.html">MeshAdapter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFoamAdapter_1_1RunTime.html">RunTime</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,12 +117,12 @@ Classes</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a54bbeabff5f4044f250027a13ebe295d" id="r_a54bbeabff5f4044f250027a13ebe295d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a54bbeabff5f4044f250027a13ebe295d">constrainHbyA</a> (nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;HbyA, const nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;U, const nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;p)</td></tr>
 <tr class="separator:a54bbeabff5f4044f250027a13ebe295d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec2f4e1c957ad84fb49c15585d0da474" id="r_aec2f4e1c957ad84fb49c15585d0da474"><td class="memItemLeft" align="right" valign="top">nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#aec2f4e1c957ad84fb49c15585d0da474">computeRAU</a> (const <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;expr)</td></tr>
-<tr class="separator:aec2f4e1c957ad84fb49c15585d0da474"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ab83d9f57643ab6599fed6c3a318f4a" id="r_a0ab83d9f57643ab6599fed6c3a318f4a"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt;, nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a0ab83d9f57643ab6599fed6c3a318f4a">discreteMomentumFields</a> (const <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;expr)</td></tr>
-<tr class="separator:a0ab83d9f57643ab6599fed6c3a318f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a678aeff6603442623c3cb8c784435ecb" id="r_a678aeff6603442623c3cb8c784435ecb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a678aeff6603442623c3cb8c784435ecb">updateFaceVelocity</a> (nnfvcc::SurfaceField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;phi, const nnfvcc::SurfaceField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;predictedPhi, const <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;expr)</td></tr>
-<tr class="separator:a678aeff6603442623c3cb8c784435ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fcb65605aafdcc90b7315821bac79bb" id="r_a3fcb65605aafdcc90b7315821bac79bb"><td class="memItemLeft" align="right" valign="top">nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a3fcb65605aafdcc90b7315821bac79bb">computeRAU</a> (const <a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;expr)</td></tr>
+<tr class="separator:a3fcb65605aafdcc90b7315821bac79bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f31cf5e3f7cec8c725350be6371097c" id="r_a3f31cf5e3f7cec8c725350be6371097c"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt;, nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a3f31cf5e3f7cec8c725350be6371097c">discreteMomentumFields</a> (const <a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;expr)</td></tr>
+<tr class="separator:a3f31cf5e3f7cec8c725350be6371097c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa70aa24d844e3320ed61ec135b7048ef" id="r_aa70aa24d844e3320ed61ec135b7048ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#aa70aa24d844e3320ed61ec135b7048ef">updateFaceVelocity</a> (nnfvcc::SurfaceField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;phi, const nnfvcc::SurfaceField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;predictedPhi, const <a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;expr)</td></tr>
+<tr class="separator:aa70aa24d844e3320ed61ec135b7048ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab07cdffe2f504299318aad761dfd4b9b" id="r_ab07cdffe2f504299318aad761dfd4b9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#ab07cdffe2f504299318aad761dfd4b9b">updateVelocity</a> (nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;U, const nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;HbyA, nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;rAU, nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;p)</td></tr>
 <tr class="separator:ab07cdffe2f504299318aad761dfd4b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb9d6048345debcb9e018bb2e75436b3" id="r_aeb9d6048345debcb9e018bb2e75436b3"><td class="memItemLeft" align="right" valign="top">nnfvcc::SurfaceField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#aeb9d6048345debcb9e018bb2e75436b3">flux</a> (const nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;volField)</td></tr>
@@ -201,9 +201,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a67a615e0cb1de634ffc9df635d48775e" id="r_a67a615e0cb1de634ffc9df635d48775e"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </td></tr>
 <tr class="memitem:a67a615e0cb1de634ffc9df635d48775e"><td class="memTemplItemLeft" align="right" valign="top">NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a67a615e0cb1de634ffc9df635d48775e">applyOperator</a> (const la::LinearSystem&lt; ValueType, IndexType &gt; &amp;ls, const NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; &amp;psi)</td></tr>
 <tr class="separator:a67a615e0cb1de634ffc9df635d48775e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a735d5fda9dfb92f1b072e6b2dc2ead40" id="r_a735d5fda9dfb92f1b072e6b2dc2ead40"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </td></tr>
-<tr class="memitem:a735d5fda9dfb92f1b072e6b2dc2ead40"><td class="memTemplItemLeft" align="right" valign="top">NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a735d5fda9dfb92f1b072e6b2dc2ead40">operator&amp;</a> (const <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; ValueType, IndexType &gt; expr, const NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; &amp;psi)</td></tr>
-<tr class="separator:a735d5fda9dfb92f1b072e6b2dc2ead40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9a1e4d59d70d0d025f38cf80b964bf1" id="r_ae9a1e4d59d70d0d025f38cf80b964bf1"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </td></tr>
+<tr class="memitem:ae9a1e4d59d70d0d025f38cf80b964bf1"><td class="memTemplItemLeft" align="right" valign="top">NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#ae9a1e4d59d70d0d025f38cf80b964bf1">operator&amp;</a> (const <a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a>&lt; ValueType, IndexType &gt; expr, const NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; &amp;psi)</td></tr>
+<tr class="separator:ae9a1e4d59d70d0d025f38cf80b964bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a756cc6e6886d3830b69f190c6144d45d" id="r_a756cc6e6886d3830b69f190c6144d45d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; NeoN::localIdx &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a756cc6e6886d3830b69f190c6144d45d">computeOffset</a> (const Foam::fvMesh &amp;mesh)</td></tr>
 <tr class="separator:a756cc6e6886d3830b69f190c6144d45d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a350e30b195d83112881719b760db48af" id="r_a350e30b195d83112881719b760db48af"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a350e30b195d83112881719b760db48af">computeNBoundaryFaces</a> (const Foam::fvMesh &amp;mesh)</td></tr>
@@ -247,7 +247,7 @@ template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00179">179</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00190">190</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
 
 </div>
 </div>
@@ -309,8 +309,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aec2f4e1c957ad84fb49c15585d0da474" name="aec2f4e1c957ad84fb49c15585d0da474"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec2f4e1c957ad84fb49c15585d0da474">&#9670;&#160;</a></span>computeRAU()</h2>
+<a id="a3fcb65605aafdcc90b7315821bac79bb" name="a3fcb65605aafdcc90b7315821bac79bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fcb65605aafdcc90b7315821bac79bb">&#9670;&#160;</a></span>computeRAU()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,7 +318,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; FoamAdapter::computeRAU </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>expr</em></td><td>)</td>
           <td></td>
         </tr>
@@ -701,12 +701,12 @@ template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00156">156</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00167">167</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a0ab83d9f57643ab6599fed6c3a318f4a" name="a0ab83d9f57643ab6599fed6c3a318f4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ab83d9f57643ab6599fed6c3a318f4a">&#9670;&#160;</a></span>discreteMomentumFields()</h2>
+<a id="a3f31cf5e3f7cec8c725350be6371097c" name="a3f31cf5e3f7cec8c725350be6371097c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f31cf5e3f7cec8c725350be6371097c">&#9670;&#160;</a></span>discreteMomentumFields()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -714,7 +714,7 @@ template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </div>
         <tr>
           <td class="memname">std::tuple&lt; nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt;, nnfvcc::VolumeField&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &gt; FoamAdapter::discreteMomentumFields </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#ae261b7f2859c508a432e8a334ad179d2">Vec3</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>expr</em></td><td>)</td>
           <td></td>
         </tr>
@@ -853,8 +853,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a735d5fda9dfb92f1b072e6b2dc2ead40" name="a735d5fda9dfb92f1b072e6b2dc2ead40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a735d5fda9dfb92f1b072e6b2dc2ead40">&#9670;&#160;</a></span>operator&amp;()</h2>
+<a id="ae9a1e4d59d70d0d025f38cf80b964bf1" name="ae9a1e4d59d70d0d025f38cf80b964bf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9a1e4d59d70d0d025f38cf80b964bf1">&#9670;&#160;</a></span>operator&amp;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -864,7 +864,7 @@ template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </div>
         <tr>
           <td class="memname">NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; FoamAdapter::operator&amp; </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; ValueType, IndexType &gt;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a>&lt; ValueType, IndexType &gt;&#160;</td>
           <td class="paramname"><em>expr</em>, </td>
         </tr>
         <tr>
@@ -881,7 +881,7 @@ template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00200">200</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00210">210</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
 
 </div>
 </div>
@@ -1125,8 +1125,8 @@ template&lt;typename FoamType &gt; </div>
 
 </div>
 </div>
-<a id="a678aeff6603442623c3cb8c784435ecb" name="a678aeff6603442623c3cb8c784435ecb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a678aeff6603442623c3cb8c784435ecb">&#9670;&#160;</a></span>updateFaceVelocity()</h2>
+<a id="aa70aa24d844e3320ed61ec135b7048ef" name="aa70aa24d844e3320ed61ec135b7048ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa70aa24d844e3320ed61ec135b7048ef">&#9670;&#160;</a></span>updateFaceVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1146,7 +1146,7 @@ template&lt;typename FoamType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classFoamAdapter_1_1Expression.html">Expression</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classFoamAdapter_1_1PDESolver.html">PDESolver</a>&lt; <a class="el" href="pressureVelocityCoupling_8hpp.html#acc912e7a5a44b028589fda3fd76ba7ea">scalar</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>expr</em>&#160;</td>
         </tr>
         <tr>

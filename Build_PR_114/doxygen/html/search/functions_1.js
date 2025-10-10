@@ -3,7 +3,7 @@ var searchData=
   ['checkentrytype_0',['checkEntryType',['../namespaceFoamAdapter.html#a85ee45e2838ec7c393a73b49c59ca7a5',1,'FoamAdapter']]],
   ['computenboundaryfaces_1',['computeNBoundaryFaces',['../namespaceFoamAdapter.html#a350e30b195d83112881719b760db48af',1,'FoamAdapter']]],
   ['computeoffset_2',['computeOffset',['../namespaceFoamAdapter.html#a756cc6e6886d3830b69f190c6144d45d',1,'FoamAdapter']]],
-  ['computerau_3',['computeRAU',['../namespaceFoamAdapter.html#aec2f4e1c957ad84fb49c15585d0da474',1,'FoamAdapter']]],
+  ['computerau_3',['computeRAU',['../namespaceFoamAdapter.html#a3fcb65605aafdcc90b7315821bac79bb',1,'FoamAdapter']]],
   ['constrainhbya_4',['constrainHbyA',['../namespaceFoamAdapter.html#a54bbeabff5f4044f250027a13ebe295d',1,'FoamAdapter']]],
   ['constructfrom_5',['constructFrom',['../namespaceFoamAdapter.html#a2a4e77b9a673744f7c1149e6288e00db',1,'FoamAdapter']]],
   ['constructsurfacefield_6',['constructSurfaceField',['../namespaceFoamAdapter.html#a98726de082da7d5212dae976ce88f510',1,'FoamAdapter']]],

@@ -3,8 +3,8 @@
   <compounddef id="namespaceFoamAdapter" kind="namespace" language="C++">
     <compoundname>FoamAdapter</compoundname>
     <innerclass refid="classFoamAdapter_1_1CreateFromFoamField" prot="public">FoamAdapter::CreateFromFoamField</innerclass>
-    <innerclass refid="classFoamAdapter_1_1Expression" prot="public">FoamAdapter::Expression</innerclass>
     <innerclass refid="classFoamAdapter_1_1MeshAdapter" prot="public">FoamAdapter::MeshAdapter</innerclass>
+    <innerclass refid="classFoamAdapter_1_1PDESolver" prot="public">FoamAdapter::PDESolver</innerclass>
     <innerclass refid="structFoamAdapter_1_1RunTime" prot="public">FoamAdapter::RunTime</innerclass>
     <innerclass refid="structFoamAdapter_1_1type__map" prot="public">FoamAdapter::type_map</innerclass>
     <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4" prot="public">FoamAdapter::type_map&lt; Foam::Field&lt; Foam::scalar &gt; &gt;</innerclass>
@@ -43,14 +43,14 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="27" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="27" declcolumn="6"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoamAdapter_1aec2f4e1c957ad84fb49c15585d0da474" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoamAdapter_1a3fcb65605aafdcc90b7315821bac79bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt;</type>
         <definition>nnfvcc::VolumeField&lt; scalar &gt; FoamAdapter::computeRAU</definition>
-        <argsstring>(const Expression&lt; Vec3 &gt; &amp;expr)</argsstring>
+        <argsstring>(const PDESolver&lt; Vec3 &gt; &amp;expr)</argsstring>
         <name>computeRAU</name>
         <qualifiedname>FoamAdapter::computeRAU</qualifiedname>
         <param>
-          <type>const <ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <type>const <ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
           <declname>expr</declname>
         </param>
         <briefdescription>
@@ -61,14 +61,14 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="39" column="21" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="39" declcolumn="21"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoamAdapter_1a0ab83d9f57643ab6599fed6c3a318f4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoamAdapter_1a3f31cf5e3f7cec8c725350be6371097c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt;, nnfvcc::VolumeField&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &gt;</type>
         <definition>std::tuple&lt; nnfvcc::VolumeField&lt; scalar &gt;, nnfvcc::VolumeField&lt; Vec3 &gt; &gt; FoamAdapter::discreteMomentumFields</definition>
-        <argsstring>(const Expression&lt; Vec3 &gt; &amp;expr)</argsstring>
+        <argsstring>(const PDESolver&lt; Vec3 &gt; &amp;expr)</argsstring>
         <name>discreteMomentumFields</name>
         <qualifiedname>FoamAdapter::discreteMomentumFields</qualifiedname>
         <param>
-          <type>const <ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
+          <type>const <ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1ae261b7f2859c508a432e8a334ad179d2" kindref="member">Vec3</ref> &gt; &amp;</type>
           <declname>expr</declname>
         </param>
         <briefdescription>
@@ -79,10 +79,10 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" line="49" column="1" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms/pressureVelocityCoupling.hpp" declline="49" declcolumn="1"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoamAdapter_1a678aeff6603442623c3cb8c784435ecb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoamAdapter_1aa70aa24d844e3320ed61ec135b7048ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void FoamAdapter::updateFaceVelocity</definition>
-        <argsstring>(nnfvcc::SurfaceField&lt; scalar &gt; &amp;phi, const nnfvcc::SurfaceField&lt; scalar &gt; &amp;predictedPhi, const Expression&lt; scalar &gt; &amp;expr)</argsstring>
+        <argsstring>(nnfvcc::SurfaceField&lt; scalar &gt; &amp;phi, const nnfvcc::SurfaceField&lt; scalar &gt; &amp;predictedPhi, const PDESolver&lt; scalar &gt; &amp;expr)</argsstring>
         <name>updateFaceVelocity</name>
         <qualifiedname>FoamAdapter::updateFaceVelocity</qualifiedname>
         <param>
@@ -94,7 +94,7 @@
           <declname>predictedPhi</declname>
         </param>
         <param>
-          <type>const <ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt; &amp;</type>
+          <type>const <ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver</ref>&lt; <ref refid="pressureVelocityCoupling_8hpp_1acc912e7a5a44b028589fda3fd76ba7ea" kindref="member">scalar</ref> &gt; &amp;</type>
           <declname>expr</declname>
         </param>
         <briefdescription>
@@ -855,7 +855,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="156" column="14" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="156" bodyend="175"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="167" column="14" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="167" bodyend="186"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a67a615e0cb1de634ffc9df635d48775e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -886,9 +886,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="179" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="179" bodyend="196"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="190" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="190" bodyend="206"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoamAdapter_1a735d5fda9dfb92f1b072e6b2dc2ead40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoamAdapter_1ae9a1e4d59d70d0d025f38cf80b964bf1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>typename ValueType</type>
@@ -900,11 +900,11 @@
         </templateparamlist>
         <type>NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt;</type>
         <definition>NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; FoamAdapter::operator&amp;</definition>
-        <argsstring>(const Expression&lt; ValueType, IndexType &gt; expr, const NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; &amp;psi)</argsstring>
+        <argsstring>(const PDESolver&lt; ValueType, IndexType &gt; expr, const NeoN::finiteVolume::cellCentred::VolumeField&lt; ValueType &gt; &amp;psi)</argsstring>
         <name>operator&amp;</name>
         <qualifiedname>FoamAdapter::operator&amp;</qualifiedname>
         <param>
-          <type>const <ref refid="classFoamAdapter_1_1Expression" kindref="compound">Expression</ref>&lt; ValueType, IndexType &gt;</type>
+          <type>const <ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver</ref>&lt; ValueType, IndexType &gt;</type>
           <declname>expr</declname>
         </param>
         <param>
@@ -917,7 +917,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="200" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="200" bodyend="206"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="210" column="46" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="210" bodyend="216"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a756cc6e6886d3830b69f190c6144d45d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::vector&lt; NeoN::localIdx &gt;</type>
