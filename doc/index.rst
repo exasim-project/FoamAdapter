@@ -17,6 +17,7 @@ Table of Contents
    self
    gettingStarted
    testcases
+   ci
 
 .. toctree::
    :maxdepth: 2
