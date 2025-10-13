@@ -1,5 +1,5 @@
 Continuous Integration
-========
+======================
 The **FoamAdapter** project uses a two-level Continuous Integration (CI) system
 to ensure correct builds, GPU compatibility, and automated benchmarking.
 
@@ -12,9 +12,9 @@ The CI architecture for FoamAdapter is illustrated below.
    :alt: Overview of the CI architecture for FoamAdapter
    :width: 90%
 
--------------------------------
+--------------------------------
 Continuous Integration on GitHub
--------------------------------
+--------------------------------
 GitHub CI is responsible for managing the overall FoamAdapter CI workflow.
 
 **Responsibilities:**
@@ -28,22 +28,22 @@ GitHub CI is responsible for managing the overall FoamAdapter CI workflow.
    The GitHub CI acts as the *control layer* for all FoamAdapter CI operations.
    Developers interact only with GitHub — all LRZ GitLab pipelines are triggered automatically.
 
--------------------------------
+------------------------------------
 Continuous Integration on LRZ GitLab
--------------------------------
+------------------------------------
 The LRZ GitLab CI handles GPU-related operations.
 
 **Responsibilities:**
 
-* Build and test FoamAdapter on **NVIDIA** and **AMD** GPU on Linux.
+* Build and test FoamAdapter on **NVIDIA** and **AMD** GPUs on Linux.
 * Run benchmark jobs after successful build and test stages.
 * Report the status and results back to GitHub for unified monitoring.
 
 .. _ci-foamadapter-workflow:
 
--------------------------------
+--------------------
 Development Workflow
--------------------------------
+--------------------
 The development workflow for FoamAdapter proceeds as follows:
 
 #. A developer opens a pull request (PR) or pushes a commit to an existing PR on GitHub.
@@ -57,9 +57,9 @@ The development workflow for FoamAdapter proceeds as follows:
 
 .. _ci-foamadapter-labels:
 
--------------------------------
+-------------------
 Pull Request Labels
--------------------------------
+-------------------
 FoamAdapter’s GitHub repository uses labels to control the CI behavior.
 
 **Relevant Labels:**
@@ -71,9 +71,9 @@ These labels allow developers to customize the CI process according to their nee
 
 .. _ci-foamadapter-summary:
 
--------------------------------
+-------
 Summary
--------------------------------
+-------
 The FoamAdapter CI system provides:
 
 * Unified GitHub-driven CI management.
