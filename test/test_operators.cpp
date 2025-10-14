@@ -69,7 +69,7 @@ TEST_CASE("Interpolation")
         auto nfGradT = FoamAdapter::constructFrom(exec, nfMesh, ofGradT);
         zero(nfGradT, NeoN::Vec3(0.0, 0.0, 0.0));
 
-        fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, nfGradT);
+        fvcc::GaussGreenGrad(exec, nfMesh).grad(nfT, {}, nfGradT.internalVector());
         nfGradT.correctBoundaryConditions();
 
         FoamAdapter::compare(nfGradT, ofGradT, ApproxVector(1e-12), false);

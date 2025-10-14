@@ -5,7 +5,9 @@
 #pragma once
 
 #include "NeoN/NeoN.hpp"
+
 #include "FoamAdapter/datastructures/runTime.hpp"
+#include "FoamAdapter/compatibility/fvSolution.hpp"
 
 namespace dsl = NeoN::dsl;
 
@@ -131,21 +133,25 @@ public:
         // FIXME TODO this will create the sparsity pattern and potentially the ls
         // again even if it has been created already
         auto solverDict = runTime_.fvSolutionDict.get<NeoN::Dictionary>("solvers");
-        auto stats = NeoN::dsl::solve(
-            expr_,
+        auto fieldSolverDict  = solverDict.get<NeoN::Dictionary>(psi_.name);
+        auto stats = NeoN::dsl::detail::iterativeSolveImpl(
+                                              expr_,
+                                              sparsityPattern_,
+                                              ls_,
             psi_,
             runTime_.t,
             runTime_.dt,
             runTime_.fvSchemesDict,
-            solverDict.get<NeoN::Dictionary>(psi_.name),
-            //mapFvSolution(solverDict.get<NeoN::Dictionary>(psi_.name)),
+            fieldSolverDict,
             functs
         );
 
-        std::cout << __FILE__ << ":" << __LINE__ << " solver stats:\n"
-                  << "\t num iter: " << stats.numIter
-                  << "\n\t initial residual norm: " << stats.initResNorm
-                  << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
+        std::cout
+            << "[NeoN] Solving for " << psi_.name << ":"
+                  << " Initial residual: " << stats.initResNorm
+                  << " Final residual: " << stats.finalResNorm
+                  << " No Iterations: " << stats.numIter
+                  << std::endl;
         return stats;
     }
 

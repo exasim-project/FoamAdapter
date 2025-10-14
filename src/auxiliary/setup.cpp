@@ -79,7 +79,7 @@ NeoN::Executor createExecutor(const Foam::dictionary& dict)
     return createExecutor(execName);
 }
 
-FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in, const NeoN::Executor exec)
+FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in)
 {
     auto exec = createExecutor(in.controlDict());
     return createAdapterRunTime(in, exec);
@@ -108,12 +108,6 @@ RunTime createAdapterRunTime(const Foam::Time& in, const NeoN::Executor exec)
         .fvSolutionDict = convert(mesh.solutionDict()),
         .fvSchemesDict = convert(mesh.schemesDict())
     };
-}
-
-FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in)
-{
-    auto exec = createExecutor(in.controlDict());
-    return createAdapterRunTime(in, exec);
 }
 
 }
