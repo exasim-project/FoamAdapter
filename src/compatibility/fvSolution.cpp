@@ -26,7 +26,9 @@ void updateSolver(NeoN::Dictionary& solverDict)
         {"GAMG", {"Ginkgo", "solver::Multigrid"}},
     };
 
+    std::cout << __FILE__ << __LINE__ << "1\n";
     std::string& solverName = solverDict.get<std::string>("solver");
+    std::cout << __FILE__ << __LINE__ << "2\n";
     auto it = solverMap.find(solverName);
     if (it != solverMap.end())
     {
@@ -96,25 +98,25 @@ void updateCriteria(NeoN::Dictionary& solverDict)
         solverDict.insert("criteria", NeoN::Dictionary());
     }
 
-
     NeoN::Dictionary& criteriaDict = solverDict.subDict("criteria");
 
     // set default max iteration count
-    criteriaDict.insert("iteration", 1000);
+    criteriaDict.insert("type", std::string("Iteration"));
+    criteriaDict.insert("max_iters", 1000);
 
     // Set default values for relative residual norm and iteration count
-    if (solverDict.contains("relTol"))
-    {
-        criteriaDict.insert("relative_residual_norm", solverDict.get<NeoN::scalar>("relTol"));
-    }
-    if (solverDict.contains("maxIter"))
-    {
-        criteriaDict.insert("iteration", solverDict.get<NeoN::label>("maxIter"));
-    }
-    if (solverDict.contains("tolerance"))
-    {
-        criteriaDict.insert("absolute_residual_norm", solverDict.get<NeoN::scalar>("tolerance"));
-    }
+    // if (solverDict.contains("relTol"))
+    // {
+    //     criteriaDict.insert("relative_residual_norm", solverDict.get<NeoN::scalar>("relTol"));
+    // }
+    // if (solverDict.contains("maxIter"))
+    // {
+    //     criteriaDict.insert("iteration", solverDict.get<NeoN::label>("maxIter"));
+    // }
+    // if (solverDict.contains("tolerance"))
+    // {
+    //     criteriaDict.insert("absolute_residual_norm", solverDict.get<NeoN::scalar>("tolerance"));
+    // }
 }
 
 

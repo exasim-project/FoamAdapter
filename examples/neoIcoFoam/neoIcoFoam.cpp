@@ -169,6 +169,7 @@ int main(int argc, char* argv[])
             {
                 Info << "writing p field" << endl;
                 write(p.internalVector(), mesh, "p");
+                Info << "writing U field" << endl;
                 write(U.internalVector(), mesh, "U");
             }
 

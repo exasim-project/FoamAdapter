@@ -33,6 +33,4 @@ RunTime createAdapterRunTime(const Foam::Time& runTime, const NeoN::Executor exe
  * @return the RunTime instance*/
 RunTime createAdapterRunTime(const Foam::Time& runTime);
 
->>>>>>> a7c7017 (wip refactor solver)
-
 } // namespace Foam
