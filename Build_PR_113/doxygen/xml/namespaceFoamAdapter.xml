@@ -632,9 +632,9 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="23" column="9" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="23" declcolumn="9"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoamAdapter_1a9f6bb04e897304750bd334e7c43bcf13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">runTime</ref></type>
-        <definition>runTime FoamAdapter::createAdapterRunTime</definition>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a1e6126cd9e3f712de59ed532a20591b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structFoamAdapter_1_1RunTime" kindref="compound">RunTime</ref></type>
+        <definition>RunTime FoamAdapter::createAdapterRunTime</definition>
         <argsstring>(const Foam::Time &amp;runTime)</argsstring>
         <name>createAdapterRunTime</name>
         <qualifiedname>FoamAdapter::createAdapterRunTime</qualifiedname>
