@@ -173,8 +173,8 @@ Functions</h2></td></tr>
 <tr class="separator:a98726de082da7d5212dae976ce88f510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae692c4d706feeb179d51b6ea54bfbda8" id="r_ae692c4d706feeb179d51b6ea54bfbda8"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; bool, Foam::scalar, Foam::scalar &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#ae692c4d706feeb179d51b6ea54bfbda8">timeControls</a> (const Foam::Time &amp;runTime)</td></tr>
 <tr class="separator:ae692c4d706feeb179d51b6ea54bfbda8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52be9ed969f57da51a090c9df132990d" id="r_a52be9ed969f57da51a090c9df132990d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a52be9ed969f57da51a090c9df132990d">setDeltaT</a> (Foam::Time &amp;runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT)</td></tr>
-<tr class="separator:a52be9ed969f57da51a090c9df132990d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a958a5e2ee6dc98fc6805c118874b51f0" id="r_a958a5e2ee6dc98fc6805c118874b51f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a958a5e2ee6dc98fc6805c118874b51f0">setDeltaT</a> (Foam::Time &amp;runTime, <a class="el" href="structFoamAdapter_1_1RunTime.html">RunTime</a> &amp;rt, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT)</td></tr>
+<tr class="separator:a958a5e2ee6dc98fc6805c118874b51f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3089a13fbddccb398fa4f54d6dd0fc01" id="r_a3089a13fbddccb398fa4f54d6dd0fc01"><td class="memItemLeft" align="right" valign="top">NeoN::Executor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a3089a13fbddccb398fa4f54d6dd0fc01">createExecutor</a> (const Foam::dictionary &amp;dict)</td></tr>
 <tr class="separator:a3089a13fbddccb398fa4f54d6dd0fc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa01e57f3dd55859d173c40d5cf9b6ec4" id="r_aa01e57f3dd55859d173c40d5cf9b6ec4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFoamAdapter_1_1RunTime.html">RunTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#aa01e57f3dd55859d173c40d5cf9b6ec4">createAdapterRunTime</a> (const Foam::Time &amp;runTime, const NeoN::Executor exec)</td></tr>
@@ -247,7 +247,7 @@ template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00191">191</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00196">196</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
 
 </div>
 </div>
@@ -701,7 +701,7 @@ template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00168">168</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00173">173</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
 
 </div>
 </div>
@@ -881,7 +881,7 @@ template&lt;typename ValueType , typename IndexType  = NeoN::localIdx&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00211">211</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expression_8hpp_source.html#l00216">216</a> of file <a class="el" href="expression_8hpp_source.html">expression.hpp</a>.</p>
 
 </div>
 </div>
@@ -1067,8 +1067,8 @@ template&lt;typename FoamType &gt; </div>
 
 </div>
 </div>
-<a id="a52be9ed969f57da51a090c9df132990d" name="a52be9ed969f57da51a090c9df132990d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52be9ed969f57da51a090c9df132990d">&#9670;&#160;</a></span>setDeltaT()</h2>
+<a id="a958a5e2ee6dc98fc6805c118874b51f0" name="a958a5e2ee6dc98fc6805c118874b51f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a958a5e2ee6dc98fc6805c118874b51f0">&#9670;&#160;</a></span>setDeltaT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1078,6 +1078,12 @@ template&lt;typename FoamType &gt; </div>
           <td>(</td>
           <td class="paramtype">Foam::Time &amp;&#160;</td>
           <td class="paramname"><em>runTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFoamAdapter_1_1RunTime.html">RunTime</a> &amp;&#160;</td>
+          <td class="paramname"><em>rt</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
