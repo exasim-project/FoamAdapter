@@ -46,16 +46,16 @@
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="7">
+      <node id="5">
         <label>FoamAdapter/datastructures/meshAdapter.hpp</label>
         <link refid="meshAdapter_8hpp"/>
-        <childnode refid="4" relation="include">
+        <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="5" relation="include">
+        <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="6" relation="include">
+        <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
@@ -63,15 +63,11 @@
       <node id="3">
         <label>FoamAdapter/datastructures/runTime.hpp</label>
         <link refid="runTime_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
         <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
@@ -79,16 +75,16 @@
       <node id="2">
         <label>NeoN/NeoN.hpp</label>
       </node>
-      <node id="4">
+      <node id="6">
         <label>functional</label>
       </node>
-      <node id="6">
+      <node id="4">
         <label>fvMesh.H</label>
       </node>
       <node id="11">
         <label>fvc.H</label>
       </node>
-      <node id="5">
+      <node id="7">
         <label>memory</label>
       </node>
       <node id="14">
@@ -324,8 +320,8 @@
 <codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.boundaryData(),</highlight></codeline>
 <codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi.boundaryConditions()</highlight></codeline>
 <codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
-<codeline lineno="204"><highlight class="normal"></highlight></codeline>
-<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::computeResidual(ls.matrix(),<sp/>ls.rhs(),<sp/>psi.internalVector(),<sp/>res.internalVector());</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>NeoN::la::computeResidual(</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ls.matrix(),<sp/>ls.rhs(),<sp/>psi.internalVector(),<sp/>res.internalVector());</highlight></codeline>
 <codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
 <codeline lineno="207"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="208"><highlight class="normal"></highlight></codeline>
