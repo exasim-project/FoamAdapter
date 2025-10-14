@@ -74,7 +74,7 @@ public:
 
 
     template<typename FunctorValueType>
-    struct SetReference : public NeoN::dsl::OpFunctor<ValueType>
+    struct SetReference : public NeoN::dsl::PostAssemblyBase<ValueType>
     {
 
         NeoN::localIdx pRefCell_;
@@ -119,11 +119,11 @@ public:
     NeoN::la::SolverStats solve()
     {
         // Only if ValueType is scalar
-        auto functs = std::vector<NeoN::dsl::OpFunctor<ValueType>> {};
+        auto functs = std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {};
 
         if constexpr (std::is_same_v<ValueType, NeoN::scalar>) {
-            functs = needReference_ ? std::vector<NeoN::dsl::OpFunctor<ValueType>> {}
-                            : std::vector<NeoN::dsl::OpFunctor<ValueType>> {SetReference<ValueType>(pRefCell_, pRefValue_)};
+            functs = needReference_ ? std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {}
+                            : std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {SetReference<ValueType>(pRefCell_, pRefValue_)};
         }
 
         // FIXME TODO this will create the sparsity pattern and potentially the ls
