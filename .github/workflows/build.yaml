@@ -59,6 +59,13 @@ jobs:
          ninja --version
          cmake --version
 
+     - name: Cache build folder
+       uses: actions/cache@v4
+       with:
+         key: build_deps_${{ github.event.number }}
+         path: |
+           ${{github.workspace}}/build/develop/_deps
+
      - name: Build FoamAdapter
        run: |
          source /usr/lib/openfoam/openfoam2406/etc/bashrc || true
