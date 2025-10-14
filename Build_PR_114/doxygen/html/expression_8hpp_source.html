@@ -170,7 +170,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> FunctorValueType&gt;</div>
 <div class="foldopen" id="foldopen00077" data-start="{" data-end="};">
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="structFoamAdapter_1_1PDESolver_1_1SetReference.html">   77</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structFoamAdapter_1_1PDESolver_1_1SetReference.html">SetReference</a> : <span class="keyword">public</span> NeoN::dsl::OpFunctor&lt;ValueType&gt;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="structFoamAdapter_1_1PDESolver_1_1SetReference.html">   77</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structFoamAdapter_1_1PDESolver_1_1SetReference.html">SetReference</a> : <span class="keyword">public</span> NeoN::dsl::PostAssemblyBase&lt;ValueType&gt;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    {</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="structFoamAdapter_1_1PDESolver_1_1SetReference.html#a3889bb614c28806145995a767cc2d162">   80</a></span>        NeoN::localIdx <a class="code hl_variable" href="structFoamAdapter_1_1PDESolver_1_1SetReference.html#a3889bb614c28806145995a767cc2d162">pRefCell_</a>;</div>
@@ -223,11 +223,11 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classFoamAdapter_1_1PDESolver.html#a99f902362c4f6b16ef8539c72032bb26">  119</a></span>    NeoN::la::SolverStats <a class="code hl_function" href="classFoamAdapter_1_1PDESolver.html#a99f902362c4f6b16ef8539c72032bb26">solve</a>()</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    {</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="comment">// Only if ValueType is scalar</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keyword">auto</span> functs = std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt; {};</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keyword">auto</span> functs = std::vector&lt;NeoN::dsl::PostAssemblyBase&lt;ValueType&gt;&gt; {};</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;ValueType, NeoN::scalar&gt;) {</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            functs = needReference_ ? std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt; {}</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                            : std::vector&lt;NeoN::dsl::OpFunctor&lt;ValueType&gt;&gt; {SetReference&lt;ValueType&gt;(pRefCell_, pRefValue_)};</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            functs = needReference_ ? std::vector&lt;NeoN::dsl::PostAssemblyBase&lt;ValueType&gt;&gt; {}</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                            : std::vector&lt;NeoN::dsl::PostAssemblyBase&lt;ValueType&gt;&gt; {SetReference&lt;ValueType&gt;(pRefCell_, pRefValue_)};</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        }</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="comment">// FIXME TODO this will create the sparsity pattern and potentially the ls</span></div>

@@ -2,7 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="structFoamAdapter_1_1PDESolver_1_1SetReference" kind="struct" language="C++" prot="public">
     <compoundname>FoamAdapter::PDESolver::SetReference</compoundname>
-    <basecompoundref prot="public" virt="non-virtual">NeoN::dsl::OpFunctor&lt; ValueType &gt;</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">NeoN::dsl::PostAssemblyBase&lt; ValueType &gt;</basecompoundref>
     <includes refid="expression_8hpp" local="no">expression.hpp</includes>
     <templateparamlist>
       <param>
@@ -97,7 +97,7 @@
         </childnode>
       </node>
       <node id="2">
-        <label>NeoN::dsl::OpFunctor&lt; ValueType &gt;</label>
+        <label>NeoN::dsl::PostAssemblyBase&lt; ValueType &gt;</label>
       </node>
     </inheritancegraph>
     <collaborationgraph>
@@ -108,7 +108,7 @@
         </childnode>
       </node>
       <node id="2">
-        <label>NeoN::dsl::OpFunctor&lt; ValueType &gt;</label>
+        <label>NeoN::dsl::PostAssemblyBase&lt; ValueType &gt;</label>
       </node>
     </collaborationgraph>
     <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" line="77" column="5" bodyfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/expression.hpp" bodystart="78" bodyend="109"/>

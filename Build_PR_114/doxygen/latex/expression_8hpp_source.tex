@@ -78,7 +78,7 @@
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00074}00074\ }
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00075}00075\ }
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00076}00076\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ FunctorValueType>}
-\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00077}\mbox{\hyperlink{structFoamAdapter_1_1PDESolver_1_1SetReference}{00077}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoamAdapter_1_1PDESolver_1_1SetReference}{SetReference}}\ :\ \textcolor{keyword}{public}\ NeoN::dsl::OpFunctor<ValueType>}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00077}\mbox{\hyperlink{structFoamAdapter_1_1PDESolver_1_1SetReference}{00077}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFoamAdapter_1_1PDESolver_1_1SetReference}{SetReference}}\ :\ \textcolor{keyword}{public}\ NeoN::dsl::PostAssemblyBase<ValueType>}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00078}00078\ \ \ \ \ \{}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00079}00079\ }
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00080}\mbox{\hyperlink{structFoamAdapter_1_1PDESolver_1_1SetReference_a3889bb614c28806145995a767cc2d162}{00080}}\ \ \ \ \ \ \ \ \ NeoN::localIdx\ \mbox{\hyperlink{structFoamAdapter_1_1PDESolver_1_1SetReference_a3889bb614c28806145995a767cc2d162}{pRefCell\_}};}
@@ -123,11 +123,11 @@
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00119}\mbox{\hyperlink{classFoamAdapter_1_1PDESolver_a99f902362c4f6b16ef8539c72032bb26}{00119}}\ \ \ \ \ NeoN::la::SolverStats\ \mbox{\hyperlink{classFoamAdapter_1_1PDESolver_a99f902362c4f6b16ef8539c72032bb26}{solve}}()}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00120}00120\ \ \ \ \ \{}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Only\ if\ ValueType\ is\ scalar}}
-\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ functs\ =\ std::vector<NeoN::dsl::OpFunctor<ValueType>>\ \{\};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ functs\ =\ std::vector<NeoN::dsl::PostAssemblyBase<ValueType>>\ \{\};}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00123}00123\ }
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<ValueType,\ NeoN::scalar>)\ \{}
-\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ functs\ =\ needReference\_\ ?\ std::vector<NeoN::dsl::OpFunctor<ValueType>>\ \{\}}
-\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ std::vector<NeoN::dsl::OpFunctor<ValueType>>\ \{SetReference<ValueType>(pRefCell\_,\ pRefValue\_)\};}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ functs\ =\ needReference\_\ ?\ std::vector<NeoN::dsl::PostAssemblyBase<ValueType>>\ \{\}}
+\DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ std::vector<NeoN::dsl::PostAssemblyBase<ValueType>>\ \{SetReference<ValueType>(pRefCell\_,\ pRefValue\_)\};}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00128}00128\ }
 \DoxyCodeLine{\Hypertarget{expression_8hpp_source_l00129}00129\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ FIXME\ TODO\ this\ will\ create\ the\ sparsity\ pattern\ and\ potentially\ the\ ls}}
