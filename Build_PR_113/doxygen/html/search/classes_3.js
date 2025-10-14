@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['runtime_0',['runTime',['../structFoamAdapter_1_1runTime.html',1,'FoamAdapter']]]
+  ['runtime_0',['RunTime',['../structFoamAdapter_1_1RunTime.html',1,'FoamAdapter']]]
 ];

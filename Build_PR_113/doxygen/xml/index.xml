@@ -45,20 +45,20 @@
     <member refid="classFoamAdapter_1_1MeshAdapter_1a4b9a8243377dd4ccdb55b52e21305d5a" kind="function"><name>nfMesh</name></member>
     <member refid="classFoamAdapter_1_1MeshAdapter_1a4df45052e509fd4d52fc6120ae02c525" kind="function"><name>exec</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1runTime" kind="struct"><name>FoamAdapter::runTime</name>
-    <member refid="structFoamAdapter_1_1runTime_1a1472d4544eaa57d40e7020a4e4accee3" kind="variable"><name>db</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1a97b3fbfedebb9b5b41240be83bcba7ea" kind="variable"><name>meshPtr</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1aa1f75217df98f5c15632655b44227457" kind="variable"><name>mesh</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1a85f85de64a57a46fbd72d088a16ce2f1" kind="variable"><name>nfMesh</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1ae74605062e823e4d050f3585e344b4e7" kind="variable"><name>exec</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1ab561614c92ad82919ccff2e6d9ca0c23" kind="variable"><name>t</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1aa954241f285425668ae9b88cd04be175" kind="variable"><name>dt</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1aa63ed6fa8801c41ff9d4906663ca09e7" kind="variable"><name>adjustTimeStep</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1a91c32980de5a6ccfb2e1c6062f595b70" kind="variable"><name>maxCo</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1a486cc8d904aebf444387cc56f371beb8" kind="variable"><name>maxDeltaT</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1ada0a27f35af6f5d4d086b8aef62c624a" kind="variable"><name>controlDict</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1a1eec9ba763afc0f89d6e9d2f7b814a2a" kind="variable"><name>fvSolutionDict</name></member>
-    <member refid="structFoamAdapter_1_1runTime_1affcaf9e3c07888056572630a68340bce" kind="variable"><name>fvSchemesDict</name></member>
+  <compound refid="structFoamAdapter_1_1RunTime" kind="struct"><name>FoamAdapter::RunTime</name>
+    <member refid="structFoamAdapter_1_1RunTime_1ae5d5a978e4027b18ac01b25abcdcd999" kind="variable"><name>db</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1a77f30915264dd4f5054e762e79818657" kind="variable"><name>meshPtr</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1a69bd6bfa04d27db7606441dbabe454c8" kind="variable"><name>mesh</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ab416b6c6d74da7e070429ea07c8680f6" kind="variable"><name>nfMesh</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ac963211bcd74a3af595acf81799b0c06" kind="variable"><name>exec</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ae5965b4f1cf14cc8d7c6d2a00148c4b5" kind="variable"><name>t</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1a0f9b142b1c4951e919e1b750f93ebc14" kind="variable"><name>dt</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ac9a3f635b6f6104e474386c4761e7386" kind="variable"><name>adjustTimeStep</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1a1144b8c49b3d61f8026b1f831f03c5d3" kind="variable"><name>maxCo</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1aa1bf1d2438e8433c73d66432d66d88ea" kind="variable"><name>maxDeltaT</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1aa23cac0294a56df93906c05c75081b51" kind="variable"><name>controlDict</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ab23e48dafc6eee85ecfb0c8d36c96710" kind="variable"><name>fvSolutionDict</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1aa26f4fc2282444bc102496f85c57f879" kind="variable"><name>fvSchemesDict</name></member>
   </compound>
   <compound refid="structFoamAdapter_1_1type__map" kind="struct"><name>FoamAdapter::type_map</name>
   </compound>
@@ -122,6 +122,7 @@
     <member refid="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" kind="function"><name>timeControls</name></member>
     <member refid="namespaceFoamAdapter_1a52be9ed969f57da51a090c9df132990d" kind="function"><name>setDeltaT</name></member>
     <member refid="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" kind="function"><name>createExecutor</name></member>
+    <member refid="namespaceFoamAdapter_1aa01e57f3dd55859d173c40d5cf9b6ec4" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a9f6bb04e897304750bd334e7c43bcf13" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1a8ad8cc5431b3fde26ae90f6a760ff452" kind="function"><name>write</name></member>

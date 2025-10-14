@@ -7,7 +7,6 @@
     <includes refid="convert_8hpp" local="yes">FoamAdapter/auxiliary/convert.hpp</includes>
     <includes refid="type__conversion_8hpp" local="yes">FoamAdapter/auxiliary/type_conversion.hpp</includes>
     <includedby refid="meshAdapter_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp</includedby>
-    <includedby refid="runTime_8hpp" local="yes">/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/runTime.hpp</includedby>
     <incdepgraph>
       <node id="4">
         <label>FoamAdapter/auxiliary/convert.hpp</label>
@@ -62,8 +61,6 @@
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/readers.hpp</label>
         <link refid="readers_8hpp"/>
         <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="3" relation="include">
         </childnode>
       </node>
       <node id="4">
@@ -329,8 +326,8 @@
 <codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">convertedField</ref>.name<sp/>=<sp/><ref refid="classFoamAdapter_1_1CreateFromFoamField_1afb8e0535d4b118dce34d655b513b4c6f" kindref="member">name</ref>;</highlight></codeline>
 <codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Foam::fvMesh&amp;<sp/>mesh<sp/>=<sp/><ref refid="classFoamAdapter_1_1CreateFromFoamField_1a87674da7ed26e1bdd5a14f48896deb0e" kindref="member">foamField</ref>.mesh();</highlight></codeline>
-<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Foam::Time&amp;<sp/><ref refid="structFoamAdapter_1_1runTime" kindref="compound">runTime</ref><sp/>=<sp/>mesh.time();</highlight></codeline>
-<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::int64_t<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">timeIndex</ref><sp/>=<sp/><ref refid="structFoamAdapter_1_1runTime" kindref="compound">runTime</ref>.timeIndex();</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Foam::Time&amp;<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">runTime</ref><sp/>=<sp/>mesh.time();</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::int64_t<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">timeIndex</ref><sp/>=<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">runTime</ref>.timeIndex();</highlight></codeline>
 <codeline lineno="248"><highlight class="normal"></highlight></codeline>
 <codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NeoN::Field&lt;typename<sp/>type_container_t::VectorValueType&gt;<sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">field</ref>(</highlight></codeline>
 <codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">convertedField</ref>.exec(),</highlight></codeline>

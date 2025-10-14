@@ -47,8 +47,6 @@
         <link refid="readers_8hpp"/>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
-        </childnode>
       </node>
       <node id="5">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp</label>
