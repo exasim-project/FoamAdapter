@@ -18,20 +18,21 @@
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00014}00014\ }
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00015}\mbox{\hyperlink{namespaceFoamAdapter_ae692c4d706feeb179d51b6ea54bfbda8}{00015}}\ std::tuple<bool,\ Foam::scalar,Foam::scalar>\ \mbox{\hyperlink{namespaceFoamAdapter_ae692c4d706feeb179d51b6ea54bfbda8}{timeControls}}(\textcolor{keyword}{const}\ Foam::Time\&\ runTime);}
 \DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00016}00016\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00017}\mbox{\hyperlink{namespaceFoamAdapter_a52be9ed969f57da51a090c9df132990d}{00017}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoamAdapter_a52be9ed969f57da51a090c9df132990d}{setDeltaT}}(Foam::Time\&\ runTime,\ Foam::scalar\ maxCo,\ Foam::scalar\ CoNum,\ Foam::scalar\ maxDeltaT);}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00018}00018\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00019}\mbox{\hyperlink{namespaceFoamAdapter_a3089a13fbddccb398fa4f54d6dd0fc01}{00019}}\ NeoN::Executor\ \mbox{\hyperlink{namespaceFoamAdapter_a3089a13fbddccb398fa4f54d6dd0fc01}{createExecutor}}(\textcolor{keyword}{const}\ Foam::dictionary\&\ dict);}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00020}00020\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00021}\mbox{\hyperlink{namespaceFoamAdapter_aa01e57f3dd55859d173c40d5cf9b6ec4}{00021}}\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\ \mbox{\hyperlink{namespaceFoamAdapter_aa01e57f3dd55859d173c40d5cf9b6ec4}{createAdapterRunTime}}(\textcolor{keyword}{const}\ Foam::Time\&\ runTime,\ \textcolor{keyword}{const}\ NeoN::Executor\ exec);}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00022}00022\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00023}00023\ \textcolor{comment}{/*\ @brief\ create\ the\ commonly\ required\ objects\ for\ a\ simulation}}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00024}00024\ \textcolor{comment}{\ *\ @return\ a\ tuple\ of\ the\ executor,\ the\ controlDict,\ the\ schemesDict,\ the\ \ solutionDict*/}}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00025}00025\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\ \mbox{\hyperlink{namespaceFoamAdapter_aa01e57f3dd55859d173c40d5cf9b6ec4}{createAdapterRunTime}}(\textcolor{keyword}{const}\ Foam::Time\&\ runTime,\ \textcolor{keyword}{const}\ NeoN::Executor\ exec);}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00026}00026\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00027}00027\ \textcolor{comment}{/*\ @brief\ create\ a\ struct\ holding\ the\ commonly\ required\ objects\ for\ a\ simulation}}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00028}00028\ \textcolor{comment}{\ *\ @return\ the\ RunTime\ instance*/}}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00029}\mbox{\hyperlink{namespaceFoamAdapter_a1e6126cd9e3f712de59ed532a20591b3}{00029}}\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\ \mbox{\hyperlink{namespaceFoamAdapter_aa01e57f3dd55859d173c40d5cf9b6ec4}{createAdapterRunTime}}(\textcolor{keyword}{const}\ Foam::Time\&\ runTime);}
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00030}00030\ }
-\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00031}00031\ \}\ \textcolor{comment}{//\ namespace\ Foam}}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00017}00017\ \textcolor{comment}{/*@brief\ based\ on\ the\ Courant\ number\ this\ function\ synchronizes\ the\ deltaT\ value\ in\ both\ runtimes*/}}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00018}\mbox{\hyperlink{namespaceFoamAdapter_abe8da576c7af869b0d869f48a64aefb4}{00018}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceFoamAdapter_abe8da576c7af869b0d869f48a64aefb4}{setDeltaT}}(Foam::Time\&\ ofRunTime,\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\&\ nfRunTime,\ Foam::scalar\ coNum);}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00020}\mbox{\hyperlink{namespaceFoamAdapter_a3089a13fbddccb398fa4f54d6dd0fc01}{00020}}\ NeoN::Executor\ \mbox{\hyperlink{namespaceFoamAdapter_a3089a13fbddccb398fa4f54d6dd0fc01}{createExecutor}}(\textcolor{keyword}{const}\ Foam::dictionary\&\ dict);}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00022}\mbox{\hyperlink{namespaceFoamAdapter_aa01e57f3dd55859d173c40d5cf9b6ec4}{00022}}\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\ \mbox{\hyperlink{namespaceFoamAdapter_aa01e57f3dd55859d173c40d5cf9b6ec4}{createAdapterRunTime}}(\textcolor{keyword}{const}\ Foam::Time\&\ runTime,\ \textcolor{keyword}{const}\ NeoN::Executor\ exec);}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00024}00024\ \textcolor{comment}{/*\ @brief\ create\ the\ commonly\ required\ objects\ for\ a\ simulation}}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00025}00025\ \textcolor{comment}{\ *\ @return\ a\ tuple\ of\ the\ executor,\ the\ controlDict,\ the\ schemesDict,\ the\ \ solutionDict*/}}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00026}00026\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\ \mbox{\hyperlink{namespaceFoamAdapter_aa01e57f3dd55859d173c40d5cf9b6ec4}{createAdapterRunTime}}(\textcolor{keyword}{const}\ Foam::Time\&\ runTime,\ \textcolor{keyword}{const}\ NeoN::Executor\ exec);}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00028}00028\ \textcolor{comment}{/*\ @brief\ create\ a\ struct\ holding\ the\ commonly\ required\ objects\ for\ a\ simulation}}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00029}00029\ \textcolor{comment}{\ *\ @return\ the\ RunTime\ instance*/}}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00030}\mbox{\hyperlink{namespaceFoamAdapter_a1e6126cd9e3f712de59ed532a20591b3}{00030}}\ \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{RunTime}}\ \mbox{\hyperlink{namespaceFoamAdapter_aa01e57f3dd55859d173c40d5cf9b6ec4}{createAdapterRunTime}}(\textcolor{keyword}{const}\ Foam::Time\&\ runTime);}
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{setup_8hpp_source_l00032}00032\ \}\ \textcolor{comment}{//\ namespace\ Foam}}
 
 \end{DoxyCode}

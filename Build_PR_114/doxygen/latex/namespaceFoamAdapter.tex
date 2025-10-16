@@ -85,7 +85,7 @@ Foam\+::vector \mbox{\hyperlink{namespaceFoamAdapter_a5bc0bbc6691462c5f7bdd97f7a
 \item 
 std\+::tuple$<$ bool, Foam\+::scalar, Foam\+::scalar $>$ \mbox{\hyperlink{namespaceFoamAdapter_ae692c4d706feeb179d51b6ea54bfbda8}{time\+Controls}} (const Foam\+::\+Time \&run\+Time)
 \item 
-void \mbox{\hyperlink{namespaceFoamAdapter_a52be9ed969f57da51a090c9df132990d}{set\+DeltaT}} (Foam\+::\+Time \&run\+Time, Foam\+::scalar max\+Co, Foam\+::scalar Co\+Num, Foam\+::scalar max\+DeltaT)
+void \mbox{\hyperlink{namespaceFoamAdapter_abe8da576c7af869b0d869f48a64aefb4}{set\+DeltaT}} (Foam\+::\+Time \&of\+Run\+Time, \mbox{\hyperlink{structFoamAdapter_1_1RunTime}{Run\+Time}} \&nf\+Run\+Time, Foam\+::scalar co\+Num)
 \item 
 Neo\+N\+::\+Executor \mbox{\hyperlink{namespaceFoamAdapter_a3089a13fbddccb398fa4f54d6dd0fc01}{create\+Executor}} (const Foam\+::dictionary \&dict)
 \item 
@@ -137,7 +137,7 @@ Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ Value\+Type $>$ 
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00191}{191}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00192}{192}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5}\label{namespaceFoamAdapter_a85ee45e2838ec7c393a73b49c59ca7a5} 
 \index{FoamAdapter@{FoamAdapter}!checkEntryType@{checkEntryType}}
@@ -277,7 +277,7 @@ Neo\+N\+::\+Vector$<$ Value\+Type $>$ Foam\+Adapter\+::diag (\begin{DoxyParamCap
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00168}{168}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00169}{169}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{namespaceFoamAdapter_a3f31cf5e3f7cec8c725350be6371097c}\label{namespaceFoamAdapter_a3f31cf5e3f7cec8c725350be6371097c} 
 \index{FoamAdapter@{FoamAdapter}!discreteMomentumFields@{discreteMomentumFields}}
@@ -335,7 +335,7 @@ Neo\+N\+::finite\+Volume\+::cell\+Centred\+::\+Volume\+Field$<$ Value\+Type $>$ 
 
 
 
-Definition at line \mbox{\hyperlink{expression_8hpp_source_l00211}{211}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
+Definition at line \mbox{\hyperlink{expression_8hpp_source_l00212}{212}} of file \mbox{\hyperlink{expression_8hpp_source}{expression.\+hpp}}.
 
 \Hypertarget{namespaceFoamAdapter_a82089b04dc2e3a6ff1c1743b4136905f}\label{namespaceFoamAdapter_a82089b04dc2e3a6ff1c1743b4136905f} 
 \index{FoamAdapter@{FoamAdapter}!operator==@{operator==}}
@@ -386,11 +386,11 @@ auto Foam\+Adapter\+::read\+Vol\+Boundary\+Conditions (\begin{DoxyParamCaption}\
 
 Definition at line \mbox{\hyperlink{readers_8hpp_source_l00032}{32}} of file \mbox{\hyperlink{readers_8hpp_source}{readers.\+hpp}}.
 
-\Hypertarget{namespaceFoamAdapter_a52be9ed969f57da51a090c9df132990d}\label{namespaceFoamAdapter_a52be9ed969f57da51a090c9df132990d} 
+\Hypertarget{namespaceFoamAdapter_abe8da576c7af869b0d869f48a64aefb4}\label{namespaceFoamAdapter_abe8da576c7af869b0d869f48a64aefb4} 
 \index{FoamAdapter@{FoamAdapter}!setDeltaT@{setDeltaT}}
 \index{setDeltaT@{setDeltaT}!FoamAdapter@{FoamAdapter}}
 \doxysubsubsection{\texorpdfstring{setDeltaT()}{setDeltaT()}}
-{\footnotesize\ttfamily void Foam\+Adapter\+::set\+DeltaT (\begin{DoxyParamCaption}\item[{Foam\+::\+Time \&}]{run\+Time,  }\item[{Foam\+::scalar}]{max\+Co,  }\item[{Foam\+::scalar}]{Co\+Num,  }\item[{Foam\+::scalar}]{max\+DeltaT }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Foam\+Adapter\+::set\+DeltaT (\begin{DoxyParamCaption}\item[{Foam\+::\+Time \&}]{of\+Run\+Time,  }\item[{\mbox{\hyperlink{structFoamAdapter_1_1RunTime}{Run\+Time}} \&}]{nf\+Run\+Time,  }\item[{Foam\+::scalar}]{co\+Num }\end{DoxyParamCaption})}
 
 \Hypertarget{namespaceFoamAdapter_ae692c4d706feeb179d51b6ea54bfbda8}\label{namespaceFoamAdapter_ae692c4d706feeb179d51b6ea54bfbda8} 
 \index{FoamAdapter@{FoamAdapter}!timeControls@{timeControls}}

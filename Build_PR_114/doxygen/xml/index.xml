@@ -130,7 +130,7 @@
     <member refid="namespaceFoamAdapter_1ad7849fbeb06f57b55857d3a36a5acd26" kind="function"><name>readSurfaceBoundaryConditions</name></member>
     <member refid="namespaceFoamAdapter_1a98726de082da7d5212dae976ce88f510" kind="function"><name>constructSurfaceField</name></member>
     <member refid="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" kind="function"><name>timeControls</name></member>
-    <member refid="namespaceFoamAdapter_1a52be9ed969f57da51a090c9df132990d" kind="function"><name>setDeltaT</name></member>
+    <member refid="namespaceFoamAdapter_1abe8da576c7af869b0d869f48a64aefb4" kind="function"><name>setDeltaT</name></member>
     <member refid="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" kind="function"><name>createExecutor</name></member>
     <member refid="namespaceFoamAdapter_1aa01e57f3dd55859d173c40d5cf9b6ec4" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a1e6126cd9e3f712de59ed532a20591b3" kind="function"><name>createAdapterRunTime</name></member>
