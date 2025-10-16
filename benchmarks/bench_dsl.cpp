@@ -82,7 +82,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
 
         auto rt = nf::createAdapterRunTime(runTime);
 
-        auto& vectorCollection = nnfvcc::VectorCollection::instance(db, "VectorCollection");
+        auto& vectorCollection = nnfvcc::VectorCollection::instance(rt.db, "VectorCollection");
         nnfvcc::VolumeField<NeoN::scalar>& nfT =
             vectorCollection.registerVector<nnfvcc::VolumeField<NeoN::scalar>>(
                 FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
@@ -97,8 +97,8 @@ TEST_CASE("advection–diffusion-equation_scalar")
         auto& nfOldT = fvcc::oldTime(nfT);
         nfOldT.internalVector() = nfT.internalVector();
 
-        auto nfPhi = FoamAdapter::constructSurfaceField(exec, nfMesh, ofPhi);
-        auto nfGamma = FoamAdapter::constructSurfaceField(exec, nfMesh, ofGamma);
+        auto nfPhi = FoamAdapter::constructSurfaceField(rt.exec, rt.nfMesh, ofPhi);
+        auto nfGamma = FoamAdapter::constructSurfaceField(rt.exec, rt.nfMesh, ofGamma);
 
         SECTION(std::string("explicit"))
         {
@@ -134,7 +134,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
                     nfT,
                     rt
                 );
-                advectDiffEqn.assemble(1.0, 1e-3);
+                advectDiffEqn.assemble();
                 return;
             };
         }

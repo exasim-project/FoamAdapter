@@ -122,8 +122,8 @@ public:
         auto functs = std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {};
 
         if constexpr (std::is_same_v<ValueType, NeoN::scalar>) {
-            functs = needReference_ ? std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {}
-                            : std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {SetReference<ValueType>(pRefCell_, pRefValue_)};
+            functs = needReference_ ? std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {SetReference<ValueType>(pRefCell_, pRefValue_)}
+                : std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {};
         }
 
         // FIXME TODO this will create the sparsity pattern and potentially the ls
@@ -144,11 +144,12 @@ public:
                   << "\t num iter: " << stats.numIter
                   << "\n\t initial residual norm: " << stats.initResNorm
                   << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
+        return stats;
     }
 
     NeoN::la::SolverStats solve(dsl::SpatialOperator<NeoN::Vec3>&& rhs) {
         expr_.addOperator(-1.0 * rhs);
-        solve();
+        return solve();
     }
 
 private:
