@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
             Foam::Info << "max(U) : " << max(U).value() << Foam::endl;
             if (rt.adjustTimeStep)
             {
-                FoamAdapter::setDeltaT(runTime, rt.maxCo, coNum, rt.maxDeltaT);
+                FoamAdapter::setDeltaT(runTime, rt, coNum);
             }
             runTime++;
 

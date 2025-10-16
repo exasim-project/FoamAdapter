@@ -14,7 +14,8 @@ namespace FoamAdapter
 
 std::tuple<bool, Foam::scalar,Foam::scalar> timeControls(const Foam::Time& runTime);
 
-void setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT);
+/*@brief based on the Courant number this function synchronizes the deltaT value in both runtimes*/
+void setDeltaT(Foam::Time& ofRunTime, RunTime& nfRunTime, Foam::scalar coNum);
 
 NeoN::Executor createExecutor(const Foam::dictionary& dict);
 

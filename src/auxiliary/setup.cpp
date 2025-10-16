@@ -23,14 +23,15 @@ std::tuple<bool, Foam::scalar, Foam::scalar> timeControls(const Foam::Time& runT
 }
 
 
-void setDeltaT(Foam::Time& runTime, Foam::scalar maxCo, Foam::scalar coNum, Foam::scalar maxDeltaT)
+void setDeltaT(Foam::Time& ofRunTime, RunTime& nfRunTime, Foam::scalar coNum)
 {
-    Foam::scalar maxDeltaTFact = maxCo / (coNum + Foam::SMALL);
+    Foam::scalar maxDeltaTFact = nfRunTime.maxCo / (coNum + Foam::SMALL);
     Foam::scalar deltaTFact = Foam::min(Foam::min(maxDeltaTFact, 1.0 + 0.1 * maxDeltaTFact), 1.2);
 
-    runTime.setDeltaT(Foam::min(deltaTFact * runTime.deltaTValue(), maxDeltaT));
+    ofRunTime.setDeltaT(Foam::min(deltaTFact * ofRunTime.deltaTValue(), nfRunTime.maxDeltaT));
+    Foam::Info << "deltaT = " << ofRunTime.deltaTValue() << Foam::endl;
 
-    Foam::Info << "deltaT = " << runTime.deltaTValue() << Foam::endl;
+    nfRunTime.dt = ofRunTime.deltaTValue();
 }
 
 

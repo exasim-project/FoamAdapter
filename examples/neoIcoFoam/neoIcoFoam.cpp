@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
             auto coNum = fvcc::computeCoNum(phi, dt);
             if (rt.adjustTimeStep)
             {
-                nf::setDeltaT(runTime, rt.maxCo, coNum, rt.maxDeltaT);
+                nf::setDeltaT(runTime, rt, coNum);
             }
 
             // Momentum predictor
