@@ -2,13 +2,13 @@ from foamadapter.modules.models import Models, Model, get_model
 from foamadapter.modules.fields import Fields, Field, get_field
 from foamadapter.modules.setup import initialize_containers
 from pybFoam import scalarField, vectorField
+from test.modules.utils_fields import RegisteredScalarField, RegisteredVectorField
 
 @Fields.deps()
 class CreateTemperatureField:
     def __call__(self, deps: dict ) -> Field:
-        return Field(
-            type="scalarField",
-            value=scalarField([300, 310, 320]),
+        return RegisteredScalarField(
+            values=scalarField([300, 310, 320]),
             dimensions=(0, 0, 0, 1, 0, 0, 0),
             description="Temperature field"
         )
@@ -38,15 +38,13 @@ def test_initialize_containers():
     # Add direct entries
     fields.add_field("temperature", CreateTemperatureField())
 
-    velocity_field = Field(
-        type="vectorField",
-        value=vectorField([(1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]),
+    velocity_field = RegisteredVectorField(
+        values=vectorField([(1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]),
         dimensions=(0, 1, -1, 0, 0, 0, 0),
         description="Velocity field"
     )
-    pressure_field = Field(
-        type="scalarField",
-        value=scalarField([101325, 101300]),
+    pressure_field = RegisteredScalarField(
+        values=scalarField([101325, 101300]),
         dimensions=(1, -1, -2, 0, 0, 0, 0),
         description="Pressure field"
     )
@@ -69,7 +67,7 @@ def test_type_checking_helpers():
     """Test that helper functions provide proper type checking."""
     
     # Test get_field with correct type
-    field = Field(type="test", value=None, dimensions=(0,0,0,0,0,0,0), description="Test field")
+    field = RegisteredScalarField(values=scalarField([]), dimensions=(0,0,0,0,0,0,0), description="Test field")
     deps_with_field = {"my_field": field}
     retrieved_field = get_field(deps_with_field, "my_field")
     assert retrieved_field is field
@@ -94,5 +92,5 @@ def test_type_checking_helpers():
         get_model(deps_with_wrong_type, "my_model")
         assert False, "Should have raised TypeError"
     except TypeError as e:
-        assert "Expected Model for dependency 'my_model', got Field" in str(e)
+        assert "Expected Model for dependency 'my_model', got RegisteredScalarField" in str(e)
 

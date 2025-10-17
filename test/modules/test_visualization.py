@@ -7,15 +7,15 @@ from foamadapter.modules.fields import Fields, Field, get_field
 from foamadapter.modules.models import Models, Model, get_model
 from foamadapter.modules.setup import visualize_dag, containers_to_deps, initialize_containers
 from pybFoam import scalarField, vectorField
+from test.modules.utils_fields import RegisteredScalarField, RegisteredVectorField
 
 
 # Test factory classes and functions
 @Fields.deps()
 class CreateTemperatureField:
     def __call__(self, deps: dict = None) -> Field:
-        return Field(
-            type="scalarField",
-            value=scalarField([300, 310, 320]),
+        return RegisteredScalarField(
+            values=scalarField([300, 310, 320]),
             dimensions=(0, 0, 0, 1, 0, 0, 0),
             description="Temperature field"
         )
@@ -26,9 +26,8 @@ class CreateDensityField:
     def __call__(self, deps: dict = None) -> Field:
         temperature = get_field(deps, "temperature")
         pressure = get_field(deps, "pressure")
-        return Field(
-            type="scalarField",
-            value=scalarField([1.225, 1.200, 1.180]),
+        return RegisteredScalarField(
+            values=scalarField([1.225, 1.200, 1.180]),
             dimensions=(1, -3, 0, 0, 0, 0, 0),
             description=f"Air density field (T={temperature.description}, P={pressure.description})"
         )
@@ -61,15 +60,13 @@ def create_test_containers():
     models = Models()
     
     # Add direct field entries
-    velocity_field = Field(
-        type="vectorField",
-        value=vectorField([(1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]),
+    velocity_field = RegisteredVectorField(
+        values=vectorField([(1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]),
         dimensions=(0, 1, -1, 0, 0, 0, 0),
         description="Velocity field"
     )
-    pressure_field = Field(
-        type="scalarField",
-        value=scalarField([101325, 101300]),
+    pressure_field = RegisteredScalarField(
+        values=scalarField([101325, 101300]),
         dimensions=(1, -1, -2, 0, 0, 0, 0),
         description="Pressure field"
     )

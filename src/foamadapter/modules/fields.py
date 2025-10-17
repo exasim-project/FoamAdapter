@@ -4,13 +4,20 @@ from typing import Any, Callable, Optional, Union , Type, Generic, TypeVar
 from pybFoam import volScalarField, volVectorField
 from typing import Protocol, runtime_checkable
 
-class Field(BaseModel):
-    model_config = {"arbitrary_types_allowed": True}
-    
-    type: str
-    value: Any
-    dimensions: tuple[int, int, int, int, int, int, int]
-    description: str
+@runtime_checkable
+class Field(Protocol):
+
+    @property
+    def type(self) -> str:
+        ...
+
+    @property
+    def dimensions(self) -> tuple[int, int, int, int, int, int, int]:
+        ...
+
+    @property
+    def description(self) -> str:
+        ...
 
 @runtime_checkable
 class FieldFactory(Protocol):
@@ -36,12 +43,8 @@ class Fields(BaseModel):
     """Container for OpenFOAM fields that supports both Field objects and factory functions."""
     model_config = {"arbitrary_types_allowed": True}
     entries: dict[str, Union[Field, FieldFactory]] = pydantic.Field(default_factory=dict)
-    _initialized: bool = False
 
     def __getitem__(self, name: str) -> Field:
-        if not self._initialized:
-            raise RuntimeError("Fields must be initialized before access. Call initialize_all() first.")
-        
         item = self.entries[name]
         return item
     
@@ -78,22 +81,9 @@ class Fields(BaseModel):
         
     def items(self):
         return self.entries.items()
-    
-    def initialize_all(self) -> None:
-        """Resolve all factory functions to Field objects."""
-        for name in list(self.entries.keys()):  # Use list() to avoid modification during iteration
-            item = self.entries[name]
 
-            # If it's a factory, resolve it
-            if isinstance(item, FieldFactory):
-                print(f"Initializing field '{name}' using factory.")
-                print(f"Dependencies: {item.dependencies}")
-                field = item()
-                if not isinstance(field, Field):
-                    raise ValueError(f"Function must return a Field object, got {type(field)}")
-                self.entries[name] = field
-        
-        self._initialized = True
+    def is_initialized(self) -> bool:
+        return all(not callable(item) for item in self.entries.values())
     
 volFields = TypeVar('T', volScalarField, volVectorField)
 
@@ -111,8 +101,7 @@ class FieldReader(Generic[volFields]):
     def dependencies(self) -> list[str]:
         return self._dependencies
 
-
-    def __call__(self) -> Field:
+    def __call__(self, deps: dict) -> Field:
         """Read field from disk and convert to Field object."""
         try:
             foam_field = self.field_class.read_field(self.mesh, self.field_name)
