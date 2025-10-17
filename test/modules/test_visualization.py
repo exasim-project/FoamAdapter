@@ -5,7 +5,7 @@ import pytest
 from pathlib import Path
 from foamadapter.modules.fields import Fields, Field, get_field
 from foamadapter.modules.models import Models, Model, get_model
-from foamadapter.modules.setup import visualize_dag, visualize_containers, initialize_containers
+from foamadapter.modules.setup import visualize_dag, containers_to_deps, initialize_containers
 from pybFoam import scalarField, vectorField
 
 
@@ -130,11 +130,11 @@ def test_visualize_containers_multi_container():
     fields, models = create_test_containers()
     
     # Test multi-container visualization BEFORE initialization to see dependencies
-    graph = visualize_containers(
-        fields, models,
+    merged_deps = containers_to_deps(fields, models)
+    graph = visualize_dag(
+        merged_deps,
         title="Multi-Container Dependency Graph", 
         show=False,
-        top_to_bottom=True,
         level_lines=True
     )
     
@@ -182,8 +182,9 @@ def test_visualize_containers_save_to_file(tmp_path):
     
     output_file = tmp_path / "test_multi_container.png"
     
-    graph = visualize_containers(
-        fields, models,
+    merged_deps = containers_to_deps(fields, models)
+    graph = visualize_dag(
+        merged_deps,
         title="Multi-Container Test",
         filename=output_file,
         show=False
@@ -195,15 +196,15 @@ def test_visualize_containers_save_to_file(tmp_path):
 
 
 def test_visualize_dag_layout_options():
-    """Test different layout and styling options."""
+    """Test visualization with different styling options."""
     fields, _ = create_test_containers()
     
-    # Test bottom-to-top layout
+    # Test with level lines (default)
     graph1 = visualize_dag(
         fields.dependencies(),
-        title="Bottom to Top",
+        title="With Level Lines",
         show=False,
-        top_to_bottom=False
+        level_lines=True
     )
     
     # Test without level lines
@@ -255,11 +256,11 @@ if __name__ == "__main__":
     print("\n2. Multi-container visualization:")
     initialize_containers(fields, models)
     
-    visualize_containers(
-        fields, models,
+    merged_deps = containers_to_deps(fields, models)
+    visualize_dag(
+        merged_deps,
         title="Multi-Container Dependencies",
         show=True,
-        top_to_bottom=True,
         level_lines=True
     )
     
