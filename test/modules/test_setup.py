@@ -58,7 +58,7 @@ class CreateViscosityField:
             description="Air viscosity field"
         )
 
-def test_fields():
+def test_initialize():
     fields = Fields()
     assert list(fields.names()) == []
 

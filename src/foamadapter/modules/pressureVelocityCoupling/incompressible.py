@@ -1,4 +1,5 @@
-from typing import Literal, Optional
+from typing import Literal, Optional, Callable
+from dataclasses import dataclass
 from pybFoam import (
     volScalarField,
     volVectorField,
@@ -26,11 +27,15 @@ from ...inputs_files.case_inputs import Registry
 from ...inputs_files.system import ControlDictBase, FvSchemesBase, DIVSchemes
 from pydantic import create_model, Field
 from ...inputs_files.case_inputs import Registry, FileSpec
+from ...modules import fields
 
 ControlDict = create_model(
     "controlDict",
     maxCo=(Optional[float], Field(default=None, description="Maximum Courant number")),
-    adjustTimeStep=(Literal["yes", "no"], Field(default="no", description="Adjust time step")),
+    adjustTimeStep=(
+        Literal["yes", "no"],
+        Field(default="no", description="Adjust time step"),
+    ),
     __base__=ControlDictBase,
 )
 
@@ -41,6 +46,20 @@ divSchemes = create_model(
 
 FvSchemes = create_model("fvSchemes", __base__=FvSchemesBase)
 
+@dataclass
+class PressureVelocityFields:
+    p: volScalarField
+    U: volVectorField
+    phi: surfaceScalarField
+    turbulence: any  # Placeholder for turbulence model
+
+    # @staticmethod
+    # def create(fields,models):
+    #     p = volScalarField.read_field(fields.mesh, "p")
+    #     U = volVectorField.read_field(fields.mesh, "U")
+    #     phi = createPhi(U)
+    #     turbulence = models.get("turbulence", None)
+    #     return PressureVelocityFields(p=p, U=U, phi=phi, turbulence=turbulence)
 
 class PimpleAlgorithm:
     """
@@ -60,6 +79,15 @@ class PimpleAlgorithm:
         )
 
         return registry
+    
+    @staticmethod
+    def register_fields(mesh: fvMesh) -> dict[str, Callable[[], fields.Field]]:
+        required_fields = {
+            "p": fields.FieldReader(field_class=volScalarField, mesh=mesh, field_name="p"),
+            "U": fields.FieldReader(field_class=volVectorField, mesh=mesh, field_name="U"),
+            "phi": fields.FieldReader(field_class=surfaceScalarField, mesh=mesh, field_name="phi"),
+        }
+        return required_fields
 
     def __init__(self, mesh, turbulence=None, laminarTransport=None):
         """
@@ -69,55 +97,59 @@ class PimpleAlgorithm:
         :param laminarTransport: Optional laminar transport model.
         """
         self.mesh = mesh
-        self.turbulence = turbulence
-        self.laminarTransport = laminarTransport
-        self.p = volScalarField.read_field(mesh, "p")
-        self.U = volVectorField.read_field(mesh, "U")
-        self.phi = createPhi(self.U)
+        # self.turbulence = turbulence
+        # self.laminarTransport = laminarTransport
+        # self.p = volScalarField.read_field(mesh, "p")
+        # self.U = volVectorField.read_field(mesh, "U")
+        # self.phi = createPhi(self.U)
         self.UEqn = None  # Placeholder for momentum equation
 
-        fvSolution = dictionary.read("system/fvSolution")
-        self.pRefCell, self.pRefValue = setRefCell(self.p, fvSolution.subDict("PIMPLE"))
+        self.fvSolution = dictionary.read("system/fvSolution")
+        self.pRefCell, self.pRefValue = None, None  # setRefCell(self.p, self.fvSolution.subDict("PIMPLE"))
         self.mesh.setFluxRequired(Word("p"))
-        self.cfl_number = CFLNumber(self.phi, 5.0)
 
-    def stability_criteria(self) -> CFLNumber:
-        return self.cfl_number
+    def stability_criteria(self, fields: PressureVelocityFields) -> CFLNumber:
+        return CFLNumber(fields.phi, 5.0)
 
-    def momentum_equation(self, pimple) -> None:
+    def momentum_equation(self, pimple, fields: PressureVelocityFields) -> None:
         """
         Solve the momentum equations using the PIMPLE algorithm.
         """
+        U, p, phi, turbulence = fields.U, fields.p, fields.phi, fields.turbulence
+        if self.pRefCell is None or self.pRefValue is None:
+            self.pRefCell, self.pRefValue = setRefCell(p, self.fvSolution.subDict("PIMPLE"))
+
         self.UEqn = fvVectorMatrix(
-            fvm.ddt(self.U)
-            + fvm.div(self.phi, self.U)
-            + self.turbulence.divDevReff(self.U)
+            fvm.ddt(U)
+            + fvm.div(phi, U)
+            + turbulence.divDevReff(U)
         )
 
         self.UEqn.relax()
 
         if pimple.momentumPredictor():
-            solve(self.UEqn + fvc.grad(self.p))
+            solve(self.UEqn + fvc.grad(p))
 
-    def pressure_correction(self, pimple) -> None:
+    def pressure_correction(self, pimple, fields: PressureVelocityFields) -> None:
         """
         Correct the solution based on the PIMPLE algorithm.
         """
+        U, p, phi = fields.U, fields.p, fields.phi
         rAU = volScalarField(Word("rAU"), 1.0 / self.UEqn.A())
-        HbyA = volVectorField(constrainHbyA(rAU * self.UEqn.H(), self.U, self.p))
+        HbyA = volVectorField(constrainHbyA(rAU * self.UEqn.H(), U, p))
 
         phiHbyA = surfaceScalarField(
             Word("phiHbyA"),
-            fvc.flux(HbyA) + fvc.interpolate(rAU) * fvc.ddtCorr(self.U, self.phi),
+            fvc.flux(HbyA) + fvc.interpolate(rAU) * fvc.ddtCorr(U, phi),
         )
 
-        adjustPhi(phiHbyA, self.U, self.p)
-        constrainPressure(self.p, self.U, phiHbyA, rAU)
+        adjustPhi(phiHbyA, U, p)
+        constrainPressure(p, U, phiHbyA, rAU)
 
         while pimple.correctNonOrthogonal():
-            pEqn = fvScalarMatrix(fvm.laplacian(rAU, self.p) - fvc.div(phiHbyA))
+            pEqn = fvScalarMatrix(fvm.laplacian(rAU, p) - fvc.div(phiHbyA))
             pEqn.setReference(self.pRefCell, self.pRefValue, False)
-            pEqn.solve(self.p.select(pimple.finalInnerIter()))
+            pEqn.solve(p.select(pimple.finalInnerIter()))
 
             if pimple.finalNonOrthogonalIter():
                 self.phi.assign(phiHbyA - pEqn.flux())
@@ -125,7 +157,6 @@ class PimpleAlgorithm:
         # Optionally include continuityErrs()
         self.U.assign(HbyA - rAU * fvc.grad(self.p))
         self.U.correctBoundaryConditions()
-
 
     # def pressure_correction(self, pimple) -> None:
     #     """

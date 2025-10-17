@@ -4,6 +4,8 @@ import sys
 import pybFoam
 from pydantic import create_model, Field
 from pybFoam.io.model_base import IOModelBase
+
+
 from ..inputs_files.system import ControlDictBase, FvSchemesBase, DIVSchemes
 from pybFoam import (
     volScalarField,
@@ -30,9 +32,11 @@ from pybFoam import (
 )
 from ..inputs_files.case_inputs import Registry, FileSpec
 from ..turbulence.incompressible import TurbulenceModel
-from ..modules.pressureVelocityCoupling.incompressible import PimpleAlgorithm
+from ..modules.pressureVelocityCoupling.incompressible import PimpleAlgorithm, PressureVelocityFields
 from ..modules.stability_criteria import StabilityCriteria
-from ..modules.transportModels import singlePhaseTransportModel
+from ..modules.transportModels import SinglePhaseTransportModel
+from ..modules.fields import Fields
+from ..modules.models import Models
 
 ControlDict = create_model(
     "controlDict",
@@ -55,19 +59,25 @@ class TransportProperties(IOModelBase):
 
 
 
-def create_fields(mesh):
+def create_fields_models(mesh):
     pU = PimpleAlgorithm(mesh=mesh)
-    U = pU.U
-    phi = pU.phi
 
-    transportModel = singlePhaseTransportModel(U, phi)
 
-    turbulence = TurbulenceModel.New(U, phi, transportModel)
+    fields = Fields()
+    fields.add_fields(pU.register_fields(mesh=mesh))
 
-    pU.laminarTransport = transportModel
-    pU.turbulence = turbulence
+    fields.initialize_all()
 
-    return pU
+    models = Models(models={})
+    models.add_model("pU", pU)
+
+    transportModel = SinglePhaseTransportModel.New(pU.U, pU.phi)
+    models.add_model("transportModel", transportModel)
+
+    turbulence = TurbulenceModel.New(pU.U, pU.phi, transportModel)
+    models.add_model("turbulence", turbulence)
+
+    return fields, models
 
 
 class PimpleFoam:
@@ -79,11 +89,13 @@ class PimpleFoam:
         registry = Registry({ })
         registry = PimpleAlgorithm.inputs(registry)
         registry = TurbulenceModel.inputs(registry)
-        registry = singlePhaseTransportModel.inputs(registry)
+        registry = SinglePhaseTransportModel.inputs(registry)
         return registry
 
     def __init__(self, argv):
-        """ """
+        """
+        Initialize the PIMPLE solver with command line arguments.
+        """
         self._argv = argv
 
     def run(self):
@@ -96,9 +108,13 @@ class PimpleFoam:
         runTime = Time(argList)
         mesh = dynamicFvMesh.New(argList, runTime)
 
-        pU = create_fields(mesh)
+        fields, models = create_fields_models(mesh)
+        pU: PimpleAlgorithm = models["pU"]
+
+        puData = PressureVelocityFields(p=pU.p, U=pU.U, phi=pU.phi, turbulence=models["turbulence"])
+
         stability_criteria = StabilityCriteria()
-        stability_criteria.add_criteria(pU.stability_criteria())
+        stability_criteria.add_criteria(pU.stability_criteria(puData))
 
         pimple = pimpleControl(mesh)
 
@@ -110,14 +126,14 @@ class PimpleFoam:
 
             while pimple.loop():
 
-                pU.momentum_equation(pimple)
+                pU.momentum_equation(pimple, puData)
 
                 while pimple.correct():
-                    pU.pressure_correction(pimple)
+                    pU.pressure_correction(pimple, puData)
 
                 if pimple.turbCorr():
-                    pU.laminarTransport.correct()
-                    pU.turbulence.correct()
+                    models["transportModel"].correct()
+                    models["turbulence"].correct()
 
             runTime.write(True)
             runTime.printExecutionTime()

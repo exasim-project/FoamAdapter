@@ -7,7 +7,7 @@ from foamadapter.inputs_files.case_inputs import Registry, FileSpec
 
 
 
-class singlePhaseTransportModel(
+class SinglePhaseTransportModel(
     IOModelBase
 ):
     nu: float = Field(..., description="Kinematic viscosity", gt=0)
