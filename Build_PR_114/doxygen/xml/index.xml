@@ -109,8 +109,8 @@
     <member refid="namespaceFoamAdapter_1a54bbeabff5f4044f250027a13ebe295d" kind="function"><name>constrainHbyA</name></member>
     <member refid="namespaceFoamAdapter_1a3fcb65605aafdcc90b7315821bac79bb" kind="function"><name>computeRAU</name></member>
     <member refid="namespaceFoamAdapter_1a0e140a23f076eb4857de406948f7956a" kind="function"><name>computeRAUandHByA</name></member>
-    <member refid="namespaceFoamAdapter_1aa70aa24d844e3320ed61ec135b7048ef" kind="function"><name>updateFaceVelocity</name></member>
-    <member refid="namespaceFoamAdapter_1ab07cdffe2f504299318aad761dfd4b9b" kind="function"><name>updateVelocity</name></member>
+    <member refid="namespaceFoamAdapter_1a60e76ae54f8f88e43502447f9d5399de" kind="function"><name>updateFaceVelocity</name></member>
+    <member refid="namespaceFoamAdapter_1aad97c0aa7a1e63475411a137ea26bab7" kind="function"><name>updateVelocity</name></member>
     <member refid="namespaceFoamAdapter_1aeb9d6048345debcb9e018bb2e75436b3" kind="function"><name>flux</name></member>
     <member refid="namespaceFoamAdapter_1a9f22c54b08a010fb0c71f78f7b1b8167" kind="function"><name>operator==</name></member>
     <member refid="namespaceFoamAdapter_1ad1fb93c62a9f4dcc22f47fc524c9a80e" kind="function"><name>operator==</name></member>
