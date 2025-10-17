@@ -45,6 +45,21 @@
     <member refid="classFoamAdapter_1_1MeshAdapter_1a4b9a8243377dd4ccdb55b52e21305d5a" kind="function"><name>nfMesh</name></member>
     <member refid="classFoamAdapter_1_1MeshAdapter_1a4df45052e509fd4d52fc6120ae02c525" kind="function"><name>exec</name></member>
   </compound>
+  <compound refid="structFoamAdapter_1_1RunTime" kind="struct"><name>FoamAdapter::RunTime</name>
+    <member refid="structFoamAdapter_1_1RunTime_1ae5d5a978e4027b18ac01b25abcdcd999" kind="variable"><name>db</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1a77f30915264dd4f5054e762e79818657" kind="variable"><name>meshPtr</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1a69bd6bfa04d27db7606441dbabe454c8" kind="variable"><name>mesh</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ab416b6c6d74da7e070429ea07c8680f6" kind="variable"><name>nfMesh</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ac963211bcd74a3af595acf81799b0c06" kind="variable"><name>exec</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ae5965b4f1cf14cc8d7c6d2a00148c4b5" kind="variable"><name>t</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1a0f9b142b1c4951e919e1b750f93ebc14" kind="variable"><name>dt</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ac9a3f635b6f6104e474386c4761e7386" kind="variable"><name>adjustTimeStep</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1a1144b8c49b3d61f8026b1f831f03c5d3" kind="variable"><name>maxCo</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1aa1bf1d2438e8433c73d66432d66d88ea" kind="variable"><name>maxDeltaT</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1aa23cac0294a56df93906c05c75081b51" kind="variable"><name>controlDict</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1ab23e48dafc6eee85ecfb0c8d36c96710" kind="variable"><name>fvSolutionDict</name></member>
+    <member refid="structFoamAdapter_1_1RunTime_1aa26f4fc2282444bc102496f85c57f879" kind="variable"><name>fvSchemesDict</name></member>
+  </compound>
   <compound refid="structFoamAdapter_1_1type__map" kind="struct"><name>FoamAdapter::type_map</name>
   </compound>
   <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4" kind="struct"><name>FoamAdapter::type_map&lt; Foam::Field&lt; Foam::scalar &gt; &gt;</name>
@@ -105,8 +120,10 @@
     <member refid="namespaceFoamAdapter_1ad7849fbeb06f57b55857d3a36a5acd26" kind="function"><name>readSurfaceBoundaryConditions</name></member>
     <member refid="namespaceFoamAdapter_1a98726de082da7d5212dae976ce88f510" kind="function"><name>constructSurfaceField</name></member>
     <member refid="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" kind="function"><name>timeControls</name></member>
-    <member refid="namespaceFoamAdapter_1a52be9ed969f57da51a090c9df132990d" kind="function"><name>setDeltaT</name></member>
+    <member refid="namespaceFoamAdapter_1abe8da576c7af869b0d869f48a64aefb4" kind="function"><name>setDeltaT</name></member>
     <member refid="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" kind="function"><name>createExecutor</name></member>
+    <member refid="namespaceFoamAdapter_1aa01e57f3dd55859d173c40d5cf9b6ec4" kind="function"><name>createAdapterRunTime</name></member>
+    <member refid="namespaceFoamAdapter_1a1e6126cd9e3f712de59ed532a20591b3" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1a8ad8cc5431b3fde26ae90f6a760ff452" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1ab50ddf2a52315c0dca39d480c4cbb4a2" kind="function"><name>write</name></member>
@@ -148,6 +165,8 @@
   <compound refid="expression_8hpp" kind="file"><name>expression.hpp</name>
   </compound>
   <compound refid="meshAdapter_8hpp" kind="file"><name>meshAdapter.hpp</name>
+  </compound>
+  <compound refid="runTime_8hpp" kind="file"><name>runTime.hpp</name>
   </compound>
   <compound refid="dir_a4d4eceee78d0324774abd2790fbae3f" kind="dir"><name>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/algorithms</name>
   </compound>

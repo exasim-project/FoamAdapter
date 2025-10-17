@@ -5,6 +5,7 @@
     <innerclass refid="classFoamAdapter_1_1CreateFromFoamField" prot="public">FoamAdapter::CreateFromFoamField</innerclass>
     <innerclass refid="classFoamAdapter_1_1Expression" prot="public">FoamAdapter::Expression</innerclass>
     <innerclass refid="classFoamAdapter_1_1MeshAdapter" prot="public">FoamAdapter::MeshAdapter</innerclass>
+    <innerclass refid="structFoamAdapter_1_1RunTime" prot="public">FoamAdapter::RunTime</innerclass>
     <innerclass refid="structFoamAdapter_1_1type__map" prot="public">FoamAdapter::type_map</innerclass>
     <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4" prot="public">FoamAdapter::type_map&lt; Foam::Field&lt; Foam::scalar &gt; &gt;</innerclass>
     <innerclass refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1vector_01_4_01_4" prot="public">FoamAdapter::type_map&lt; Foam::Field&lt; Foam::vector &gt; &gt;</innerclass>
@@ -559,29 +560,25 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="14" column="12" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="14" declcolumn="12"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="15" column="12" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="15" declcolumn="12"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoamAdapter_1a52be9ed969f57da51a090c9df132990d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoamAdapter_1abe8da576c7af869b0d869f48a64aefb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>
         <definition>void FoamAdapter::setDeltaT</definition>
-        <argsstring>(Foam::Time &amp;runTime, Foam::scalar maxCo, Foam::scalar CoNum, Foam::scalar maxDeltaT)</argsstring>
+        <argsstring>(Foam::Time &amp;ofRunTime, RunTime &amp;nfRunTime, Foam::scalar coNum)</argsstring>
         <name>setDeltaT</name>
         <qualifiedname>FoamAdapter::setDeltaT</qualifiedname>
         <param>
           <type>Foam::Time &amp;</type>
-          <declname>runTime</declname>
+          <declname>ofRunTime</declname>
+        </param>
+        <param>
+          <type><ref refid="structFoamAdapter_1_1RunTime" kindref="compound">RunTime</ref> &amp;</type>
+          <declname>nfRunTime</declname>
         </param>
         <param>
           <type>Foam::scalar</type>
-          <declname>maxCo</declname>
-        </param>
-        <param>
-          <type>Foam::scalar</type>
-          <declname>CoNum</declname>
-        </param>
-        <param>
-          <type>Foam::scalar</type>
-          <declname>maxDeltaT</declname>
+          <declname>coNum</declname>
         </param>
         <briefdescription>
         </briefdescription>
@@ -589,7 +586,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="16" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="16" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="18" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="18" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>NeoN::Executor</type>
@@ -607,7 +604,47 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="18" column="16" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="18" declcolumn="16"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="20" column="16" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="20" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1aa01e57f3dd55859d173c40d5cf9b6ec4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structFoamAdapter_1_1RunTime" kindref="compound">RunTime</ref></type>
+        <definition>RunTime FoamAdapter::createAdapterRunTime</definition>
+        <argsstring>(const Foam::Time &amp;runTime, const NeoN::Executor exec)</argsstring>
+        <name>createAdapterRunTime</name>
+        <qualifiedname>FoamAdapter::createAdapterRunTime</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::Time &amp;</type>
+          <declname>runTime</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> NeoN::Executor</type>
+          <declname>exec</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="24" column="9" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="24" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceFoamAdapter_1a1e6126cd9e3f712de59ed532a20591b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structFoamAdapter_1_1RunTime" kindref="compound">RunTime</ref></type>
+        <definition>RunTime FoamAdapter::createAdapterRunTime</definition>
+        <argsstring>(const Foam::Time &amp;runTime)</argsstring>
+        <name>createAdapterRunTime</name>
+        <qualifiedname>FoamAdapter::createAdapterRunTime</qualifiedname>
+        <param>
+          <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">const</ref> Foam::Time &amp;</type>
+          <declname>runTime</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="28" column="9" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="28" declcolumn="9"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kindref="member">void</ref></type>

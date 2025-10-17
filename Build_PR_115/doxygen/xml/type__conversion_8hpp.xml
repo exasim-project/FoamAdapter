@@ -48,6 +48,10 @@
         <childnode refid="3" relation="include">
         </childnode>
       </node>
+      <node id="5">
+        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp</label>
+        <link refid="setup_8hpp"/>
+      </node>
       <node id="1">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/type_conversion.hpp</label>
         <link refid="type__conversion_8hpp"/>
@@ -57,6 +61,14 @@
       <node id="3">
         <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/meshAdapter.hpp</label>
         <link refid="meshAdapter_8hpp"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/datastructures/runTime.hpp</label>
+        <link refid="runTime_8hpp"/>
+        <childnode refid="5" relation="include">
+        </childnode>
       </node>
     </invincdepgraph>
     <innerclass refid="structFoamAdapter_1_1type__map" prot="public">FoamAdapter::type_map</innerclass>
