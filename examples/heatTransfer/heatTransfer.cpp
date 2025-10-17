@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
             fvcc::VectorCollection::instance(rt.db, "VectorCollection");
         fvcc::VolumeField<NeoN::scalar>& nfT =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
+                nf::CreateFromFoamField<Foam::volScalarField> {
                     .exec = rt.exec,
                     .nfMesh = rt.nfMesh,
                     .foamField = T,
@@ -52,14 +52,14 @@ int main(int argc, char* argv[])
         nfTOld.internalVector() = nfT.internalVector();
         nfT.correctBoundaryConditions();
 
-        auto nfKappa = FoamAdapter::constructSurfaceField(rt.exec, rt.nfMesh, kappa);
+        auto nfKappa = nf::constructSurfaceField(rt.exec, rt.nfMesh, kappa);
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-        Foam::Info << "\nStarting time loop\n" << Foam::endl;
+        Info << "\nStarting time loop\n" << endl;
         while (runTime.loop())
         {
-            Foam::Info << "Time = " << runTime.timeName() << Foam::nl << Foam::endl;
+            Info << "Time = " << runTime.timeName() << nl << endl;
 
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
             runTime.write();
             if (runTime.outputTime())
             {
-                Foam::Info << "writing nfT field" << Foam::endl;
+                Info << "writing nfT field" << endl;
                 write(nfT.internalVector(), rt.mesh, "nfT");
             }
 

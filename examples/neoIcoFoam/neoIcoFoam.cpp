@@ -14,7 +14,7 @@ using Foam::nl;
 
 namespace fvc = Foam::fvc;
 namespace dsl = NeoN::dsl;
-namespace nnfvcc = NeoN::finiteVolume::cellCentred;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace nf = FoamAdapter;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
         Info << "\nStarting time loop\n" << endl;
         while (runTime.loop())
         {
-            Foam::Info << "Time = " << runTime.timeName() << Foam::nl << Foam::endl;
+            Info << "Time = " << runTime.timeName() << nl << endl;
 
             auto& oldU = fvcc::oldTime(U);
             oldU.internalVector() = U.internalVector();
@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
                 nf::constrainHbyA(HbyA, U, p);
 
                 nnfvcc::SurfaceField<NeoN::scalar> nfrAUf =
-                    nnfvcc::SurfaceInterpolation<NeoN::scalar>(
+                    fvcc::SurfaceInterpolation<NeoN::scalar>(
                         rt.exec,
                         rt.nfMesh,
                         NeoN::TokenList({std::string("linear")})
