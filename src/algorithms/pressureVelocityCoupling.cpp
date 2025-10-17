@@ -65,7 +65,7 @@ nnfvcc::VolumeField<scalar> computeRAU(const PDESolver<Vec3>& expr)
 }
 
 std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
-discreteMomentumFields(const PDESolver<Vec3>& expr)
+computeRAUandHByA(const PDESolver<Vec3>& expr)
 {
     const auto& U = expr.getField();
     const auto& mesh = U.mesh();

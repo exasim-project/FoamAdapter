@@ -150,7 +150,7 @@ TEST_CASE("PressureVelocityCoupling")
             Foam::volVectorField HbyA("HbyA", forAU * ofUEqn.H());
 
             nfUEqn.assemble();
-            auto [nfrAU, nfHbyA] = nf::discreteMomentumFields(nfUEqn);
+            auto [nfrAU, nfHbyA] = nf::computeRAUandHByA(nfUEqn);
             auto hostnfHbyA = nfHbyA.internalVector().copyToHost();
 
             for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
@@ -208,7 +208,7 @@ TEST_CASE("PressureVelocityCoupling")
             nfU.internalVector() *= 2.5;
             nfU.correctBoundaryConditions();
             nfUEqn.assemble();
-            auto [nfrAU, nfHbyA] = nf::discreteMomentumFields(nfUEqn);
+            auto [nfrAU, nfHbyA] = nf::computeRAUandHByA(nfUEqn);
             auto hostnfHbyA = nfHbyA.internalVector().copyToHost();
 
             for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)

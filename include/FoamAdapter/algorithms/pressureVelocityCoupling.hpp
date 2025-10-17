@@ -46,7 +46,7 @@ nnfvcc::VolumeField<scalar> computeRAU(const PDESolver<Vec3>& expr);
 * @return a tuple containing rAU and HbyA
 */
 std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
-discreteMomentumFields(const PDESolver<Vec3>& expr);
+computeRAUandHByA(const PDESolver<Vec3>& expr);
 
 /* @brief
 *

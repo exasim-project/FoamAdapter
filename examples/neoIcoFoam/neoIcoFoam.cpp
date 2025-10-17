@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
             while (piso.correct())
             {
                 Info << "PISO loop" << endl;
-                auto [rAU, HbyA] = nf::discreteMomentumFields(UEqn);
+                auto [rAU, HbyA] = nf::computeRAUandHByA(UEqn);
                 nf::constrainHbyA(HbyA, U, p);
 
                 nnfvcc::SurfaceField<NeoN::scalar> nfrAUf =
