@@ -1,68 +1,43 @@
-from foamadapter.modules.fields import Fields, Field
-import pydantic
+from foamadapter.modules.models import Models, Model, get_model
+from foamadapter.modules.fields import Fields, Field, get_field
+from foamadapter.modules.setup import initialize_containers
 from pybFoam import scalarField, vectorField
-from foamadapter.modules.setup import visualize_dag
 
-
+@Fields.deps()
 class CreateTemperatureField:
-
-    def __init__(self):
-        pass
-
-    @property
-    def dependencies(self) -> list[str]:
-        return []
-
-    def __call__(self) -> Field:
-        """Factory function that creates a temperature field."""
+    def __call__(self, deps: dict ) -> Field:
         return Field(
             type="scalarField",
             value=scalarField([300, 310, 320]),
-            dimensions=(0, 0, 0, 1, 0, 0, 0),  # Temperature dimensions
+            dimensions=(0, 0, 0, 1, 0, 0, 0),
             description="Temperature field"
         )
+    
+@Models.deps("temperature")
+def viscosity_model(deps: dict) -> Model:
+    temperature = get_field(deps, "temperature")
+    return Model(
+        type="viscosity",
+        parameters={"temperature": temperature},
+        description="Viscosity model based on temperature"
+    )
 
-class CreateDensityField:
+@Models.deps("viscosity", "velocity")
+def turbulence_model(deps: dict) -> Model:
+    viscosity = get_model(deps, "viscosity")
+    velocity = get_field(deps, "velocity")
+    return Model(
+        type="turbulence",
+        parameters={"viscosity": viscosity, "velocity": velocity},
+        description="Turbulence model based on velocity and viscosity"
+    )
 
-    def __init__(self):
-        pass
-
-    @property
-    def dependencies(self) -> list[str]:
-        return ["pressure", "temperature"]
-
-    def __call__(self) -> Field:
-        """Factory function that creates a density field."""
-        return Field(
-            type="scalarField",
-            value=scalarField([1.225, 1.200, 1.180]),
-            dimensions=(1, -3, 0, 0, 0, 0, 0),  # Density dimensions
-            description="Air density field"
-        )
-
-class CreateViscosityField:
-
-    def __init__(self):
-        pass
-
-    @property
-    def dependencies(self) -> list[str]:
-        return ["temperature"]
-
-    def __call__(self) -> Field:
-        """Factory function that creates a viscosity field."""
-        return Field(
-            type="scalarField",
-            value=scalarField([1.8e-5, 1.8e-5, 1.8e-5]),
-            dimensions=(1, -3, 0, 0, 0, 0, 0),  # Density dimensions
-            description="Air viscosity field"
-        )
-
-def test_initialize():
+def test_initialize_containers():
     fields = Fields()
-    assert list(fields.names()) == []
+    models = Models()
+    # Add direct entries
+    fields.add_field("temperature", CreateTemperatureField())
 
-    # Test 1: Add fields before initialization
     velocity_field = Field(
         type="vectorField",
         value=vectorField([(1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]),
@@ -79,31 +54,45 @@ def test_initialize():
     fields.add_field("velocity", velocity_field)
     fields.add_field("pressure", pressure_field)
 
-    # Test 2: Add factory functions
-    fields.add_field("temperature", CreateTemperatureField())
+    models.add_model("viscosity", viscosity_model)
+    models.add_model("turbulence", turbulence_model)
+    # Add factories with dependencies
+    initialize_containers(fields, models)
+    # Check that factories are resolved
+    assert isinstance(fields.entries["temperature"], Field)
+    assert isinstance(models.entries["viscosity"], Model)
+    assert isinstance(models.entries["turbulence"], Model)
+    assert fields.entries["temperature"].description == "Temperature field"
+    assert models.entries["viscosity"].description == "Viscosity model based on temperature"
 
-    fields.add_field("density", CreateDensityField())
-    fields.add_field("viscosity", CreateViscosityField())
+def test_type_checking_helpers():
+    """Test that helper functions provide proper type checking."""
     
-    # Test 3: Check that fields are not accessible before initialization
-    assert list(fields.names()) == ["velocity", "pressure", "temperature", "density", "viscosity"]
+    # Test get_field with correct type
+    field = Field(type="test", value=None, dimensions=(0,0,0,0,0,0,0), description="Test field")
+    deps_with_field = {"my_field": field}
+    retrieved_field = get_field(deps_with_field, "my_field")
+    assert retrieved_field is field
     
-    visualize_dag(fields.dependencies(), title="Field/Model Dependency DAG", filename=None, show=True)
+    # Test get_model with correct type
+    model = Model(type="test", parameters={}, description="Test model")
+    deps_with_model = {"my_model": model}
+    retrieved_model = get_model(deps_with_model, "my_model")
+    assert retrieved_model is model
+    
+    # Test get_field fails with wrong type
+    deps_with_wrong_type = {"my_field": model}  # Model instead of Field
+    try:
+        get_field(deps_with_wrong_type, "my_field")
+        assert False, "Should have raised TypeError"
+    except TypeError as e:
+        assert "Expected Field for dependency 'my_field', got Model" in str(e)
+    
+    # Test get_model fails with wrong type
+    deps_with_wrong_type = {"my_model": field}  # Field instead of Model
+    try:
+        get_model(deps_with_wrong_type, "my_model")
+        assert False, "Should have raised TypeError"
+    except TypeError as e:
+        assert "Expected Model for dependency 'my_model', got Field" in str(e)
 
-    # Test 4: Initialize all fields
-    fields.initialize_all()
-    
-    # Test 5: Now fields should be accessible
-    assert fields["velocity"].value[0] == [1.0, 0.0, 0.0]
-    assert fields["pressure"].value[0] == 101325
-    assert fields["temperature"].value[0] == 300
-    assert fields["density"].value[0] == 1.225
-    assert fields["viscosity"].value[0] == 1.8e-5
-    
-    # Test 6: Check all fields are resolved
-    assert all(isinstance(field, Field) for field in fields.entries.values())
-    assert len(fields.entries) == 5  # velocity, pressure, temperature, density, viscosity
-    # assert False
-
-    visualize_dag(fields.dependencies(), title="Field/Model Dependency DAG", filename=None, show=True)
-    assert False

@@ -25,6 +25,14 @@ class FieldFactory(Protocol):
 
 # class Fields(RootModel[dict[str, Union[Field, FieldFactory]]]):
 class Fields(BaseModel):
+    @staticmethod
+    def deps(*dependencies: str):
+        """Decorator to attach dependencies to a FieldFactory, setting .dependencies for compatibility."""
+        def decorator(factory):
+            deps_list = list(dependencies)
+            setattr(factory, "dependencies", deps_list)
+            return factory
+        return decorator
     """Container for OpenFOAM fields that supports both Field objects and factory functions."""
     model_config = {"arbitrary_types_allowed": True}
     entries: dict[str, Union[Field, FieldFactory]] = pydantic.Field(default_factory=dict)
@@ -53,7 +61,7 @@ class Fields(BaseModel):
     def dependencies(self) -> dict[str, set[str]]:
         deps = {}
         for name, item in self.entries.items():
-            if isinstance(item, FieldFactory):
+            if callable(item) and hasattr(item, "dependencies"):
                 deps[name] = set(item.dependencies)
             else:
                 deps[name] = set()
@@ -117,4 +125,11 @@ class FieldReader(Generic[volFields]):
             )
         except Exception as e:
             raise RuntimeError(f"Failed to read {self.field_class.__name__} '{self.field_name}': {e}")
-    
+
+
+def get_field(deps: dict, key: str) -> Field:
+    """Retrieve a Field dependency with type validation."""
+    obj = deps[key]
+    if not isinstance(obj, Field):
+        raise TypeError(f"Expected Field for dependency '{key}', got {type(obj).__name__}")
+    return obj

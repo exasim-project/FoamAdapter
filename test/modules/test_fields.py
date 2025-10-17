@@ -3,60 +3,35 @@ import pydantic
 from pybFoam import scalarField, vectorField
 from foamadapter.modules.setup import visualize_dag
 
-
+# Factory classes with dependency annotation using Fields.deps
+@Fields.deps()
 class CreateTemperatureField:
-
-    def __init__(self):
-        pass
-
-    @property
-    def dependencies(self) -> list[str]:
-        return []
-
     def __call__(self) -> Field:
-        """Factory function that creates a temperature field."""
         return Field(
             type="scalarField",
             value=scalarField([300, 310, 320]),
-            dimensions=(0, 0, 0, 1, 0, 0, 0),  # Temperature dimensions
+            dimensions=(0, 0, 0, 1, 0, 0, 0),
             description="Temperature field"
         )
 
+@Fields.deps("pressure", "temperature")
 class CreateDensityField:
-
-    def __init__(self):
-        pass
-
-    @property
-    def dependencies(self) -> list[str]:
-        return ["pressure", "temperature"]
-
     def __call__(self) -> Field:
-        """Factory function that creates a density field."""
         return Field(
             type="scalarField",
             value=scalarField([1.225, 1.200, 1.180]),
-            dimensions=(1, -3, 0, 0, 0, 0, 0),  # Density dimensions
+            dimensions=(1, -3, 0, 0, 0, 0, 0),
             description="Air density field"
         )
 
-class CreateViscosityField:
-
-    def __init__(self):
-        pass
-
-    @property
-    def dependencies(self) -> list[str]:
-        return ["temperature"]
-
-    def __call__(self) -> Field:
-        """Factory function that creates a viscosity field."""
-        return Field(
-            type="scalarField",
-            value=scalarField([1.8e-5, 1.8e-5, 1.8e-5]),
-            dimensions=(1, -3, 0, 0, 0, 0, 0),  # Density dimensions
-            description="Air viscosity field"
-        )
+@Fields.deps("temperature")
+def create_viscosity() -> Field:
+    return Field(
+        type="scalarField",
+        value=scalarField([1.8e-5, 1.8e-5, 1.8e-5]),
+        dimensions=(1, -3, 0, 0, 0, 0, 0),
+        description="Air viscosity field"
+    )
 
 def test_fields():
     fields = Fields()
@@ -83,7 +58,7 @@ def test_fields():
     fields.add_field("temperature", CreateTemperatureField())
 
     fields.add_field("density", CreateDensityField())
-    fields.add_field("viscosity", CreateViscosityField())
+    fields.add_field("viscosity", create_viscosity)
     
     # Test 3: Check that fields are not accessible before initialization
     assert list(fields.names()) == ["velocity", "pressure", "temperature", "density", "viscosity"]
@@ -106,4 +81,3 @@ def test_fields():
     # assert False
 
     visualize_dag(fields.dependencies(), title="Field/Model Dependency DAG", filename=None, show=True)
-    assert False

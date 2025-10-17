@@ -1,13 +1,3 @@
-#!/usr/bin/env python3
-"""
-Validate and visualize a dependency DAG using graphlib + networkx.
-
-- Uses graphlib.TopologicalSorter for cycle-safe validation and ordering.
-- Uses networkx.multipartite_layout for a clean layered diagram.
-- Sets a per-node 'subset' attribute (topological level) required by multipartite_layout.
-"""
-
-from __future__ import annotations
 
 from graphlib import TopologicalSorter, CycleError
 import networkx as nx
@@ -15,7 +5,7 @@ import matplotlib.pyplot as plt
 from typing import Dict, Set, Iterable, List, Tuple, Any, Optional
 from pathlib import Path
 from foamadapter.modules.fields import Field
-from foamadapter.modules.models import Models
+from foamadapter.modules.models import Models, Model
 
 # ----------------------------
 # Validation (graphlib)
@@ -210,93 +200,62 @@ def visualize_dag(
     return G
 
 
+from typing import Protocol, Dict, Set, Any
 
-def initialize(fields: Fields, models: Models) -> None:
-    # """
-    # Topologically initialize fields and models in-place.
+# --- DependencyContainer Protocol ---
+class DependencyContainer(Protocol):
+    entries: Dict[str, Any]
+    def dependencies(self) -> Dict[str, Set[str]]:
+        ...
 
-    # fields.entries / models.entries can hold either:
-    #   - ready-built objects
-    #   - factory instances (functions or classes with `.dependencies`)
+# --- Generic Initialization Function ---
+def initialize_containers(*containers: DependencyContainer) -> None:
+    """
+    Initialize all dependency containers (Fields, Models, etc.) by resolving factories in topological order.
+    """
+    from graphlib import TopologicalSorter
 
-    # Each factory is called with an Env containing the current
-    # fields/models state.
-    # """
-    # def key(kind: str, name: str) -> str:
-    #     return f"{kind}:{name}"
+    # Helper: namespaced key
+    def key(container, name):
+        return f"{container.__class__.__name__.lower()}:{name}"
 
-    # # --- Step 1: Build the full dependency DAG ---
-    # dag: Dict[str, set[str]] = {}
-    # is_factory: Dict[str, bool] = {}
+    # Helper: find a dependency across all containers
+    def find_dependency(dep_name: str, containers_list) -> str:
+        for container in containers_list:
+            if dep_name in container.entries:
+                return key(container, dep_name)
+        raise KeyError(f"Dependency '{dep_name}' not found in any container")
 
-    # # Helper: resolve a dependency reference (short name → namespaced key)
-    # def resolve_ref(owner: str, ref: str) -> str:
-    #     if ":" in ref:
-    #         kind, n = ref.split(":", 1)
-    #         kind, n = kind.strip(), n.strip()
-    #         if kind not in ("field", "model"):
-    #             raise ValueError(f"{owner}: invalid prefix '{kind}' in '{ref}'")
-    #         return key(kind, n)
-    #     # short name: disambiguate between field/model
-    #     in_f, in_m = ref in fields.entries, ref in models.entries
-    #     if not in_f and not in_m:
-    #         raise KeyError(f"{owner}: unknown dependency '{ref}'")
-    #     if in_f and in_m:
-    #         raise KeyError(f"{owner}: ambiguous '{ref}' (exists in fields and models)")
-    #     return key("field" if in_f else "model", ref)
+    dag: Dict[str, Set[str]] = {}
+    is_factory: Dict[str, bool] = {}
+    entry_map: Dict[str, Any] = {}
+    container_map: Dict[str, Any] = {}
 
-    # # Fields
-    # for name, entry in fields.entries.items():
-    #     k = key("field", name)
-    #     if callable(entry) and hasattr(entry, "dependencies"):
-    #         deps = getattr(entry, "dependencies")
-    #         dag[k] = {resolve_ref(k, d) for d in deps}
-    #         is_factory[k] = True
-    #     else:
-    #         dag[k] = set()
-    #         is_factory[k] = False
+    # Collect all entries and dependencies
+    for container in containers:
+        for name, entry in container.entries.items():
+            k = key(container, name)
+            deps = getattr(entry, "dependencies", [])
+            # Resolve dependencies across all containers
+            dag[k] = {find_dependency(d, containers) for d in deps}
+            is_factory[k] = callable(entry) and hasattr(entry, "dependencies")
+            entry_map[k] = entry
+            container_map[k] = container
 
-    # # Models
-    # for name, entry in models.entries.items():
-    #     k = key("model", name)
-    #     if callable(entry) and hasattr(entry, "dependencies"):
-    #         deps = getattr(entry, "dependencies")
-    #         dag[k] = {resolve_ref(k, d) for d in deps}
-    #         is_factory[k] = True
-    #     else:
-    #         dag[k] = set()
-    #         is_factory[k] = False
+    # Topological sort
+    order = list(TopologicalSorter(dag).static_order())
 
-    # # --- Step 2: Topological sort ---
-    # try:
-    #     order = list(TopologicalSorter(dag).static_order())
-    # except CycleError as e:
-    #     raise RuntimeError(f"Dependency cycle detected: {e}") from e
-
-    # # --- Step 3: Build in order ---
-    # built_fields: Dict[str, Field] = {
-    #     k: v for k, v in fields.entries.items()
-    #     if not (callable(v) and hasattr(v, "dependencies"))
-    # }
-    # built_models: Dict[str, Model] = {
-    #     k: v for k, v in models.entries.items()
-    #     if not (callable(v) and hasattr(v, "dependencies"))
-    # }
-
-    # for ref in order:
-    #     kind, name = ref.split(":", 1)
-    #     if not is_factory[ref]:
-    #         continue
-
-    #     env = Env(built_fields, built_models)
-
-    #     if kind == "field":
-    #         factory = fields.entries[name]
-    #         built = factory(env)
-    #         fields.entries[name] = built
-    #         built_fields[name] = built
-    #     else:
-    #         factory = models.entries[name]
-    #         built = factory(env)
-    #         models.entries[name] = built
-    #         built_models[name] = built
+    # Build in order
+    built: Dict[str, Any] = {}
+    for ref in order:
+        entry = entry_map[ref]
+        container = container_map[ref]
+        if not is_factory[ref]:
+            built[ref] = entry
+            continue
+        # Build with resolved dependencies from built
+        dep_names = getattr(entry, "dependencies", [])
+        env = {dep: built[find_dependency(dep, containers)] for dep in dep_names}
+        built_entry = entry(env) if callable(entry) else entry
+        container.entries[ref.split(":", 1)[1]] = built_entry
+        built[ref] = built_entry
