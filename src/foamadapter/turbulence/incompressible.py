@@ -7,6 +7,9 @@ from foamadapter.turbulence.RASModel.incompressible import RASConfig
 from foamadapter.turbulence.LESModel.incompressible import LESConfig
 from foamadapter.inputs_files.case_inputs import Registry, FileSpec
 
+from foamadapter.modules import fields
+from foamadapter.modules import models
+
 
 
 class LESProperties(IOModelBase):
@@ -43,12 +46,12 @@ class LaminarProperties(IOModelBase):
 
 # ---------- Single entry-point model with top-level discriminator ----------
 class TurbulenceModel(
-    RootModel[
-        Annotated[
-            Union[RASProperties, LESProperties, LaminarProperties],
-            Field(discriminator="simulationType"),
-        ]
-    ],
+    # RootModel[
+    #     Annotated[
+    #         Union[RASProperties, LESProperties, LaminarProperties],
+    #         Field(discriminator="simulationType"),
+    #     ]
+    # ],
     IOModelMixin
 ):
     
@@ -88,9 +91,19 @@ class TurbulenceModel(
     def LES(self) -> Optional[LESConfig]:
         return getattr(self.root, "LES", None)
     
-    @staticmethod
-    def New(U, phi, laminarTransport):
-        turbulence = incompressibleTurbulenceModel.New(U, phi, laminarTransport)
+    @property
+    def dependencies(self) -> list[str]:
+        return ["U", "phi", "singlePhaseTransportModel"]
+    
+    @property
+    def description(self) -> str:
+        return "Incompressible turbulence model"
+    
+    def __call__(self, deps: dict):
+        U = fields.get_field(deps, "U")
+        phi = fields.get_field(deps, "phi")
+        singlePhaseTransportModel = models.get_model(deps, "singlePhaseTransportModel")
+        turbulence = incompressibleTurbulenceModel.New(U, phi, singlePhaseTransportModel)
         return turbulence
 
 

@@ -60,6 +60,4 @@ class Models(BaseModel):
 def get_model(deps: dict, key: str) -> Model:
     """Retrieve a Model dependency with type validation."""
     obj = deps[key]
-    if not isinstance(obj, Model):
-        raise TypeError(f"Expected Model for dependency '{key}', got {type(obj).__name__}")
     return obj

@@ -32,11 +32,16 @@ from pybFoam import (
 )
 from ..inputs_files.case_inputs import Registry, FileSpec
 from ..turbulence.incompressible import TurbulenceModel
-from ..modules.pressureVelocityCoupling.incompressible import PimpleAlgorithm, PressureVelocityFields
+from ..modules.pressureVelocityCoupling.incompressible import (
+    PimpleAlgorithm,
+    PressureVelocityFields,
+)
 from ..modules.stability_criteria import StabilityCriteria
 from ..modules.transportModels import SinglePhaseTransportModel
 from ..modules.fields import Fields
 from ..modules.models import Models
+from ..modules.setup import initialize_containers
+from ..modules.setup import visualize_dag, containers_to_deps
 
 ControlDict = create_model(
     "controlDict",
@@ -57,25 +62,25 @@ class TransportProperties(IOModelBase):
     nu: float = Field(..., description="Kinematic viscosity", gt=0)
 
 
-
-
 def create_fields_models(mesh):
     pU = PimpleAlgorithm(mesh=mesh)
-
 
     fields = Fields()
     fields.add_fields(pU.register_fields(mesh=mesh))
 
-    fields.initialize_all()
-
     models = Models(models={})
     models.add_model("pU", pU)
 
-    transportModel = SinglePhaseTransportModel.New(pU.U, pU.phi)
-    models.add_model("transportModel", transportModel)
+    singlePhaseTransportModel = SinglePhaseTransportModel()
+    models.add_model("singlePhaseTransportModel", singlePhaseTransportModel)
 
-    turbulence = TurbulenceModel.New(pU.U, pU.phi, transportModel)
+    turbulence = TurbulenceModel()
     models.add_model("turbulence", turbulence)
+
+    # visualize_dag(
+    #     containers_to_deps(fields, models), "pimpleFoam_fields_models_dag", show=True
+    # )
+    initialize_containers(fields, models)
 
     return fields, models
 
@@ -86,7 +91,7 @@ class PimpleFoam:
         """
         Return the input parameters for the PIMPLE algorithm.
         """
-        registry = Registry({ })
+        registry = Registry({})
         registry = PimpleAlgorithm.inputs(registry)
         registry = TurbulenceModel.inputs(registry)
         registry = SinglePhaseTransportModel.inputs(registry)
@@ -109,9 +114,15 @@ class PimpleFoam:
         mesh = dynamicFvMesh.New(argList, runTime)
 
         fields, models = create_fields_models(mesh)
+        print("Fields and models created.")
         pU: PimpleAlgorithm = models["pU"]
 
-        puData = PressureVelocityFields(p=pU.p, U=pU.U, phi=pU.phi, turbulence=models["turbulence"])
+        puData = PressureVelocityFields(
+            p=fields["p"],
+            U=fields["U"],
+            phi=fields["phi"],
+            turbulence=models["turbulence"],
+        )
 
         stability_criteria = StabilityCriteria()
         stability_criteria.add_criteria(pU.stability_criteria(puData))
@@ -132,7 +143,7 @@ class PimpleFoam:
                     pU.pressure_correction(pimple, puData)
 
                 if pimple.turbCorr():
-                    models["transportModel"].correct()
+                    models["singlePhaseTransportModel"].correct()
                     models["turbulence"].correct()
 
             runTime.write(True)
