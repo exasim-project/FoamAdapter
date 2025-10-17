@@ -1,7 +1,6 @@
 from foamadapter.modules.fields import Fields, Field
 import pydantic
 from pybFoam import scalarField, vectorField
-from foamadapter.modules.setup import visualize_dag
 
 # Factory classes with dependency annotation using Fields.deps
 @Fields.deps()
@@ -63,8 +62,6 @@ def test_fields():
     # Test 3: Check that fields are not accessible before initialization
     assert list(fields.names()) == ["velocity", "pressure", "temperature", "density", "viscosity"]
     
-    visualize_dag(fields.dependencies(), title="Field/Model Dependency DAG", filename=None, show=True)
-
     # Test 4: Initialize all fields
     fields.initialize_all()
     
@@ -78,6 +75,3 @@ def test_fields():
     # Test 6: Check all fields are resolved
     assert all(isinstance(field, Field) for field in fields.entries.values())
     assert len(fields.entries) == 5  # velocity, pressure, temperature, density, viscosity
-    # assert False
-
-    visualize_dag(fields.dependencies(), title="Field/Model Dependency DAG", filename=None, show=True)

@@ -6,6 +6,7 @@ from typing import Dict, Set, Iterable, List, Tuple, Any, Optional
 from pathlib import Path
 from foamadapter.modules.fields import Field
 from foamadapter.modules.models import Models, Model
+from typing import Protocol, Dict, Set, Any
 
 # ----------------------------
 # Validation (graphlib)
@@ -58,13 +59,14 @@ def layered_positions(
     # Stack along Y (vertical): nodes of the same subset share X? No—here they share Y (different Y per subset).
     pos = nx.multipartite_layout(G, subset_key="subset", align="horizontal")
 
-    if top_to_bottom:
+    if top_to_bottom and layers:
         # Make sure layer 0 is visually at the TOP (largest y). If not, flip Y.
         layer_y = {i: sum(pos[n][1] for n in layer) / max(1, len(layer)) for i, layer in enumerate(layers)}
-        top_layer_index_by_y = max(layer_y, key=lambda k: layer_y[k])  # layer with highest y
-        if top_layer_index_by_y != 0:
-            for n, (x, y) in pos.items():
-                pos[n] = (x, -y)
+        if layer_y:  # Only process if there are layers
+            top_layer_index_by_y = max(layer_y, key=lambda k: layer_y[k])  # layer with highest y
+            if top_layer_index_by_y != 0:
+                for n, (x, y) in pos.items():
+                    pos[n] = (x, -y)
 
     return pos, subset_by_node, layers
 
@@ -80,6 +82,9 @@ def draw_level_guides(
     label_prefix: str = "Level ",
 ):
     """Draw faint horizontal guide lines for each unique Y (level) with a left-side label."""
+    if not pos:  # Handle empty graphs
+        return
+        
     ys_by_level: Dict[int, List[float]] = {}
     for n, lvl in subset_by_node.items():
         ys_by_level.setdefault(lvl, []).append(pos[n][1])
@@ -108,14 +113,12 @@ def visualize_dag(
     *,
     top_to_bottom: bool = True,
     level_lines: bool = True,
-    special_node: Optional[str] = "turbulenceModel",
 ) -> nx.DiGraph:
     """
     Validate with graphlib, build a networkx graph, compute layered layout,
     and draw the DAG. Saves to filename if provided.
     - top_to_bottom: place source layer at the top.
     - level_lines: draw dotted guides per level.
-    - special_node: name to draw with distinct styling (None to disable).
     """
     try:
         order = validate_with_graphlib(deps)
@@ -128,59 +131,27 @@ def visualize_dag(
     pos, subset_by_node, layers = layered_positions(G, top_to_bottom=top_to_bottom)
 
     # Create figure/axes
-    fig, ax = plt.subplots(figsize=(10, 8))
+    fig, ax = plt.subplots(figsize=(12, 10))
 
     # Optional level guides
     if level_lines:
         draw_level_guides(ax, pos, subset_by_node)
 
-    # Prepare node partitions
-    all_nodes = list(G.nodes)
-    specials = [special_node] if (special_node and special_node in G) else []
-    others = [n for n in all_nodes if n not in specials]
-
-    # Draw other nodes
+    # Draw all nodes with uniform styling
     nx.draw_networkx_nodes(
-        G, pos, nodelist=others,
-        node_size=3800, node_color="#EEEEEE", edgecolors="black", ax=ax
+        G, pos, 
+        node_size=3800, node_color="#EEEEEE", 
+        edgecolors="black", ax=ax
     )
 
-    # Draw special node(s) with distinct representation
-    if specials:
-        nx.draw_networkx_nodes(
-            G, pos, nodelist=specials,
-            node_size=4600, node_color="#FFE8B3",
-            edgecolors="black", linewidths=2.0,
-            node_shape="s",  # square (try: "D","^","v","p","h","o")
-            ax=ax
-        )
+    # Labels for all nodes
+    nx.draw_networkx_labels(G, pos, font_size=9, ax=ax)
 
-    # Labels (bold for specials)
-    nx.draw_networkx_labels(G, pos, labels={n: n for n in others}, font_size=9, ax=ax)
-    if specials:
-        for s in specials:
-            nx.draw_networkx_labels(G, pos, labels={s: s}, font_size=9, font_weight="bold", ax=ax)
-
-    # Edges: dashed incoming edges to special, solid for others
-    if specials:
-        incoming_to_special = [(u, v) for (u, v) in G.edges if v in specials]
-        other_edges = [(u, v) for (u, v) in G.edges if v not in specials]
-    else:
-        incoming_to_special = []
-        other_edges = list(G.edges)
-
+    # Draw all edges uniformly
     nx.draw_networkx_edges(
-        G, pos, edgelist=other_edges,
-        arrows=True, arrowstyle='-|>', arrowsize=18, width=1.2,
+        G, pos, arrows=True, arrowstyle='-|>', arrowsize=18, width=1.2,
         edge_color="black", min_source_margin=0, min_target_margin=24, ax=ax
     )
-    if incoming_to_special:
-        nx.draw_networkx_edges(
-            G, pos, edgelist=incoming_to_special,
-            arrows=True, arrowstyle='-|>', arrowsize=20, width=1.6,
-            style="dashed", edge_color="black",
-            min_source_margin=0, min_target_margin=28, ax=ax
-        )
 
     ax.set_title(title)
     ax.axis("off")
@@ -200,7 +171,153 @@ def visualize_dag(
     return G
 
 
-from typing import Protocol, Dict, Set, Any
+def visualize_containers(*containers: 'DependencyContainer', 
+                        title: str = "Multi-Container Dependency Graph",
+                        filename: Optional[str | Path] = None,
+                        show: bool = True,
+                        **kwargs) -> nx.DiGraph:
+    """
+    Visualize dependencies across multiple containers with container-specific coloring.
+    """
+    # Helper: namespaced key  
+    def key(container, name):
+        return f"{container.__class__.__name__.lower()}:{name}"
+
+    # Merge all dependencies
+    merged_deps: Dict[str, Set[str]] = {}
+    
+    for container in containers:
+        container_deps = container.dependencies()
+        for name, deps in container_deps.items():
+            namespaced_name = key(container, name)
+            # Convert dependency names to namespaced keys by searching all containers
+            namespaced_deps = set()
+            for dep in deps:
+                for c in containers:
+                    if dep in c.entries:
+                        namespaced_deps.add(key(c, dep))
+                        break
+                else:
+                    # If not found in any container, keep as-is (might be external)
+                    namespaced_deps.add(dep)
+            merged_deps[namespaced_name] = namespaced_deps
+    
+    # Use custom visualization with container coloring
+    return _visualize_dag_with_containers(merged_deps, containers, title=title, 
+                                         filename=filename, show=show, **kwargs)
+
+
+def _visualize_dag_with_containers(
+    deps: Dict[str, Set[str]],
+    containers: List['DependencyContainer'],
+    title: str = "Multi-Container Dependency Graph",
+    filename: Optional[str | Path] = None,
+    show: bool = True,
+    *,
+    top_to_bottom: bool = True,
+    level_lines: bool = True,
+) -> nx.DiGraph:
+    """
+    Internal function for visualizing DAG with container-specific styling.
+    """
+    try:
+        order = validate_with_graphlib(deps)
+        print("✅ Valid DAG. Topological order:", order)
+    except CycleError as e:
+        print("❌ Cycle detected:", e.args)
+        raise
+
+    G = build_nx_graph(deps)
+    pos, subset_by_node, layers = layered_positions(G, top_to_bottom=top_to_bottom)
+
+    # Create figure/axes
+    fig, ax = plt.subplots(figsize=(12, 10))
+
+    # Optional level guides
+    if level_lines:
+        draw_level_guides(ax, pos, subset_by_node)
+
+    all_nodes = list(G.nodes)
+    
+    # Define colors for different container types
+    container_colors = {
+        "fields": "#E8F4FD",     # Light blue
+        "models": "#FFE8B3",     # Light orange  
+        "solvers": "#E8F5E8",    # Light green
+        "meshes": "#F0E8FF",     # Light purple
+    }
+    container_shapes = {
+        "fields": "o",           # Circle
+        "models": "s",           # Square
+        "solvers": "^",          # Triangle up
+        "meshes": "D",           # Diamond
+    }
+    
+    # Helper: namespaced key
+    def key(container, name):
+        return f"{container.__class__.__name__.lower()}:{name}"
+    
+    # Group nodes by container type
+    nodes_by_container = {}
+    for container in containers:
+        container_name = container.__class__.__name__.lower()
+        nodes_by_container[container_name] = []
+        for name in container.entries.keys():
+            node_key = key(container, name)
+            if node_key in all_nodes:
+                nodes_by_container[container_name].append(node_key)
+            elif name in all_nodes:  # fallback for simple dependencies
+                nodes_by_container[container_name].append(name)
+    
+    # Draw nodes by container type
+    for container_name, nodes in nodes_by_container.items():
+        if nodes:
+            color = container_colors.get(container_name, "#EEEEEE")
+            shape = container_shapes.get(container_name, "o")
+            nx.draw_networkx_nodes(
+                G, pos, nodelist=nodes,
+                node_size=3800, node_color=color, 
+                edgecolors="black", node_shape=shape, ax=ax
+            )
+    
+    # Handle any remaining nodes not in containers
+    handled_nodes = set()
+    for nodes in nodes_by_container.values():
+        handled_nodes.update(nodes)
+    unhandled_nodes = [n for n in all_nodes if n not in handled_nodes]
+    
+    if unhandled_nodes:
+        nx.draw_networkx_nodes(
+            G, pos, nodelist=unhandled_nodes,
+            node_size=3800, node_color="#EEEEEE", edgecolors="black", ax=ax
+        )
+
+    # Labels for all nodes
+    nx.draw_networkx_labels(G, pos, font_size=9, ax=ax)
+
+    # Draw all edges uniformly
+    nx.draw_networkx_edges(
+        G, pos, arrows=True, arrowstyle='-|>', arrowsize=18, width=1.2,
+        edge_color="black", min_source_margin=0, min_target_margin=24, ax=ax
+    )
+
+    ax.set_title(title)
+    ax.axis("off")
+    fig.tight_layout()
+
+    if filename:
+        filename = Path(filename)
+        filename.parent.mkdir(parents=True, exist_ok=True)
+        plt.savefig(filename, dpi=160, bbox_inches="tight")
+        print(f"💾 Saved DAG to: {filename.resolve()}")
+
+    if show:
+        plt.show()
+    else:
+        plt.close(fig)
+
+    return G
+
 
 # --- DependencyContainer Protocol ---
 class DependencyContainer(Protocol):
