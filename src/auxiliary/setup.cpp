@@ -99,8 +99,15 @@ FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in)
 {
     std::cout << __FILE__ << ":"
               << "Creating FoamAdapter runTime\n";
-    auto [adjustTimeStep, maxCo, maxDeltaT] = timeControls(in);
     auto exec = createExecutor(in.controlDict());
+    return createAdapterRunTime(in, exec);
+}
+
+RunTime createAdapterRunTime(const Foam::Time& runTime, const NeoN::Executor exec)
+{
+    std::cout << __FILE__ << ":"
+              << "Creating FoamAdapter runTime\n";
+    auto [adjustTimeStep, maxCo, maxDeltaT] = timeControls(in);
     std::unique_ptr<MeshAdapter> meshPtr = createMesh(exec, in);
     MeshAdapter& mesh = *meshPtr;
 
