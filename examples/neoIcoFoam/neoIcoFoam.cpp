@@ -114,8 +114,8 @@ int main(int argc, char* argv[])
             while (piso.correct())
             {
                 Info << "PISO loop" << endl;
-                auto [rAU, HbyA] = nf::computeRAUandHByA(UEqn);
-                nf::constrainHbyA(HbyA, U, p);
+                auto [rAU, hByA] = nf::computeRAUandHByA(UEqn);
+                nf::constrainHbyA(U, p, hByA);
 
                 nnfvcc::SurfaceField<NeoN::scalar> nfrAUf =
                     fvcc::SurfaceInterpolation<NeoN::scalar>(
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
                 nfrAUf.name = "rAUf";
 
                 // TODO: + fvc::interpolate(rAU) * fvc::ddtCorr(U, phi)
-                auto phiHbyA = nf::flux(HbyA);
+                auto phiHbyA = nf::flux(hByA);
 
                 // Foam::adjustPhi(phiHbyA, U, p);
 
@@ -160,7 +160,7 @@ int main(int argc, char* argv[])
                 // TODO:
                 // #include "continuityErrs.H"
 
-                nf::updateVelocity(HbyA, rAU, p, U);
+                nf::updateVelocity(hByA, rAU, p, U);
                 U.correctBoundaryConditions();
             }
 

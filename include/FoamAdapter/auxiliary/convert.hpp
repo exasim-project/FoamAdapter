@@ -9,15 +9,15 @@
 namespace FoamAdapter
 {
   // To NeoN
-NeoN::Vec3 convert(const Foam::vector& Type);
+NeoN::Vec3 convert(const Foam::vector& in);
 
-NeoN::scalar convert(const Foam::scalar& Type);
+NeoN::scalar convert(const Foam::scalar& in);
 
-std::string convert(const Foam::word& Type);
+std::string convert(const Foam::word& in);
 
-NeoN::TokenList convert(const Foam::ITstream& Type);
+NeoN::TokenList convert(const Foam::ITstream& in);
 
-NeoN::label convert(const Foam::label& Type);
+NeoN::label convert(const Foam::label& in);
 
 NeoN::Dictionary convert(const Foam::dictionary& dict);
 
@@ -62,6 +62,6 @@ bool insert(NeoN::Dictionary& neoDict, const Foam::entry& entry)
 NeoN::TokenList convert(const Foam::ITstream& stream);
 
 // To Foam
-Foam::vector convert(const NeoN::Vec3& Type);
+Foam::vector convert(const NeoN::Vec3& in);
 
 }; // namespace FoamAdapter

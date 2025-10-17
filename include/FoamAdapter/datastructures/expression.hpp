@@ -94,6 +94,8 @@ public:
             const auto rowOffs = ls.matrix().rowOffs().view();
             auto rhs = ls.rhs().view();
             auto values = ls.matrix().values().view();
+            // make an explicit copy to avoid capture this warning in kokkos lambda
+            auto pRefValue = pRefValue_;
 
             NeoN::parallelFor(
                 ls.exec(),
@@ -101,7 +103,7 @@ public:
                 KOKKOS_LAMBDA(const std::size_t refCelli) {
                     auto diagIdx = rowOffs[refCelli] + diagOffset[refCelli];
                     auto diagValue = values[diagIdx];
-                    rhs[refCelli] += diagValue * pRefValue_;
+                    rhs[refCelli] += diagValue * pRefValue;
                     values[diagIdx] += diagValue;
                 }
             );

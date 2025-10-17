@@ -166,7 +166,7 @@ TEST_CASE("PressureVelocityCoupling")
                     "ofConstrainHbyA",
                     Foam::constrainHbyA(forAU * ofUEqn.H(), ofU, ofp)
                 );
-                nf::constrainHbyA(nfHbyA, nfU, nfp);
+                nf::constrainHbyA(nfU, nfp, nfHbyA);
                 auto hostBCnfHbyA = nfHbyA.boundaryData().value().copyToHost();
 
                 forAll(ofConstrainHbyA.boundaryField(), patchi)
