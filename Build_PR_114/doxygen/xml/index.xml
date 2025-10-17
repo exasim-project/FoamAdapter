@@ -108,7 +108,7 @@
   <compound refid="namespaceFoamAdapter" kind="namespace"><name>FoamAdapter</name>
     <member refid="namespaceFoamAdapter_1a54bbeabff5f4044f250027a13ebe295d" kind="function"><name>constrainHbyA</name></member>
     <member refid="namespaceFoamAdapter_1a3fcb65605aafdcc90b7315821bac79bb" kind="function"><name>computeRAU</name></member>
-    <member refid="namespaceFoamAdapter_1a3f31cf5e3f7cec8c725350be6371097c" kind="function"><name>discreteMomentumFields</name></member>
+    <member refid="namespaceFoamAdapter_1a0e140a23f076eb4857de406948f7956a" kind="function"><name>computeRAUandHByA</name></member>
     <member refid="namespaceFoamAdapter_1aa70aa24d844e3320ed61ec135b7048ef" kind="function"><name>updateFaceVelocity</name></member>
     <member refid="namespaceFoamAdapter_1ab07cdffe2f504299318aad761dfd4b9b" kind="function"><name>updateVelocity</name></member>
     <member refid="namespaceFoamAdapter_1aeb9d6048345debcb9e018bb2e75436b3" kind="function"><name>flux</name></member>
@@ -129,9 +129,9 @@
     <member refid="namespaceFoamAdapter_1a2a4e77b9a673744f7c1149e6288e00db" kind="function"><name>constructFrom</name></member>
     <member refid="namespaceFoamAdapter_1ad7849fbeb06f57b55857d3a36a5acd26" kind="function"><name>readSurfaceBoundaryConditions</name></member>
     <member refid="namespaceFoamAdapter_1a98726de082da7d5212dae976ce88f510" kind="function"><name>constructSurfaceField</name></member>
-    <member refid="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" kind="function"><name>timeControls</name></member>
     <member refid="namespaceFoamAdapter_1abe8da576c7af869b0d869f48a64aefb4" kind="function"><name>setDeltaT</name></member>
     <member refid="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" kind="function"><name>createExecutor</name></member>
+    <member refid="namespaceFoamAdapter_1ad520115710612327d46bd022a6b9e914" kind="function"><name>createExecutor</name></member>
     <member refid="namespaceFoamAdapter_1aa01e57f3dd55859d173c40d5cf9b6ec4" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a1e6126cd9e3f712de59ed532a20591b3" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" kind="function"><name>write</name></member>

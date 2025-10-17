@@ -186,7 +186,7 @@
 <codeline lineno="46"><highlight class="comment">*<sp/>@return<sp/>a<sp/>tuple<sp/>containing<sp/>rAU<sp/>and<sp/>HbyA</highlight></codeline>
 <codeline lineno="47"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="48"><highlight class="normal">std::tuple&lt;nnfvcc::VolumeField&lt;scalar&gt;,<sp/>nnfvcc::VolumeField&lt;Vec3&gt;&gt;</highlight></codeline>
-<codeline lineno="49" refid="namespaceFoamAdapter_1a3f31cf5e3f7cec8c725350be6371097c" refkind="member"><highlight class="normal"><ref refid="namespaceFoamAdapter_1a3f31cf5e3f7cec8c725350be6371097c" kindref="member">discreteMomentumFields</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver&lt;Vec3&gt;</ref>&amp;<sp/>expr);</highlight></codeline>
+<codeline lineno="49" refid="namespaceFoamAdapter_1a0e140a23f076eb4857de406948f7956a" refkind="member"><highlight class="normal"><ref refid="namespaceFoamAdapter_1a0e140a23f076eb4857de406948f7956a" kindref="member">computeRAUandHByA</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classFoamAdapter_1_1PDESolver" kindref="compound">PDESolver&lt;Vec3&gt;</ref>&amp;<sp/>expr);</highlight></codeline>
 <codeline lineno="50"><highlight class="normal"></highlight></codeline>
 <codeline lineno="51"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>@brief</highlight></codeline>
 <codeline lineno="52"><highlight class="comment">*</highlight></codeline>
