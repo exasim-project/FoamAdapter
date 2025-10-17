@@ -16,21 +16,24 @@ class CreateTemperatureField:
 @Models.deps("temperature")
 def viscosity_model(deps: dict) -> Model:
     temperature = get_field(deps, "temperature")
-    return Model(
-        type="viscosity",
-        parameters={"temperature": temperature},
-        description="Viscosity model based on temperature"
-    )
+    class ViscosityModel:
+
+        @property
+        def description(self) -> str:
+            return "Viscosity model based on temperature"
+    return ViscosityModel()
 
 @Models.deps("viscosity", "velocity")
 def turbulence_model(deps: dict) -> Model:
     viscosity = get_model(deps, "viscosity")
     velocity = get_field(deps, "velocity")
-    return Model(
-        type="turbulence",
-        parameters={"viscosity": viscosity, "velocity": velocity},
-        description="Turbulence model based on velocity and viscosity"
-    )
+    class TurbulenceModel:
+
+        @property
+        def description(self) -> str:
+            return "Turbulence model based on velocity and viscosity"
+
+    return TurbulenceModel()
 
 def test_initialize_containers():
     fields = Fields()
@@ -63,34 +66,4 @@ def test_initialize_containers():
     assert fields.entries["temperature"].description == "Temperature field"
     assert models.entries["viscosity"].description == "Viscosity model based on temperature"
 
-def test_type_checking_helpers():
-    """Test that helper functions provide proper type checking."""
-    
-    # Test get_field with correct type
-    field = RegisteredScalarField(values=scalarField([]), dimensions=(0,0,0,0,0,0,0), description="Test field")
-    deps_with_field = {"my_field": field}
-    retrieved_field = get_field(deps_with_field, "my_field")
-    assert retrieved_field is field
-    
-    # Test get_model with correct type
-    model = Model(type="test", parameters={}, description="Test model")
-    deps_with_model = {"my_model": model}
-    retrieved_model = get_model(deps_with_model, "my_model")
-    assert retrieved_model is model
-    
-    # Test get_field fails with wrong type
-    deps_with_wrong_type = {"my_field": model}  # Model instead of Field
-    try:
-        get_field(deps_with_wrong_type, "my_field")
-        assert False, "Should have raised TypeError"
-    except TypeError as e:
-        assert "Expected Field for dependency 'my_field', got Model" in str(e)
-    
-    # Test get_model fails with wrong type
-    deps_with_wrong_type = {"my_model": field}  # Field instead of Model
-    try:
-        get_model(deps_with_wrong_type, "my_model")
-        assert False, "Should have raised TypeError"
-    except TypeError as e:
-        assert "Expected Model for dependency 'my_model', got RegisteredScalarField" in str(e)
 

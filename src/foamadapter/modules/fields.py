@@ -52,14 +52,17 @@ class Fields(BaseModel):
         """Set a field directly (Field object or factory function)."""
         self.entries[name] = value
         
-    def add_field(self, name: str, field: Union[Field, Callable[[], Field]]) -> None:
+    def add_field(self, name: str, field: Union[Field, FieldFactory]) -> None:
         """Add a field or a function that creates a field."""
+        # Validate that the field implements the correct protocol
+        if not isinstance(field, Field) and not isinstance(field, FieldFactory):
+            raise TypeError(f"Expected Field or FieldFactory for '{name}', got {type(field).__name__}")
         self.entries[name] = field
 
-    def add_fields(self, fields: dict[str, Union[Field, Callable[[], Field]]]) -> None:
+    def add_fields(self, fields: dict[str, Union[Field, FieldFactory]]) -> None:
         """Add multiple fields from a dictionary."""
         for name, field in fields.items():
-            self.entries[name] = field
+            self.add_field(name, field)  # Use add_field to get validation
 
     def dependencies(self) -> dict[str, set[str]]:
         deps = {}

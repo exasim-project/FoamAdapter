@@ -3,11 +3,15 @@ import pydantic
 from typing import Protocol, Union, Callable, runtime_checkable, Any
 
 
-class Model(BaseModel):
-    model_config = {"arbitrary_types_allowed": True}
-    type: str
-    parameters: dict[str, Any]
-    description: str
+@runtime_checkable
+class Model(Protocol):
+    """Model interface that only requires a description property."""
+
+    @property
+    def description(self) -> str:
+        ...
+
+
 
 @runtime_checkable
 class ModelsFactory(Protocol):
@@ -26,6 +30,9 @@ class Models(BaseModel):
     entries: dict[str, Union[Model, ModelsFactory]] = pydantic.Field(default_factory=dict)
 
     def add_model(self, name: str, model: Union[Model, ModelsFactory]) -> None:
+        # Validate that the model implements the correct protocol
+        if not isinstance(model, Model) and not isinstance(model, ModelsFactory):
+            raise TypeError(f"Expected Model or ModelsFactory for '{name}', got {type(model).__name__}")
         self.entries[name] = model
 
     def __getitem__(self, name: str) -> Union[Model, ModelsFactory]:
