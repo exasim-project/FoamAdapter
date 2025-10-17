@@ -154,13 +154,13 @@ int main(int argc, char* argv[])
 
                     if (piso.finalNonOrthogonalIter())
                     {
-                        nf::updateFaceVelocity(phi, phiHbyA, pEqn);
+                        nf::updateFaceVelocity(phiHbyA, pEqn, phi);
                     }
                 }
                 // TODO:
                 // #include "continuityErrs.H"
 
-                nf::updateVelocity(U, HbyA, rAU, p);
+                nf::updateVelocity(HbyA, rAU, p, U);
                 U.correctBoundaryConditions();
             }
 

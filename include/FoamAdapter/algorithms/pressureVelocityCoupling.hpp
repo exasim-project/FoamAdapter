@@ -38,7 +38,8 @@ void constrainHbyA(
 */
 nnfvcc::VolumeField<scalar> computeRAU(const PDESolver<Vec3>& expr);
 
-/* @brief given a ... this function computes rAU and HbyA
+/* @brief given access to a PDESolver this function computes rAU and HbyA
+ * from the assembled system
 *
 * where rAU  - inverse of the system matrix diagonal
 *       HbyA - offdiagonal entries divided by diagonal
@@ -53,19 +54,19 @@ computeRAUandHByA(const PDESolver<Vec3>& expr);
 * @note assumes an assembled system matrix
 */
 void updateFaceVelocity(
-    nnfvcc::SurfaceField<scalar>& phi,
     const nnfvcc::SurfaceField<scalar>& predictedPhi,
-    const PDESolver<scalar>& expr
+    const PDESolver<scalar>& expr,
+    nnfvcc::SurfaceField<scalar>& phi
 );
 
   /* @brief
    *
    */
 void updateVelocity(
-    nnfvcc::VolumeField<Vec3>& U,
     const nnfvcc::VolumeField<Vec3>& HbyA,
-    nnfvcc::VolumeField<scalar>& rAU,
-    nnfvcc::VolumeField<scalar>& p
+    const nnfvcc::VolumeField<scalar>& rAU,
+    const nnfvcc::VolumeField<scalar>& p,
+    nnfvcc::VolumeField<Vec3>& U
 );
 
 

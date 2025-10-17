@@ -131,9 +131,9 @@ computeRAUandHByA(const PDESolver<Vec3>& expr)
 
 
 void updateFaceVelocity(
-    nnfvcc::SurfaceField<scalar>& phi,
     const nnfvcc::SurfaceField<scalar>& predictedPhi,
-    const PDESolver<scalar>& expr
+    const PDESolver<scalar>& expr,
+    nnfvcc::SurfaceField<scalar>& phi
 )
 {
     const auto& mesh = phi.mesh();
@@ -202,13 +202,13 @@ void updateFaceVelocity(
 }
 
 void updateVelocity(
-    nnfvcc::VolumeField<Vec3>& U,
     const nnfvcc::VolumeField<Vec3>& HbyA,
-    nnfvcc::VolumeField<scalar>& rAU,
-    nnfvcc::VolumeField<scalar>& p
+    const nnfvcc::VolumeField<scalar>& rAU,
+    const nnfvcc::VolumeField<scalar>& p,
+    nnfvcc::VolumeField<Vec3>& U
 )
 {
-    nnfvcc::VolumeField<Vec3> gradP = nnfvcc::GaussGreenGrad(p.exec(), p.mesh()).grad(p);
+    auto gradP = nnfvcc::GaussGreenGrad(p.exec(), p.mesh()).grad(p);
     auto [iHbyA, iRAU, iGradP] =
         views(HbyA.internalVector(), rAU.internalVector(), gradP.internalVector());
 

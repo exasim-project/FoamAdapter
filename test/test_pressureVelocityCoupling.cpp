@@ -248,7 +248,7 @@ TEST_CASE("PressureVelocityCoupling")
 
             pEqn.assemble();
 
-            nf::updateFaceVelocity(nfPhi0, nfPhi, pEqn);
+            nf::updateFaceVelocity(nfPhi, pEqn, nfPhi0);
 
             Foam::fvScalarMatrix ofpEqn(fvm::laplacian(forAUf, ofp) == fvc::div(ofPhi));
 

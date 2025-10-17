@@ -11,7 +11,7 @@
 #include "test/catch2/executorGenerator.hpp"
 #include "common.hpp"
 
-namespace nnfvcc = NeoN::finiteVolume::cellCentred;
+namespace fvcc = NeoN::finiteVolume::cellCentred;
 namespace nf = FoamAdapter;
 namespace dsl = NeoN::dsl;
 
@@ -43,12 +43,9 @@ TEST_CASE("advection–diffusion-equation_scalar")
 
     SECTION("OpenFOAM")
     {
-        std::unique_ptr<Foam::fvMesh> meshPtr = FoamAdapter::createMesh(runTime);
-        Foam::fvMesh& mesh = *meshPtr;
-
         auto [ofT, ofPhi, ofGamma] = constructOfFields(mesh);
 
-        SECTION("explicit")
+        SECTION("explicit-time-integration")
         {
 
             BENCHMARK(std::string("OpenFOAM"))
@@ -57,11 +54,11 @@ TEST_CASE("advection–diffusion-equation_scalar")
                     Foam::fvm::ddt(ofT) + Foam::fvc::div(ofPhi, ofT)
                     - Foam::fvc::laplacian(ofGamma, ofT)
                 );
-                return;
+                return advectDiffEqn;
             };
         }
 
-        SECTION("implicit")
+        SECTION("implicit-time-integration")
         {
             BENCHMARK(std::string("OpenFOAM"))
             {
@@ -69,7 +66,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
                     Foam::fvm::ddt(ofT) + Foam::fvm::div(ofPhi, ofT)
                     - Foam::fvm::laplacian(ofGamma, ofT)
                 );
-                return;
+                return advectDiffEqn;
             };
         }
     }
@@ -82,10 +79,10 @@ TEST_CASE("advection–diffusion-equation_scalar")
 
         auto rt = nf::createAdapterRunTime(runTime);
 
-        auto& vectorCollection = nnfvcc::VectorCollection::instance(rt.db, "VectorCollection");
-        nnfvcc::VolumeField<NeoN::scalar>& nfT =
-            vectorCollection.registerVector<nnfvcc::VolumeField<NeoN::scalar>>(
-                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
+        auto& vectorCollection = fvcc::VectorCollection::instance(rt.db, "VectorCollection");
+        fvcc::VolumeField<NeoN::scalar>& nfT =
+            vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
+                nf::CreateFromFoamField<Foam::volScalarField> {
                     .exec = exec,
                     .nfMesh = nfMesh,
                     .foamField = ofT,
@@ -97,10 +94,10 @@ TEST_CASE("advection–diffusion-equation_scalar")
         auto& nfOldT = fvcc::oldTime(nfT);
         nfOldT.internalVector() = nfT.internalVector();
 
-        auto nfPhi = FoamAdapter::constructSurfaceField(rt.exec, rt.nfMesh, ofPhi);
-        auto nfGamma = FoamAdapter::constructSurfaceField(rt.exec, rt.nfMesh, ofGamma);
+        auto nfPhi = nf::constructSurfaceField(rt.exec, rt.nfMesh, ofPhi);
+        auto nfGamma = nf::constructSurfaceField(rt.exec, rt.nfMesh, ofGamma);
 
-        SECTION(std::string("explicit"))
+        SECTION(std::string("explicit-time-integration"))
         {
             rt.fvSchemesDict.insert(
                 std::string("ddtSchemes"),
@@ -139,7 +136,7 @@ TEST_CASE("advection–diffusion-equation_scalar")
             };
         }
 
-        SECTION(std::string("implicit"))
+        SECTION(std::string("implicit-time-integration"))
         {
             rt.fvSchemesDict.insert(
                 std::string("ddtSchemes"),
@@ -173,8 +170,8 @@ TEST_CASE("advection–diffusion-equation_scalar")
                     nfT,
                     rt
                 );
-                advectDiffEqn.assemble();
-                return;
+                auto ls = advectDiffEqn.assemble();
+                return ls;
             };
         }
     }
