@@ -48,9 +48,9 @@ TEST_CASE("PressureVelocityCoupling")
     oldOfU.correctBoundaryConditions();
 
     Info << "creating FoamAdapter velocity fields" << endl;
-    auto& VectorCollection = nnfvcc::VectorCollection::instance(rt.db, "VectorCollection");
+    auto& vectorCollection = nnfvcc::VectorCollection::instance(rt.db, "VectorCollection");
     nnfvcc::VolumeField<NeoN::Vec3>& nfU =
-        VectorCollection.registerVector<nnfvcc::VolumeField<NeoN::Vec3>>(
+        vectorCollection.registerVector<nnfvcc::VolumeField<NeoN::Vec3>>(
             FoamAdapter::CreateFromFoamField<Foam::volVectorField> {
                 .exec = rt.exec,
                 .nfMesh = rt.nfMesh,
@@ -59,7 +59,7 @@ TEST_CASE("PressureVelocityCoupling")
             }
         );
     Info << "creating FoamAdapter pressure fields" << endl;
-    auto nfp = VectorCollection.registerVector<nnfvcc::VolumeField<NeoN::scalar>>(
+    auto nfp = vectorCollection.registerVector<nnfvcc::VolumeField<NeoN::scalar>>(
         FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
             .exec = rt.exec,
             .nfMesh = rt.nfMesh,

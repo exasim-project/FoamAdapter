@@ -6,7 +6,7 @@
 namespace FoamAdapter
 {
 
-void write(NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string fieldName)
+void write(const NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string fieldName)
 {
     Foam::volScalarField* field = mesh.getObjectPtr<Foam::volScalarField>(fieldName);
     if (field)
@@ -32,7 +32,11 @@ void write(NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string f
     }
 }
 
-void write(NeoN::Vector<NeoN::Vec3>& sf, const Foam::fvMesh& mesh, const std::string fieldName)
+void write(
+    const NeoN::Vector<NeoN::Vec3>& sf,
+    const Foam::fvMesh& mesh,
+    const std::string fieldName
+)
 {
     Foam::volVectorField* field = mesh.getObjectPtr<Foam::volVectorField>(fieldName);
     if (field)
@@ -66,7 +70,6 @@ void write(
     const std::string fieldName
 )
 {
-
     Foam::volScalarField foamField(
         Foam::IOobject(
             fieldName,
@@ -84,7 +87,7 @@ void write(
 
     forAll(foamField.boundaryField(), patchi)
     {
-        Foam::fvPatchScalarField& foamFieldPatch = foamField.boundaryFieldRef()[patchi];
+        auto& foamFieldPatch = foamField.boundaryFieldRef()[patchi];
         auto [start, end] = volField.boundaryData().range(patchi);
 
         forAll(foamFieldPatch, bfacei)
@@ -118,7 +121,7 @@ void write(
 
     forAll(foamField.boundaryField(), patchi)
     {
-        Foam::fvPatchVectorField& foamFieldPatch = foamField.boundaryFieldRef()[patchi];
+        auto& foamFieldPatch = foamField.boundaryFieldRef()[patchi];
         auto [start, end] = volField.boundaryData().range(patchi);
 
         forAll(foamFieldPatch, bfacei)

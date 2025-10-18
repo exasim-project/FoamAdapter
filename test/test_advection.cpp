@@ -20,10 +20,7 @@ extern Foam::Time* timePtr; // A single time object
 
 void initFields(Foam::volScalarField& T, Foam::volVectorField& U, Foam::surfaceScalarField& phi)
 {
-
     const Foam::fvMesh& mesh = T.mesh();
-
-    scalar K;
 
     Foam::scalar spread = 0.05;
     Foam::scalar pi = Foam::constant::mathematical::pi;
