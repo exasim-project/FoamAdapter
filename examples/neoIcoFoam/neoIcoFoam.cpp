@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2025 FoamAdapter authors
+// SPDX-FileCopyrightText: 2025 nf authors
 
 #include "NeoN/NeoN.hpp"
 
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
             auto& oldU = fvcc::oldTime(U);
             oldU.internalVector() = U.internalVector();
 
-            // TODO sync runTime
+            // FIXME TODO sync runTime
             auto t = runTime.time().value();
             auto dt = runTime.deltaT().value();
 
@@ -93,26 +93,29 @@ int main(int argc, char* argv[])
             }
 
             // Momentum predictor
-            nf::Expression<NeoN::Vec3> UEqn(
+            nf::PDESolver<NeoN::Vec3> UEqn(
                 dsl::imp::ddt(U) + dsl::imp::div(phi, U) - dsl::imp::laplacian(nu, U),
                 U,
-                rt.fvSchemesDict,
-                rt.fvSolutionDict.get<NeoN::Dictionary>("U")
+                rt
             );
 
-            UEqn.assemble(t, dt);
-
-            // if (piso.momentumPredictor())
-            // {
-            //     solve(UEqn == -fvc::grad(p));
-            // }
+            if (piso.momentumPredictor())
+            {
+                // UEqn.solve(dsl::exp::grad(p));
+            }
+            else
+            {
+                // NOTE since computing rAU and HbyA requires an assembled system matrix we
+                // explicitly trigger assembly here.
+                UEqn.assemble();
+            }
 
             // --- PISO loop
             while (piso.correct())
             {
                 Info << "PISO loop" << endl;
-                auto [rAU, HbyA] = nf::discreteMomentumFields(UEqn);
-                nf::constrainHbyA(HbyA, U, p);
+                auto [rAU, hByA] = nf::computeRAUandHByA(UEqn);
+                nf::constrainHbyA(U, p, hByA);
 
                 nnfvcc::SurfaceField<NeoN::scalar> nfrAUf =
                     fvcc::SurfaceInterpolation<NeoN::scalar>(
@@ -124,7 +127,7 @@ int main(int argc, char* argv[])
                 nfrAUf.name = "rAUf";
 
                 // TODO: + fvc::interpolate(rAU) * fvc::ddtCorr(U, phi)
-                auto phiHbyA = nf::flux(HbyA);
+                auto phiHbyA = nf::flux(hByA);
 
                 // Foam::adjustPhi(phiHbyA, U, p);
 
@@ -135,36 +138,29 @@ int main(int argc, char* argv[])
                 while (piso.correctNonOrthogonal())
                 {
                     // Pressure corrector
-                    nf::Expression<NeoN::scalar> pEqn(
+                    nf::PDESolver<NeoN::scalar> pEqn(
                         NeoN::dsl::imp::laplacian(nfrAUf, p) - NeoN::dsl::exp::div(phiHbyA),
                         p,
-                        rt.fvSchemesDict,
-                        rt.fvSolutionDict.get<NeoN::Dictionary>("p")
+                        rt
                     );
-
-                    pEqn.assemble(rt.t, rt.dt);
 
                     if (ofp.needReference() && pRefCell >= 0)
                     {
                         pEqn.setReference(pRefCell, pRefValue);
                     }
-                    Info << "Solve P" << endl;
-                    auto stats = pEqn.solve(t, dt);
-                    std::cout << " solver stats:\n"
-                              << "\t num iter: " << stats.numIter
-                              << "\n\t initial residual norm: " << stats.initResNorm
-                              << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
+
+                    auto stats = pEqn.solve();
                     p.correctBoundaryConditions();
 
                     if (piso.finalNonOrthogonalIter())
                     {
-                        nf::updateFaceVelocity(phi, phiHbyA, pEqn);
+                        nf::updateFaceVelocity(phiHbyA, pEqn, phi);
                     }
                 }
                 // TODO:
                 // #include "continuityErrs.H"
 
-                nf::updateVelocity(U, HbyA, rAU, p);
+                nf::updateVelocity(hByA, rAU, p, U);
                 U.correctBoundaryConditions();
             }
 

@@ -12,12 +12,18 @@
 namespace FoamAdapter
 {
 
-std::tuple<bool, Foam::scalar,Foam::scalar> timeControls(const Foam::Time& runTime);
-
 /*@brief based on the Courant number this function synchronizes the deltaT value in both runtimes*/
 void setDeltaT(Foam::Time& ofRunTime, RunTime& nfRunTime, Foam::scalar coNum);
 
+/* @brief create a NeoN executor from a dictionary
+ * @return the Neon::Executor
+ */
 NeoN::Executor createExecutor(const Foam::dictionary& dict);
+
+/* @brief create a NeoN executor from its name
+ * @return the Neon::Executor
+ */
+NeoN::Executor createExecutor(const Foam::word& execName);
 
 /* @brief create the commonly required objects for a simulation
  * @return a tuple of the executor, the controlDict, the schemesDict, the  solutionDict*/

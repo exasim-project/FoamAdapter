@@ -10,19 +10,6 @@
 namespace FoamAdapter
 {
 
-std::tuple<bool, Foam::scalar, Foam::scalar> timeControls(const Foam::Time& runTime)
-{
-    bool adjustTimeStep = runTime.controlDict().getOrDefault("adjustTimeStep", false);
-
-    Foam::scalar maxCo = runTime.controlDict().getOrDefault<Foam::scalar>("maxCo", 1);
-
-    Foam::scalar maxDeltaT =
-        runTime.controlDict().getOrDefault<Foam::scalar>("maxDeltaT", Foam::GREAT);
-
-    return std::make_tuple(adjustTimeStep, maxCo, maxDeltaT);
-}
-
-
 void setDeltaT(Foam::Time& ofRunTime, RunTime& nfRunTime, Foam::scalar coNum)
 {
     Foam::scalar maxDeltaTFact = nfRunTime.maxCo / (coNum + Foam::SMALL);
@@ -86,9 +73,6 @@ NeoN::Executor createExecutor(const Foam::word& execName)
     return NeoN::SerialExecutor();
 }
 
-/* @brief create a NeoN executor from a dictionary
- * @return the Neon::Executor
- */
 NeoN::Executor createExecutor(const Foam::dictionary& dict)
 {
     auto execName = dict.get<Foam::word>("executor");
@@ -97,17 +81,14 @@ NeoN::Executor createExecutor(const Foam::dictionary& dict)
 
 FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in)
 {
-    std::cout << __FILE__ << ":"
-              << "Creating FoamAdapter runTime\n";
     auto exec = createExecutor(in.controlDict());
     return createAdapterRunTime(in, exec);
 }
 
-RunTime createAdapterRunTime(const Foam::Time& runTime, const NeoN::Executor exec)
+RunTime createAdapterRunTime(const Foam::Time& in, const NeoN::Executor exec)
 {
     std::cout << __FILE__ << ":"
               << "Creating FoamAdapter runTime\n";
-    auto [adjustTimeStep, maxCo, maxDeltaT] = timeControls(in);
     std::unique_ptr<MeshAdapter> meshPtr = createMesh(exec, in);
     MeshAdapter& mesh = *meshPtr;
 
@@ -120,9 +101,9 @@ RunTime createAdapterRunTime(const Foam::Time& runTime, const NeoN::Executor exe
         .exec = exec,
         .t = in.time().value(),
         .dt = in.deltaT().value(),
-        .adjustTimeStep = adjustTimeStep,
-        .maxCo = maxCo,
-        .maxDeltaT = maxDeltaT,
+        .adjustTimeStep = in.controlDict().getOrDefault("adjustTimeStep", false),
+        .maxCo = in.controlDict().getOrDefault<Foam::scalar>("maxCo", 1),
+        .maxDeltaT = in.controlDict().getOrDefault<Foam::scalar>("maxDeltaT", Foam::GREAT),
         .controlDict = convert(in.controlDict()),
         .fvSolutionDict = convert(mesh.solutionDict()),
         .fvSchemesDict = convert(mesh.schemesDict())

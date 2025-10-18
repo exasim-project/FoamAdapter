@@ -9,6 +9,7 @@
 #include "fvMesh.H"
 
 #include "FoamAdapter/datastructures/meshAdapter.hpp"
+#include "FoamAdapter/auxiliary/readers.hpp"
 
 namespace FoamAdapter
 {
@@ -29,5 +30,4 @@ namespace FoamAdapter
         NeoN::Dictionary fvSolutionDict;
         NeoN::Dictionary fvSchemesDict;
     };
-
 } // End namespace FoamAdapter
