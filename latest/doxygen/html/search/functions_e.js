@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['typename_0',['TypeName',['../classFoamAdapter_1_1MeshAdapter.html#a546685a63fcd87c4b8c55ba53e2e30bb',1,'FoamAdapter::MeshAdapter']]]
+  ['updatefacevelocity_0',['updateFaceVelocity',['../namespaceFoamAdapter.html#a678aeff6603442623c3cb8c784435ecb',1,'FoamAdapter']]],
+  ['updatevelocity_1',['updateVelocity',['../namespaceFoamAdapter.html#ab07cdffe2f504299318aad761dfd4b9b',1,'FoamAdapter']]]
 ];

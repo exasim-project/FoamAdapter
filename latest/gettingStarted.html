@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Test cases" href="testcases.html"><link rel="prev" title="Welcome to FoamAdapter!" href="index.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Goals" href="goals_features.html"><link rel="prev" title="Installation Guide" href="installation.html">
         <link rel="canonical" href="https://exasim-project.com/FoamAdapter/gettingStarted.html">
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2025.09.25 -->
@@ -195,9 +195,21 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Welcome to FoamAdapter!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="testcases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goals_features.html">Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goals_features.html#features">Features</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage/quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/cli.html">Command Line Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/contributing.html">Contributing Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/testing.html">Testing Documentation</a></li>
 </ul>
 
 </div>
@@ -263,7 +275,7 @@ cmake<span class="w"> </span>--install<span class="w"> </span>.
 </div></blockquote>
 <section id="building-with-cmake-presets">
 <h2>Building with CMake Presets<a class="headerlink" href="#building-with-cmake-presets" title="Link to this heading">¶</a></h2>
-<p>Additionally, we provide several CMake presets to set commonly required flags.</p>
+<p>Additionally, we provide several CMake presets to set commonly required flags if you compile NeoFoam in combination with Kokkos.</p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--list-presets<span class="w"> </span><span class="c1"># To list existing presets</span>
 </pre></div>
@@ -281,12 +293,12 @@ cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class=
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
 <p>The following tools are used in the development of this project:</p>
-<p>The required tools for documentation:</p>
+<p>required tools for documentation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>doxygen
 pip<span class="w"> </span>install<span class="w"> </span>pre-commit<span class="w"> </span>sphinx<span class="w"> </span>furo<span class="w"> </span>breathe<span class="w"> </span>sphinx-sitemap
 </pre></div>
 </div>
-<p>The required tools for compilation (ubuntu latest 24.04):</p>
+<p>required tools for compilation (ubuntu latest 24.04):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
 ninja-build<span class="w"> </span><span class="se">\</span>
@@ -301,12 +313,7 @@ build-essential
 </section>
 <section id="run-test-case">
 <h2>Run test case<a class="headerlink" href="#run-test-case" title="Link to this heading">¶</a></h2>
-<p>To build these test cases, the CMake preset <cite>profiling</cite> should be used during config and build step for FoamAdapter.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--preset<span class="w"> </span>profiling
-cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class="w"> </span>profiling
-</pre></div>
-</div>
-<p>Then go to the <cite>tutorials</cite> directory and use the predefined script <cite>Allrun</cite> in the directory of each test case to run the chosen test case.</p>
+<p>Run</p>
 </section>
 </section>
 
@@ -315,23 +322,23 @@ cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class=
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="testcases.html">
+          <a class="next-page" href="goals_features.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Test cases</div>
+                <div class="title">Goals</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="index.html">
+          <a class="prev-page" href="installation.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Home</div>
+                <div class="title">Installation Guide</div>
                 
               </div>
             </a>
