@@ -150,4 +150,34 @@ The following code snippet illustrates how a turbulence model and a derived fiel
 
 The same approach is used for all fields and models in FoamAdapter, ensuring a consistent and reliable initialization process.
 
+Plugin Architecture
+~~~~~~~~~~~~~~~~~~~
+
+
+FoamAdapter is designed as a plugin architecture, allowing users to extend the core functionality by adding custom modules for physics models, boundary conditions, and solvers.
+
+The registeration system allows new plugins to be discovered and integrated seamlessly into the existing framework, promoting extensibility and customization. The registeration is planned via entry points in setuptools. So, users can create their own Python packages that define new models or fields and register them with FoamAdapter without modifying the core codebase.
+
+.. note::
+
+    Not implemented yet
+
+
+Model Availability 
+~~~~~~~~~~~~~~~~~~
+
+The library uses the pydantic to define the configuration for the models and is also used for input validation. This allows for to get provide the possible inputs for all available models in the library via json schema.
+
+This simplifies:
+
+* building a UI on top of FoamAdapter
+* input validation
+* documentation of available models
+* the usage of generative AI tools
+* meta data generation
+
+
+.. note::
+
+    Partially implemented but needs to be refined in combination with the plugin architecture.
 
