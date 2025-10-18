@@ -152,7 +152,7 @@
     <member refid="namespaceFoamAdapter_1a3218439d4f85ce028cfd1575954d1109" kind="function"><name>createMesh</name></member>
   </compound>
   <compound refid="namespaceFoamAdapter_1_1detail" kind="namespace"><name>FoamAdapter::detail</name>
-    <member refid="namespaceFoamAdapter_1_1detail_1ad9dab6a1297b6b8e3625f548a83bdc25" kind="function"><name>copy_impl</name></member>
+    <member refid="namespaceFoamAdapter_1_1detail_1aaf3d5dd5719020efd043b6760f17c1fa" kind="function"><name>copyImpl</name></member>
   </compound>
   <compound refid="namespaceNeoN" kind="namespace"><name>NeoN</name>
   </compound>
