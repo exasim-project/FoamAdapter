@@ -69,73 +69,73 @@
     <member refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1a099c97ef8bee51fc13c6a55badaa8ad5" kind="function"><name>SetReference</name></member>
     <member refid="structFoamAdapter_1_1PDESolver_1_1SetReference_1ac42674accaea9ddcdd0c40e74a3c90a5" kind="function"><name>operator()</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map" kind="struct"><name>FoamAdapter::type_map</name>
+  <compound refid="structFoamAdapter_1_1TypeMap" kind="struct"><name>FoamAdapter::TypeMap</name>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4" kind="struct"><name>FoamAdapter::type_map&lt; Foam::Field&lt; Foam::scalar &gt; &gt;</name>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4_1a57995e6b0d6ea019429ee1acdea25e24" kind="typedef"><name>container_type</name></member>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4_1a824526c4175f70dfb83a6a258553657c" kind="typedef"><name>mapped_type</name></member>
+  <compound refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4" kind="struct"><name>FoamAdapter::TypeMap&lt; Foam::Field&lt; Foam::scalar &gt; &gt;</name>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4_1ae0c123cc0827ef0234fc47f6bbf98cde" kind="typedef"><name>container_type</name></member>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1Field_3_01Foam_1_1scalar_01_4_01_4_1ab13d991af1039340346a318652f4ee9f" kind="typedef"><name>mapped_type</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1vector_01_4_01_4" kind="struct"><name>FoamAdapter::type_map&lt; Foam::Field&lt; Foam::vector &gt; &gt;</name>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1vector_01_4_01_4_1aaf3bec15d2e12cab701225c9410e8a43" kind="typedef"><name>container_type</name></member>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1Field_3_01Foam_1_1vector_01_4_01_4_1a186244d3d37e3f2933b1d1a705bd080d" kind="typedef"><name>mapped_type</name></member>
+  <compound refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1Field_3_01Foam_1_1vector_01_4_01_4" kind="struct"><name>FoamAdapter::TypeMap&lt; Foam::Field&lt; Foam::vector &gt; &gt;</name>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1Field_3_01Foam_1_1vector_01_4_01_4_1ab0f19a318f396826e1e1686ed28bf1a6" kind="typedef"><name>container_type</name></member>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1Field_3_01Foam_1_1vector_01_4_01_4_1ada05401f7c520ad9c3066720f9ffb57d" kind="typedef"><name>mapped_type</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvPatc84c721f1ce67dda1a84935358fd6b93b" kind="struct"><name>FoamAdapter::type_map&lt; Foam::GeometricField&lt; Foam::scalar, Foam::fvPatchField, Foam::volMesh &gt; &gt;</name>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvPatc84c721f1ce67dda1a84935358fd6b93b_1a5c262d6a48bfe2e958ee80eaa22a252d" kind="typedef"><name>container_type</name></member>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvPatc84c721f1ce67dda1a84935358fd6b93b_1a923f7957f87bbe14bb8c03d9267e89a9" kind="typedef"><name>mapped_type</name></member>
+  <compound refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvPatchF13af65abfab88590b87fce8587db9cdf" kind="struct"><name>FoamAdapter::TypeMap&lt; Foam::GeometricField&lt; Foam::scalar, Foam::fvPatchField, Foam::volMesh &gt; &gt;</name>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvPatchF13af65abfab88590b87fce8587db9cdf_1a4261bb6d2c5e6eb69a318577b504ee22" kind="typedef"><name>container_type</name></member>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvPatchF13af65abfab88590b87fce8587db9cdf_1ac01fe721627c14abd20afe27124cbc01" kind="typedef"><name>mapped_type</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvsPat756d0aeb63964d1abaea395b02a0e053" kind="struct"><name>FoamAdapter::type_map&lt; Foam::GeometricField&lt; Foam::scalar, Foam::fvsPatchField, Foam::surfaceMesh &gt; &gt;</name>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvsPat756d0aeb63964d1abaea395b02a0e053_1aa3497f3d62158ec01110f3101e82bb85" kind="typedef"><name>container_type</name></member>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvsPat756d0aeb63964d1abaea395b02a0e053_1a06d60bcaaed766e73e689243e28a242b" kind="typedef"><name>mapped_type</name></member>
+  <compound refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvsPatch74f20442ee30744e610339a3571cffc5" kind="struct"><name>FoamAdapter::TypeMap&lt; Foam::GeometricField&lt; Foam::scalar, Foam::fvsPatchField, Foam::surfaceMesh &gt; &gt;</name>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvsPatch74f20442ee30744e610339a3571cffc5_1ab17d3f33a1888fb27b18b3c25f977b6b" kind="typedef"><name>container_type</name></member>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1scalar_00_01Foam_1_1fvsPatch74f20442ee30744e610339a3571cffc5_1aac0bb4d47cd9374bca0314f82b8d88ed" kind="typedef"><name>mapped_type</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvPatc633bc7b0f65abec47b539ca21b4b1f2a" kind="struct"><name>FoamAdapter::type_map&lt; Foam::GeometricField&lt; Foam::vector, Foam::fvPatchField, Foam::volMesh &gt; &gt;</name>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvPatc633bc7b0f65abec47b539ca21b4b1f2a_1a50b4c900827d364b3fb712e137bd5136" kind="typedef"><name>container_type</name></member>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvPatc633bc7b0f65abec47b539ca21b4b1f2a_1acb7fe1169da63ceb7823180eaf98e32e" kind="typedef"><name>mapped_type</name></member>
+  <compound refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvPatchF649cfaf43e9ceafb9084e75d9f3095df" kind="struct"><name>FoamAdapter::TypeMap&lt; Foam::GeometricField&lt; Foam::vector, Foam::fvPatchField, Foam::volMesh &gt; &gt;</name>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvPatchF649cfaf43e9ceafb9084e75d9f3095df_1a1f79f67c278431428fd315aac2dcdc2f" kind="typedef"><name>container_type</name></member>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvPatchF649cfaf43e9ceafb9084e75d9f3095df_1a4fc9b4e4cf1479f3106607d348b0d0f4" kind="typedef"><name>mapped_type</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvsPat33ea648659ace0398495b22704eafd68" kind="struct"><name>FoamAdapter::type_map&lt; Foam::GeometricField&lt; Foam::vector, Foam::fvsPatchField, Foam::surfaceMesh &gt; &gt;</name>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvsPat33ea648659ace0398495b22704eafd68_1af52328c2c2e3ef8cc82027726659ac4b" kind="typedef"><name>container_type</name></member>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvsPat33ea648659ace0398495b22704eafd68_1a114876453c939f5f1ecd9f544987a3f6" kind="typedef"><name>mapped_type</name></member>
+  <compound refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvsPatch40758cb2a991dcc282068161961ff43b" kind="struct"><name>FoamAdapter::TypeMap&lt; Foam::GeometricField&lt; Foam::vector, Foam::fvsPatchField, Foam::surfaceMesh &gt; &gt;</name>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvsPatch40758cb2a991dcc282068161961ff43b_1affafab5ccbf1ad059a1bb54414f09192" kind="typedef"><name>container_type</name></member>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1GeometricField_3_01Foam_1_1vector_00_01Foam_1_1fvsPatch40758cb2a991dcc282068161961ff43b_1a640b5900fc609131d760c403e333f64f" kind="typedef"><name>mapped_type</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam_1_1label_01_4_01_4" kind="struct"><name>FoamAdapter::type_map&lt; Foam::List&lt; Foam::label &gt; &gt;</name>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam_1_1label_01_4_01_4_1aee1dea2f1ed0f226f0f525c70128c5b0" kind="typedef"><name>container_type</name></member>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam_1_1label_01_4_01_4_1a833c6a53258f9c4637da54f262984887" kind="typedef"><name>mapped_type</name></member>
+  <compound refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1List_3_01Foam_1_1label_01_4_01_4" kind="struct"><name>FoamAdapter::TypeMap&lt; Foam::List&lt; Foam::label &gt; &gt;</name>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1List_3_01Foam_1_1label_01_4_01_4_1a4b5c1c66573c23506b5b0b026fa4f545" kind="typedef"><name>container_type</name></member>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1List_3_01Foam_1_1label_01_4_01_4_1a59aeeef12400750a1e04ed0fd28e2146" kind="typedef"><name>mapped_type</name></member>
   </compound>
-  <compound refid="structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam_1_1scalar_01_4_01_4" kind="struct"><name>FoamAdapter::type_map&lt; Foam::List&lt; Foam::scalar &gt; &gt;</name>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam_1_1scalar_01_4_01_4_1acb3d6bd4630257b7125842411c1d6fe7" kind="typedef"><name>container_type</name></member>
-    <member refid="structFoamAdapter_1_1type__map_3_01Foam_1_1List_3_01Foam_1_1scalar_01_4_01_4_1a75729a421569e1621ea2f7c3e768c2b9" kind="typedef"><name>mapped_type</name></member>
+  <compound refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1List_3_01Foam_1_1scalar_01_4_01_4" kind="struct"><name>FoamAdapter::TypeMap&lt; Foam::List&lt; Foam::scalar &gt; &gt;</name>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1List_3_01Foam_1_1scalar_01_4_01_4_1a2bbbee25f76eea77b290c0c472e4ea85" kind="typedef"><name>container_type</name></member>
+    <member refid="structFoamAdapter_1_1TypeMap_3_01Foam_1_1List_3_01Foam_1_1scalar_01_4_01_4_1a63a8b8b6f417e4fb253fd28ef6ccedd1" kind="typedef"><name>mapped_type</name></member>
   </compound>
   <compound refid="namespaceFoam" kind="namespace"><name>Foam</name>
   </compound>
   <compound refid="namespaceFoamAdapter" kind="namespace"><name>FoamAdapter</name>
-    <member refid="namespaceFoamAdapter_1a54bbeabff5f4044f250027a13ebe295d" kind="function"><name>constrainHbyA</name></member>
+    <member refid="namespaceFoamAdapter_1a542dc74de5b105f45661bb9e9248faef" kind="function"><name>constrainHbyA</name></member>
     <member refid="namespaceFoamAdapter_1a3fcb65605aafdcc90b7315821bac79bb" kind="function"><name>computeRAU</name></member>
-    <member refid="namespaceFoamAdapter_1a3f31cf5e3f7cec8c725350be6371097c" kind="function"><name>discreteMomentumFields</name></member>
-    <member refid="namespaceFoamAdapter_1aa70aa24d844e3320ed61ec135b7048ef" kind="function"><name>updateFaceVelocity</name></member>
-    <member refid="namespaceFoamAdapter_1ab07cdffe2f504299318aad761dfd4b9b" kind="function"><name>updateVelocity</name></member>
+    <member refid="namespaceFoamAdapter_1a0e140a23f076eb4857de406948f7956a" kind="function"><name>computeRAUandHByA</name></member>
+    <member refid="namespaceFoamAdapter_1a60e76ae54f8f88e43502447f9d5399de" kind="function"><name>updateFaceVelocity</name></member>
+    <member refid="namespaceFoamAdapter_1a7661d98c4e3066c2b08e0b2959bca571" kind="function"><name>updateVelocity</name></member>
     <member refid="namespaceFoamAdapter_1aeb9d6048345debcb9e018bb2e75436b3" kind="function"><name>flux</name></member>
     <member refid="namespaceFoamAdapter_1a9f22c54b08a010fb0c71f78f7b1b8167" kind="function"><name>operator==</name></member>
     <member refid="namespaceFoamAdapter_1ad1fb93c62a9f4dcc22f47fc524c9a80e" kind="function"><name>operator==</name></member>
     <member refid="namespaceFoamAdapter_1a82089b04dc2e3a6ff1c1743b4136905f" kind="function"><name>operator==</name></member>
-    <member refid="namespaceFoamAdapter_1a25a465bba7f6725729af83a99c22f9f2" kind="function"><name>convert</name></member>
-    <member refid="namespaceFoamAdapter_1aee0c7d6b59cb2426b9196bf7a12cce96" kind="function"><name>convert</name></member>
-    <member refid="namespaceFoamAdapter_1a4d39c614e40b11ff2e03c5c3f2304c2a" kind="function"><name>convert</name></member>
-    <member refid="namespaceFoamAdapter_1a2c4e8563b875c7a9b4b86f4092eeeca9" kind="function"><name>convert</name></member>
-    <member refid="namespaceFoamAdapter_1ad14d39dcbead5b34c045920efd83738a" kind="function"><name>convert</name></member>
+    <member refid="namespaceFoamAdapter_1ada4d2f1e5b2837cb9e0fca15ef151af9" kind="function"><name>convert</name></member>
+    <member refid="namespaceFoamAdapter_1aa7f95f8c524821e635912be248b5ed03" kind="function"><name>convert</name></member>
+    <member refid="namespaceFoamAdapter_1ae36b6aa9c471f1b7cc8c424fc64d15ed" kind="function"><name>convert</name></member>
+    <member refid="namespaceFoamAdapter_1ababcebc3de8a99dd4b8534d2a512c309" kind="function"><name>convert</name></member>
+    <member refid="namespaceFoamAdapter_1a2702f07e5118050748cb9d0a91b4a5e4" kind="function"><name>convert</name></member>
     <member refid="namespaceFoamAdapter_1aba72ce1f4736bf0d7dcc14596fa7bff9" kind="function"><name>convert</name></member>
     <member refid="namespaceFoamAdapter_1a85ee45e2838ec7c393a73b49c59ca7a5" kind="function"><name>checkEntryType</name></member>
     <member refid="namespaceFoamAdapter_1a001fc933f3c84a6aa35c1ca0791faf78" kind="function"><name>insert</name></member>
-    <member refid="namespaceFoamAdapter_1a5bc0bbc6691462c5f7bdd97f7afb44dc" kind="function"><name>convert</name></member>
+    <member refid="namespaceFoamAdapter_1ab037542898ccc8212e41824a970f65d7" kind="function"><name>convert</name></member>
     <member refid="namespaceFoamAdapter_1a02bea90fb07cdc6d164c2b4c1718fc08" kind="function"><name>fromFoamField</name></member>
     <member refid="namespaceFoamAdapter_1aede9b3b7c2b995b24825529cfe2c2386" kind="function"><name>readVolBoundaryConditions</name></member>
     <member refid="namespaceFoamAdapter_1a2a4e77b9a673744f7c1149e6288e00db" kind="function"><name>constructFrom</name></member>
     <member refid="namespaceFoamAdapter_1ad7849fbeb06f57b55857d3a36a5acd26" kind="function"><name>readSurfaceBoundaryConditions</name></member>
     <member refid="namespaceFoamAdapter_1a98726de082da7d5212dae976ce88f510" kind="function"><name>constructSurfaceField</name></member>
-    <member refid="namespaceFoamAdapter_1ae692c4d706feeb179d51b6ea54bfbda8" kind="function"><name>timeControls</name></member>
-    <member refid="namespaceFoamAdapter_1a958a5e2ee6dc98fc6805c118874b51f0" kind="function"><name>setDeltaT</name></member>
+    <member refid="namespaceFoamAdapter_1abe8da576c7af869b0d869f48a64aefb4" kind="function"><name>setDeltaT</name></member>
     <member refid="namespaceFoamAdapter_1a3089a13fbddccb398fa4f54d6dd0fc01" kind="function"><name>createExecutor</name></member>
+    <member refid="namespaceFoamAdapter_1ad520115710612327d46bd022a6b9e914" kind="function"><name>createExecutor</name></member>
     <member refid="namespaceFoamAdapter_1aa01e57f3dd55859d173c40d5cf9b6ec4" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a1e6126cd9e3f712de59ed532a20591b3" kind="function"><name>createAdapterRunTime</name></member>
-    <member refid="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" kind="function"><name>write</name></member>
-    <member refid="namespaceFoamAdapter_1a8ad8cc5431b3fde26ae90f6a760ff452" kind="function"><name>write</name></member>
+    <member refid="namespaceFoamAdapter_1aaac4c53d8f49ec82ea16d7a21ceb4ecc" kind="function"><name>write</name></member>
+    <member refid="namespaceFoamAdapter_1a1e8368d25153ff62fba271f31a233a1c" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1ab50ddf2a52315c0dca39d480c4cbb4a2" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1aa07b2f5c8b1055724f7c8b3a408c5574" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1a46e698646a94db94dd4f57ca77f699bd" kind="function"><name>updateSolver</name></member>
@@ -152,7 +152,7 @@
     <member refid="namespaceFoamAdapter_1a3218439d4f85ce028cfd1575954d1109" kind="function"><name>createMesh</name></member>
   </compound>
   <compound refid="namespaceFoamAdapter_1_1detail" kind="namespace"><name>FoamAdapter::detail</name>
-    <member refid="namespaceFoamAdapter_1_1detail_1ad9dab6a1297b6b8e3625f548a83bdc25" kind="function"><name>copy_impl</name></member>
+    <member refid="namespaceFoamAdapter_1_1detail_1aaf3d5dd5719020efd043b6760f17c1fa" kind="function"><name>copyImpl</name></member>
   </compound>
   <compound refid="namespaceNeoN" kind="namespace"><name>NeoN</name>
   </compound>
