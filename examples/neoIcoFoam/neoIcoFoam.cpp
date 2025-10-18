@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 
             if (piso.momentumPredictor())
             {
-                // UEqn.solve(dsl::exp::grad(p));
+                UEqn.solve(dsl::exp::grad(p));
             }
             else
             {
@@ -169,6 +169,7 @@ int main(int argc, char* argv[])
             {
                 Info << "writing p field" << endl;
                 write(p.internalVector(), mesh, "p");
+                Info << "writing U field" << endl;
                 write(U.internalVector(), mesh, "U");
             }
 
