@@ -7,6 +7,8 @@ CheckOptions:
   - { key: readability-identifier-naming.UnionCase, value: CamelCase }
   - { key: readability-identifier-naming.FunctionCase, value: camelBack }
   - { key: readability-identifier-naming.VariableCase, value: camelBack }
+  - { key: readability-identifier-naming.VariableIgnoredRegexp, value: "U|T|A|HbyA" }
+  - { key: readability-identifier-naming.ParameterIgnoredRegexp, value: "U|T|A|HbyA" }
   - { key: readability-identifier-naming.ParameterCase, value: camelBack }
 FormatStyle: file
 WarningsAsErrors: ''
