@@ -181,10 +181,10 @@ Functions</h2></td></tr>
 <tr class="separator:aa01e57f3dd55859d173c40d5cf9b6ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e6126cd9e3f712de59ed532a20591b3" id="r_a1e6126cd9e3f712de59ed532a20591b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFoamAdapter_1_1RunTime.html">RunTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a1e6126cd9e3f712de59ed532a20591b3">createAdapterRunTime</a> (const Foam::Time &amp;runTime)</td></tr>
 <tr class="separator:a1e6126cd9e3f712de59ed532a20591b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54e87d33c208d96daebb373042a71c4d" id="r_a54e87d33c208d96daebb373042a71c4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a54e87d33c208d96daebb373042a71c4d">write</a> (NeoN::scalarVector &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</td></tr>
-<tr class="separator:a54e87d33c208d96daebb373042a71c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ad8cc5431b3fde26ae90f6a760ff452" id="r_a8ad8cc5431b3fde26ae90f6a760ff452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a8ad8cc5431b3fde26ae90f6a760ff452">write</a> (NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</td></tr>
-<tr class="separator:a8ad8cc5431b3fde26ae90f6a760ff452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaac4c53d8f49ec82ea16d7a21ceb4ecc" id="r_aaac4c53d8f49ec82ea16d7a21ceb4ecc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#aaac4c53d8f49ec82ea16d7a21ceb4ecc">write</a> (const NeoN::scalarVector &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</td></tr>
+<tr class="separator:aaac4c53d8f49ec82ea16d7a21ceb4ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e8368d25153ff62fba271f31a233a1c" id="r_a1e8368d25153ff62fba271f31a233a1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#a1e8368d25153ff62fba271f31a233a1c">write</a> (const NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</td></tr>
+<tr class="separator:a1e8368d25153ff62fba271f31a233a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab50ddf2a52315c0dca39d480c4cbb4a2" id="r_ab50ddf2a52315c0dca39d480c4cbb4a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#ab50ddf2a52315c0dca39d480c4cbb4a2">write</a> (const fvcc::VolumeField&lt; NeoN::scalar &gt; &amp;volField, const Foam::fvMesh &amp;mesh, const std::string fieldName)</td></tr>
 <tr class="separator:ab50ddf2a52315c0dca39d480c4cbb4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa07b2f5c8b1055724f7c8b3a408c5574" id="r_aa07b2f5c8b1055724f7c8b3a408c5574"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceFoamAdapter.html#aa07b2f5c8b1055724f7c8b3a408c5574">write</a> (const fvcc::VolumeField&lt; NeoN::Vec3 &gt; &amp;volField, const Foam::fvMesh &amp;mesh, const std::string fieldName)</td></tr>
@@ -1297,8 +1297,8 @@ template&lt;typename FoamType &gt; </div>
 
 </div>
 </div>
-<a id="a54e87d33c208d96daebb373042a71c4d" name="a54e87d33c208d96daebb373042a71c4d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54e87d33c208d96daebb373042a71c4d">&#9670;&#160;</a></span>write() <span class="overload">[3/4]</span></h2>
+<a id="aaac4c53d8f49ec82ea16d7a21ceb4ecc" name="aaac4c53d8f49ec82ea16d7a21ceb4ecc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaac4c53d8f49ec82ea16d7a21ceb4ecc">&#9670;&#160;</a></span>write() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1306,7 +1306,7 @@ template&lt;typename FoamType &gt; </div>
         <tr>
           <td class="memname">void FoamAdapter::write </td>
           <td>(</td>
-          <td class="paramtype">NeoN::scalarVector &amp;&#160;</td>
+          <td class="paramtype">const NeoN::scalarVector &amp;&#160;</td>
           <td class="paramname"><em>sf</em>, </td>
         </tr>
         <tr>
@@ -1331,8 +1331,8 @@ template&lt;typename FoamType &gt; </div>
 
 </div>
 </div>
-<a id="a8ad8cc5431b3fde26ae90f6a760ff452" name="a8ad8cc5431b3fde26ae90f6a760ff452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ad8cc5431b3fde26ae90f6a760ff452">&#9670;&#160;</a></span>write() <span class="overload">[4/4]</span></h2>
+<a id="a1e8368d25153ff62fba271f31a233a1c" name="a1e8368d25153ff62fba271f31a233a1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e8368d25153ff62fba271f31a233a1c">&#9670;&#160;</a></span>write() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1340,7 +1340,7 @@ template&lt;typename FoamType &gt; </div>
         <tr>
           <td class="memname">void FoamAdapter::write </td>
           <td>(</td>
-          <td class="paramtype">NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;&#160;</td>
+          <td class="paramtype">const NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;&#160;</td>
           <td class="paramname"><em>sf</em>, </td>
         </tr>
         <tr>

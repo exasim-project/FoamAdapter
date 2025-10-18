@@ -134,8 +134,8 @@
     <member refid="namespaceFoamAdapter_1ad520115710612327d46bd022a6b9e914" kind="function"><name>createExecutor</name></member>
     <member refid="namespaceFoamAdapter_1aa01e57f3dd55859d173c40d5cf9b6ec4" kind="function"><name>createAdapterRunTime</name></member>
     <member refid="namespaceFoamAdapter_1a1e6126cd9e3f712de59ed532a20591b3" kind="function"><name>createAdapterRunTime</name></member>
-    <member refid="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" kind="function"><name>write</name></member>
-    <member refid="namespaceFoamAdapter_1a8ad8cc5431b3fde26ae90f6a760ff452" kind="function"><name>write</name></member>
+    <member refid="namespaceFoamAdapter_1aaac4c53d8f49ec82ea16d7a21ceb4ecc" kind="function"><name>write</name></member>
+    <member refid="namespaceFoamAdapter_1a1e8368d25153ff62fba271f31a233a1c" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1ab50ddf2a52315c0dca39d480c4cbb4a2" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1aa07b2f5c8b1055724f7c8b3a408c5574" kind="function"><name>write</name></member>
     <member refid="namespaceFoamAdapter_1a46e698646a94db94dd4f57ca77f699bd" kind="function"><name>updateSolver</name></member>

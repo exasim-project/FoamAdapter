@@ -664,14 +664,14 @@
         </inbodydescription>
         <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" line="34" column="9" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/setup.hpp" declline="34" declcolumn="9"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoamAdapter_1a54e87d33c208d96daebb373042a71c4d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoamAdapter_1aaac4c53d8f49ec82ea16d7a21ceb4ecc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void FoamAdapter::write</definition>
-        <argsstring>(NeoN::scalarVector &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <argsstring>(const NeoN::scalarVector &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
         <name>write</name>
         <qualifiedname>FoamAdapter::write</qualifiedname>
         <param>
-          <type>NeoN::scalarVector &amp;</type>
+          <type>const NeoN::scalarVector &amp;</type>
           <declname>sf</declname>
         </param>
         <param>
@@ -688,16 +688,16 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="34" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="34" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="38" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="38" declcolumn="6"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceFoamAdapter_1a8ad8cc5431b3fde26ae90f6a760ff452" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceFoamAdapter_1a1e8368d25153ff62fba271f31a233a1c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void FoamAdapter::write</definition>
-        <argsstring>(NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
+        <argsstring>(const NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;sf, const Foam::fvMesh &amp;mesh, const std::string fieldName)</argsstring>
         <name>write</name>
         <qualifiedname>FoamAdapter::write</qualifiedname>
         <param>
-          <type>NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;</type>
+          <type>const NeoN::Vector&lt; NeoN::Vec3 &gt; &amp;</type>
           <declname>sf</declname>
         </param>
         <param>
@@ -714,7 +714,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="36" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="36" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="41" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="41" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1ab50ddf2a52315c0dca39d480c4cbb4a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -740,7 +740,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="38" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="38" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="44" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="44" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1aa07b2f5c8b1055724f7c8b3a408c5574" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -766,7 +766,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="44" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="44" declcolumn="6"/>
+        <location file="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" line="51" column="6" declfile="/home/runner/work/FoamAdapter/FoamAdapter/include/FoamAdapter/auxiliary/writers.hpp" declline="51" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceFoamAdapter_1a46e698646a94db94dd4f57ca77f699bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
