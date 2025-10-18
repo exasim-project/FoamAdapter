@@ -99,6 +99,10 @@ In this architecture, the main solver loop consists of core steps such as moment
 
 This modular design enables users to easily add or remove physics effects without altering the fundamental solver structure, promoting code reuse and maintainability.
 
+.. note::
+
+    Not implemented yet
+
 Field and Model Initialization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
