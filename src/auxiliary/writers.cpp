@@ -11,7 +11,7 @@ void write(NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string f
     Foam::volScalarField* field = mesh.getObjectPtr<Foam::volScalarField>(fieldName);
     if (field)
     {
-        detail::copy_impl(field->ref(), sf);
+        detail::copyImpl(sf, field->ref());
         field->write();
     }
     else
@@ -27,7 +27,7 @@ void write(NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string f
             mesh,
             Foam::dimensionedScalar(Foam::dimless, 0)
         );
-        detail::copy_impl(foamField.ref(), sf);
+        detail::copyImpl(sf, foamField.ref());
         foamField.write();
     }
 }
@@ -38,7 +38,7 @@ void write(NeoN::Vector<NeoN::Vec3>& sf, const Foam::fvMesh& mesh, const std::st
     if (field)
     {
         // field is already present and needs to be updated
-        detail::copy_impl(field->ref(), sf);
+        detail::copyImpl(sf, field->ref());
         field->write();
     }
     else
@@ -54,8 +54,7 @@ void write(NeoN::Vector<NeoN::Vec3>& sf, const Foam::fvMesh& mesh, const std::st
             mesh,
             Foam::dimensionedVector(Foam::dimless, Foam::Zero)
         );
-        detail::copy_impl(foamField.ref(), sf);
-
+        detail::copyImpl(sf, foamField.ref());
 
         foamField.write();
     }
@@ -79,8 +78,7 @@ void write(
         mesh,
         Foam::dimensionedScalar(Foam::dimless, Foam::Zero)
     );
-    auto hostVolField = volField.internalVector().copyToHost();
-    detail::copy_impl(foamField.ref(), hostVolField);
+    detail::copyImpl(volField.internalVector(), foamField.ref());
 
     auto hostBCValue = volField.boundaryData().value().copyToHost();
 
@@ -114,8 +112,7 @@ void write(
         mesh,
         Foam::dimensionedVector(Foam::dimless, Foam::Zero)
     );
-    auto hostVolField = volField.internalVector().copyToHost();
-    detail::copy_impl(foamField.ref(), hostVolField);
+    detail::copyImpl(volField.internalVector(), foamField.ref());
 
     auto hostBCValue = volField.boundaryData().value().copyToHost();
 
