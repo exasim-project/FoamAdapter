@@ -110,10 +110,4 @@ RunTime createAdapterRunTime(const Foam::Time& in, const NeoN::Executor exec)
     };
 }
 
-FoamAdapter::RunTime createAdapterRunTime(const Foam::Time& in)
-{
-    auto exec = createExecutor(in.controlDict());
-    return createAdapterRunTime(in, exec);
-}
-
 }
