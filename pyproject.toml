@@ -9,8 +9,31 @@ authors = [
 requires-python = ">=3.11"
 
 dependencies = [
+    "pybFoam>=0.1.4",
     "typer",
     "pydantic>=2.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "pytest-xdist",
+    "black",
+    "flake8",
+    "isort",
+    "mypy",
+    "pandas>=2.0.0"
+]
+docs = [
+    "sphinx>=4.0",
+    "myst-parser",
+    "sphinx-sitemap",
+    "furo",
+    "sphinxcontrib-mermaid"
+]
+all = [
+    "pyOFTools[dev,docs]",
 ]
 
 [project.scripts]
