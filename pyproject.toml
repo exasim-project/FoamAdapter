@@ -12,7 +12,8 @@ dependencies = [
     "pybFoam>=0.1.4",
     "typer",
     "pydantic>=2.0.0",
-    "networkx>=3.0"
+    "networkx>=3.0",
+    "matplotlib>=3.0.0"
 ]
 
 [project.optional-dependencies]
