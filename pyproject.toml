@@ -33,7 +33,7 @@ docs = [
     "sphinxcontrib-mermaid"
 ]
 all = [
-    "pyOFTools[dev,docs]",
+    "foamadapter[dev,docs]",
 ]
 
 [project.scripts]
