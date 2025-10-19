@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 Overview
 ========
 
@@ -161,7 +159,6 @@ Motivation
 Modern scientific and engineering workflows require flexible simulation frameworks that can be easily extended and customized. FoamAdapter's plugin architecture is designed to enable users and developers to add new physics models, boundary conditions, and solver modules without modifying the core codebase. This approach promotes maintainability, collaboration, and rapid prototyping of new features.
 
 
-
 Concept
 ^^^^^^^
 FoamAdapter implements a runtime-extensible plugin/config system using Pydantic discriminated unions and a registry pattern. The core idea is to allow new plugin types (e.g., models, fields, solvers) to be registered dynamically, either at runtime or via Python entry points (setuptools).
@@ -207,6 +204,12 @@ For example, after registering a new shape plugin, you can immediately use the u
 
 This dynamic rebuilding of the model enables true runtime extensibility and ensures that input validation and schema generation always match the available plugins. The `plugin_model` attribute needs to be called to obtain the up-to-date model for the plugin type.
 
+Concept
+^^^^^^^
+FoamAdapter implements a runtime-extensible plugin/config system using Pydantic discriminated unions and a registry pattern. The core idea is to allow new plugin types (e.g., models, fields, solvers) to be registered dynamically, either at runtime or via Python entry points (setuptools). Each plugin family (such as physics models or boundary conditions) is managed by a registry, which collects all available plugin classes and exposes a unified configuration model for input validation and schema generation.
+
+Plugins are registered using a decorator-based API, making it easy for users to define and integrate new modules. The system automatically generates a Pydantic model that validates configuration and provides a JSON schema for UI, documentation, and input validation.
+
 Usage
 ^^^^^
 To add a new plugin, users simply define a new Python class for their model or field and register it with the appropriate base class:
@@ -233,8 +236,14 @@ Plugins can also be discovered and registered automatically via Python entry poi
 Model Availability
 ~~~~~~~~~~~~~~~~~~
 
+<<<<<<< HEAD
 Model configuration and validation in FoamAdapter is built on top of Pydantic, which natively supports input validation and automatic JSON schema generation for all models.
 This is a standard feature of Pydantic and enables:
+=======
+The library uses the pydantic to define the configuration for the models and is also used for input validation. This allows for to get provide the possible inputs for all available models in the library via json schema.
+
+This simplifies:
+>>>>>>> 8f5408f (finialized plugin system)
 
 * building a UI on top of FoamAdapter
 * input validation
@@ -275,3 +284,7 @@ FoamAdapter is designed as a multi-layered architecture that bridges OpenFOAM an
        D --> F[OpenFOAM Libraries]
        E --> G[GPU/CPU Execution]
        F --> H[OpenFOAM Solvers]
+
+.. note::
+
+    Partially implemented but needs to be refined in combination with the plugin architecture.
