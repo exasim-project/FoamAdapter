@@ -74,7 +74,7 @@ def create_fields_models(mesh):
     singlePhaseTransportModel = SinglePhaseTransportModel()
     models.add_model("singlePhaseTransportModel", singlePhaseTransportModel)
 
-    turbulence = TurbulenceModel()
+    turbulence = TurbulenceModel.from_ofdict(dictionary.read("constant/turbulenceProperties"))
     models.add_model("turbulence", turbulence)
 
     # visualize_dag(

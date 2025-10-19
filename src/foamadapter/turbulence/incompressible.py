@@ -46,12 +46,12 @@ class LaminarProperties(IOModelBase):
 
 # ---------- Single entry-point model with top-level discriminator ----------
 class TurbulenceModel(
-    # RootModel[
-    #     Annotated[
-    #         Union[RASProperties, LESProperties, LaminarProperties],
-    #         Field(discriminator="simulationType"),
-    #     ]
-    # ],
+    RootModel[
+        Annotated[
+            Union[RASProperties, LESProperties, LaminarProperties],
+            Field(discriminator="simulationType"),
+        ]
+    ],
     IOModelMixin
 ):
     
