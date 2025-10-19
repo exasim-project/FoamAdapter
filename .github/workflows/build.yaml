@@ -76,7 +76,6 @@ jobs:
          ctest --preset develop
 
   build-python:
-    name: Build FoamAdapter Python package and run tests
     runs-on: ubuntu-latest # may use an older version to test
     if: "!contains(toJson(github.event.pull_request.labels.*.name), 'Skip-build')"
     strategy:
@@ -84,7 +83,7 @@ jobs:
         openfoam-version: [2406, 2412, 2506]
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
-    name: Test with OpenFOAM ${{ matrix.openfoam-version }}
+    name: FoamAdapter Python with OpenFOAM ${{ matrix.openfoam-version }}
     steps:
       - uses: actions/checkout@v5
       
