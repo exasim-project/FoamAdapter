@@ -5,6 +5,7 @@
 #pragma once
 
 #include "NeoN/NeoN.hpp"
+#include "FoamAdapter/datastructures/runTime.hpp"
 
 namespace dsl = NeoN::dsl;
 
@@ -18,167 +19,152 @@ namespace FoamAdapter
  * needs storage for assembled matrix? and whether update is needed like for rAU and HbyA
  */
 template<typename ValueType, typename IndexType = NeoN::localIdx>
-class Expression
+class PDESolver
 {
+    using VolumeField = NeoN::finiteVolume::cellCentred::VolumeField<ValueType>;
+
 public:
 
-    Expression(
-        dsl::Expression<ValueType> expr,
-        NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi,
-        const NeoN::Dictionary& fvSchemes,
-        const NeoN::Dictionary& fvSolution
-    )
+
+    PDESolver(dsl::Expression<ValueType> expr, VolumeField& psi, const RunTime& runTime)
         : psi_(psi)
         , expr_(expr)
-        , fvSchemes_(fvSchemes)
-        , fvSolution_(fvSolution)
-        , sparsityPattern_(
-              NeoN::la::SparsityPattern::readOrCreate(psi.mesh())
-          )
-        , ls_(NeoN::la::createEmptyLinearSystem<
-              ValueType,
-              NeoN::localIdx>(psi.mesh(),sparsityPattern_))
+        , runTime_(runTime)
+        , sparsityPattern_(NeoN::la::SparsityPattern::readOrCreate(psi.mesh()))
+        , ls_(NeoN::la::createEmptyLinearSystem<ValueType, NeoN::localIdx>(
+              psi.mesh(),
+              sparsityPattern_
+          ))
     {
-        expr_.read(fvSchemes_);
-        // assemble();
+        expr_.read(runTime_.fvSchemesDict);
     };
 
-    Expression(const Expression& ls)
-        : psi_(ls.psi_)
-        , expr_(ls.expr_)
-        , fvSchemes_(ls.fvSchemes_)
-        , fvSolution_(ls.fvSolution_)
-        , ls_(ls.ls_)
-        , sparsityPattern_(ls.sparsityPattern_) {};
+    PDESolver(const PDESolver& expr)
+        : psi_(expr.psi_)
+        , expr_(expr.expr_)
+        , runTime_(expr.runTime_)
+        , ls_(expr.ls_)
+        , sparsityPattern_(expr.sparsityPattern_) {};
 
-    ~Expression() = default;
+    ~PDESolver() = default;
 
-    [[nodiscard]] NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() { return ls_; }
-    [[nodiscard]] const  NeoN::la::SparsityPattern& sparsityPattern() const
+    VolumeField& getField() { return this->psi_; }
+
+    const VolumeField& getField() const { return this->psi_; }
+
+    [[nodiscard]] const NeoN::la::SparsityPattern& sparsityPattern() const
     {
         return sparsityPattern_;
     }
 
-    NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& getVector() { return this->psi_; }
-
-    const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& getVector() const
-    {
-        return this->psi_;
-    }
+    [[nodiscard]] NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() { return ls_; }
 
     [[nodiscard]] const NeoN::la::LinearSystem<ValueType, IndexType>& linearSystem() const
     {
         return ls_;
     }
 
-    const NeoN::Executor& exec() const { return ls_.exec(); }
-
-    void assemble(NeoN::scalar t, NeoN::scalar dt)
+    NeoN::la::LinearSystem<ValueType, IndexType>& assemble()
     {
-        auto vol = psi_.mesh().cellVolumes().view();
-        auto expSource = expr_.explicitOperation(psi_.mesh().nCells());
-        expr_.explicitOperation(expSource, t, dt);
-        auto expSourceView = expSource.view();
-        fill(ls_.rhs(), NeoN::zero<ValueType>());
-        fill(ls_.matrix().values(), NeoN::zero<ValueType>());
-        expr_.implicitOperation(ls_);
-        // TODO rename implicitOperation -> assembleLinearSystem
-        expr_.implicitOperation(ls_, t, dt);
-        auto rhs = ls_.rhs().view();
-        // we subtract the explicit source term from the rhs
-        NeoN::parallelFor(
-            exec(),
-            {0, rhs.size()},
-            KOKKOS_LAMBDA(const NeoN::localIdx i) { rhs[i] -= expSourceView[i] * vol[i]; }
-        );
+        expr_.assemble(runTime_.t, runTime_.dt, sparsityPattern_, ls_);
+        return ls_;
     }
 
-    void assemble()
+    const NeoN::Executor& exec() const { return ls_.exec(); }
+
+
+    template<typename FunctorValueType>
+    struct SetReference : public NeoN::dsl::PostAssemblyBase<ValueType>
     {
-        if (expr_.temporalOperators().size() == 0 && expr_.spatialOperators().size() == 0)
-        {
-            NF_ERROR_EXIT("No temporal or implicit terms to solve.");
-        }
 
-        if (expr_.temporalOperators().size() > 0)
-        {
-            // integrate equations in time
-            // NeoN::timeIntegration::TimeIntegration<VolumeField<ValueType>> timeIntegrator(
-            //     fvSchemes_.subDict("ddtSchemes"), fvSolution_
-            // );
-            // timeIntegrator.solve(expr_, psi_, t, dt);
-        }
-        else
-        {
-            // solve sparse matrix system
-            auto vol = psi_.mesh().cellVolumes().view();
-            auto expSource = expr_.explicitOperation(psi_.mesh().nCells());
-            auto expSourceView = expSource.view();
+        NeoN::localIdx pRefCell_;
+        NeoN::scalar pRefValue_;
 
-            ls_ = expr_.implicitOperation();
-            auto rhs = ls_.rhs().view();
-            // we subtract the explicit source term from the rhs
+        SetReference(NeoN::localIdx pRefCell, NeoN::scalar pRefValue)
+            : pRefCell_(pRefCell)
+            , pRefValue_(pRefValue)
+        {}
+
+        virtual void operator()(
+                const NeoN::la::SparsityPattern& sp,
+                NeoN::la::LinearSystem<FunctorValueType, NeoN::localIdx>& ls
+                )
+        {
+            const auto diagOffset = sp.diagOffset().view();
+            const auto rowOffs = ls.matrix().rowOffs().view();
+            auto rhs = ls.rhs().view();
+            auto values = ls.matrix().values().view();
+            // make an explicit copy to avoid capture this warning in kokkos lambda
+            auto pRefValue = pRefValue_;
+
             NeoN::parallelFor(
-                exec(),
-                {0, rhs.size()},
-                KOKKOS_LAMBDA(const NeoN::localIdx i) { rhs[i] -= expSourceView[i] * vol[i]; }
+                ls.exec(),
+                {pRefCell_, pRefCell_ + 1},
+                KOKKOS_LAMBDA(const std::size_t refCelli) {
+                    auto diagIdx = rowOffs[refCelli] + diagOffset[refCelli];
+                    auto diagValue = values[diagIdx];
+                    rhs[refCelli] += diagValue * pRefValue;
+                    values[diagIdx] += diagValue;
+                }
             );
         }
+    };
+
+    void setReference(NeoN::localIdx pRefCell, NeoN::scalar pRefValue)
+    {
+        needReference_ = true;
+        pRefCell_ = pRefCell;
+        pRefValue_ = pRefValue;
     }
 
     // TODO unify with dsl/solver.hpp
-    void solve(NeoN::scalar, NeoN::scalar)
+    NeoN::la::SolverStats solve()
     {
-        // dsl::solve(expr_, psi_, t, dt, fvSchemes_, fvSolution_);
-        if (expr_.temporalOperators().size() == 0 && expr_.spatialOperators().size() == 0)
-        {
-            NF_ERROR_EXIT("No temporal or implicit terms to solve.");
+        // Only if ValueType is scalar
+        auto functs = std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {};
+
+        if constexpr (std::is_same_v<ValueType, NeoN::scalar>) {
+            functs = needReference_ ? std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {SetReference<ValueType>(pRefCell_, pRefValue_)}
+                : std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {};
         }
-        if (expr_.temporalOperators().size() > 0)
-        {
-            NF_ERROR_EXIT("Not implemented");
-            //     // integrate equations in time
-            //     NeoN::timeIntegration::TimeIntegration<VolumeField<ValueType>> timeIntegrator(
-            //         fvSchemes_.subDict("ddtSchemes"), fvSolution_
-            //     );
-            //     timeIntegrator.solve(expr_, psi_, t, dt);
-        }
-        else
-        {
-            auto exec = psi_.exec();
-            auto solver = NeoN::la::Solver(exec, fvSolution_);
-            solver.solve(ls_, psi_.internalVector());
-            // NF_ERROR_EXIT("No linear solver is available, build with -DNeoN_WITH_GINKGO=ON");
-        }
+
+        // FIXME TODO this will create the sparsity pattern and potentially the ls
+        // again even if it has been created already
+        auto solverDict = runTime_.fvSolutionDict.get<NeoN::Dictionary>("solvers");
+        auto stats = NeoN::dsl::solve(
+            expr_,
+            psi_,
+            runTime_.t,
+            runTime_.dt,
+            runTime_.fvSchemesDict,
+            solverDict.get<NeoN::Dictionary>(psi_.name),
+            //mapFvSolution(solverDict.get<NeoN::Dictionary>(psi_.name)),
+            functs
+        );
+
+        std::cout << __FILE__ << ":" << __LINE__ << " solver stats:\n"
+                  << "\t num iter: " << stats.numIter
+                  << "\n\t initial residual norm: " << stats.initResNorm
+                  << "\n\t final residual norm: " << stats.finalResNorm << std::endl;
+        return stats;
     }
 
-    void setReference(const IndexType refCell, ValueType refValue)
-    {
-        // TODO currently assumes that matrix is already assembled
-        const auto diagOffset = sparsityPattern_.diagOffset().view();
-        const auto rowOffs = ls_.matrix().rowOffs().view();
-        auto rhs = ls_.rhs().view();
-        auto values = ls_.matrix().values().view();
-        NeoN::parallelFor(
-            ls_.exec(),
-            {refCell, refCell + 1},
-            KOKKOS_LAMBDA(const std::size_t refCelli) {
-                auto diagIdx = rowOffs[refCelli] + diagOffset[refCelli];
-                auto diagValue = values[diagIdx];
-                rhs[refCelli] += diagValue * refValue;
-                values[diagIdx] += diagValue;
-            }
-        );
+    NeoN::la::SolverStats solve(dsl::SpatialOperator<NeoN::Vec3>&& rhs) {
+        expr_.addOperator(-1.0 * rhs);
+        return solve();
     }
 
 private:
 
-    NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi_;
-    NeoN::dsl::Expression<ValueType> expr_;
-    const NeoN::Dictionary& fvSchemes_;
-    const NeoN::Dictionary& fvSolution_;
+    VolumeField& psi_;
+    dsl::Expression<ValueType> expr_;
+    const RunTime& runTime_;
     const NeoN::la::SparsityPattern& sparsityPattern_;
     NeoN::la::LinearSystem<ValueType, IndexType> ls_;
+
+    bool needReference_;
+    NeoN::localIdx pRefCell_;
+    NeoN::scalar pRefValue_;
 };
 
 template<typename ValueType, typename IndexType = NeoN::localIdx>
@@ -210,7 +196,7 @@ NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
     const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi
 )
 {
-    NeoN::finiteVolume::cellCentred::VolumeField<ValueType> resultVector(
+    NeoN::finiteVolume::cellCentred::VolumeField<ValueType> res(
         psi.exec(),
         "ls_" + psi.name,
         psi.mesh(),
@@ -218,32 +204,15 @@ NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
         psi.boundaryData(),
         psi.boundaryConditions()
     );
-
-    auto [result, x] = views(resultVector.internalVector(), psi.internalVector());
-    const auto [matrix, b] = ls.view();
-
-    NeoN::parallelFor(
-        resultVector.exec(),
-        {0, result.size()},
-        KOKKOS_LAMBDA(const std::size_t rowi) {
-            IndexType rowStart = matrix.rowOffs[rowi];
-            IndexType rowEnd = matrix.rowOffs[rowi + 1];
-            ValueType sum = 0.0;
-            for (IndexType coli = rowStart; coli < rowEnd; coli++)
-            {
-                sum += matrix.values[coli] * x[matrix.colIdxs[coli]];
-            }
-            result[rowi] = sum - b[rowi];
-        }
-    );
-
-    return resultVector;
+    NeoN::la::computeResidual(
+            ls.matrix(), ls.rhs(), psi.internalVector(), res.internalVector());
+    return res;
 }
 
 
 template<typename ValueType, typename IndexType = NeoN::localIdx>
 NeoN::finiteVolume::cellCentred::VolumeField<ValueType> operator&(
-    const Expression<ValueType, IndexType> expr,
+    const PDESolver<ValueType, IndexType> expr,
     const NeoN::finiteVolume::cellCentred::VolumeField<ValueType>& psi
 )
 {

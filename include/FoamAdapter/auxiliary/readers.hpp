@@ -17,8 +17,8 @@ namespace FoamAdapter
 template<typename FoamType>
 auto fromFoamField(const NeoN::Executor& exec, const FoamType& field)
 {
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using mapped_t = typename type_map<FoamType>::mapped_type;
+    using type_container_t = typename TypeMap<FoamType>::container_type;
+    using mapped_t = typename TypeMap<FoamType>::mapped_type;
     type_container_t nfField(
         exec,
         reinterpret_cast<const mapped_t*>(field.cdata()),
@@ -31,8 +31,8 @@ auto fromFoamField(const NeoN::Executor& exec, const FoamType& field)
 template<typename FoamType>
 auto readVolBoundaryConditions(const NeoN::UnstructuredMesh& nfMesh, const FoamType& ofVolField)
 {
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitive_t = typename type_map<FoamType>::mapped_type;
+    using type_container_t = typename TypeMap<FoamType>::container_type;
+    using type_primitive_t = typename TypeMap<FoamType>::mapped_type;
 
     // get boundary as dictionary
     Foam::OStringStream os;
@@ -114,8 +114,8 @@ auto constructFrom(
     const FoamType& in
 )
 {
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitive_t = typename type_map<FoamType>::mapped_type;
+    using type_container_t = typename TypeMap<FoamType>::container_type;
+    using type_primitive_t = typename TypeMap<FoamType>::mapped_type;
 
     type_container_t out(exec, in.name(), nfMesh, readVolBoundaryConditions(nfMesh, in));
 
@@ -131,8 +131,8 @@ auto readSurfaceBoundaryConditions(
     const FoamType& surfaceField
 )
 {
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitive_t = typename type_map<FoamType>::mapped_type;
+    using type_container_t = typename TypeMap<FoamType>::container_type;
+    using type_primitive_t = typename TypeMap<FoamType>::mapped_type;
 
     std::vector<fvcc::SurfaceBoundary<type_primitive_t>> bcs;
 
@@ -179,8 +179,8 @@ auto constructSurfaceField(
     const FoamType& in
 )
 {
-    using type_container_t = typename type_map<FoamType>::container_type;
-    using type_primitive_t = typename type_map<FoamType>::mapped_type;
+    using type_container_t = typename TypeMap<FoamType>::container_type;
+    using type_primitive_t = typename TypeMap<FoamType>::mapped_type;
     using foam_primitive_t = typename FoamType::cmptType;
 
     type_container_t
@@ -236,7 +236,7 @@ public:
 
     fvcc::VectorDocument operator()(NeoN::Database& db)
     {
-        using type_container_t = typename type_map<FieldType>::container_type;
+        using type_container_t = typename TypeMap<FieldType>::container_type;
         type_container_t convertedField = constructFrom(exec, nfMesh, foamField);
         if (name != "")
         {

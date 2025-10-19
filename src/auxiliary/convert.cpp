@@ -12,7 +12,7 @@ NeoN::scalar convert(const Foam::scalar& in) { return in; };
 
 NeoN::label convert(const Foam::label& in) { return in; };
 
-std::string convert(const Foam::word& type) { return type; };
+std::string convert(const Foam::word& in) { return in; };
 
 NeoN::TokenList convert(const Foam::ITstream& stream)
 {

@@ -2,16 +2,15 @@ name: Static checks
 run-name: Static checks
 
 on:
-    pull_request:
-      types: [opened, synchronize]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
   build-compilation-db:
     name: Build with IWYU
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: true # Recursively clone submodules
 
     - name: Add repos
       run: |
@@ -33,9 +32,11 @@ jobs:
     - name: Create Compilation Database
       run: |
         source /usr/lib/openfoam/openfoam2406/etc/bashrc || true
+        CC=clang \
+        CXX=clang++ \
         cmake --preset develop \
           -DFOAMADAPTER_DEVEL_TOOLS=OFF \
-          -DCMAKE_CXX_COMPILER=clang++-16 \
+          -DFOAMADAPTER_BUILD_BENCHMARKS=OFF \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DFOAMADAPTER_ENABLE_MPI_WITH_THREAD_SUPPORT=OFF \
           -DFOAMADAPTER_ENABLE_IWYU=ON
@@ -98,7 +99,7 @@ jobs:
         exit 1
   pre-commit-run:
     name: Pre-commit run
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
       with:
@@ -116,10 +117,3 @@ jobs:
         NTODOS="$(grep -r 'TODO DONT MERGE' --exclude-dir=.github | wc -l)"
         echo "Found $NTODOS TODO DONT MERGE notes"
         ! grep -q -r "TODO DONT MERGE" --exclude-dir=.github
-  changelog:
-    name: Changelog check
-    runs-on: ubuntu-24.04
-    steps:
-    - uses: dangoslen/changelog-enforcer@v3
-      with:
-        changeLogPath: CHANGELOG.md

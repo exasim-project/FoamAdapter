@@ -17,6 +17,7 @@ namespace fvm = Foam::fvm;
 
 namespace dsl = NeoN::dsl;
 namespace fvcc = NeoN::finiteVolume::cellCentred;
+namespace nf = FoamAdapter;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -28,36 +29,21 @@ int main(int argc, char* argv[])
 #include "setRootCase.H"
 #include "createTime.H"
 
-        NeoN::Database db;
-
-        fvcc::VectorCollection& vectorCollection =
-            fvcc::VectorCollection::instance(db, "VectorCollection");
-
-
-        NeoN::Dictionary controlDict = FoamAdapter::convert(runTime.controlDict());
-        NeoN::Executor exec = FoamAdapter::createExecutor(runTime.controlDict());
-
-        std::unique_ptr<FoamAdapter::MeshAdapter> meshPtr = FoamAdapter::createMesh(exec, runTime);
-        FoamAdapter::MeshAdapter& mesh = *meshPtr;
+        auto rt = nf::createAdapterRunTime(runTime);
+        auto& mesh = rt.mesh;
 
         Foam::pisoControl piso(mesh);
 
-        auto [adjustTimeStep, maxCo, maxDeltaT] = FoamAdapter::timeControls(runTime);
-
 #include "createFields.H"
 
-        NeoN::Dictionary fvSchemesDict = FoamAdapter::convert(mesh.schemesDict());
-        NeoN::Dictionary fvSolutionDict = FoamAdapter::convert(mesh.solutionDict());
-
-        Info << "creating FoamAdapter mesh" << endl;
-        NeoN::UnstructuredMesh& nfMesh = mesh.nfMesh();
-
         Info << "creating FoamAdapter fields" << endl;
+        fvcc::VectorCollection& vectorCollection =
+            fvcc::VectorCollection::instance(rt.db, "VectorCollection");
         fvcc::VolumeField<NeoN::scalar>& nfT =
             vectorCollection.registerVector<fvcc::VolumeField<NeoN::scalar>>(
-                FoamAdapter::CreateFromFoamField<Foam::volScalarField> {
-                    .exec = exec,
-                    .nfMesh = nfMesh,
+                nf::CreateFromFoamField<Foam::volScalarField> {
+                    .exec = rt.exec,
+                    .nfMesh = rt.nfMesh,
                     .foamField = T,
                     .name = "nfT"
                 }
@@ -66,46 +52,34 @@ int main(int argc, char* argv[])
         nfTOld.internalVector() = nfT.internalVector();
         nfT.correctBoundaryConditions();
 
-        auto nfKappa = FoamAdapter::constructSurfaceField(exec, nfMesh, kappa);
-
-        Foam::scalar endTime = controlDict.get<Foam::scalar>("endTime");
+        auto nfKappa = nf::constructSurfaceField(rt.exec, rt.nfMesh, kappa);
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-        Foam::Info << "\nStarting time loop\n" << Foam::endl;
-
+        Info << "\nStarting time loop\n" << endl;
         while (runTime.loop())
         {
-
-            runTime++;
+            Info << "Time = " << runTime.timeName() << nl << endl;
 
             Foam::scalar t = runTime.time().value();
             Foam::scalar dt = runTime.deltaT().value();
 
-            Foam::Info << "Time = " << runTime.timeName() << Foam::nl << Foam::endl;
+            dsl::Expression nfTEqn(dsl::imp::ddt(nfT) - dsl::imp::laplacian(nfKappa, nfT));
 
-            Foam::fvScalarMatrix TEqn(Foam::fvm::ddt(T) - Foam::fvm::laplacian(kappa, T));
-
-            TEqn.solve();
-
-            NeoN::dsl::Expression nfTEqn(
-                NeoN::dsl::imp::ddt(nfT) - NeoN::dsl::imp::laplacian(nfKappa, nfT)
-            );
-
-            NeoN::dsl::solve(
+            dsl::solve(
                 nfTEqn,
                 nfT,
                 t,
                 dt,
-                fvSchemesDict,
-                fvSolutionDict.get<NeoN::Dictionary>("solvers").get<NeoN::Dictionary>("nfT")
+                rt.fvSchemesDict,
+                rt.fvSolutionDict.get<NeoN::Dictionary>("solvers").get<NeoN::Dictionary>("nfT")
             );
 
             runTime.write();
             if (runTime.outputTime())
             {
-                Foam::Info << "writing nfT field" << Foam::endl;
-                write(nfT.internalVector(), mesh, "nfT");
+                Info << "writing nfT field" << endl;
+                write(nfT.internalVector(), rt.mesh, "nfT");
             }
 
             runTime.printExecutionTime(Info);

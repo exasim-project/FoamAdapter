@@ -17,8 +17,12 @@ namespace FoamAdapter
 namespace detail
 {
 
-template<class DestField, class SrcField>
-void copy_impl(DestField& dest, const SrcField src)
+/*@brief copy from neon src field on device to dest OF field*/
+template<
+    class SrcField,
+    class DestField
+    >
+void copyImpl(const SrcField& src, DestField& dest)
 {
     NF_ASSERT_EQUAL(dest.size(), src.size());
     auto srcHost = src.copyToHost();
@@ -30,12 +34,24 @@ void copy_impl(DestField& dest, const SrcField src)
 }
 }
 
-void write(NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string fieldName);
+/*@brief writes a NeoN field back to disk using OF field file format*/
+void write(const NeoN::scalarVector& sf, const Foam::fvMesh& mesh, const std::string fieldName);
 
-void write(NeoN::Vector<NeoN::Vec3>& sf, const Foam::fvMesh& mesh, const std::string fieldName);
+/*@brief writes a NeoN field back to disk using OF field file format*/
+void write(const NeoN::Vector<NeoN::Vec3>& sf, const Foam::fvMesh& mesh, const std::string fieldName);
 
-void write(const fvcc::VolumeField<NeoN::scalar>& volField, const Foam::fvMesh& mesh, const std::string fieldName);
+/*@brief writes a NeoN field back to disk using OF field file format*/
+void write(
+    const fvcc::VolumeField<NeoN::scalar>& volField,
+    const Foam::fvMesh& mesh,
+    const std::string fieldName
+);
 
-void write(const fvcc::VolumeField<NeoN::Vec3>& volField, const Foam::fvMesh& mesh, const std::string fieldName);
+/*@brief writes a NeoN field back to disk using OF field file format*/
+void write(
+    const fvcc::VolumeField<NeoN::Vec3>& volField,
+    const Foam::fvMesh& mesh,
+    const std::string fieldName
+);
 
 } // namespace Foam

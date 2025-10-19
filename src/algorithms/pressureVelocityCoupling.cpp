@@ -12,43 +12,44 @@ namespace FoamAdapter
 {
 
 void constrainHbyA(
-    nnfvcc::VolumeField<Vec3>& HbyA,
-    const nnfvcc::VolumeField<Vec3>& U,
-    const nnfvcc::VolumeField<scalar>& p
+    const nnfvcc::VolumeField<Vec3>& u,
+    const nnfvcc::VolumeField<scalar>& p,
+    nnfvcc::VolumeField<Vec3>& hByA
 )
 {
-    const auto pIn = p.internalVector().view();
-    auto HbyAin = HbyA.internalVector().view();
-    auto [HbyABcValue, UBcValue] = views(HbyA.boundaryData().value(), U.boundaryData().value());
+    auto hByAin = hByA.internalVector().view();
+    auto [hByABcValue, uBcValue] = views(hByA.boundaryData().value(), u.boundaryData().value());
 
-    const auto& UBCs = U.boundaryConditions();
+    const auto& uBCs = u.boundaryConditions();
 
-    for (auto patchi = 0; patchi < UBCs.size(); ++patchi)
+    for (auto patchi = 0; patchi < uBCs.size(); ++patchi)
     {
-        bool assignable = UBCs[patchi].attributes().assignable;
+        bool assignable = uBCs[patchi].attributes().assignable;
         if (!assignable)
         {
             parallelFor(
-                HbyA.exec(),
-                HbyA.boundaryData().range(patchi),
-                KOKKOS_LAMBDA(const size_t bfacei) { HbyABcValue[bfacei] = UBcValue[bfacei]; }
+                hByA.exec(),
+                hByA.boundaryData().range(patchi),
+                KOKKOS_LAMBDA(const size_t bfacei) { hByABcValue[bfacei] = uBcValue[bfacei]; }
             );
         }
     }
 }
 
-std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
-discreteMomentumFields(const Expression<Vec3>& expr)
+nnfvcc::VolumeField<scalar> computeRAU(const PDESolver<Vec3>& expr)
 {
-    const nnfvcc::VolumeField<Vec3>& U = expr.getVector();
-    const auto& mesh = U.mesh();
+    // TODO this assumes an assembled matrix
+    // force assembly if not assembled
+    const auto& mesh = expr.getField().mesh();
     const auto& sparsityPattern = expr.sparsityPattern();
     const auto& ls = expr.linearSystem();
-    const auto vol = mesh.cellVolumes().view();
-    const auto values = ls.matrix().values().view();
-    const auto rhs = ls.rhs().view();
-    const auto diagOffset = sparsityPattern.diagOffset().view();
-    const auto rowPtrs = ls.matrix().rowOffs().view();
+
+    const auto [vol, values, diagOffset, rowPtrs] = views(
+        mesh.cellVolumes(),
+        ls.matrix().values(),
+        sparsityPattern.diagOffset(),
+        ls.matrix().rowOffs()
+    );
 
     auto rABCs = nnfvcc::createExtrapolatedBCs<nnfvcc::VolumeBoundary<scalar>>(mesh);
     auto rAU = nnfvcc::VolumeField<scalar>(expr.exec(), "rAU", mesh, rABCs);
@@ -59,24 +60,40 @@ discreteMomentumFields(const Expression<Vec3>& expr)
         return vol[celli] / (values[rowPtrs[celli] + diagOffsetCelli][0]);
     });
 
-    auto OffDiagonalSourceBCs = nnfvcc::createExtrapolatedBCs<nnfvcc::VolumeBoundary<Vec3>>(mesh);
-    auto HbyA = nnfvcc::VolumeField<Vec3>(expr.exec(), "HbyA", mesh, OffDiagonalSourceBCs);
-    NeoN::fill(HbyA.internalVector(), NeoN::zero<Vec3>());
-    const auto nInternalFaces = mesh.nInternalFaces();
+    return rAU;
+}
 
-    const auto exec = U.exec();
-    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalU, internalRAU] = views(
-        mesh.faceOwner(),
-        mesh.faceNeighbour(),
-        mesh.boundaryMesh().faceCells(),
-        sparsityPattern.ownerOffset(),
-        sparsityPattern.neighbourOffset(),
-        U.internalVector(),
-        rAU.internalVector()
+std::tuple<nnfvcc::VolumeField<scalar>, nnfvcc::VolumeField<Vec3>>
+computeRAUandHByA(const PDESolver<Vec3>& expr)
+{
+    const auto& u = expr.getField();
+    const auto& mesh = u.mesh();
+    const auto& sparsityPattern = expr.sparsityPattern();
+    const auto& ls = expr.linearSystem();
+
+    const auto [vol, values, diagOffset, rowPtrs] = views(
+        mesh.cellVolumes(),
+        ls.matrix().values(),
+        sparsityPattern.diagOffset(),
+        ls.matrix().rowOffs()
     );
 
-    auto internalHbyA = HbyA.internalVector().view();
+    auto rAU = computeRAU(expr);
+    auto offDiagonalSourceBCs = nnfvcc::createExtrapolatedBCs<nnfvcc::VolumeBoundary<Vec3>>(mesh);
+    auto hByA = nnfvcc::VolumeField<Vec3>(expr.exec(), "HbyA", mesh, offDiagonalSourceBCs);
+    NeoN::fill(hByA.internalVector(), NeoN::zero<Vec3>());
+    const auto nInternalFaces = mesh.nInternalFaces();
+    const auto exec = u.exec();
 
+    const auto [owner, neighbour, ownOffs, neiOffs, internalU] = views(
+        mesh.faceOwner(),
+        mesh.faceNeighbour(),
+        sparsityPattern.ownerOffset(),
+        sparsityPattern.neighbourOffset(),
+        u.internalVector()
+    );
+
+    auto internalHbyA = hByA.internalVector().view();
     NeoN::parallelFor(
         exec,
         {0, nInternalFaces},
@@ -87,14 +104,15 @@ discreteMomentumFields(const Expression<Vec3>& expr)
             auto rowNeiStart = rowPtrs[nei];
             auto rowOwnStart = rowPtrs[own];
 
-            auto Lower = values[rowNeiStart + neiOffs[facei]];
-            auto Upper = values[rowOwnStart + ownOffs[facei]];
+            auto lower = values[rowNeiStart + neiOffs[facei]];
+            auto upper = values[rowOwnStart + ownOffs[facei]];
 
-            Kokkos::atomic_sub(&internalHbyA[nei], Lower[0] * internalU[own]);
-            Kokkos::atomic_sub(&internalHbyA[own], Upper[0] * internalU[nei]);
+            Kokkos::atomic_sub(&internalHbyA[nei], lower[0] * internalU[own]);
+            Kokkos::atomic_sub(&internalHbyA[own], upper[0] * internalU[nei]);
         }
     );
 
+    const auto [rhs, internalRAU] = views(ls.rhs(), rAU.internalVector());
     NeoN::parallelFor(
         exec,
         {0, internalHbyA.size()},
@@ -104,40 +122,37 @@ discreteMomentumFields(const Expression<Vec3>& expr)
         }
     );
 
-    HbyA.correctBoundaryConditions();
+    hByA.correctBoundaryConditions();
     rAU.correctBoundaryConditions();
 
-    return {rAU, HbyA};
+    return {rAU, hByA};
 }
 
 
 void updateFaceVelocity(
-    nnfvcc::SurfaceField<scalar>& phi,
     const nnfvcc::SurfaceField<scalar>& predictedPhi,
-    const Expression<scalar>& expr
+    const PDESolver<scalar>& expr,
+    nnfvcc::SurfaceField<scalar>& phi
 )
 {
     const auto& mesh = phi.mesh();
-    const auto& p = expr.getVector();
+    const auto& p = expr.getField();
     const auto sparsityPattern = expr.sparsityPattern();
     const auto nInternalFaces = mesh.nInternalFaces();
     const auto exec = phi.exec();
-    const auto [owner, neighbour, surfFaceCells, ownOffs, neiOffs, internalP] = views(
+    const auto [owner, neighbour, ownOffs, neiOffs, internalP] = views(
         mesh.faceOwner(),
         mesh.faceNeighbour(),
-        mesh.boundaryMesh().faceCells(),
         sparsityPattern.ownerOffset(),
         sparsityPattern.neighbourOffset(),
         p.internalVector()
     );
 
     const auto& ls = expr.linearSystem();
-
     const auto rowPtrs = ls.matrix().rowOffs().view();
     const auto colIdxs = ls.matrix().colIdxs().view();
     auto values = ls.matrix().values().view();
     auto rhs = ls.rhs().view();
-
     auto [iPhi, iPredPhi] = views(phi.internalVector(), predictedPhi.internalVector());
 
     NeoN::parallelFor(
@@ -150,10 +165,10 @@ void updateFaceVelocity(
             auto rowNeiStart = rowPtrs[nei];
             auto rowOwnStart = rowPtrs[own];
 
-            auto Upper = values[rowNeiStart + neiOffs[facei]];
-            auto Lower = values[rowOwnStart + ownOffs[facei]];
+            auto upper = values[rowNeiStart + neiOffs[facei]];
+            auto lower = values[rowOwnStart + ownOffs[facei]];
 
-            iPhi[facei] = iPredPhi[facei] - (Upper * internalP[nei] - Lower * internalP[own]);
+            iPhi[facei] = iPredPhi[facei] - (upper * internalP[nei] - lower * internalP[own]);
         }
     );
 
@@ -183,17 +198,17 @@ void updateFaceVelocity(
 }
 
 void updateVelocity(
-    nnfvcc::VolumeField<Vec3>& U,
-    const nnfvcc::VolumeField<Vec3>& HbyA,
-    nnfvcc::VolumeField<scalar>& rAU,
-    nnfvcc::VolumeField<scalar>& p
+    const nnfvcc::VolumeField<Vec3>& hByA,
+    const nnfvcc::VolumeField<scalar>& rAU,
+    const nnfvcc::VolumeField<scalar>& p,
+    nnfvcc::VolumeField<Vec3>& u
 )
 {
-    nnfvcc::VolumeField<Vec3> gradP = nnfvcc::GaussGreenGrad(p.exec(), p.mesh()).grad(p);
+    auto gradP = nnfvcc::GaussGreenGrad(p.exec(), p.mesh()).grad(p);
     auto [iHbyA, iRAU, iGradP] =
-        views(HbyA.internalVector(), rAU.internalVector(), gradP.internalVector());
+        views(hByA.internalVector(), rAU.internalVector(), gradP.internalVector());
 
-    U.internalVector().apply(KOKKOS_LAMBDA(const std::size_t celli) {
+    u.internalVector().apply(KOKKOS_LAMBDA(const std::size_t celli) {
         return iHbyA[celli] - iRAU[celli] * iGradP[celli];
     });
 }

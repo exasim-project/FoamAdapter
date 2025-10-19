@@ -18,6 +18,7 @@ Table of Contents
    installation
    gettingStarted
    goals_features
+   ci
 
 .. toctree::
    :maxdepth: 2
