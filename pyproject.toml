@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Henning Scheufler", email = "henning.scheufler@web.de" }
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.9"
 
 dependencies = [
     "pybFoam>=0.1.4",
