@@ -1,10 +1,11 @@
-Architecture
-============
-
-This document describes the overall architecture of FoamAdapter, including both the C++ core and Python interface components.
 
 Overview
---------
+========
+
+Architecture
+------------
+
+This document describes the overall architecture of FoamAdapter, including both the C++ core and Python interface components.
 
 FoamAdapter is designed as a multi-layered architecture that bridges OpenFOAM and NeoN computational backends while providing both C++ and Python interfaces.
 
@@ -56,7 +57,7 @@ The solvers are built modularly, allowing for easy extension and customization o
     The solution procedure is only known at runtime, and a DAG needs to be solved to determine the correct order of operations. Which is not implemented yet
 
 Modular Solver Architecture
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
 FoamAdapter implements a modular architecture where core solver steps can be extended with additional physics modules. This allows for flexible composition of complex multi-physics simulations:
 
@@ -104,7 +105,7 @@ This modular design enables users to easily add or remove physics effects withou
     Not implemented yet
 
 Field and Model Initialization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------
 
 As the fields and solver needs to be initialized before the solver run, FoamAdapter provides a structured initialization phase to ensure that the necessary fields and models are properly set up.
 
@@ -151,16 +152,40 @@ The following code snippet illustrates how a turbulence model and a derived fiel
 The same approach is used for all fields and models in FoamAdapter, ensuring a consistent and reliable initialization process.
 
 Plugin Architecture
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
+Motivation
+^^^^^^^^^^
 
-FoamAdapter is designed as a plugin architecture, allowing users to extend the core functionality by adding custom modules for physics models, boundary conditions, and solvers.
+Modern scientific and engineering workflows require flexible simulation frameworks that can be easily extended and customized. FoamAdapter's plugin architecture is designed to enable users and developers to add new physics models, boundary conditions, and solver modules without modifying the core codebase. This approach promotes maintainability, collaboration, and rapid prototyping of new features.
 
-The registeration system allows new plugins to be discovered and integrated seamlessly into the existing framework, promoting extensibility and customization. The registeration is planned via entry points in setuptools. So, users can create their own Python packages that define new models or fields and register them with FoamAdapter without modifying the core codebase.
+Concept
+^^^^^^^
+FoamAdapter implements a runtime-extensible plugin/config system using Pydantic discriminated unions and a registry pattern. The core idea is to allow new plugin types (e.g., models, fields, solvers) to be registered dynamically, either at runtime or via Python entry points (setuptools). Each plugin family (such as physics models or boundary conditions) is managed by a registry, which collects all available plugin classes and exposes a unified configuration model for input validation and schema generation.
 
-.. note::
+Plugins are registered using a decorator-based API, making it easy for users to define and integrate new modules. The system automatically generates a Pydantic model that validates configuration and provides a JSON schema for UI, documentation, and input validation.
 
-    Not implemented yet
+Usage
+^^^^^
+To add a new plugin, users simply define a new Python class for their model or field and register it with the appropriate base class:
+
+.. code-block:: python
+
+    from foamadapter.core.plugin_system import PluginSystem
+
+    @PluginSystem.register(discriminator_variable="model", discriminator="model_type")
+    class ModelBase(BaseModel):
+        name: str
+
+    @ModelBase.register
+    class MyCustomModel(BaseModel):
+        model_type: Literal["custom"]
+        parameter: float
+
+    # Instantiate a model config
+    config = ModelBase.create(model={"model_type": "custom", "parameter": 1.23}, name="example")
+
+Plugins can also be discovered and registered automatically via Python entry points, allowing third-party packages to extend FoamAdapter seamlessly. The unified configuration model and schema make it easy to build UIs, validate inputs, and document available plugins.
 
 
 Model Availability 
