@@ -205,7 +205,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="development/architecture.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/architecture.html#id2">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/contributing.html">Contributing Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a></li>
@@ -249,12 +249,9 @@
         <article role="main" id="furo-main-content">
           <section id="welcome-to-foamadapter">
 <h1>Welcome to FoamAdapter!<a class="headerlink" href="#welcome-to-foamadapter" title="Link to this heading">¶</a></h1>
-<p>The FoamAdapter is the coupling interface. It provides platform-portable implementations of common CFD algorithms and solvers using NeoN as a computational backend. It leverages standard OpenFOAM such that OpenFOAM simulations can be run on accelerator devices.</p>
-<section id="goals">
-<h2>Goals<a class="headerlink" href="#goals" title="Link to this heading">¶</a></h2>
-<p>The Goal of FoamAdapter is to simply the usage of OpenFOAM for developers and users by providing a modern Python interface while leveraging the heterogeneous architecture.</p>
-<p>This requires in our view a incremental rewrite of OpenFOAM solvers. The python interface improves the development experience and lowers the barrier of entry for engineers and scientists to implement their own CFD solvers. Additionally, the usage of python opens a new ecosysstem of tools for pre- and postprocessing.</p>
-</section>
+<p>FoamAdapter an coupling interface, it provides platform-portable implementations of finite volume CFD algorithms and solvers using NeoN as a computational backend.
+It leverages OpenFOAM for IO tasks such as reading OpenFOAM case files and configurations with the aim that OpenFOAM simulations can be run on accelerator devices.
+Additionally to implementing a “classical” C++ interface for solvers like neoIcoFOAM, FoamAdapter provides a modern Python interface, which simplifies the development of new solvers and interfacing with other (python) libraries.</p>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
 <p>The current features of FoamAdapter include:</p>
@@ -269,8 +266,9 @@
 <li><p>☐ external coupling interface (e.g via precise)</p></li>
 </ul>
 </section>
+</section>
 <section id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Welcome to FoamAdapter!</a></li>
@@ -306,8 +304,8 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Development:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="development/architecture.html">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="development/architecture.html#architecture">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development/architecture.html#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development/architecture.html#solver-workflows">Solver Workflows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development/architecture.html#modular-solver-architecture">Modular Solver Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development/architecture.html#field-and-model-initialization">Field and Model Initialization</a></li>
@@ -335,15 +333,9 @@
 </div>
 <div class="toctree-wrapper compound">
 </div>
-</section>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
+<p>** <a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a>
+* <a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a>
+* <a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p>
 </section>
 
         </article>
@@ -392,14 +384,12 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Welcome to FoamAdapter!</a><ul>
-<li><a class="reference internal" href="#goals">Goals</a></li>
 <li><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#table-of-contents">Table of Contents</a><ul>
 </ul>
 </li>
-</ul>
-</li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
           </div>
