@@ -4,19 +4,14 @@
    contain the root `toctree` directive.
 
 Welcome to FoamAdapter!
-===================
+***********************
 
-The FoamAdapter is the coupling interface. It provides platform-portable implementations of common CFD algorithms and solvers using NeoN as a computational backend. It leverages standard OpenFOAM such that OpenFOAM simulations can be run on accelerator devices.
-
-Goals
-^^^^^
-
-The Goal of FoamAdapter is to simply the usage of OpenFOAM for developers and users by providing a modern Python interface while leveraging the heterogeneous architecture.
-
-This requires in our view a incremental rewrite of OpenFOAM solvers. The python interface improves the development experience and lowers the barrier of entry for engineers and scientists to implement their own CFD solvers. Additionally, the usage of python opens a new ecosysstem of tools for pre- and postprocessing.
+FoamAdapter an coupling interface, it provides platform-portable implementations of finite volume CFD algorithms and solvers using NeoN as a computational backend.
+It leverages OpenFOAM for IO tasks such as reading OpenFOAM case files and configurations with the aim that OpenFOAM simulations can be run on accelerator devices.
+Additionally to implementing a "classical" C++ interface for solvers like neoIcoFOAM, FoamAdapter provides a modern Python interface, which simplifies the development of new solvers and interfacing with other (python) libraries.
 
 Features
-^^^^^^^^
+--------
 
 .. |TODO| unicode:: U+2610  .. ☐
 .. |DONE| unicode:: U+2611  .. ☑
@@ -33,7 +28,7 @@ The current features of FoamAdapter include:
 - |TODO| external coupling interface (e.g via precise)
 
 Table of Contents
-^^^^^^^^^^^^^^^^^
+*****************
 .. toctree::
    :maxdepth: 2
 
@@ -62,6 +57,6 @@ Table of Contents
 
 Indices and tables
 ==================
-* :ref:`genindex`
+** :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`

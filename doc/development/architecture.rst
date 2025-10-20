@@ -1,11 +1,10 @@
-Overview
-========
-
 Architecture
-------------
+============
+
+Overview
+--------
 
 This document describes the overall architecture of FoamAdapter, including both the C++ core and Python interface components.
-
 FoamAdapter is designed as a multi-layered architecture that combines OpenFOAMs and NeoNs computational backends.
 FoamAdapter while provides both C++ and Python interfaces.
 
@@ -237,14 +236,12 @@ Plugins can also be discovered and registered automatically via Python entry poi
 Model Availability
 ~~~~~~~~~~~~~~~~~~
 
-<<<<<<< HEAD
 Model configuration and validation in FoamAdapter is built on top of Pydantic, which natively supports input validation and automatic JSON schema generation for all models.
+
 This is a standard feature of Pydantic and enables:
-=======
 The library uses the pydantic to define the configuration for the models and is also used for input validation. This allows for to get provide the possible inputs for all available models in the library via json schema.
 
 This simplifies:
->>>>>>> 8f5408f (finialized plugin system)
 
 * building a UI on top of FoamAdapter
 * input validation
