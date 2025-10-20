@@ -6,7 +6,8 @@ Architecture
 
 This document describes the overall architecture of FoamAdapter, including both the C++ core and Python interface components.
 
-FoamAdapter is designed as a multi-layered architecture that bridges OpenFOAM and NeoN computational backends while providing both C++ and Python interfaces.
+FoamAdapter is designed as a multi-layered architecture that combines OpenFOAMs and NeoNs computational backends.
+FoamAdapter while provides both C++ and Python interfaces.
 
 
 Solver Workflows
