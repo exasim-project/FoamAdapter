@@ -196,11 +196,7 @@
   <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Welcome to FoamAdapter!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gettingStarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testcases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="goals_features.html">Goals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="goals_features.html#features">Features</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage:</span></p>
 <ul>
@@ -212,7 +208,7 @@
 <li class="toctree-l1"><a class="reference internal" href="development/architecture.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/architecture.html#id2">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/contributing.html">Contributing Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="development/testing.html">Testing Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a></li>
 </ul>
 
 </div>
@@ -254,40 +250,38 @@
           <section id="welcome-to-foamadapter">
 <h1>Welcome to FoamAdapter!<a class="headerlink" href="#welcome-to-foamadapter" title="Link to this heading">¶</a></h1>
 <p>The FoamAdapter is the coupling interface. It provides platform-portable implementations of common CFD algorithms and solvers using NeoN as a computational backend. It leverages standard OpenFOAM such that OpenFOAM simulations can be run on accelerator devices.</p>
+<section id="goals">
+<h2>Goals<a class="headerlink" href="#goals" title="Link to this heading">¶</a></h2>
+<p>The Goal of FoamAdapter is to simply the usage of OpenFOAM for developers and users by providing a modern Python interface while leveraging the heterogeneous architecture.</p>
+<p>This requires in our view a incremental rewrite of OpenFOAM solvers. The python interface improves the development experience and lowers the barrier of entry for engineers and scientists to implement their own CFD solvers. Additionally, the usage of python opens a new ecosysstem of tools for pre- and postprocessing.</p>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
+<p>The current features of FoamAdapter include:</p>
+<ul class="simple">
+<li><p>☑ CLI to run tools and solvers</p></li>
+<li><p>☑ Support for OpenFOAM standard case structure</p></li>
+<li><p>☑ Support for common OpenFOAM solvers (icoFoam, pimpleFoam) via python interface</p></li>
+<li><p>☑ Simple solver extension</p></li>
+<li><p>☑ Unit tests written</p></li>
+<li><p>☐ GPU acceleration via NeoN</p></li>
+<li><p>☐ Multiphysics support</p></li>
+<li><p>☐ external coupling interface (e.g via precise)</p></li>
+</ul>
+</section>
 <section id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Welcome to FoamAdapter!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-methods">Installation Methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#environment-setup">Environment Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#verification">Verification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#next-steps">Next Steps</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="gettingStarted.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gettingStarted.html#building-with-cmake-presets">Building with CMake Presets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingStarted.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingStarted.html#run-test-case">Run test case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#building-with-cmake-presets">Building with CMake Presets</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="testcases.html">Test cases</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="testcases.html#scalar-advection">Scalar advection</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-on-github">Continuous Integration on GitHub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-on-lrz-gitlab">Continuous Integration on LRZ GitLab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci.html#development-workflow">Development Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci.html#pull-request-labels">Pull Request Labels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ci.html#summary">Summary</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="goals_features.html">Goals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="goals_features.html#features">Features</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -329,7 +323,14 @@
 <li class="toctree-l2"><a class="reference internal" href="development/contributing.html#development-workflow">Development Workflow</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="development/testing.html">Testing Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-on-github">Continuous Integration on GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#continuous-integration-on-lrz-gitlab">Continuous Integration on LRZ GitLab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#development-workflow">Development Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#pull-request-labels">Pull Request Labels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html#summary">Summary</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -391,6 +392,8 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Welcome to FoamAdapter!</a><ul>
+<li><a class="reference internal" href="#goals">Goals</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#table-of-contents">Table of Contents</a><ul>
 </ul>
 </li>

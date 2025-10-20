@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Getting started" href="gettingStarted.html"><link rel="prev" title="Welcome to FoamAdapter!" href="index.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Test cases" href="testcases.html"><link rel="prev" title="Welcome to FoamAdapter!" href="index.html">
         <link rel="canonical" href="https://exasim-project.com/FoamAdapter/installation.html">
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2025.09.25 -->
@@ -196,11 +196,7 @@
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Welcome to FoamAdapter!</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gettingStarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testcases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="goals_features.html">Goals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="goals_features.html#features">Features</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage:</span></p>
 <ul>
@@ -212,7 +208,7 @@
 <li class="toctree-l1"><a class="reference internal" href="development/architecture.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/architecture.html#id2">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/contributing.html">Contributing Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="development/testing.html">Testing Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci.html">Continuous Integration</a></li>
 </ul>
 
 </div>
@@ -253,11 +249,69 @@
         <article role="main" id="furo-main-content">
           <section id="installation-guide">
 <h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading">¶</a></h1>
+<p>You can build FoamAdapter by following these steps:</p>
+<p>Clone the FoamAdapter repository including FoamAdapter integrated as a submodule:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>--recurse-submodules<span class="w"> </span>https://github.com/exasim-project/FoamAdapter.git
+</pre></div>
+</div>
+</div></blockquote>
+<p>Navigate to the FoamAdapter directory:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>FoamAdapter
+</pre></div>
+</div>
+</div></blockquote>
+<p>FoamAdapter uses CMake to build, thus the standard CMake procedure should work, however, we recommend using one of the provided CMake presets detailed below <a class="reference external" href="BuildingwithCMakePresets">below</a>. From a build directory, you can execute:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>build
+<span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>&lt;DesiredBuildFlags&gt;<span class="w"> </span>..
+cmake<span class="w"> </span>--build<span class="w"> </span>.
+cmake<span class="w"> </span>--install<span class="w"> </span>.
+</pre></div>
+</div>
+</div></blockquote>
+<section id="building-with-cmake-presets">
+<h2>Building with CMake Presets<a class="headerlink" href="#building-with-cmake-presets" title="Link to this heading">¶</a></h2>
+<p>Additionally, we provide several CMake presets to set commonly required flags.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--list-presets<span class="w"> </span><span class="c1"># To list existing presets</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>To build FoamAdapter for production use, you can use the following commands:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--preset<span class="w"> </span>production<span class="w"> </span><span class="c1"># To configure with ninja and common kokkos flags</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class="w"> </span>production<span class="w"> </span><span class="c1"># To compile with ninja and common kokkos flags</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>It should be noted that the build directory changes depending on the chosen preset.
+This way you can have different build directories for different presets and easily switch between them.</p>
 <p>This guide covers the installation and setup of the FoamAdapter Python module, which provides a Python interface to OpenFOAM solvers and utilities through the pybFoam backend.</p>
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h3>
+<p>The following tools are used in the development of this project:</p>
+<p>The required tools for documentation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>doxygen
+pip<span class="w"> </span>install<span class="w"> </span>pre-commit<span class="w"> </span>sphinx<span class="w"> </span>furo<span class="w"> </span>breathe<span class="w"> </span>sphinx-sitemap
+</pre></div>
+</div>
+<p>The required tools for compilation (ubuntu latest 24.04):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+ninja-build<span class="w"> </span><span class="se">\</span>
+clang-16<span class="w"> </span><span class="se">\</span>
+gcc-10<span class="w"> </span><span class="se">\</span>
+libomp-16-dev<span class="w"> </span><span class="se">\</span>
+python3<span class="w"> </span><span class="se">\</span>
+python3-dev<span class="w"> </span><span class="se">\</span>
+build-essential
+</pre></div>
+</div>
 <section id="system-requirements">
-<h3>System Requirements<a class="headerlink" href="#system-requirements" title="Link to this heading">¶</a></h3>
+<h4>System Requirements<a class="headerlink" href="#system-requirements" title="Link to this heading">¶</a></h4>
 <p>Before installing FoamAdapter Python module, ensure your system meets the following requirements:</p>
 <ul class="simple">
 <li><p><strong>Operating System</strong>: Linux (Ubuntu 20.04+, CentOS 8+, or similar)</p></li>
@@ -269,7 +323,7 @@
 </ul>
 </section>
 <section id="python-dependencies">
-<h3>Python Dependencies<a class="headerlink" href="#python-dependencies" title="Link to this heading">¶</a></h3>
+<h4>Python Dependencies<a class="headerlink" href="#python-dependencies" title="Link to this heading">¶</a></h4>
 <p>The FoamAdapter Python module requires the following Python packages:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pybFoam&gt;=1.0.0
 pydantic&gt;=2.0.0
@@ -281,9 +335,9 @@ networkx&gt;=2.8.0
 </section>
 </section>
 <section id="installation-methods">
-<h2>Installation Methods<a class="headerlink" href="#installation-methods" title="Link to this heading">¶</a></h2>
+<h3>Installation Methods<a class="headerlink" href="#installation-methods" title="Link to this heading">¶</a></h3>
 <section id="development-installation-recommended">
-<h3>Development Installation (Recommended)<a class="headerlink" href="#development-installation-recommended" title="Link to this heading">¶</a></h3>
+<h4>Development Installation (Recommended)<a class="headerlink" href="#development-installation-recommended" title="Link to this heading">¶</a></h4>
 <p>For development or if you want the latest features:</p>
 <ol class="arabic">
 <li><p><strong>Clone the repository</strong>:</p>
@@ -323,9 +377,9 @@ cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class=
 </section>
 </section>
 <section id="environment-setup">
-<h2>Environment Setup<a class="headerlink" href="#environment-setup" title="Link to this heading">¶</a></h2>
+<h3>Environment Setup<a class="headerlink" href="#environment-setup" title="Link to this heading">¶</a></h3>
 <section id="openfoam-environment">
-<h3>OpenFOAM Environment<a class="headerlink" href="#openfoam-environment" title="Link to this heading">¶</a></h3>
+<h4>OpenFOAM Environment<a class="headerlink" href="#openfoam-environment" title="Link to this heading">¶</a></h4>
 <p>Ensure OpenFOAM is properly sourced in your environment:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add to your ~/.bashrc or source before using FoamAdapter</span>
 <span class="nb">source</span><span class="w"> </span>/opt/openfoam2406/etc/bashrc
@@ -338,7 +392,7 @@ which<span class="w"> </span>icoFoam
 </div>
 </section>
 <section id="pybfoam-configuration">
-<h3>pybFoam Configuration<a class="headerlink" href="#pybfoam-configuration" title="Link to this heading">¶</a></h3>
+<h4>pybFoam Configuration<a class="headerlink" href="#pybfoam-configuration" title="Link to this heading">¶</a></h4>
 <p>FoamAdapter depends on pybFoam for the Python-OpenFOAM interface. Ensure pybFoam is properly configured:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import pybFoam; print(pybFoam.__version__)&quot;</span>
 </pre></div>
@@ -346,7 +400,7 @@ which<span class="w"> </span>icoFoam
 <p>If pybFoam is not available, follow the pybFoam installation guide.</p>
 </section>
 <section id="gpu-support-optional">
-<h3>GPU Support (Optional)<a class="headerlink" href="#gpu-support-optional" title="Link to this heading">¶</a></h3>
+<h4>GPU Support (Optional)<a class="headerlink" href="#gpu-support-optional" title="Link to this heading">¶</a></h4>
 <p>For GPU acceleration with CUDA:</p>
 <ol class="arabic">
 <li><p><strong>Install CUDA 12.1+</strong>:</p>
@@ -368,16 +422,16 @@ cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class=
 </section>
 </section>
 <section id="verification">
-<h2>Verification<a class="headerlink" href="#verification" title="Link to this heading">¶</a></h2>
+<h3>Verification<a class="headerlink" href="#verification" title="Link to this heading">¶</a></h3>
 <section id="test-basic-installation">
-<h3>Test Basic Installation<a class="headerlink" href="#test-basic-installation" title="Link to this heading">¶</a></h3>
+<h4>Test Basic Installation<a class="headerlink" href="#test-basic-installation" title="Link to this heading">¶</a></h4>
 <p>Verify the installation by running a simple test:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import foamadapter; print(&#39;FoamAdapter imported successfully&#39;)&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="test-cli-interface">
-<h3>Test CLI Interface<a class="headerlink" href="#test-cli-interface" title="Link to this heading">¶</a></h3>
+<h4>Test CLI Interface<a class="headerlink" href="#test-cli-interface" title="Link to this heading">¶</a></h4>
 <p>Check if the command-line interface is working:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>foamadapter<span class="w"> </span>--help
 </pre></div>
@@ -385,14 +439,14 @@ cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class=
 <p>You should see the FoamAdapter CLI help message.</p>
 </section>
 <section id="test-solver-access">
-<h3>Test Solver Access<a class="headerlink" href="#test-solver-access" title="Link to this heading">¶</a></h3>
+<h4>Test Solver Access<a class="headerlink" href="#test-solver-access" title="Link to this heading">¶</a></h4>
 <p>Verify that solvers are accessible:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>foamadapter<span class="w"> </span>solver<span class="w"> </span>--help
 </pre></div>
 </div>
 </section>
 <section id="run-example-case">
-<h3>Run Example Case<a class="headerlink" href="#run-example-case" title="Link to this heading">¶</a></h3>
+<h4>Run Example Case<a class="headerlink" href="#run-example-case" title="Link to this heading">¶</a></h4>
 <p>Test with a simple case (assuming you have the tutorials):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>tutorials/cavity
 python<span class="w"> </span>-m<span class="w"> </span>foamadapter<span class="w"> </span>solver<span class="w"> </span>icofoam<span class="w"> </span>--help
@@ -401,9 +455,9 @@ python<span class="w"> </span>-m<span class="w"> </span>foamadapter<span class="
 </section>
 </section>
 <section id="troubleshooting">
-<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">¶</a></h2>
+<h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">¶</a></h3>
 <section id="common-issues">
-<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">¶</a></h3>
+<h4>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">¶</a></h4>
 <p><strong>ImportError: No module named ‘pybFoam’</strong></p>
 <p>Solution: Install pybFoam or ensure it’s in your Python path.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pybFoam
@@ -428,7 +482,7 @@ gcc<span class="w"> </span>--version
 </div>
 </section>
 <section id="performance-issues">
-<h3>Performance Issues<a class="headerlink" href="#performance-issues" title="Link to this heading">¶</a></h3>
+<h4>Performance Issues<a class="headerlink" href="#performance-issues" title="Link to this heading">¶</a></h4>
 <p>If you experience slow performance:</p>
 <ol class="arabic">
 <li><p><strong>Check OpenMP settings</strong>:</p>
@@ -441,7 +495,7 @@ gcc<span class="w"> </span>--version
 </ol>
 </section>
 <section id="getting-help">
-<h3>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading">¶</a></h3>
+<h4>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading">¶</a></h4>
 <p>If you encounter issues not covered here:</p>
 <ol class="arabic simple">
 <li><p><strong>Check the GitHub Issues</strong>: <a class="reference external" href="https://github.com/exasim-project/FoamAdapter/issues">FoamAdapter Issues</a></p></li>
@@ -451,7 +505,7 @@ gcc<span class="w"> </span>--version
 </ol>
 </section>
 <section id="environment-variables">
-<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading">¶</a></h3>
+<h4>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading">¶</a></h4>
 <p>Useful environment variables for debugging:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enable verbose output</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">FOAM_ADAPTER_VERBOSE</span><span class="o">=</span><span class="m">1</span>
@@ -466,7 +520,7 @@ gcc<span class="w"> </span>--version
 </section>
 </section>
 <section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">¶</a></h2>
+<h3>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">¶</a></h3>
 <p>After successful installation:</p>
 <ol class="arabic simple">
 <li><p>Read the <span class="xref std std-doc">quickstart</span> guide</p></li>
@@ -477,18 +531,19 @@ gcc<span class="w"> </span>--version
 <p>For advanced usage and development, see the full API documentation.</p>
 </section>
 </section>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="gettingStarted.html">
+          <a class="next-page" href="testcases.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Getting started</div>
+                <div class="title">Test cases</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -534,6 +589,7 @@ gcc<span class="w"> </span>--version
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Installation Guide</a><ul>
+<li><a class="reference internal" href="#building-with-cmake-presets">Building with CMake Presets</a><ul>
 <li><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
 <li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
 <li><a class="reference internal" href="#python-dependencies">Python Dependencies</a></li>
@@ -564,6 +620,8 @@ gcc<span class="w"> </span>--version
 </ul>
 </li>
 <li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
