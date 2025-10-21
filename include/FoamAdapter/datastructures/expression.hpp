@@ -88,9 +88,9 @@ public:
         {}
 
         virtual void operator()(
-                const NeoN::la::SparsityPattern& sp,
-                NeoN::la::LinearSystem<FunctorValueType, NeoN::localIdx>& ls
-                )
+            const NeoN::la::SparsityPattern& sp,
+            NeoN::la::LinearSystem<FunctorValueType, NeoN::localIdx>& ls
+        )
         {
             const auto diagOffset = sp.diagOffset().view();
             const auto rowOffs = ls.matrix().rowOffs().view();
@@ -125,19 +125,25 @@ public:
         // Only if ValueType is scalar
         auto functs = std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {};
 
-        if constexpr (std::is_same_v<ValueType, NeoN::scalar>) {
-            functs = needReference_ ? std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {SetReference<ValueType>(pRefCell_, pRefValue_)}
-                : std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {};
+        if constexpr (std::is_same_v<ValueType, NeoN::scalar>)
+        {
+            functs =
+                needReference_
+                    ? std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {SetReference<ValueType>(
+                          pRefCell_,
+                          pRefValue_
+                      )}
+                    : std::vector<NeoN::dsl::PostAssemblyBase<ValueType>> {};
         }
 
         // FIXME TODO this will create the sparsity pattern and potentially the ls
         // again even if it has been created already
         auto solverDict = runTime_.fvSolutionDict.get<NeoN::Dictionary>("solvers");
-        auto fieldSolverDict  = solverDict.get<NeoN::Dictionary>(psi_.name);
+        auto fieldSolverDict = solverDict.get<NeoN::Dictionary>(psi_.name);
         auto stats = NeoN::dsl::detail::iterativeSolveImpl(
-                                              expr_,
-                                              sparsityPattern_,
-                                              ls_,
+            expr_,
+            sparsityPattern_,
+            ls_,
             psi_,
             runTime_.t,
             runTime_.dt,
@@ -146,16 +152,15 @@ public:
             functs
         );
 
-        std::cout
-            << "[NeoN] Solving for " << psi_.name << ":"
+        std::cout << "[NeoN] Solving for " << psi_.name << ":"
                   << " Initial residual: " << stats.initResNorm
                   << " Final residual: " << stats.finalResNorm
-                  << " No Iterations: " << stats.numIter
-                  << std::endl;
+                  << " No Iterations: " << stats.numIter << std::endl;
         return stats;
     }
 
-    NeoN::la::SolverStats solve(dsl::SpatialOperator<NeoN::Vec3>&& rhs) {
+    NeoN::la::SolverStats solve(dsl::SpatialOperator<NeoN::Vec3>&& rhs)
+    {
         expr_.addOperator(-1.0 * rhs);
         return solve();
     }
@@ -210,8 +215,7 @@ NeoN::finiteVolume::cellCentred::VolumeField<ValueType> applyOperator(
         psi.boundaryData(),
         psi.boundaryConditions()
     );
-    NeoN::la::computeResidual(
-            ls.matrix(), ls.rhs(), psi.internalVector(), res.internalVector());
+    NeoN::la::computeResidual(ls.matrix(), ls.rhs(), psi.internalVector(), res.internalVector());
     return res;
 }
 
