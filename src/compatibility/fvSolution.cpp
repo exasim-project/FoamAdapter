@@ -23,22 +23,23 @@ void updateSolver(NeoN::Dictionary& solverDict)
         {"PCG", {"Ginkgo", "solver::Cg"}},
         {"PBiCG", {"Ginkgo", "solver::Bicg"}},
         {"PBiCGStab", {"Ginkgo", "solver::Bicgstab"}},
+        {"smoothSolver", {"Ginkgo", "solver::Bicgstab"}},
         {"GAMG", {"Ginkgo", "solver::Multigrid"}},
     };
 
-    std::cout << __FILE__ << __LINE__ << "1\n";
     std::string& solverName = solverDict.get<std::string>("solver");
-    std::cout << __FILE__ << __LINE__ << "2\n";
     auto it = solverMap.find(solverName);
     if (it != solverMap.end())
     {
+        std::cout << __FILE__ << ":\n\treplacing solver " << solverName << " by "
+                  << it->second.second << "\n";
         solverName = it->second.first;
-        if (solverName == "GAMG")
-        {
-            throw std::runtime_error(
-                "GAMG is not supported in FoamAdapter, please use a different solver."
-            );
-        }
+        // if (solverName == "GAMG")
+        // {
+        //     throw std::runtime_error(
+        //         "GAMG is not supported in FoamAdapter, please use a different solver."
+        //     );
+        // }
         solverDict.insert("type", it->second.second);
     }
 }
@@ -46,11 +47,11 @@ void updateSolver(NeoN::Dictionary& solverDict)
 void updatePreconditioner(NeoN::Dictionary& solverDict)
 {
     // Map OpenFOAM preconditioner types to NeoN/Ginkgo preconditioner types
-    static const std::map<std::string, NeoN::Dictionary> preconditionerMap = {
+    static std::map<std::string, NeoN::Dictionary> preconditionerMap = {
         {"DIC",
          NeoN::Dictionary(
              {{std::string("type"), std::string("preconditioner::Jacobi")},
-              {std::string("max_block_size"), 8}}
+              {std::string("max_block_size"), 1}}
          )},
         {"DILU",
          NeoN::Dictionary(
@@ -61,6 +62,15 @@ void updatePreconditioner(NeoN::Dictionary& solverDict)
          )},
     };
 
+    // if no
+    if (!solverDict.contains("preconditioner"))
+    {
+        solverDict.insert("preconditioner", preconditionerMap["DIC"]);
+    }
+    if (solverDict.contains("smoother"))
+    {
+        solverDict.remove("smoother");
+    }
 
     if (solverDict.isDict("preconditioner"))
     {
@@ -74,7 +84,8 @@ void updatePreconditioner(NeoN::Dictionary& solverDict)
             // auto it = preconditionerMap.find(preconditionerType);
             // if (it != preconditionerMap.end())
             // {
-            //     preconditionerType = it->second;
+            //     std::cout << __FILE__ << " replacing preconditioner " << preconditionerType << "
+            //     by " << it->second << "\n"; preconditionerType = it->second;
             // }
         }
     }
@@ -85,6 +96,8 @@ void updatePreconditioner(NeoN::Dictionary& solverDict)
         auto it = preconditionerMap.find(preconditionerName);
         if (it != preconditionerMap.end())
         {
+            std::cout << __FILE__ << ":\n\treplacing preconditioner " << preconditionerName
+                      << " by " << it->second << "\n";
             solverDict.insert("preconditioner", it->second);
         }
     }
@@ -98,31 +111,45 @@ void updateCriteria(NeoN::Dictionary& solverDict)
         solverDict.insert("criteria", NeoN::Dictionary());
     }
 
-    NeoN::Dictionary& criteriaDict = solverDict.subDict("criteria");
-
     // set default max iteration count
-    criteriaDict.insert("type", std::string("Iteration"));
-    criteriaDict.insert("max_iters", 1000);
+    {
+        NeoN::Dictionary& criteriaDict = solverDict.subDict("criteria");
+        criteriaDict.insert("iteration", 1000);
+    }
 
     // Set default values for relative residual norm and iteration count
-    // if (solverDict.contains("relTol"))
-    // {
-    //     criteriaDict.insert("relative_residual_norm", solverDict.get<NeoN::scalar>("relTol"));
-    // }
-    // if (solverDict.contains("maxIter"))
-    // {
-    //     criteriaDict.insert("iteration", solverDict.get<NeoN::label>("maxIter"));
-    // }
-    // if (solverDict.contains("tolerance"))
-    // {
-    //     criteriaDict.insert("absolute_residual_norm", solverDict.get<NeoN::scalar>("tolerance"));
-    // }
+    if (solverDict.contains("relTol"))
+    {
+        NeoN::Dictionary& criteriaDict = solverDict.subDict("criteria");
+        criteriaDict.insert("relative_residual_norm", solverDict.get<NeoN::scalar>("relTol"));
+        solverDict.remove("relTol");
+    }
+    if (solverDict.contains("maxIter"))
+    {
+        NeoN::Dictionary& criteriaDict = solverDict.subDict("criteria");
+        criteriaDict.insert("iteration", solverDict.get<NeoN::label>("maxIter"));
+        solverDict.remove("maxIter");
+    }
+    if (solverDict.contains("tolerance"))
+    {
+        NeoN::Dictionary& criteriaDict = solverDict.subDict("criteria");
+        criteriaDict.insert("absolute_residual_norm", solverDict.get<NeoN::scalar>("tolerance"));
+        solverDict.remove("tolerance");
+    }
+
+    NeoN::Dictionary& criteriaDict = solverDict.subDict("criteria");
+    std::cout << __FILE__ << ":\n\tStopping criteria: " << criteriaDict << "\n";
 }
 
 
 NeoN::Dictionary mapFvSolution(const NeoN::Dictionary& solverDict)
 {
     NeoN::Dictionary modSolverDict = solverDict;
+
+    if (solverDict.contains("configFile")) return solverDict;
+    std::cout << __FILE__ << ":\n\tMapping OpenFOAM solver settings to NeoN settings\n"
+              << "\tCurrently, it is advisable to specify configFile for fine grained Ginkgo "
+                 "solver support\n";
 
     updateSolver(modSolverDict);
     updatePreconditioner(modSolverDict);
