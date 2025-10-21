@@ -15,24 +15,9 @@ Table of Contents
    :maxdepth: 2
 
    self
-   installation
    gettingStarted
-   goals_features
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Usage:
-   
-   usage/quickstart
-   usage/cli
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Development:
-
-   development/architecture
-   development/contributing
-   development/testing
+   testcases
+   ci
 
 .. toctree::
    :maxdepth: 2
