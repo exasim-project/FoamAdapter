@@ -123,7 +123,6 @@ benchmark-with-neon-main-amd:
     - .openfoam-env-setup
     - .trigger-from-foamadapter-for-benchmarking
   script:
-    - export PATH=$PATH:$PWD/build/profiling/bin/benchmarks
     - ./ci/lrz-gitlab/benchmark.sh amd main profiling
 
 # --- Build and test FoamAdapter with a feature branch of NeoN ---
