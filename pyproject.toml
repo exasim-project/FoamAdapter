@@ -1,0 +1,55 @@
+[project]
+name = "foamadapter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Henning Scheufler", email = "henning.scheufler@web.de" }
+]
+requires-python = ">=3.9"
+
+dependencies = [
+    "pybFoam>=0.1.4",
+    "typer",
+    "pydantic>=2.0.0",
+    "networkx>=3.0",
+    "matplotlib>=3.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "pytest-xdist",
+    "black",
+    "flake8",
+    "isort",
+    "mypy",
+    "pandas>=2.0.0"
+]
+docs = [
+    "sphinx>=4.0",
+    "myst-parser",
+    "sphinx-sitemap",
+    "furo",
+    "sphinxcontrib-mermaid"
+]
+all = [
+    "foamadapter[dev,docs]",
+]
+
+[project.scripts]
+foamadapter = "foamadapter.cli.app:app"
+
+[build-system]
+requires = ["uv_build>=0.8.6,<0.9.0"]
+build-backend = "uv_build"
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra --showlocals"
+testpaths = [
+    "test"
+]
+
