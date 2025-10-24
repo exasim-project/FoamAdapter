@@ -16,12 +16,28 @@ FoamFile
 
 solvers
 {
-    ofU
+    ofp
     {
         solver          PCG;
         preconditioner  DIC;
         tolerance       1e-06;
+        relTol          0.0;
+    }
+
+    ofU
+    {
+        solver          PBiCGStab;
+        preconditioner  diagonal;
+        tolerance       1e-16;
         relTol          0;
+    }
+
+    nfU
+    {
+        solver          PBiCGStab;
+        preconditioner  DIC;
+        tolerance       1e-16;
+        relTol          0.0;
     }
 
     nfU
