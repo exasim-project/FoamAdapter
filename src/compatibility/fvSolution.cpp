@@ -62,7 +62,7 @@ void updatePreconditioner(NeoN::Dictionary& solverDict)
          )},
     };
 
-    // if no
+    // if no preconditioner is set but smoother switch to BiCGStab with BJ
     if (!solverDict.contains("preconditioner"))
     {
         solverDict.insert("preconditioner", preconditionerMap["DIC"]);
