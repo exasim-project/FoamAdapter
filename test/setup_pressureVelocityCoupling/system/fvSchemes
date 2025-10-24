@@ -27,6 +27,8 @@ gradSchemes
 {
     default         none;
     grad(T)         $GRADSCHEME;
+    grad(ofp)         $GRADSCHEME;
+    grad(nfp)         $GRADSCHEME;
     grad(U)         $GRADSCHEME;
     limited         cellLimited Gauss linear 1;
 }
@@ -51,6 +53,7 @@ interpolationSchemes
 {
     default         none;
     flux(ofU)         linear;
+    flux(HbyA)         linear;
     // default         linear;
 }
 

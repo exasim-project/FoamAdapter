@@ -219,6 +219,212 @@ TEST_CASE("PressureVelocityCoupling")
             }
         }
 
+        // SECTION("Solve steady state momentum without grad(p)")
+        // {
+        //     auto& solverDict = rt.fvSolutionDict.get<NeoN::Dictionary>("solvers");
+        //     solverDict.get<NeoN::Dictionary>("nfU") =
+        //         nf::mapFvSolution(solverDict.get<NeoN::Dictionary>("nfU"));
+
+        //     // require fields to be initially the same
+        //     auto hostnfU = nfU.internalVector().copyToHost();
+        //     for (size_t celli = 0; celli < hostnfU.size(); celli++)
+        //     {
+        //         REQUIRE(hostnfU.view()[celli][0] == Catch::Approx(ofU[celli][0]).margin(1e-03));
+        //         REQUIRE(hostnfU.view()[celli][1] == Catch::Approx(ofU[celli][1]).margin(1e-03));
+        //         REQUIRE(hostnfU.view()[celli][2] == Catch::Approx(ofU[celli][2]).margin(1e-06));
+        //     }
+
+        //     Foam::fvVectorMatrix ofUEqn
+        //     (
+        //      //  Foam::fvm::ddt(ofU)
+        //      // +
+        //       Foam::fvm::div(ofPhi,ofU)
+        //     - Foam::fvm::laplacian(ofNu, ofU)
+        //     );
+
+        //     Foam::solve(ofUEqn);
+
+        //     nf::PDESolver<NeoN::Vec3> nfUEqn(
+        //         //  dsl::imp::ddt(nfU)
+        //          dsl::imp::div(nfPhi, nfU)
+        //          - dsl::imp::laplacian(nfNu, nfU),
+        //         nfU,
+        //         rt
+        //     );
+
+        //     nfUEqn.solve();
+
+        //     auto hostnfU2 = nfU.internalVector().copyToHost();
+        //     for (size_t celli = 0; celli < hostnfU.size(); celli++)
+        //     {
+        //         REQUIRE(hostnfU2.view()[celli][0] == Catch::Approx(ofU[celli][0]).margin(1e-06));
+        //         REQUIRE(hostnfU2.view()[celli][1] == Catch::Approx(ofU[celli][1]).margin(1e-06));
+        //         REQUIRE(hostnfU2.view()[celli][2] == Catch::Approx(ofU[celli][2]).margin(1e-06));
+        //     }
+        // }
+        SECTION("Solve transient momentum without grad(p)")
+        {
+            auto& solverDict = rt.fvSolutionDict.get<NeoN::Dictionary>("solvers");
+            solverDict.get<NeoN::Dictionary>("nfU") =
+                nf::mapFvSolution(solverDict.get<NeoN::Dictionary>("nfU"));
+
+            // require fields to be initially the same
+            auto hostnfU = nfU.internalVector().copyToHost();
+            for (size_t celli = 0; celli < hostnfU.size(); celli++)
+            {
+                REQUIRE(hostnfU.view()[celli][0] == Catch::Approx(ofU[celli][0]).margin(1e-12));
+                REQUIRE(hostnfU.view()[celli][1] == Catch::Approx(ofU[celli][1]).margin(1e-12));
+                REQUIRE(hostnfU.view()[celli][2] == Catch::Approx(ofU[celli][2]).margin(1e-12));
+            }
+
+            Foam::fvVectorMatrix ofUEqn(
+                Foam::fvm::ddt(ofU) + Foam::fvm::div(ofPhi, ofU) - Foam::fvm::laplacian(ofNu, ofU)
+            );
+
+            Foam::solve(ofUEqn);
+
+            nf::PDESolver<NeoN::Vec3> nfUEqn(
+                dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU),
+                nfU,
+                rt
+            );
+
+            nfUEqn.solve();
+
+            auto hostnfU2 = nfU.internalVector().copyToHost();
+            for (size_t celli = 0; celli < hostnfU.size(); celli++)
+            {
+                REQUIRE(hostnfU2.view()[celli][0] == Catch::Approx(ofU[celli][0]).margin(1e-12));
+                REQUIRE(hostnfU2.view()[celli][1] == Catch::Approx(ofU[celli][1]).margin(1e-12));
+                REQUIRE(hostnfU2.view()[celli][2] == Catch::Approx(ofU[celli][2]).margin(1e-12));
+            }
+
+            SECTION("HbyA modified U")
+            {
+                ofU.correctBoundaryConditions();
+                Foam::volScalarField forAU("forAU", 1.0 / ofUEqn.A());
+                Foam::volVectorField HbyA("HbyA", forAU * ofUEqn.H());
+                Foam::surfaceScalarField phiHbyA("phiHbyA", Foam::fvc::flux(HbyA));
+
+                nfU.correctBoundaryConditions();
+                auto [nfrAU, nfHbyA] = nf::computeRAUandHByA(nfUEqn);
+
+                auto hostnfrAU = nfrAU.internalVector().copyToHost();
+                for (size_t celli = 0; celli < hostnfrAU.size(); celli++)
+                {
+                    REQUIRE(hostnfrAU.view()[celli] == Catch::Approx(forAU[celli]).margin(1e-10));
+                }
+
+                auto hostnfHbyA = nfHbyA.internalVector().copyToHost();
+                for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
+                {
+                    // std::cout << " nf " << hostnfHbyA.view()[celli][0] << " of " <<
+                    // HbyA[celli][0]  << "\n";
+                    REQUIRE(
+                        hostnfHbyA.view()[celli][0] == Catch::Approx(HbyA[celli][0]).margin(1e-12)
+                    );
+                    REQUIRE(
+                        hostnfHbyA.view()[celli][1] == Catch::Approx(HbyA[celli][1]).margin(1e-12)
+                    );
+                    REQUIRE(
+                        hostnfHbyA.view()[celli][2] == Catch::Approx(HbyA[celli][2]).margin(1e-12)
+                    );
+                }
+
+                auto nfPhiHbyA = nf::flux(nfHbyA);
+                auto hostnfPhiHbyA = nfPhiHbyA.internalVector().copyToHost();
+                for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
+                {
+                    REQUIRE(
+                        hostnfPhiHbyA.view()[celli] == Catch::Approx(phiHbyA[celli]).margin(1e-6)
+                    );
+                }
+            }
+        }
+
+
+        SECTION("Solve transient momentum with grad(p)")
+        {
+            auto& solverDict = rt.fvSolutionDict.get<NeoN::Dictionary>("solvers");
+            solverDict.get<NeoN::Dictionary>("nfU") =
+                nf::mapFvSolution(solverDict.get<NeoN::Dictionary>("nfU"));
+
+            // require fields to be initially the same
+            auto hostnfU = nfU.internalVector().copyToHost();
+            for (size_t celli = 0; celli < hostnfU.size(); celli++)
+            {
+                REQUIRE(hostnfU.view()[celli][0] == Catch::Approx(ofU[celli][0]).margin(1e-12));
+                REQUIRE(hostnfU.view()[celli][1] == Catch::Approx(ofU[celli][1]).margin(1e-12));
+                REQUIRE(hostnfU.view()[celli][2] == Catch::Approx(ofU[celli][2]).margin(1e-12));
+            }
+
+            Foam::fvVectorMatrix ofUEqn(
+                Foam::fvm::ddt(ofU) + Foam::fvm::div(ofPhi, ofU) - Foam::fvm::laplacian(ofNu, ofU)
+            );
+
+            Foam::solve(ofUEqn == -Foam::fvc::grad(ofp));
+
+            nf::PDESolver<NeoN::Vec3> nfUEqn(
+                dsl::imp::ddt(nfU) + dsl::imp::div(nfPhi, nfU) - dsl::imp::laplacian(nfNu, nfU)
+                    + dsl::exp::grad(nfp),
+                nfU,
+                rt
+            );
+
+            nfUEqn.solve();
+
+            auto hostnfU2 = nfU.internalVector().copyToHost();
+            // for (size_t celli = 0; celli < hostnfU.size(); celli++)
+            // {
+            //     REQUIRE(hostnfU2.view()[celli][0] == Catch::Approx(ofU[celli][0]).margin(1e-12));
+            //     REQUIRE(hostnfU2.view()[celli][1] == Catch::Approx(ofU[celli][1]).margin(1e-12));
+            //     REQUIRE(hostnfU2.view()[celli][2] == Catch::Approx(ofU[celli][2]).margin(1e-12));
+            // }
+
+            SECTION("HbyA modified U")
+            {
+                ofU.correctBoundaryConditions();
+                Foam::volScalarField forAU("forAU", 1.0 / ofUEqn.A());
+                Foam::volVectorField HbyA("HbyA", forAU * ofUEqn.H());
+
+                nfU.correctBoundaryConditions();
+                auto [nfrAU, nfHbyA] = nf::computeRAUandHByA(nfUEqn);
+
+                auto hostnfrAU = nfrAU.internalVector().copyToHost();
+                for (size_t celli = 0; celli < hostnfrAU.size(); celli++)
+                {
+                    REQUIRE(hostnfrAU.view()[celli] == Catch::Approx(forAU[celli]).margin(1e-12));
+                }
+
+                auto hostnfHbyA = nfHbyA.internalVector().copyToHost();
+                for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
+                {
+                    std::cout << " nf[0] " << hostnfHbyA.view()[celli][0] << " of[0] "
+                              << HbyA[celli][0] << "\n";
+                    std::cout << " nf[1] " << hostnfHbyA.view()[celli][1] << " of[1] "
+                              << HbyA[celli][1] << "\n";
+                    // REQUIRE(hostnfHbyA.view()[celli][0] ==
+                    // Catch::Approx(HbyA[celli][0]).margin(1e-8));
+                    // REQUIRE(hostnfHbyA.view()[celli][1] ==
+                    // Catch::Approx(HbyA[celli][1]).margin(1e-8));
+                    // REQUIRE(hostnfHbyA.view()[celli][2] ==
+                    // Catch::Approx(HbyA[celli][2]).margin(1e-8));
+                }
+
+                Foam::surfaceScalarField phiHbyA("phiHbyA", Foam::fvc::flux(HbyA));
+
+                auto nfPhiHbyA = nf::flux(nfHbyA);
+                auto hostnfPhiHbyA = nfPhiHbyA.internalVector().copyToHost();
+                for (size_t celli = 0; celli < hostnfHbyA.size(); celli++)
+                {
+                    REQUIRE(
+                        hostnfPhiHbyA.view()[celli] == Catch::Approx(phiHbyA[celli]).margin(1e-6)
+                    );
+                }
+            }
+        }
+
+
         SECTION("matrix flux")
         {
             // create rAUf
