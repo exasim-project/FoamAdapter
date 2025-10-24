@@ -254,12 +254,25 @@
 <p>This document describes the overall architecture of FoamAdapter, including both the C++ core and Python interface components.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>FoamAdapter is designed as a multi-layered architecture that bridges OpenFOAM and NeoN computational backends while providing both C++ and Python interfaces.</p>
+<p>FoamAdapter is designed a multi-physics simulation python-based simulation framework.
+It provides a flexible and modular architecture that allows users to easily extend and customize the simulation setup.</p>
+<p>The architecture provides following features to achieve the goals outlined in the <a class="reference internal" href="../goals_features.html"><span class="doc">goals and features</span></a> document:</p>
+<ul class="simple">
+<li><p>Easy coupling of multiple domains and physics</p></li>
+<li><p>Field and model initialization based on dependency graphs</p></li>
+<li><p>Modular solver design that computes the data dependencies at runtime</p></li>
+<li><p>Plugin architecture for easy extension with new models and fields</p></li>
+</ul>
+<p>The main abstraction is that each domain has one physics module assigned to it that defines the governing equations and models for that domain.
+Multiple domains can be defined with input files and the coupling between the domains is handled automatically based on the defined physics modules.</p>
+<p>The following sections describe the main feature and and implementation example to give a high level overview of the architecture.
+More details are provided described in the section for each feature.</p>
 </section>
-<section id="solver-workflows">
-<h2>Solver Workflows<a class="headerlink" href="#solver-workflows" title="Link to this heading">¶</a></h2>
-<p>FoamAdapter supports different types of solvers, each with their specific computational steps and algorithms.
-The following diagram illustrates the workflow for two common solver types for a conjugate heat transfer scenario:</p>
+<section id="solver-execution-model">
+<h2>Solver Execution Model<a class="headerlink" href="#solver-execution-model" title="Link to this heading">¶</a></h2>
+<p>FoamAdapter defines solver behavior as a dependency-driven execution model.
+Each solver declares its required fields and models, and the runtime system constructs a directed acyclic graph (DAG) to determine the correct execution order.</p>
+<p>The following diagram illustrates the workflow for two common solver types for a conjugate heat transfer scenario:</p>
 <pre  class="mermaid">
         %%{init: {'flowchart': { 'htmlLabels': true, 'wrap': true }}}%%
 flowchart TB
@@ -290,16 +303,40 @@ flowchart TB
     setup2 --&gt; S2B
     S1E --&gt; S2B
     S2B --&gt; S1E
-    </pre><p>The diagram shows two solver workflows: a non-thermal-fluid solver and a thermal-solid solver. Each solver has its own setup phase and computational steps, with interactions between the two solvers for energy exchange.</p>
-<p>The solvers are built modularly, allowing for easy extension and customization of individual components.</p>
+    </pre><p>The diagram shows two selected solvers: a non-thermal-fluid solver and a thermal-solid solver.
+Each solver has its own setup phase and computational steps, with interactions between the two solvers for energy exchange.</p>
+<p>The solution steps of each solver provide the dependencies and the runtime system constructs a DAG to determine the correct execution order based on these dependencies.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@model</span><span class="p">(</span><span class="s2">&quot;fluidSolver&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DomainA</span><span class="p">:</span>
+    <span class="nd">@step</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="nd">@step</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">solve_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="nd">@step</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">pressure_corrector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="nd">@step</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">update_turbulence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">):</span> <span class="k">pass</span>
+
+<span class="nd">@model</span><span class="p">(</span><span class="s2">&quot;solidSolver&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DomainB</span><span class="p">:</span>
+    <span class="nd">@step</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">solve_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="nd">@step</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">update_solid_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">):</span> <span class="k">pass</span>
+</pre></div>
+</div>
+<p>A solver is a defined as a class with multiple steps, each step declaring its dependencies.
+Additional models can be executed before and after each step to modify the behavior and add additional physics.</p>
+<p>This allows to easily extend existing solvers with new physics without modifying the core solver implementation and promotes code reuse.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The solution procedure is only known at runtime, and a DAG needs to be solved to determine the correct order of operations. Which is not implemented yet</p>
+<p>The implementation is still work in progress but only details may change.</p>
 </div>
 </section>
 <section id="modular-solver-architecture">
 <h2>Modular Solver Architecture<a class="headerlink" href="#modular-solver-architecture" title="Link to this heading">¶</a></h2>
-<p>FoamAdapter implements a modular architecture where core solver steps can be extended with additional physics modules. This allows for flexible composition of complex multi-physics simulations:</p>
+<p>FoamAdapter implements a modular architecture where core solver steps can be extended with additional physics modules.
+This allows for flexible composition of complex multi-physics simulations:</p>
 <pre  class="mermaid">
         flowchart TD
 
@@ -519,7 +556,7 @@ This is a standard feature of Pydantic and enables:</p>
             <ul>
 <li><a class="reference internal" href="#">Architecture</a><ul>
 <li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#solver-workflows">Solver Workflows</a></li>
+<li><a class="reference internal" href="#solver-execution-model">Solver Execution Model</a></li>
 <li><a class="reference internal" href="#modular-solver-architecture">Modular Solver Architecture</a></li>
 <li><a class="reference internal" href="#field-and-model-initialization">Field and Model Initialization</a></li>
 <li><a class="reference internal" href="#plugin-architecture">Plugin Architecture</a><ul>

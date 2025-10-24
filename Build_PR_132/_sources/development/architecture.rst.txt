@@ -6,13 +6,28 @@ This document describes the overall architecture of FoamAdapter, including both 
 Overview
 --------
 
-FoamAdapter is designed as a multi-layered architecture that bridges OpenFOAM and NeoN computational backends while providing both C++ and Python interfaces.
+FoamAdapter is designed a multi-physics simulation python-based simulation framework.
+It provides a flexible and modular architecture that allows users to easily extend and customize the simulation setup.
 
+The architecture provides following features to achieve the goals outlined in the :doc:`goals and features <../goals_features>` document:
 
-Solver Workflows
-----------------
+- Easy coupling of multiple domains and physics
+- Field and model initialization based on dependency graphs
+- Modular solver design that computes the data dependencies at runtime
+- Plugin architecture for easy extension with new models and fields
 
-FoamAdapter supports different types of solvers, each with their specific computational steps and algorithms.
+The main abstraction is that each domain has one physics module assigned to it that defines the governing equations and models for that domain.
+Multiple domains can be defined with input files and the coupling between the domains is handled automatically based on the defined physics modules.
+
+The following sections describe the main feature and and implementation example to give a high level overview of the architecture.
+More details are provided described in the section for each feature. 
+
+Solver Execution Model
+----------------------
+
+FoamAdapter defines solver behavior as a dependency-driven execution model.
+Each solver declares its required fields and models, and the runtime system constructs a directed acyclic graph (DAG) to determine the correct execution order.
+
 The following diagram illustrates the workflow for two common solver types for a conjugate heat transfer scenario:
 
 .. mermaid::
@@ -48,18 +63,45 @@ The following diagram illustrates the workflow for two common solver types for a
         S2B --> S1E
 
 
-The diagram shows two solver workflows: a non-thermal-fluid solver and a thermal-solid solver. Each solver has its own setup phase and computational steps, with interactions between the two solvers for energy exchange.
+The diagram shows two selected solvers: a non-thermal-fluid solver and a thermal-solid solver.
+Each solver has its own setup phase and computational steps, with interactions between the two solvers for energy exchange.
 
-The solvers are built modularly, allowing for easy extension and customization of individual components.
+The solution steps of each solver provide the dependencies and the runtime system constructs a DAG to determine the correct execution order based on these dependencies.
+
+.. code-block:: python
+
+    @model("fluidSolver")
+    class DomainA:
+        @step(order=1, model)
+        def momentum(self, ctrl): pass
+        @step(order=2, model)
+        def solve_energy(self, ctrl): pass
+        @step(order=3, model)
+        def pressure_corrector(self, ctrl): pass
+        @step(order=4, model)
+        def update_turbulence(self, ctrl): pass
+
+    @model("solidSolver")
+    class DomainB:
+        @step(order=1, model)
+        def solve_energy(self, ctrl): pass
+        @step(order=2, model)
+        def update_solid_properties(self, ctrl): pass
+
+A solver is a defined as a class with multiple steps, each step declaring its dependencies.
+Additional models can be executed before and after each step to modify the behavior and add additional physics.
+
+This allows to easily extend existing solvers with new physics without modifying the core solver implementation and promotes code reuse.
 
 .. note::
 
-    The solution procedure is only known at runtime, and a DAG needs to be solved to determine the correct order of operations. Which is not implemented yet
+    The implementation is still work in progress but only details may change.
 
 Modular Solver Architecture
 ---------------------------
 
-FoamAdapter implements a modular architecture where core solver steps can be extended with additional physics modules. This allows for flexible composition of complex multi-physics simulations:
+FoamAdapter implements a modular architecture where core solver steps can be extended with additional physics modules.
+This allows for flexible composition of complex multi-physics simulations:
 
 .. mermaid::
 
