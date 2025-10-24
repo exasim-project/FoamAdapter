@@ -60,7 +60,8 @@ class PluginSystem:
                 discriminator=discriminator,
                 plugin_model=None,
             )
-            def plugin_decorator(plugin_cls):
+            # define plugin decorator that is add as register method to base class
+            def _register(plugin_cls):
                 registry_obj = PluginSystem._registry[base_cls.__name__]
                 registry_obj.plugin_registry.append(plugin_cls)
                 registry = registry_obj.plugin_registry
@@ -73,7 +74,7 @@ class PluginSystem:
                 registry_obj.plugin_model = model
                 base_cls.plugin_model = model
                 return plugin_cls
-            base_cls.register = plugin_decorator
+            base_cls.register = _register
             # Initial model with no plugins
             registry_obj = PluginSystem._registry[base_cls.__name__]
             union = object
