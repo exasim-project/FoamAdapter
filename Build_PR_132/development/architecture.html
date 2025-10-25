@@ -486,25 +486,28 @@ The <cite>plugin_model</cite> attribute needs to be called to obtain the up-to-d
 The unified configuration model and schema make it easy to build UIs, validate inputs, and document available plugins.</p>
 </section>
 </section>
-<section id="model-availability">
-<h2>Model Availability<a class="headerlink" href="#model-availability" title="Link to this heading">¶</a></h2>
-<p>Model configuration and validation in FoamAdapter is built on top of Pydantic, which natively supports input validation and automatic JSON schema generation for all models.
-This is a standard feature of Pydantic and enables:</p>
+<section id="model-introspection-and-schema-generation">
+<h2>Model Introspection and Schema Generation<a class="headerlink" href="#model-introspection-and-schema-generation" title="Link to this heading">¶</a></h2>
+<p>Model configuration and validation in FoamAdapter are implemented using Pydantic, which provides native support for input validation and automatic JSON Schema generation.
+This mechanism forms the basis for model discovery, UI integration, and automated documentation across the framework.</p>
+<p>Pydantic’s schema generation enables the following functionality:</p>
 <ul class="simple">
-<li><p>building a UI on top of FoamAdapter</p></li>
-<li><p>input validation</p></li>
-<li><p>documentation of available models</p></li>
-<li><p>the usage of generative AI tools</p></li>
-<li><p>meta data generation</p></li>
+<li><p>Input validation: Ensures model configurations are consistent and type-safe.</p></li>
+<li><p>UI integration: Allows user interfaces to be generated dynamically from model definitions.</p></li>
+<li><p>Automatic documentation: Exposes field names, types, and constraints for all models.</p></li>
+<li><p>Metadata generation: Facilitates downstream tools to query and reason about model structures.</p></li>
+<li><p>AI-assisted workflows: Supports schema-driven interactions with generative AI systems.</p></li>
 </ul>
-<p>For any Pydantic model (including plugin/config models), you can obtain the JSON schema for validation and UI generation as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Given a registered plugin/config model</span>
+<p>To obtain a model’s JSON Schema representation, use the model_json_schema() method provided by Pydantic:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># For a registered plugin or configuration model</span>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">ShapeBase</span><span class="o">.</span><span class="n">plugin_model</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
-<span class="c1"># Or for any Pydantic model:</span>
+
+<span class="c1"># For any Pydantic model</span>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">MyModel</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This makes it easy to discover available fields, types, and constraints for all models in the library.</p>
+<p>This interface provides a uniform mechanism for introspection of all models in FoamAdapter, making it possible to programmatically discover available fields, their data types, validation rules, and default values.</p>
+<p>This requires that all plugin, solver, or model use Pydantic to configure the inputs.</p>
 </section>
 </section>
 
@@ -574,7 +577,7 @@ This is a standard feature of Pydantic and enables:</p>
 <li><a class="reference internal" href="#usage">Usage</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#model-availability">Model Availability</a></li>
+<li><a class="reference internal" href="#model-introspection-and-schema-generation">Model Introspection and Schema Generation</a></li>
 </ul>
 </li>
 </ul>
