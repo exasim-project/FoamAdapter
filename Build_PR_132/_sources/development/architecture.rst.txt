@@ -88,7 +88,7 @@ The solution steps of each solver provide the dependencies and the runtime syste
         @step(order=2, model)
         def update_solid_properties(self, ctrl): pass
 
-A solver is a defined as a class with multiple steps, each step declaring its dependencies.
+A solver is defined as a class with multiple steps, each step has to declare its dependencies.
 Additional models can be executed before and after each step to modify the behavior and add additional physics.
 
 This allows to easily extend existing solvers with new physics without modifying the core solver implementation and promotes code reuse.
@@ -100,8 +100,8 @@ This allows to easily extend existing solvers with new physics without modifying
 Modular Solver Architecture
 ---------------------------
 
-FoamAdapter implements a modular architecture where core solver steps can be extended with additional physics modules.
-This allows for flexible composition of complex multi-physics simulations:
+The modular solver architecture briefly touched on in the previous section is a key feature of FoamAdapter and allows for flexible composition of complex multi-physics simulations.
+An example of the modular solver architecture is illustrated in the following diagram:
 
 .. mermaid::
 
@@ -138,18 +138,21 @@ This allows for flexible composition of complex multi-physics simulations:
         style STEP4 fill:#607D8B,color:#fff
 
 
-In this architecture, the main solver loop consists of core steps such as momentum prediction and pressure correction. Additional physics modules (e.g., porosity, rotation, buoyancy) can be plugged into the workflow to modify the behavior of these core steps.
+In this architecture, the main solver loop consists of core steps such as momentum prediction and pressure correction.
+Additional physics modules (e.g., porosity, rotation, buoyancy) can be plugged into the workflow to modify the behavior of these core steps.
 
 This modular design enables users to easily add or remove physics effects without altering the fundamental solver structure, promoting code reuse and maintainability.
+The additional physics modules need to define their dependencies and the runtime system ensures that they are executed at the correct point in the solver loop.
 
 .. note::
 
-    Not implemented yet
+    implementation is still work in progress
 
 Field and Model Initialization
 ------------------------------
 
-As the fields and solver needs to be initialized before the solver run, FoamAdapter provides a structured initialization phase to ensure that the necessary fields and models are properly set up.
+
+As the fields and solver needs to be initialized in the correct order before the solver run, FoamAdapter provides a structured initialization phase to ensure that the necessary fields and models are properly set up.
 
 The fields and models are stored lazily at first with the dependencies and a DAG is solved to determine the correct initialization order.
 
@@ -199,13 +202,17 @@ Plugin Architecture
 Motivation
 ^^^^^^^^^^
 
-Modern scientific and engineering workflows require flexible simulation frameworks that can be easily extended and customized. FoamAdapter's plugin architecture is designed to enable users and developers to add new physics models, boundary conditions, and solver modules without modifying the core codebase. This approach promotes maintainability, collaboration, and rapid prototyping of new features.
+Modern scientific and engineering workflows require flexible simulation frameworks that can be easily extended and customized.
+FoamAdapter's plugin architecture is designed to enable users and developers to add new physics models, boundary conditions, and solver modules without modifying the core codebase.
+This approach promotes maintainability, collaboration, and rapid prototyping of new features.
 
 
 
 Concept
 ^^^^^^^
-FoamAdapter implements a runtime-extensible plugin/config system using Pydantic discriminated unions and a registry pattern. The core idea is to allow new plugin types (e.g., models, fields, solvers) to be registered dynamically, either at runtime or via Python entry points (setuptools).
+
+FoamAdapter implements a runtime-extensible plugin/config system using Pydantic discriminated unions and a registry pattern.
+The core idea is to allow new plugin types (e.g., models, fields, solvers) to be registered dynamically, either at runtime or via Python entry points (setuptools).
 Each plugin type (such as physics models or boundary conditions) is managed by a registry, which collects all available plugin classes and exposes a unified configuration model for input validation and schema generation.
 
 **Background: Pydantic Discriminated Unions**
@@ -237,7 +244,9 @@ This works well for static unions, but it is not possible to add new types to th
 
 **How FoamAdapter Solves This**
 
-Plugins are registered using a decorator-based API, making it easy for users to define and integrate new modules. Whenever a new plugin is registered, the system automatically rebuilds the Pydantic model for the plugin type, updating the discriminated union to include all registered types. This means that the configuration model always reflects the current set of available plugins, and input validation is always up to date.
+Plugins are registered using a decorator-based API, making it easy for users to define and integrate new modules.
+Whenever a new plugin is registered, the system automatically rebuilds the Pydantic model for the plugin type, updating the discriminated union to include all registered types.
+This means that the configuration model always reflects the current set of available plugins, and input validation is always up to date.
 
 For example, after registering a new shape plugin, you can immediately use the updated model for validation:
 
@@ -246,7 +255,8 @@ For example, after registering a new shape plugin, you can immediately use the u
     ShapeBase.register(TriangleConfig)
     shape = ShapeBase.plugin_model(shape={"shape_type": "triangle", "base": 3.0, "height": 4.0}, color="yellow")
 
-This dynamic rebuilding of the model enables true runtime extensibility and ensures that input validation and schema generation always match the available plugins. The `plugin_model` attribute needs to be called to obtain the up-to-date model for the plugin type.
+This dynamic rebuilding of the model enables true runtime extensibility and ensures that input validation and schema generation always match the available plugins.
+The `plugin_model` attribute needs to be called to obtain the up-to-date model for the plugin type.
 
 Usage
 ^^^^^
@@ -268,7 +278,8 @@ To add a new plugin, users simply define a new Python class for their model or f
     # Instantiate a model config
     config = ModelBase.create(model={"model_type": "custom", "parameter": 1.23}, name="example")
 
-Plugins can also be discovered and registered automatically via Python entry points, allowing third-party packages to extend FoamAdapter seamlessly. The unified configuration model and schema make it easy to build UIs, validate inputs, and document available plugins.
+Plugins can also be discovered and registered automatically via Python entry points, allowing third-party packages to extend FoamAdapter seamlessly.
+The unified configuration model and schema make it easy to build UIs, validate inputs, and document available plugins.
 
 
 Model Availability 
