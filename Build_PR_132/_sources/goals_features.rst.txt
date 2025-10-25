@@ -4,9 +4,9 @@ Goals
 The Goal of FoamAdapter is to offer a simple and intuitive to use multi-physics framework for developers and users.
 This is achieved by providing a modern python interface while leveraging the heterogeneous architecture.
 
-This requires in our view a incremental rewrite of OpenFOAM solvers.
+This requires in our view an incremental rewrite of OpenFOAM solvers.
 The python interface improves the development experience and lowers the barrier of entry for engineers and scientists to implement their own CFD solvers.
-Additionally, the usage of python opens a new ecosysstem of tools for pre- and postprocessing.
+Additionally, the usage of python opens a new ecosystem of tools for pre- and postprocessing.
 
 Features
 ========

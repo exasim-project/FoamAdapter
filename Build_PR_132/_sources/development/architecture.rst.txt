@@ -6,7 +6,7 @@ This document describes the overall architecture of FoamAdapter, including both 
 Overview
 --------
 
-FoamAdapter is designed a multi-physics simulation python-based simulation framework.
+FoamAdapter is designed as a multi-physics, python-based simulation framework.
 It provides a flexible and modular architecture that allows users to easily extend and customize the simulation setup.
 
 The architecture provides following features to achieve the goals outlined in the :doc:`goals and features <../goals_features>` document:
@@ -20,7 +20,7 @@ The main abstraction is that each domain has one physics module assigned to it t
 Multiple domains can be defined with input files and the coupling between the domains is handled automatically based on the defined physics modules.
 
 The following sections describe the main feature and and implementation example to give a high level overview of the architecture.
-More details are provided described in the section for each feature. 
+More details are described in the section for each feature. 
 
 Solver Execution Model
 ----------------------
@@ -70,6 +70,8 @@ The solution steps of each solver provide the dependencies and the runtime syste
 
 .. code-block:: python
 
+    # 'model' is a placeholder for the model dependency object required by each step.
+    model = ...  # placeholder for model dependency
     @model("fluidSolver")
     class DomainA:
         @step(order=1, model)

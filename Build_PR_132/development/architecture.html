@@ -254,7 +254,7 @@
 <p>This document describes the overall architecture of FoamAdapter, including both the C++ core and Python interface components.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>FoamAdapter is designed a multi-physics simulation python-based simulation framework.
+<p>FoamAdapter is designed as a multi-physics, python-based simulation framework.
 It provides a flexible and modular architecture that allows users to easily extend and customize the simulation setup.</p>
 <p>The architecture provides following features to achieve the goals outlined in the <a class="reference internal" href="../goals_features.html"><span class="doc">goals and features</span></a> document:</p>
 <ul class="simple">
@@ -266,7 +266,7 @@ It provides a flexible and modular architecture that allows users to easily exte
 <p>The main abstraction is that each domain has one physics module assigned to it that defines the governing equations and models for that domain.
 Multiple domains can be defined with input files and the coupling between the domains is handled automatically based on the defined physics modules.</p>
 <p>The following sections describe the main feature and and implementation example to give a high level overview of the architecture.
-More details are provided described in the section for each feature.</p>
+More details are described in the section for each feature.</p>
 </section>
 <section id="solver-execution-model">
 <h2>Solver Execution Model<a class="headerlink" href="#solver-execution-model" title="Link to this heading">¶</a></h2>
@@ -306,7 +306,9 @@ flowchart TB
     </pre><p>The diagram shows two selected solvers: a non-thermal-fluid solver and a thermal-solid solver.
 Each solver has its own setup phase and computational steps, with interactions between the two solvers for energy exchange.</p>
 <p>The solution steps of each solver provide the dependencies and the runtime system constructs a DAG to determine the correct execution order based on these dependencies.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@model</span><span class="p">(</span><span class="s2">&quot;fluidSolver&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># &#39;model&#39; is a placeholder for the model dependency object required by each step.</span>
+<span class="n">model</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># placeholder for model dependency</span>
+<span class="nd">@model</span><span class="p">(</span><span class="s2">&quot;fluidSolver&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">DomainA</span><span class="p">:</span>
     <span class="nd">@step</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">):</span> <span class="k">pass</span>
