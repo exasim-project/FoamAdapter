@@ -25,3 +25,22 @@ repos:
     rev: v1.23.1
     hooks:
       - id: typos
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.2
+    hooks:
+      - id: ruff-format
+        exclude: \.cmake-format\.py$
+      - id: ruff
+        args: [--fix]
+        exclude: \.cmake-format\.py$
+
+  - repo: local
+    hooks:
+      # mypy needs project dependencies (pydantic plugin, etc.),
+      # so it must run in the project venv. --frozen skips uv sync/rebuild.
+      - id: type-check
+        name: Mypy Type Check
+        entry: mypy
+        language: system
+        pass_filenames: false

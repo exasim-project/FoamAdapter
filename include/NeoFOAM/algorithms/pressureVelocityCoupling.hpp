@@ -94,7 +94,6 @@ void updateVelocity(
     nnfvcc::VolumeField<Vec3>& U
 );
 
-
 /* @brief Face flux from a volume vector field: phi = U·Sf.
  */
 nnfvcc::SurfaceField<scalar> flux(const nnfvcc::VolumeField<Vec3>& volField);
