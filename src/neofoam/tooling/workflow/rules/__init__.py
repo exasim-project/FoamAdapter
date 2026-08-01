@@ -1,7 +1,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # SPDX-FileCopyrightText: 2026 NeoFOAM authors
 
-"""The predefined Snakemake rule library for NeoFOAM parameter sweeps.
+"""The predefined Snakemake rule library for NeoFOAM workflows.
+
+The mesh sweep (``setup_mesh``/``blockMesh``/``snappyHexMesh``/``checkMesh``/
+``setup``/``solve``/``post``) is reached the same way any packaged rule set
+is — ``include:`` a path under :func:`rules_dir` — and is *selected*:
+:class:`RuleRegistry` holds the specs and :meth:`RuleRegistry.plan` resolves an
+enabled subset into a :class:`RulePlan` the codegen turns into a Snakefile.
 
 Each :class:`RuleSpec` describes one packaged ``.smk`` file (shipped in this
 directory) — its Snakemake rule name, the file patterns it consumes/produces
@@ -12,13 +18,14 @@ materialize the configs, define the plan's globals) followed by ``include:``
 lines referencing these files, so the rule bodies stay versioned together with
 the ``python -m neofoam.tooling.workflow.sweep_runner`` CLI they shell out to.
 
-The default pipeline::
+The default mesh-sweep pipeline::
 
     setup_mesh ─ blockMesh ─ snappyHexMesh ─ checkMesh      (once per mesh variant)
                                         └─ setup ─ solve    (once per case)
                                                      └─ all
 
-Each ``.smk`` file documents the header globals it consumes. This module is
+Each ``.smk`` file documents the header globals it consumes — defined by the
+codegen's header (see :mod:`neofoam.tooling.workflow.sweep`). This module is
 stdlib-only — generated Snakefiles import it at parse time.
 
 Interface (``__all__`` — the rule model only):

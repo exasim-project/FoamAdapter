@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2026 NeoFOAM authors
+#
+# The incompressibleVoF drop-in study. Everything solver-specific is beside this
+# file — config.yaml (title, the `only:` subset, the neo_patch deviation) and
+# discover.py (tier classification) — and the pipeline itself is this study's own
+# copy of the shared rule shape (rules/).
+#
+# Run from this directory:
+#   snakemake --configfile config.yaml -j6
+
+include: "rules/header.smk"
+
+# The default target must be defined here, in the main Snakefile — Snakemake saves
+# and restores `default_target` around every include, so a rule from an included
+# file is never promoted. REPORT comes from rules/header.smk.
+rule all:
+    input:
+        REPORT,

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # SPDX-FileCopyrightText: 2026 NeoFOAM authors
 
-"""Case-staging workflow: geometry → mesh, parameter sweeps, and their rule library.
+"""Case-staging workflow: geometry → mesh, parameter sweeps, drop-in studies.
 
 This package is a *directory of deep sub-modules*, not one flat namespace — import
 from the sub-module that owns your concern, each of which states its own interface:
@@ -14,9 +14,10 @@ from the sub-module that owns your concern, each of which states its own interfa
   the :class:`~neofoam.tooling.workflow.sweep.Sweep` object owns the round-trip
   (export a runnable Snakemake workflow dir, read it back), plus the wizard's canvas
   node/edge model.
-* :mod:`neofoam.tooling.workflow.rules` — the packaged Snakemake rule library the
-  generated sweep workflow is composed from (per mesh variant ``setup_mesh`` →
-  blockMesh → snappyHexMesh → checkMesh, then per case ``setup`` → ``solve``).
+* :mod:`neofoam.tooling.workflow.rules` — the packaged Snakemake rule library: the
+  mesh sweep (per mesh variant ``setup_mesh`` → blockMesh → snappyHexMesh →
+  checkMesh, then per case ``setup`` → ``solve``), composed by
+  :meth:`~neofoam.tooling.workflow.rules.RuleRegistry.plan`.
 * :mod:`neofoam.tooling.workflow.dag` — render an exported sweep's
   ``snakemake --dag`` / ``--rulegraph`` as canvas nodes and edges.
 * :mod:`neofoam.tooling.workflow.paramspace` — the swept-dimension csv/yaml layer
@@ -28,9 +29,9 @@ Where the STLs come from is out of scope — any upstream tool that writes
 ``constant/triSurface/*.stl`` plus a ``manifest.json`` plugs in at
 :mod:`~neofoam.tooling.workflow.geometry`.
 
-This top-level ``__init__`` intentionally re-exports **nothing**: the six concerns
-above used to share one 21-name flat namespace; keeping the surface on the
-sub-modules is what makes each a small, deep interface. Import
+This top-level ``__init__`` intentionally re-exports **nothing**: the concerns
+above used to share one flat namespace; keeping the surface on the sub-modules is
+what makes each a small, deep interface. Import
 ``from neofoam.tooling.workflow.geometry import PatchSet``, not
 ``from neofoam.tooling.workflow import PatchSet``.
 """

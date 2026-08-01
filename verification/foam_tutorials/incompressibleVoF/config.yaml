@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2026 NeoFOAM authors
+#
+# The incompressibleVoF drop-in study: `neofoam solver incompressiblevof`
+# vs interFoam / interIsoFoam across the multiphase tutorials.
+#
+# Run from this directory (`-j1`: some cases run mpirun internally, so let each
+# case have the box to itself rather than oversubscribing):
+#   snakemake --configfile config.yaml -j1
+
+title: "incompressibleVoF — OpenFOAM multiphase tutorial drop-in"
+
+# Path (relative to this file) to the module exposing discover() and TIER_TITLES.
+discover: discover.py
+
+# `only:` restricts the sweep to a hand-picked subset (the slice-3 gate). With it
+# removed, every discovered case is swept. Example:
+#   only:
+#     - interFoam/laminar/damBreak/damBreak
+
+# `exclude:` drops a selected case that can never run as a drop-in — each entry
+# names the case (same naming as `only:`) with the reason it is out of scope.
+# Excluded cases are never staged and never reported; an entry naming no selected
+# case is an error. Example:
+#   exclude:
+#     - case: interFoam/RAS/motorBike
+#       reason: "snappyHexMesh is not reproducible, so runs are not comparable"
+exclude:
+  - case: interIsoFoam/damBreakWithObstacle
+    reason: "the native interIsoFoam reference itself never completes (cause 15:
+      the staged single-case run fails in its own mesh setup and the full-size
+      reference never finished), so no comparison is ever attempted — nothing
+      here exercises the solver under test"

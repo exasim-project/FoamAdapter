@@ -1,0 +1,106 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2026 NeoFOAM authors
+#
+# The incompressibleFluid drop-in study: `neofoam solver incompressiblefluid`
+# vs simpleFoam / pimpleFoam across the incompressible tutorials.
+#
+# Run from this directory (`-j1`: some cases run mpirun internally, so let each
+# case have the box to itself rather than oversubscribing):
+#   snakemake --configfile config.yaml -j1
+
+title: "incompressibleFluid — OpenFOAM incompressible tutorial drop-in"
+
+# Path (relative to this file) to the module exposing discover(selection).
+discover: discover.py
+
+# Candidate neofoam backends, each diffed against the native reference (which runs
+# once per case). Omit to fall back to the single app discover() assigns.
+# The NeoN backend has its own study (../incompressibleFluidNeoN), which may
+# simplify a tutorial on both sides; this study stays the pure drop-in.
+apps:
+  - "neofoam solver incompressiblefluid"
+
+# `exclude:` drops a selected case that can never run as a drop-in — each entry
+# names the case (same naming as `cases:`) with the reason it is out of scope.
+# Excluded cases are never staged and never reported; an entry naming no selected
+# case is an error.
+exclude:
+  - case: lumpedPointMotion/bridge/steady
+    reason: "controlDict self-configures on ${FOAM_EXECUTABLE} (`${_${FOAM_EXECUTABLE}}`
+      selects the steady-state block `_simpleFoam`), which no drop-in can satisfy:
+      after the swap it expands to `_neofoam`, an entry the tutorial does not define"
+  - case: lumpedPointMotion/building/steady
+    reason: "controlDict self-configures on ${FOAM_EXECUTABLE} (`${_${FOAM_EXECUTABLE}}`
+      selects the steady-state block `_simpleFoam`), which no drop-in can satisfy:
+      after the swap it expands to `_neofoam`, an entry the tutorial does not define"
+  - case: pimpleFoam/LES/periodicHill/transient
+    reason: "multi-case tutorial: the leaf needs the steadyState sibling's decomposed
+      result, staged only by the parent Allrun; the native reference itself fails as
+      a single case, so no comparison is ever attempted (decided out of scope)"
+  - case: pimpleFoam/LES/surfaceMountedCube/fullCase
+    reason: "multi-case tutorial: the leaf needs a precursor channel case built by
+      the parent Allrun; the native reference itself exits ('Unable to locate
+      precursor channel case'), so no comparison is ever attempted (decided out of scope)"
+  - case: pimpleFoam/RAS/wingMotion/wingMotion2D_pimpleFoam
+    reason: "multi-case tutorial: the leaf needs the mesh and steady result the
+      parent Allrun stages from wingMotion2D_simpleFoam; the native reference itself
+      fails (no polyMesh points), so no comparison is ever attempted (decided out of scope)"
+  - case: pimpleFoam/RAS/wingMotion/wingMotion2D_simpleFoam
+    reason: "multi-case tutorial: the mesh comes from the parent Allrun (snappyHexMesh
+      in the parent dir); the native reference itself fails (no polyMesh points), so
+      no comparison is ever attempted (decided out of scope)"
+  - case: pimpleFoam/laminar/filmPanel0
+    reason: "multi-case tutorial with a finite-area region: the faMesh is built by the
+      parent Allrun and finite-area is out of scope; the native reference itself fails
+      (no finite-area/faMesh/faceLabels), so no comparison is ever attempted"
+
+# The cases considered from the tutorials, path-relative to
+# $FOAM_TUTORIALS/incompressible. This list IS the sweep — add or remove a line to
+# change what runs. Comment the whole block out to fall back to walking the tree
+# (every simpleFoam/pimpleFoam case).
+cases:
+  - lumpedPointMotion/bridge/steady
+  - lumpedPointMotion/building/steady
+  - pimpleFoam/LES/decayIsoTurb
+  - pimpleFoam/LES/periodicHill/steadyState
+  - pimpleFoam/LES/periodicHill/transient
+  - pimpleFoam/LES/periodicPlaneChannel
+  - pimpleFoam/LES/surfaceMountedCube/fullCase
+  - pimpleFoam/LES/vortexShed
+  - pimpleFoam/RAS/TJunction
+  - pimpleFoam/RAS/TJunctionArrheniusBirdCarreauTransport
+  - pimpleFoam/RAS/TJunctionFan
+  - pimpleFoam/RAS/TJunctionSwitching
+  - pimpleFoam/RAS/axialTurbine_rotating_oneBlade
+  - pimpleFoam/RAS/ellipsekkLOmega
+  - pimpleFoam/RAS/oscillatingInletACMI2D
+  - pimpleFoam/RAS/oscillatingInletPeriodicAMI2D
+  - pimpleFoam/RAS/pitzDaily
+  - pimpleFoam/RAS/propeller
+  - pimpleFoam/RAS/rotatingFanInRoom
+  - pimpleFoam/RAS/wingMotion/wingMotion2D_pimpleFoam
+  - pimpleFoam/RAS/wingMotion/wingMotion2D_simpleFoam
+  - pimpleFoam/laminar/contactAngleCavity
+  - pimpleFoam/laminar/contaminatedDroplet2D
+  - pimpleFoam/laminar/cylinder2D
+  - pimpleFoam/laminar/filmPanel0
+  - pimpleFoam/laminar/inclinedPlaneFilm
+  - pimpleFoam/laminar/mixerVesselAMI2D/mixerVesselAMI2D
+  - pimpleFoam/laminar/mixerVesselAMI2D/mixerVesselAMI2D-topologyChange
+  - pimpleFoam/laminar/movingCone
+  - pimpleFoam/laminar/planarContraction
+  - pimpleFoam/laminar/sloshing2D
+  - simpleFoam/T3A
+  - simpleFoam/airFoil2D
+  - simpleFoam/backwardFacingStep2D
+  - simpleFoam/mixerVessel2D
+  - simpleFoam/motorBike
+  - simpleFoam/pipeCyclic
+  - simpleFoam/pitzDaily
+  - simpleFoam/pitzDailyExptInlet
+  - simpleFoam/rotatingCylinders
+  - simpleFoam/rotorDisk
+  - simpleFoam/simpleCar
+  - simpleFoam/squareBend
+  - simpleFoam/turbineSiting
+  - simpleFoam/windAroundBuildings

@@ -182,19 +182,38 @@ def build(self: Any) -> list[Any]:
     def create_pimple_state(context: dict[str, Any]) -> PimpleNeoNState:
         rt = context["_neon_runtime"]
         # Inner-corrector counts live in the "PIMPLE" subdict for a stock
-        # pimpleFoam case (there is no "PISO" block); OpenFOAM's
-        # solutionControl defaults momentumPredictor to true.
-        pimple_dict = rt.fv_solution_dict.subDict("PIMPLE")
+        # pimpleFoam case; pisoFoam cases ship a "PISO" block instead (a
+        # single-outer-loop PIMPLE). Mirror the pybFoam control factory:
+        # prefer PIMPLE, fall back to PISO, else a clear error. OpenFOAM's
+        # solutionControl defaults momentumPredictor to true. The outer-loop
+        # count is read by nfb.PimpleControl, which defaults to 1 when the
+        # PIMPLE block is absent (the PISO case).
+        fv_solution = rt.fv_solution_dict
+        if fv_solution.contains("PIMPLE"):
+            control_dict = fv_solution.subDict("PIMPLE")
+        elif fv_solution.contains("PISO"):
+            control_dict = fv_solution.subDict("PISO")
+        else:
+            raise ValueError(
+                "incompressibleFluidNeoN: system/fvSolution has neither a PIMPLE "
+                "nor a PISO block to build the pressure-velocity control from."
+            )
         piso = PisoControl(
-            n_correctors=_read_int(pimple_dict, "nCorrectors", 1),
-            n_non_orthogonal_correctors=_read_int(pimple_dict, "nNonOrthogonalCorrectors", 0),
-            momentum_predictor=_read_switch(pimple_dict, "momentumPredictor", True),
+            n_correctors=_read_int(control_dict, "nCorrectors", 1),
+            n_non_orthogonal_correctors=_read_int(control_dict, "nNonOrthogonalCorrectors", 0),
+            momentum_predictor=_read_switch(control_dict, "momentumPredictor", True),
         )
         return PimpleNeoNState(nfb.PimpleControl(rt.fv_solution_dict), piso)
 
     def create_pressure_reference(context: dict[str, Any]) -> dict[str, Any]:
         rt = context["_neon_runtime"]
-        cell, value, needs_ref = nfb.set_ref_cell(rt, "p", "PIMPLE")
+        # pRefCell/pRefValue live in the same control block as the corrector
+        # counts: "PIMPLE" for a pimpleFoam case, "PISO" for a pisoFoam one.
+        # set_ref_cell reads that subdict of the Foam solutionDict, so pass the
+        # block that is present (mirrors create_pimple_state) — otherwise a
+        # pisoFoam case aborts with *Entry 'PIMPLE' not found in fvSolution*.
+        algorithm = "PIMPLE" if rt.fv_solution_dict.contains("PIMPLE") else "PISO"
+        cell, value, needs_ref = nfb.set_ref_cell(rt, "p", algorithm)
         return {"pRefCell": cell, "pRefValue": value, "needsRef": needs_ref}
 
     def create_surf_interp(context: dict[str, Any]) -> Any:
@@ -202,7 +221,9 @@ def build(self: Any) -> list[Any]:
         return nn.SurfaceInterpolationScalar(rt.executor, rt.nf_mesh, nn.TokenList(["linear"]))
 
     def create_grad_op(context: dict[str, Any]) -> Any:
-        return nfb.GaussGreenGrad(context["_neon_runtime"])
+        # gradSchemes/grad(U) as written by the case (plain Gauss-Green when the
+        # case does not name it), so a limited grad(U) is limited here too.
+        return nfb.GradScheme(context["_neon_runtime"], "U")
 
     return [
         field("p", create_p, depends_on=["_neon_runtime"], write=True),
@@ -303,6 +324,9 @@ def momentum(
         raise RuntimeError("incompressibleFluidNeoN: steadyState ddt unsupported (BDF1/BDF2 only)")
 
     UEqn.set_final_iter(final_iter)
+    # pimpleFoam/UEqn.H: UEqn.relax() — the momentum matrix is the one PIMPLE
+    # under-relaxes; the pressure equation in ``continuity`` is left unrelaxed.
+    UEqn.relax()
 
     if pimple_state.piso.momentum_predictor():
         stats_u = UEqn.solve_with_source(-1.0 * nn.exp.grad(p))
