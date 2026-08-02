@@ -16,7 +16,7 @@ pass per step and the turbulence model is corrected once per step by the
 solver graph, mirroring ``simpleFoam``'s ``while (simple.loop())`` body.
 """
 
-from typing import Annotated, Any, Callable, Optional, Protocol
+from typing import Annotated, Any, Callable, Protocol
 
 import pybFoam as pyf
 from pybFoam import (
@@ -50,6 +50,7 @@ from neofoam.foam import fvSchemes, fvSolution
 from neofoam.framework.context import Context, FieldUpdates
 from neofoam.framework.dependency_resolver import wrap_with_dependency_resolution
 from neofoam.framework.initialization import field, model
+from neofoam.framework.model import BoundExtension
 from neofoam.framework.operations import (
     IterativeOp,
     Operation,
@@ -60,6 +61,7 @@ from neofoam.framework.types import OperationMetadata
 
 from ..incompressibleFluidModel import Model
 from .control_factory import create_simple_control
+from .extension import momentum_extension, pressure_extension
 
 simple = Model("Simple")
 
@@ -174,8 +176,7 @@ def momentum(
     viscousStress: Annotated[ViscousStress, "models"],
     simple_control: Annotated[Any, "models"],
     ctx: Context,
-    mrf_zones: Annotated[Optional[pyf.IOMRFZoneList], "models"] = None,
-    fv_options: Annotated[Optional[pyf.fvOptions], "models"] = None,
+    ext: Annotated[BoundExtension, momentum_extension],
 ) -> FieldUpdates:
     # Start-of-iteration prevIter snapshot: ``simpleControl.loop()`` calls
     # ``storePrevIterFields()`` natively so that ``p.relax()`` (explicit field
@@ -186,30 +187,23 @@ def momentum(
     # Refresh nuEff where it is consumed (see pimpleAlgorithm.momentum).
     with telemetry.span("momentum.assemble"):
         viscousStress.update(ctx)
-        if mrf_zones is None:
-            UEqn = fvVectorMatrix(fvm.div(phi, U) + viscousStress.divDevReff(U))
-        else:
-            # UEqn.H under a rotating frame: the wall velocities on the MRF
-            # patches are set first (they feed the boundary coefficients of
-            # ``div(phi,U)``), then the frame acceleration joins the sum.
-            mrf_zones.correctBoundaryVelocity(U)
-            UEqn = fvVectorMatrix(fvm.div(phi, U) + mrf_zones.DDt(U) + viscousStress.divDevReff(U))
-        if fv_options is not None:
-            # ``== fvOptions(U)`` moves the source to the right-hand side, i.e.
-            # subtracts it from the assembled matrix. UEqn.H's three fvOptions
-            # calls sit at three exact points, and the order is the physics: the
-            # source joins the sum BEFORE relaxation, the constraints are applied
-            # AFTER it, and the correction runs after the solve.
-            UEqn = fvVectorMatrix(UEqn - fv_options(U))
+        # UEqn.H: the wall velocities on the MRF patches are set first (they
+        # feed the boundary coefficients of ``div(phi,U)``); then every active
+        # model's terms fold into the sum in registration order — MRF's frame
+        # acceleration with ``+``, the fvOptions source with ``-`` (native's
+        # ``== fvOptions(U)``). One term site, so both join after the viscous
+        # stress, where native adds DDt(U) before it.
+        ext.correct_boundary_velocity(U)
+        UEqn = fvVectorMatrix(fvm.div(phi, U) + viscousStress.divDevReff(U) + ext.terms(U))
+        # The source joined the sum BEFORE relaxation; the constraints apply
+        # AFTER it, and the correction runs after the solve.
         UEqn.relax()
-        if fv_options is not None:
-            fv_options.constrain(UEqn)
+        ext.constrain(UEqn)
 
     if simple_control.momentumPredictor():
         with telemetry.span("momentum.solve"):
             fvVectorMatrix(UEqn + fvc.grad(p)).solve()
-        if fv_options is not None:
-            fv_options.correct(U)
+        ext.correct(U)
 
     return FieldUpdates({"UEqn": UEqn, "U": U})
 
@@ -230,8 +224,7 @@ def continuity(
     simple_control: Annotated[Any, "models"],
     cumulativeContErr: Annotated[list[float], "models"],
     pressure_reference: Annotated[dict[str, Any], "models"],
-    mrf_zones: Annotated[Optional[pyf.IOMRFZoneList], "models"] = None,
-    fv_options: Annotated[Optional[pyf.fvOptions], "models"] = None,
+    ext: Annotated[BoundExtension, pressure_extension],
 ) -> FieldUpdates:
     pRefCell = pressure_reference["pRefCell"]
     pRefValue = pressure_reference["pRefValue"]
@@ -241,10 +234,9 @@ def continuity(
         HbyA = volVectorField(pyf.constrainHbyA(rAU * UEqn.H(), U, p))
         phiHbyA = surfaceScalarField(pyf.Word("phiHbyA"), fvc.flux(HbyA))
 
-        if mrf_zones is not None:
-            # pEqn.H hands the pressure equation the flux seen from the rotating
-            # frame; ``adjustPhi`` then balances that relative flux.
-            mrf_zones.makeRelative(phiHbyA)
+        # pEqn.H hands the pressure equation the flux seen from the rotating
+        # frame; ``adjustPhi`` then balances that relative flux.
+        ext.make_relative(phiHbyA)
 
         pyf.adjustPhi(phiHbyA, U, p)
 
@@ -256,10 +248,8 @@ def continuity(
             phiHbyA.assign(phiHbyA + fvc.interpolate(rAtU - rAU) * fvc.snGrad(p) * U.mesh().magSf())
             HbyA.assign(HbyA - (rAU - rAtU) * fvc.grad(p))
 
-        if mrf_zones is None:
+        if not ext.constrain_pressure(p, U, phiHbyA, rAtU):
             pyf.constrainPressure(p, U, phiHbyA, rAtU)
-        else:
-            pyf.constrainPressure(p, U, phiHbyA, rAtU, mrf_zones)
 
     while simple_control.correctNonOrthogonal():
         with telemetry.span("pressure.assemble"):
@@ -283,10 +273,9 @@ def continuity(
     p.relax()
     U.assign(HbyA - rAtU * fvc.grad(p))
     U.correctBoundaryConditions()
-    if fv_options is not None:
-        # pEqn.H closes on a second ``fvOptions.correct(U)``: the corrector has
-        # just overwritten U, so any correction the predictor applied is gone.
-        fv_options.correct(U)
+    # pEqn.H closes on a second ``fvOptions.correct(U)``: the corrector has
+    # just overwritten U, so any correction the predictor applied is gone.
+    ext.correct(U)
 
     return FieldUpdates({"U": U, "p": p, "phi": phi})
 
